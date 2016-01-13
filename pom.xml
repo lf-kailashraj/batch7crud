@@ -8,6 +8,17 @@
 	<name>batch7crud</name>
 	<modules>
 		<module>batch7crud-roll1</module>
+		<module>batch7crud-roll2</module>
+		<module>batch7crud-roll3</module>
+		<module>batch7crud-roll4</module>
+		<module>batch7crud-roll5</module>
+		<module>batch7crud-roll6</module>
+		<module>batch7crud-roll7</module>
+		<module>batch7crud-roll8</module>
+		<module>batch7crud-roll9</module>
+		<module>batch7crud-roll10</module>
+		<module>batch7crud-roll11</module>
+		<module>batch7crud-roll12</module>
 		<module>batch7crud-util</module>
 	</modules>
 	
