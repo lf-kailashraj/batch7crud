@@ -1,0 +1,10 @@
+.classpath
+.project
+.settings
+target
+/target/
+.DS_Store
+.tern-project
+.metadata
+.tmp
+.Trashes
