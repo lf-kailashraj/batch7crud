@@ -15,6 +15,21 @@
 			<artifactId>batch7crud-util</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.schemacrawler</groupId>
+			<artifactId>schemacrawler-postgresql</artifactId>
+			<version>9.5</version>
+		</dependency>
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
 	</dependencies>
 
 	<packaging>war</packaging>

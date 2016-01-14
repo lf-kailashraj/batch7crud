@@ -3,4 +3,21 @@
 	xmlns="http://java.sun.com/xml/ns/javaee"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
+	<!--<servlet>-->
+		<!--<servlet-name>DisplayController</servlet-name>-->
+		<!--<servlet-class>com.lftechnology.batch7crud.controller.DisplayServletServlet</servlet-class>-->
+	<!--</servlet>-->
+	<resource-ref>
+		<description>none
+		</description>
+		<res-ref-name>
+			jdbc/formdb
+		</res-ref-name>
+		<res-type>
+			javax.sql.DataSource
+		</res-type>
+		<res-auth>
+			Container
+		</res-auth>
+	</resource-ref>
 </web-app>
