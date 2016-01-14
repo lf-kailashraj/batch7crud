@@ -7,16 +7,28 @@ import java.sql.*;
  */
 public class DBConnection {
     private Connection connection;
+    private PreparedStatement stmt;
 
-    public DBConnection() throws ClassNotFoundException, SQLException {
+    public DBConnection() throws ClassNotFoundException{
         Class.forName("com.mysql.jdbc.Driver");
-        connection = DriverManager.getConnection("jdbc:mysql://localhost/ems","root","damcare56");
-
     }
 
-    public int executeUpdate(String sql) throws SQLException {
+    public void open() throws SQLException {
+        connection = DriverManager.getConnection("jdbc:mysql://localhost/ems","root","damcare56");
+    }
+
+    public PreparedStatement initStatement(String sql) throws SQLException {
+        stmt = connection.prepareStatement(sql);
+        return stmt;
+    }
+
+    public void executeUpdate(String sql) throws SQLException {
         Statement stmt = connection.createStatement();
-        return stmt.executeUpdate(sql);
+        stmt.executeUpdate(sql);
+    }
+
+    public void executeUpdate() throws SQLException {
+        stmt.executeUpdate();
     }
 
     public ResultSet executeQuery(String sql) throws SQLException {
@@ -24,5 +36,10 @@ public class DBConnection {
         return stmt.executeQuery(sql);
     }
 
+    public void close() throws SQLException {
+        if(!connection.isClosed()) {
+            connection.close();
+        }
+    }
 
 }

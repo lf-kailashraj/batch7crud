@@ -5,10 +5,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Hello</title>
+<title>EMS</title>
 </head>
 <body>
-	<h1>Management Systen!!</h1>
-    <a href="/employee/create">Add Employee</a>
+	<h1>Employee Management Systen!!</h1>
+	<a href="/employees">Employees</a>
 </body>
 </html>
