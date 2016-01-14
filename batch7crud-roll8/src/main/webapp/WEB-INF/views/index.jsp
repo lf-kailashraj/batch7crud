@@ -5,9 +5,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Hello</title>
+<title>Something Management System</title>
 </head>
 <body>
-	<div>Hello world!!</div>
+	<div>Header</div>
+	<div>
+	Hello from index
+		<a href="signup">Sign Up</a>	
+	</div>
+	<div>Footer</div>
 </body>
 </html>
