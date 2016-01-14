@@ -8,6 +8,7 @@
 <title>Hello</title>
 </head>
 <body>
-	<div>Hello world!!</div>
+	<h1>Management Systen!!</h1>
+    <a href="/employee/create">Add Employee</a>
 </body>
 </html>
