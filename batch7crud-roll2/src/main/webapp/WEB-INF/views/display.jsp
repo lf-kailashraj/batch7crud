@@ -22,6 +22,7 @@
     <td>Address</td>
     <td>Email</td>
     <td>Contact</td>
+    <td colspan="2">Operations</td>
   </tr>
   <c:forEach items="${employeeList}" var="employee" varStatus="counter">
   <tr>
@@ -30,8 +31,8 @@
     <td>${employee.getAddress()}</td>
     <td>${employee.getEmail()}</td>
     <td>${employee.getContact()}</td>
-    <td><a href="/">Edit</a></td>
-    <td><a href="/">Delete</a></td>
+    <td><form action="Delete" method="POST"><input type="submit" value="Edit"></form></td>
+    <td><form action="Delete" method="POST"><button name="deleteId" value= ${employee.getId()}>Delete</button> </form></td>
   </tr>
   </c:forEach>
   </tbody>

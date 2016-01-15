@@ -36,6 +36,7 @@ public class EmployeeDao {
 
         while (resultSet.next()){
             Employee employee = new Employee();
+            employee.setId(resultSet.getInt("id"));
             employee.setName(resultSet.getString("username"));
             employee.setAddress(resultSet.getString("address"));
             employee.setEmail(resultSet.getString("email"));
@@ -44,5 +45,13 @@ public class EmployeeDao {
             empList.add(employee);
         }
         return empList;
+    }
+    public void delete(int empId) throws SQLException{
+        Connection con = DBConnection.getSqlConnection();
+
+        String qry ="DELETE FROM userinfo where id=?";
+        PreparedStatement preStmt = con.prepareStatement(qry);
+        preStmt.setInt(1,empId);
+        preStmt.executeUpdate();
     }
 }

@@ -18,4 +18,8 @@ public class EmployeeService {
         EmployeeDao employeeDao = new EmployeeDao();
         return employeeDao.getPageData(page);
     }
+    public void deleteEmployee(int empId) throws SQLException{
+        EmployeeDao employeeDao = new EmployeeDao();
+        employeeDao.delete(empId);
+    }
 }
