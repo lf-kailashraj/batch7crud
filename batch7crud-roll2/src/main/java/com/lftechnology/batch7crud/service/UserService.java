@@ -4,7 +4,6 @@ import com.lftechnology.batch7crud.dao.UserDao;
 import com.lftechnology.batch7crud.model.User;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * Created by romit on 1/14/16.

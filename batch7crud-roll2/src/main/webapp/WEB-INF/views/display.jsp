@@ -1,5 +1,4 @@
-<%@ page import="java.util.List" %>
-<%@ page import="com.lftechnology.batch7crud.model.FormInformation" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: romit
@@ -15,25 +14,28 @@
 <body>
 
 <h1>Form Data</h1>
-<table>
+<table border="1px solid black">
   <tbody>
   <tr>
-    <td>Name:</td>
-    <td>${name}</td>
+    <td>Id</td>
+    <td>Name</td>
+    <td>Address</td>
+    <td>Email</td>
+    <td>Contact</td>
   </tr>
+  <c:forEach items="${employeeList}" var="employee" varStatus="counter">
   <tr>
-    <td>Address:</td>
-    <td>${address}</td>
+    <td>${counter.count}</td>
+    <td>${employee.getName()}</td>
+    <td>${employee.getAddress()}</td>
+    <td>${employee.getEmail()}</td>
+    <td>${employee.getContact()}</td>
+    <td><a href="/">Edit</a></td>
+    <td><a href="/">Delete</a></td>
   </tr>
-  <tr>
-    <td>Email:</td>
-    <td>${email}</td>
-  </tr>
-  <tr>
-    <td>Contact:</td>
-    <td>${contact}</td>
-  </tr>
+  </c:forEach>
   </tbody>
 </table>
+<a href="Create">Add Employee</a>
 </body>
 </html>

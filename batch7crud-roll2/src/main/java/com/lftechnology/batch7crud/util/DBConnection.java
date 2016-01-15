@@ -7,12 +7,11 @@ import javax.sql.DataSource;
 import java.sql.*;
 
 public class DBConnection{
-    public static Connection getPostgreSqlConnection() {
+    public static Connection getSqlConnection() {
         try {
             Context initCtx = new InitialContext();
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
-            DataSource ds = (DataSource)
-                    envCtx.lookup("jdbc/formdb");
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/formdb");
             Connection con = ds.getConnection();
             return con;
 

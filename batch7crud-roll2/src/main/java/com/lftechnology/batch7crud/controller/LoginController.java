@@ -31,7 +31,7 @@ public class LoginController extends HttpServlet {
             HttpSession session = request.getSession();
 
            if(validUser!=null){
-               session.setAttribute("validUser",validUser);
+               session.setAttribute("validUser", validUser);
                response.sendRedirect("/");
            }
            else {

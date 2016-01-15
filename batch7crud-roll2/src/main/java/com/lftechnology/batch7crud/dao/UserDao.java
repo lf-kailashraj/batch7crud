@@ -3,10 +3,7 @@ package com.lftechnology.batch7crud.dao;
 import com.lftechnology.batch7crud.model.User;
 import com.lftechnology.batch7crud.util.DBConnection;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,8 +15,8 @@ import java.sql.SQLException;
 public class UserDao{
 
     public User getUser(User user) throws SQLException,NamingException{
-        User user1 = null;
-        Connection con = DBConnection.getPostgreSqlConnection();
+        User user1;
+        Connection con = DBConnection.getSqlConnection();
         String qry = "SELECT * FROM admin WHERE username=? AND password=?";
         PreparedStatement preStmt = con.prepareStatement(qry);
         preStmt.setString(1,user.getUserName());
