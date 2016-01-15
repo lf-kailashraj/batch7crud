@@ -8,6 +8,9 @@
 <title>Hello</title>
 </head>
 <body>
-	<div>Hello world!!</div>
+	<div><a href="/NewStudent">New Student</a></div>
+
+<div>Welcome.</div>
+<a href="/AllData">See all</a>
 </body>
 </html>
