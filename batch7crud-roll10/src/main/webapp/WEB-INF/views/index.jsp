@@ -8,13 +8,7 @@
 <title>Hello</title>
 </head>
 <body>
-	<div>Hello !!</div>
-	<div>
-        <form action="add" method="post">
-            <label>firstname</label><input type="text" name="fname">
-            <label>lastname</label><input type="text" name="lname">
-            <input type="submit" value="submit">
-        </form>
-    </div>
+	<p>testing ${test}</p>
+
 </body>
 </html>
