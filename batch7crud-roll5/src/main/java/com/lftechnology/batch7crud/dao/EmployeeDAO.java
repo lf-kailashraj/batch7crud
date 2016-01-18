@@ -42,7 +42,7 @@ public class EmployeeDAO {
 
 	}
 
-	public boolean Create(Employee employee) {
+	public boolean create(Employee employee) throws DataException{
 		try {
 			String sql = "insert into employee (first_name, last_name, department, address)" + "values(?, ?, ?, ?)";
 			Connection conn = DBConnection.getConnection();
@@ -51,8 +51,8 @@ public class EmployeeDAO {
 			ps.setString(1, employee.getFirstName());
 			ps.setString(2, employee.getLastName());
 			ps.setString(3, employee.getDepartment());
-			ps.setString(3, employee.getAddress());
-
+			ps.setString(4, employee.getAddress());
+			System.out.println(ps);
 			if (ps.executeUpdate() != 0) {
 				return true;
 			} else {

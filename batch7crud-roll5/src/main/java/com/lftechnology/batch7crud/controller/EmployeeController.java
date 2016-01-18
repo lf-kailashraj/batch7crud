@@ -43,6 +43,7 @@ public class EmployeeController extends HttpServlet {
 		if (path != null) {
 			System.out.println(path);
 			String[] pathParts = path.split("/");
+
 			if (pathParts[1].equals("create"))
 				create(request, response);
 
@@ -54,23 +55,66 @@ public class EmployeeController extends HttpServlet {
 
 	}
 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		// doGet(request, response);
+		String path = request.getPathInfo();
+		if (path != null) {
+			System.out.println(path);
+			String[] pathParts = path.split("/");
+
+			if (pathParts[2].equals("createProcess")) {
+				createProcess(request, response);
+			}
+		}
+
+	}
+
+	@SuppressWarnings("null")
+	private void createProcess(HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		System.out.println("sucess");
+		try {
+			Employee emp = new Employee();
+			emp.setFirstName(request.getParameter("firstName"));
+			emp.setLastName(request.getParameter("lastName"));
+			emp.setDepartment(request.getParameter("department"));
+			emp.setAddress(request.getParameter("address"));
+
+			employeeService.create(emp);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+	}
+
 	private void create(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		System.out.println("creating");
+		try {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/createEmployee.jsp");
+			dispatcher.forward(request, response);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
 	private void fetchData(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		try {
-//			System.out.println("laxman");
+			// System.out.println("laxman");
 			List<Employee> employeeList = new ArrayList<Employee>();
-			EmployeeService employeeService = new EmployeeService();
 			employeeList = employeeService.fetch();
 			request.setAttribute("employeeList", employeeList);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/employee.jsp");
 			dispatcher.forward(request, response);
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
