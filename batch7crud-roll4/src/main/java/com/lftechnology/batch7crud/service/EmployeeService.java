@@ -1,9 +1,9 @@
 package com.lftechnology.batch7crud.service;
 
-import com.lftechnology.batch7crud.dao.EmployeeDAO;
+import com.lftechnology.batch7crud.dao.EmployeeDao;
+import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -11,18 +11,30 @@ import java.util.List;
  */
 public class EmployeeService {
 
-    private EmployeeDAO employeeDAO;
+    private EmployeeDao employeeDao;
 
-    public EmployeeService() throws SQLException, ClassNotFoundException {
-        employeeDAO = new EmployeeDAO();
+    public EmployeeService() throws DataException {
+        employeeDao = new EmployeeDao();
     }
 
-    public List<Employee> getAll() throws SQLException {
-        return employeeDAO.getAll();
+    public List<Employee> fetch() throws DataException {
+        return employeeDao.fetch();
     }
 
-    public void save(Employee employee) throws SQLException {
-        employeeDAO.save(employee);
+    public Employee fetch(int id) throws DataException {
+        return employeeDao.fetch(id);
+    }
+
+    public void save(Employee employee) throws DataException {
+        employeeDao.insert(employee);
+    }
+
+    public void update(Employee employee) throws DataException {
+        employeeDao.update(employee);
+    }
+
+    public void deleteEmployee(int id) throws DataException {
+        employeeDao.deleteEmployee(id);
     }
 
 }
