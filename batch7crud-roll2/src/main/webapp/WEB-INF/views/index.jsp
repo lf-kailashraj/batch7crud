@@ -5,10 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<base href="${pageContext.request.contextPath}/">
 	<title>Information Management</title>
 </head>
 <body>
 <h1>Information Management System</h1>
-	<a href="Display">Employee Detail</a>
+	<a href="employees">Employee Detail</a>
 </body>
 </html>
