@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.User;
 import com.lftechnology.batch7crud.service.UserService;
+import com.lftechnology.batch7crud.util.TypeCaster;
 
 /**
  * @author madandhungana <madandhungana@lftechnology.com> Jan 18, 2016
@@ -44,6 +45,9 @@ public class UserController extends HttpServlet {
 
             if (pathArgs[0].equals("") && pathArgs[1].equals("add")) {
                 create(request, response);
+            } else if (pathArgs[0].equals("") && pathArgs[2].equals("edit")) {
+                int userID = TypeCaster.toInt(pathArgs[1]);
+                edit(request, response, userID);
             }
 
         }
@@ -62,6 +66,9 @@ public class UserController extends HttpServlet {
             String[] pathArgs = urlString.split("/");
             if (pathArgs[0].equals("") && pathArgs[1].equals("add")) {
                 createProcess(request, response);
+            }else if (pathArgs[0].equals("") && pathArgs[2].equals("edit")) {
+                int userID = TypeCaster.toInt(pathArgs[1]);
+                editProcess(request, response, userID);
             }
 
         }
@@ -75,6 +82,7 @@ public class UserController extends HttpServlet {
 
         } catch (DataException e) {
             e.printStackTrace();
+
         }
     }
 
@@ -102,13 +110,45 @@ public class UserController extends HttpServlet {
             response.sendRedirect("/batch7crud-roll6/users");
         } catch (DataException e) {
             System.err.println(e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
         }
     }
 
     private void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
+        try {
+            request.setAttribute("user", userService.fetchByID(id));
+            System.out.println("hello im here");
+            request.getRequestDispatcher("/WEB-INF/views/editUser.jsp").forward(request, response);
+        } catch (DataException e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+        }
     }
 
     private void editProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
+
+        User user = new User();
+        UserService userService = new UserService();
+
+        String firstName = request.getParameter("firstname");
+        String surName = request.getParameter("surname");
+        String username = request.getParameter("username");
+
+        user.setFirstName(firstName);
+        user.setSurName(surName);
+        user.setUserName(username);
+        user.setId(id);
+
+        try {
+            userService.update(user);
+            response.sendRedirect("/batch7crud-roll6/users");
+        } catch (DataException e) {
+            System.err.println(e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+        }
     }
 
     private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {

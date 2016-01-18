@@ -2,16 +2,16 @@ package com.lftechnology.batch7crud.model;
 
 public class User {
 	
-	private String id;
+	private int id;
 	private String firstName;
 	private String surName;
 	private String userName;
 	private String Password;
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getFirstName() {

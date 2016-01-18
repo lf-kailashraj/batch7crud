@@ -18,4 +18,6 @@ public interface UserDAO {
 
     public User fetchByID(int userID) throws DataException;
 
+    public void update(User user) throws DataException;
+
 }

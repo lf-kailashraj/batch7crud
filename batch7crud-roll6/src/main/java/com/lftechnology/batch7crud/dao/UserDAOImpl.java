@@ -10,13 +10,19 @@ import java.util.List;
 import com.lftechnology.batch7crud.db.DbConnector;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.User;
+import com.lftechnology.batch7crud.util.TypeCaster;
 
 public class UserDAOImpl implements UserDAO {
 
     Connection connection = null;
 
     public UserDAOImpl() {
-        this.connection = DbConnector.getMySqlConnection();
+        try {
+            this.connection = DbConnector.getMySqlConnection();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 
@@ -54,12 +60,12 @@ public class UserDAOImpl implements UserDAO {
     }
 
     public List<User> fetch(int page) throws DataException {
-        String str = "select * from user";
+        String query = "select * from user";
 
         List<User> userList = new ArrayList<User>();
         PreparedStatement statement;
         try {
-            statement = connection.prepareStatement(str);
+            statement = connection.prepareStatement(query);
             ResultSet results = statement.executeQuery();
 
             User user = null;
@@ -67,7 +73,7 @@ public class UserDAOImpl implements UserDAO {
             while (results.next()) {
                 user = new User();
 
-                user.setId(results.getString("id"));
+                user.setId(TypeCaster.toInt(results.getString("id")));
                 user.setFirstName(results.getString("firstname"));
                 user.setSurName(results.getString("surname"));
                 user.setUserName(results.getString("username"));
@@ -76,23 +82,67 @@ public class UserDAOImpl implements UserDAO {
                 userList.add(user);
 
             }
-            return userList;
 
         } catch (SQLException e) {
             System.err.println(e);
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
-
-    }
-
-    public void delete(int userID) throws DataException {
-        // TODO Auto-generated method stub
+        return userList;
 
     }
 
     public User fetchByID(int userID) throws DataException {
-        // TODO Auto-generated method stub
-        return null;
+        User user = null;
+
+        try {
+            String query = "select * from user where id=?";
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setLong(1, userID);
+            ResultSet results = statement.executeQuery();
+
+            while (results.next()) {
+                user = new User();
+
+                user.setId(TypeCaster.toInt(results.getString("id")));
+                user.setFirstName(results.getString("firstname"));
+                user.setSurName(results.getString("surname"));
+                user.setUserName(results.getString("username"));
+                user.setPassword(results.getString("password"));
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e);
+            throw new DataException(e.getMessage());
+        }
+        return user;
+
+    }
+
+    public void delete(int userID) throws DataException {
+
+    }
+
+    public void update(User user) throws DataException {
+
+        try {
+            String query = " update user set firstname = ?, surname = ?, username=? where id = ?";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, user.getFirstName());
+            statement.setString(2, user.getSurName());
+            statement.setString(3, user.getUserName());
+            System.out.println(user.getId());
+            statement.setLong(4, user.getId());
+
+            statement.executeUpdate();
+            System.out.println("User updated");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataException(e.getMessage());
+        }
     }
 
 }
