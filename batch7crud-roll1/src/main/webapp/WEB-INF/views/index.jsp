@@ -9,5 +9,10 @@
 </head>
 <body>
 	<div>Hello world!!</div>
+
+    <ul>
+        <li><a href="employees/create">Add Employee</a></li>
+        <li><a href="employees">List Employee</a></li>
+    </ul>
 </body>
 </html>
