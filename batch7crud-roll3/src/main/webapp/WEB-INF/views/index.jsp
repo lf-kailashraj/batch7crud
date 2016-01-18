@@ -5,9 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<base href="/batch7crud-roll3/">
 <title>Hello</title>
 </head>
 <body>
-	<div>Hello world!!</div>
+	<div><h1>School Management System</h1></div>
+	<a href = "student">Student</a>
 </body>
 </html>
