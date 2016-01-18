@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Created by leapfrog on 1/18/16.
  */
-@WebServlet(name = "StudentEntryController", urlPatterns = {"/NewEntry"})
+@WebServlet(name = "StudentEntryController", urlPatterns = {"/Students/NewEntry"})
 public class StudentEntryController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
@@ -31,6 +31,7 @@ public class StudentEntryController extends HttpServlet {
         StudentServices stdServices = new StudentServices();
         try {
             stdServices.addNew(s);
+            response.sendRedirect("/Students/ViewAll");
         } catch (DataException e) {
             e.printStackTrace();
         }
