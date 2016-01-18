@@ -31,8 +31,8 @@ public class StudentControllerServlet extends HttpServlet {
         }
        if(pathParts.length == 2 && pathParts[1].equals("create")){
             createProcess(request, response);
-        }
-        else if(pathParts.length == 3 && pathParts[2].equals("delete"))
+       }
+       else if(pathParts.length == 3 && pathParts[2].equals("delete"))
        {
            if(pathParts[1].matches("[-+]?\\d*\\.?\\d+"))
            {
@@ -41,7 +41,17 @@ public class StudentControllerServlet extends HttpServlet {
            }
            else{
                System.out.println("!!!center in a not number");
-
+           }
+       }
+       else if(pathParts.length == 3 && pathParts[2].equals("edit"))
+       {
+           if(pathParts[1].matches("[-+]?\\d*\\.?\\d+"))
+           {
+               System.out.println("center in a number---edit");
+               editProcess(request, response, Integer.parseInt(pathParts[1]));
+           }
+           else{
+               System.out.println("!!!center in a not number");
            }
 
        }
@@ -69,6 +79,18 @@ public class StudentControllerServlet extends HttpServlet {
         }
         else if(pathParts.length == 2 && pathParts[1].equals("create")){
             create(request,response);
+        }
+        else if(pathParts.length == 3 && pathParts[2].equals("edit"))
+        {
+            if(pathParts[1].matches("[-+]?\\d*\\.?\\d+"))
+            {
+                System.out.println("center in a number");
+                edit(request, response, Integer.parseInt(pathParts[1]));
+            }
+            else{
+                System.out.println("!!!center in a not number");
+            }
+
         }
     }
 
@@ -107,9 +129,33 @@ public class StudentControllerServlet extends HttpServlet {
     }
 
     private void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
+        try {
+            StudentService studentService = new StudentService();
+            Student s = studentService.fetchById(id);
+            request.setAttribute("student",s);
+            System.out.println(s.getAddress());
+            request.getServletContext().getRequestDispatcher("/WEB-INF/views/edit.jsp").forward(request, response);
+        }catch (DataException ex) {
+            System.out.println("--------------" + ex);
+        }
     }
 
     private void editProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
+        try {
+            StudentService studentService = new StudentService();
+            Student s = new Student();
+            s.setId(id);
+            s.setFirstName(request.getParameter("fname"));
+            s.setMiddleName(request.getParameter("mname"));
+            s.setLastName(request.getParameter("lname"));
+            s.setAddress(request.getParameter("address"));
+            s.setGrade(Integer.parseInt(request.getParameter("grade")));
+            studentService.edit(s);
+            System.out.println(s.getAddress());
+            response.sendRedirect(request.getContextPath()+"/students");
+        }catch (DataException ex) {
+            System.out.println("--------------" + ex);
+        }
     }
 
     private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {

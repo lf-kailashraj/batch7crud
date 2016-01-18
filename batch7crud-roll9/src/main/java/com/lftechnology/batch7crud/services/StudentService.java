@@ -21,5 +21,11 @@ public class StudentService {
     public void delete(int id) throws DataException{
         stdDAO.delete(id);
     }
+    public Student fetchById(int id) throws DataException{
+        return stdDAO.fetchById(id);
+    }
+    public void edit(Student s) throws DataException{
+        stdDAO.edit(s);
+    }
 
 }

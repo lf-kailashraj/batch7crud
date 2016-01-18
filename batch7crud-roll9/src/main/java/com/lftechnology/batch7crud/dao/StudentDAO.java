@@ -61,6 +61,7 @@ public class StudentDAO {
             throw new DataException();
         }
     }
+
     public void delete(int id) throws DataException//get the object
     {
         try {
@@ -70,6 +71,55 @@ public class StudentDAO {
             System.out.println(pstmt.toString());
             pstmt.executeUpdate();
             System.out.println("Delete Success");
+        } catch (SQLException ex) {
+            throw new DataException();
+        }
+    }
+
+    public Student fetchById(int id) throws DataException
+    {
+        try {
+            Connection conn = DBConnection.getConnection();
+            Student std = null;
+            ResultSet rs;
+            PreparedStatement pstmt= conn.prepareStatement("SELECT * from tbl_userinfo WHERE id=?");
+            pstmt.setInt(1, id);
+            rs = pstmt.executeQuery();
+            while(rs.next()){
+                std = new Student();
+                std.setId(rs.getInt(1));
+                std.setFirstName(rs.getString(2));
+                std.setMiddleName(rs.getString(3));
+                std.setLastName(rs.getString(4));
+                std.setAddress(rs.getString(5));
+                std.setGrade(rs.getInt(6));
+            }
+            System.out.println(id+"fetch By Id Success"+std.getAddress());
+            return std;
+
+        } catch (SQLException ex) {
+            throw new DataException();
+        }
+    }
+
+
+    public void edit(Student s) throws DataException
+    {
+        try {
+            Connection conn = DBConnection.getConnection();
+            ResultSet rs;
+            PreparedStatement pstmt= conn.prepareStatement("UPDATE tbl_userinfo SET firstname=?, middlename=?, lastname=?,address=?,grade=? WHERE id=?");
+            pstmt.setString(1, s.getFirstName());
+            pstmt.setString(2, s.getMiddleName());
+            pstmt.setString(3, s.getLastName());
+            pstmt.setString(4, s.getAddress());
+            pstmt.setInt(5, s.getGrade());
+            pstmt.setInt(6, s.getId());
+
+            pstmt.executeUpdate();
+
+            System.out.println(s.getId()+"fetch By Id Success");
+
         } catch (SQLException ex) {
             throw new DataException();
         }
