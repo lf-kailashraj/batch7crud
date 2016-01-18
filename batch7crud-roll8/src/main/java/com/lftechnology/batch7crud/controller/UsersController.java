@@ -26,8 +26,8 @@ public class UsersController extends HttpServlet {
         else {
             String[] parts = path.split("/");
             System.out.println(path);
-            if (parts[2].equals("create")) {
-                System.out.println("parts b :" + parts[2]);
+            if (parts[1].equals("create")) {
+                System.out.println("parts b :" + parts[1]);
                 create(request, response);
             }
             else if (parts[1].equals("update")) {
