@@ -14,7 +14,22 @@ import java.io.IOException;
 public class UsersController extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("test from post");
+        String path = request.getPathInfo();
+        System.out.println(path);
+
+        if (path == null) {
+            request.getServletContext().getRequestDispatcher("/WEB-INF/views/users/signup.jsp").forward(request, response);
+        }
+        else {
+            String[] parts = path.split("/");
+            if (parts[1].equals("create")) {
+
+                request.getServletContext().getRequestDispatcher("/WEB-INF/views/users/index.jsp").forward(request, response);
+            }
+            else if (parts[1].equals("update")) {
+                request.getServletContext().getRequestDispatcher("/WEB-INF/views/users/index.jsp").forward(request, response);
+            }
+        }
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getPathInfo();
@@ -31,7 +46,6 @@ public class UsersController extends HttpServlet {
             else if (parts[1].equals("signin")) {
                 request.getServletContext().getRequestDispatcher("/WEB-INF/views/users/signin.jsp").forward(request, response);
             }
-
         }
 
     }
