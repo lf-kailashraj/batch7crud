@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	version="2.5">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <servlet>
+    <description></description>
+    <display-name>UserCreateControler</display-name>
+    <servlet-name>UserCreateControler</servlet-name>
+    <servlet-class>com.lftechnology.batch7crud.controller.UserCreateControler</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserCreateControler</servlet-name>
+    <url-pattern>/addUser</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UserListController</display-name>
+    <servlet-name>UserListController</servlet-name>
+    <servlet-class>com.lftechnology.batch7crud.controller.UserListController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserListController</servlet-name>
+    <url-pattern>/userList</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>IndexController</display-name>
+    <servlet-name>IndexController</servlet-name>
+    <servlet-class>com.lftechnology.batch7crud.controller.IndexController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>IndexController</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UserController</display-name>
+    <servlet-name>UserController</servlet-name>
+    <servlet-class>com.lftechnology.batch7crud.controller.UserController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserController</servlet-name>
+    <url-pattern>/users</url-pattern>
+  </servlet-mapping>
 </web-app>
