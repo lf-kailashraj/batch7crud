@@ -1,6 +1,3 @@
-<%@ page import="com.lftechnology.batch7crud.services.DatabaseConnector" %>
-<%@ page import="java.sql.*" %>
-
 <%--
   Created by IntelliJ IDEA.
   User: sanjay
@@ -9,21 +6,49 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <html>
 <head>
   <title>Display Page</title>
+    <base href=${pageContext.request.contextPath}/students/" />
+
 </head>
+<style>
+    table td{
+        border:1px solid;
+    }
+</style>
 <body>
 <table>
 
-  <tr>
-    <td><%=request.getAttribute("fname")%></td>
-    <td><%=request.getAttribute("mname")%></td>
-    <td><%=request.getAttribute("lname")%></td>
-    <td><%=request.getAttribute("address")%></td>
-    <td><%=request.getAttribute("grade")%></td>
+  <c:forEach items="${studentList}" var="studentList" varStatus="counter">
+    <tr>
+      <td>${counter.count}</td>
+      <td>${studentList.getFirstName()}</td>
+      <td>${studentList.getMiddleName()}</td>
+      <td>${studentList.getLastName()}</td>
+      <td>${studentList.getAddress()}</td>
+      <td>${studentList.getGrade()}</td>
+      <td><form action="Delete" method="POST"><input type="submit" value="Edit"></form></td>
+      <td><a href="${studentList.getId()}/delete" class="delete">Delete This</a></td>
+    </tr>
+  </c:forEach>
 
-  </tr>
   </table>
+<script>
+    var deleteElement = document.getElementsByClassName("delete");
+    for(var i=0;i<deleteElement.length ;i++){
+        deleteElement[i].onclick = function(e) {
+            e.preventDefault();
+            var form = document.createElement('form');
+            var destinationLink = e.target.getAttribute("href");
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", destinationLink);
+//            console.log(destinationLink);
+            form.submit();
+        };
+    };
+</script>
 </body>
 </html>

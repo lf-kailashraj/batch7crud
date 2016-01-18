@@ -9,9 +9,11 @@
 <html>
 <head>
     <title>New Student Registration</title>
+  <base href="/students" />
+
 </head>
 <body>
-  <form action="/NewStudent" method="POST">
+  <form action="${pageContext.request.contextPath}/students/create" method="POST">
     <input type="text" required="required" placeholder="First Name" name="fname" />
     <input type="text" required="required" placeholder="Middle Name" name="mname" />
     <input type="text" required="required" placeholder="Last Name" name="lname" />

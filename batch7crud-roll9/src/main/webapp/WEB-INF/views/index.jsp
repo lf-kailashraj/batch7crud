@@ -5,12 +5,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<base href="${pageContext.request.contextPath}/students/" />
 <title>Hello</title>
 </head>
 <body>
-	<div><a href="/NewStudent">New Student</a></div>
 
 <div>Welcome.</div>
-<a href="/AllData">See all</a>
+<div><a href="${pageContext.request.contextPath}/students/create">New Student</a></div>
+
+<a href="${pageContext.request.contextPath}/students">See all Students</a>
 </body>
 </html>
