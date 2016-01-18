@@ -5,9 +5,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Hello</title>
+<title>Employee Management</title>
+<base href="/batch7crud-roll5/" target="_blank">
 </head>
 <body>
-	<div>Hello world!!</div>
+
+	<h1>Employee Management System</h1>
+
+	<a href="employees">Employees</a>
+	<a href="employees/create">Add Employees</a>
+
+
 </body>
 </html>
