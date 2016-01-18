@@ -23,14 +23,14 @@
       </tr>
       <c:forEach items="${studentList}" var="student">
           <tr>
-              <td>${student.person.name}</td>
+              <td>${student.name}</td>
               <td>${student.roll}</td>
-              <td>${student.person.address}</td>
+              <td>${student.address}</td>
               <td>${student.department}</td>
               <td>${student.batch}</td>
 
               <td><a href="students/${student.id}/edit">edit</a></td>
-              <td><a href="students/delete">delete</a></td>
+              <%--<td><a href="students/delete">delete</a></td>--%>
           </tr>
       </c:forEach>
   </table>

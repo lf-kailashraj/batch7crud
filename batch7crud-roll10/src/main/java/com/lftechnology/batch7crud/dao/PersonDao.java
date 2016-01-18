@@ -26,6 +26,7 @@ public class PersonDao {
     public Boolean add(Person person){
         try {
             conn = getConnection();
+            conn.setAutoCommit(false);
             stmt = conn.createStatement();
             DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
             String date = dateFormat.format(person.getDob());
@@ -42,9 +43,11 @@ public class PersonDao {
             Integer id = resultSet.getInt("currval");
             person.setId(id);
             System.out.println("person dao id: "+ person.getId());
+            conn.commit();
             return true;
 
         } catch (SQLException e) {
+//            conn.rollback();
             System.out.println("exception here");
             e.printStackTrace();
         } catch (NamingException e) {

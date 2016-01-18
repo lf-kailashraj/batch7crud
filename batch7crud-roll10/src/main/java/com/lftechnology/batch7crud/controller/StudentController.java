@@ -1,8 +1,9 @@
 package com.lftechnology.batch7crud.controller;
 
-import com.lftechnology.batch7crud.entity.Person;
 import com.lftechnology.batch7crud.entity.Student;
+import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.service.StudentService;
+import com.lftechnology.batch7crud.util.TypeCaster;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,15 +31,37 @@ public class StudentController extends HttpServlet{
         String servletPath = req.getPathInfo();
 
         if(servletPath == null || "/".equalsIgnoreCase(servletPath)){
-            List<Student> studentList = studentService.fetchData();
-            req.setAttribute("studentList", studentList);
-            req.getServletContext().getRequestDispatcher("/WEB-INF/views/students.jsp").forward(req, resp);
-        }else if("/add".equalsIgnoreCase(servletPath)){
-            req.getServletContext().getRequestDispatcher("/WEB-INF/views/addStudent.jsp").forward(req, resp);
-        }else if("/edit".equalsIgnoreCase(servletPath)){
-            req.getServletContext().getRequestDispatcher("/WEB-INF/views/editStudent.jsp").forward(req, resp);
-        }else if("/delete".equalsIgnoreCase(servletPath)){
-            req.getServletContext().getRequestDispatcher("/WEB-INF/views/students.jsp").forward(req, resp);
+            try {
+                List<Student> studentList = studentService.fetch();
+                req.setAttribute("studentList", studentList);
+                req.getServletContext().getRequestDispatcher("/WEB-INF/views/students.jsp").forward(req, resp);
+            } catch (DataException e) {
+                e.printStackTrace();
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                req.getServletContext().getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
+            }
+
+
+        }else{
+            String[] params = servletPath.split("/");
+
+            System.out.println("servletpath: "+servletPath+" params: "+params[1]);
+            if(params[1].equalsIgnoreCase("add")){
+                req.getServletContext().getRequestDispatcher("/WEB-INF/views/addStudent.jsp").forward(req, resp);
+            } else if(params[2].equalsIgnoreCase("edit")){
+                Integer studentId = TypeCaster.toInt(params[1]);
+                Student student = null;
+                try {
+                    student = studentService.getStudentById(studentId);
+                    System.out.println("student name: " + student.getName());
+                    req.setAttribute("student",student);
+                    req.getServletContext().getRequestDispatcher("/WEB-INF/views/editStudent.jsp").forward(req, resp);
+                } catch (DataException e) {
+                    e.printStackTrace();
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                }
+
+            }
         }
 
     }
@@ -48,7 +71,9 @@ public class StudentController extends HttpServlet{
         String servletPath = req.getPathInfo();
         System.out.println("servlet path " + servletPath);
 
-        if("/add".equalsIgnoreCase(servletPath)){
+        String[] params = servletPath.split("/");
+
+        if(params[1].equalsIgnoreCase("add")){
             String name= req.getParameter("name");
             String address = req.getParameter("address");
             String dob = req.getParameter("dob");
@@ -60,32 +85,84 @@ public class StudentController extends HttpServlet{
                 e.printStackTrace();
             }
 
-            Person person = new Person();
-            person.setName(name);
-            person.setAddress(address);
-            person.setDob(date);
+            Integer roll = Integer.parseInt(req.getParameter("roll"));
+            String department = req.getParameter("department");
+            String batch = req.getParameter("batch");
+
+            Student student = new Student();
+            student.setBatch(batch);
+            student.setDepartment(department);
+            student.setRoll(roll);
+
+            student.setName(name);
+            student.setAddress(address);
+            student.setDob(date);
+
+            try {
+                studentService.insert(student);
+            } catch (DataException e) {
+                e.printStackTrace();
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
+
+            resp.sendRedirect("/students");
+
+        }else if(params[2].equalsIgnoreCase("edit")){
+            Integer studentId = TypeCaster.toInt(params[1]);
+            String name= req.getParameter("name");
+            String address = req.getParameter("address");
+            String dob = req.getParameter("dob");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
+            Date date=null;
+            try {
+                date = dateFormat.parse(dob);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
             Integer roll = Integer.parseInt(req.getParameter("roll"));
             String department = req.getParameter("department");
             String batch = req.getParameter("batch");
 
             Student student = new Student();
-            student.setPerson(person);
+            student.setId(studentId);
             student.setBatch(batch);
             student.setDepartment(department);
             student.setRoll(roll);
 
-            studentService.add(student);
+            student.setName(name);
+            student.setAddress(address);
+            student.setDob(date);
 
+            try {
+                studentService.update(student);
+            } catch (DataException e) {
+                e.printStackTrace();
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
 
             resp.sendRedirect("/students");
-        }else if("/edit".equalsIgnoreCase(servletPath)){
-            //handle edit operation
-            req.getServletContext().getRequestDispatcher("/WEB-INF/views/editStudent.jsp").forward(req, resp);
-        }else if("/delete".equalsIgnoreCase(servletPath)){
-            //handle delete operation
-            req.getServletContext().getRequestDispatcher("/WEB-INF/views/students.jsp").forward(req, resp);
         }
 
+    }
+
+
+
+    private void list(HttpServletRequest req, HttpServletResponse resp, int page) throws ServletException, IOException {
+    }
+
+    private void create(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    }
+
+    private void createProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    }
+
+    private void edit(HttpServletRequest req, HttpServletResponse resp, int id) throws ServletException, IOException {
+    }
+
+    private void editProcess(HttpServletRequest req, HttpServletResponse resp, int id) throws ServletException, IOException {
+    }
+
+    private void deleteProcess(HttpServletRequest req, HttpServletResponse resp, int id) throws ServletException, IOException {
     }
 }

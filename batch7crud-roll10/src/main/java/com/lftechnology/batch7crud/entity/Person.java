@@ -6,7 +6,7 @@ import java.util.Date;
  * @Author binodnme
  * Created on 1/17/16
  */
-public class Person {
+public abstract class Person {
     private Integer id;
     private String name;
     private String address;

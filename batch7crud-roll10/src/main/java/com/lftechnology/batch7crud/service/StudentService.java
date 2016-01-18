@@ -3,6 +3,7 @@ package com.lftechnology.batch7crud.service;
 import com.lftechnology.batch7crud.dao.PersonDao;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.dao.StudentDao;
+import com.lftechnology.batch7crud.exception.DataException;
 
 import java.util.List;
 
@@ -12,28 +13,24 @@ import java.util.List;
  */
 public class StudentService {
     private StudentDao studentDao = new StudentDao();
-    private PersonDao personDao = new PersonDao();
 
-    public List<Student> fetchData(){
-        return studentDao.fetchData(10);
+    public List<Student> fetch() throws DataException {
+        return studentDao.fetch(10);
     }
 
-    public void add(Student student){
-        if(personDao.add(student.getPerson())){
-
-            if(!studentDao.add(student)){
-                personDao.delete(student.getPerson());
-            }
-        }
-
-
+    public void insert(Student student) throws DataException {
+        studentDao.insert(student);
     }
 
     public void delete(Student student){
         studentDao.delete(student);
     }
 
-    public void edit(Student student){
-        studentDao.edit(student);
+    public void update(Student student) throws DataException {
+        studentDao.update(student);
+    }
+
+    public Student getStudentById(Integer id) throws DataException {
+        return studentDao.getStudentById(id);
     }
 }

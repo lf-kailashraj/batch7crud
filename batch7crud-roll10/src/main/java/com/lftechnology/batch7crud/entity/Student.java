@@ -4,21 +4,20 @@ package com.lftechnology.batch7crud.entity;
  * @Author binodnme
  * Created on 1/14/16
  */
-public class Student {
-    private Integer id;
+public class Student extends Person{
+//    private Integer studentId;
     private String department;
     private String batch;
     private Integer roll;
-    private Person person;
 
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+//    public Integer getStudentId() {
+//        return studentId;
+//    }
+//
+//    public void setStudentId(Integer studentId) {
+//        this.studentId = studentId;
+//    }
 
     public String getDepartment() {
         return department;
@@ -42,13 +41,5 @@ public class Student {
 
     public void setRoll(Integer roll) {
         this.roll = roll;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
     }
 }

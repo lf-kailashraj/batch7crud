@@ -4,18 +4,18 @@ package com.lftechnology.batch7crud.entity;
  * @Author binodnme
  * Created on 1/17/16
  */
-public class Admin {
-    private Integer id;
+public class Admin extends Person{
+    private Integer personId;
     private String username;
     private String password;
     private Person person;
 
-    public Integer getId() {
-        return id;
+    public Integer getPersonId() {
+        return personId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPersonId(Integer personId) {
+        this.personId = personId;
     }
 
     public String getUsername() {
