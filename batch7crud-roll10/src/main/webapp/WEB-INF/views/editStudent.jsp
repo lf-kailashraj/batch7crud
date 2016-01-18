@@ -12,7 +12,7 @@
 </head>
 <body>
   <div>
-      <p>test ${student.name}</p>
+
     <form action="/students/${student.id}/edit" method="post">
       <label>name</label><input type="text" name="name" value="${student.name}"><br>
       <label>address</label><input type="text" name="address" value="${student.address}"><br>

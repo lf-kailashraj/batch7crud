@@ -14,6 +14,7 @@ import com.lftechnology.batch7crud.util.TypeCaster;
 public class IndexController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("test","testing");
-        req.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
+        resp.sendRedirect("/students");
+//        req.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
     }
 }

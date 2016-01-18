@@ -14,16 +14,16 @@ import java.util.List;
 public class StudentService {
     private StudentDao studentDao = new StudentDao();
 
-    public List<Student> fetch() throws DataException {
-        return studentDao.fetch(10);
+    public List<Student> fetch(Integer page) throws DataException {
+        return studentDao.fetch(page);
     }
 
     public void insert(Student student) throws DataException {
         studentDao.insert(student);
     }
 
-    public void delete(Student student){
-        studentDao.delete(student);
+    public void delete(Integer studentId) throws DataException {
+        studentDao.delete(studentId);
     }
 
     public void update(Student student) throws DataException {

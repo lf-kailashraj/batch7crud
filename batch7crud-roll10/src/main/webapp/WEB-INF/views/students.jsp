@@ -10,6 +10,7 @@
 <html>
 <head>
     <title>students</title>
+
 </head>
 <body>
   <p>here are students</p>
@@ -30,11 +31,33 @@
               <td>${student.batch}</td>
 
               <td><a href="students/${student.id}/edit">edit</a></td>
-              <%--<td><a href="students/delete">delete</a></td>--%>
+              <td><a class="deleteBtn" href="students/${student.id}/delete">delete</a></td>
           </tr>
       </c:forEach>
   </table>
 
-    <a href="students/add">add student</a>
+    <a href="?page=${nextPageNum}">next</a>
+
+    <a href="students/create">add student</a>
+
+    <script type="text/javascript">
+        var deleteBtn = document.getElementsByClassName("deleteBtn");
+
+        for (var i = 0; i < deleteBtn.length; i++) {
+            deleteBtn[i].onclick = function (e) {
+                e.preventDefault();
+                var href = this.getAttribute("href");
+                var confirmation = confirm("do you want to delete?");
+
+                if(confirmation == true){
+                    var form = document.createElement("form");
+                    form.action = href;
+                    form.method = "post";
+                    form.submit();
+                }
+
+            }
+        }
+    </script>
 </body>
 </html>
