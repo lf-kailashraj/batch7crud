@@ -7,11 +7,11 @@
 <head>
 <title>Something Management System</title>
 </head>
-<body>
+<a>
 	<div>Header</div>
 	<div>
-	Hello from index
-		<a href="signup">Sign Up</a>	
+		<a href="users/signup">Sign Up</a>
+		<a href="users/signin">Sign In</a>
 	</div>
 	<div>Footer</div>
 </body>
