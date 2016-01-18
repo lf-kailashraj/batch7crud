@@ -11,7 +11,7 @@
     <title>Sign Up</title>
 </head>
 <body>
-    <form action="users/create" method="POST">
+    <form action="create" method="POST">
         <div>
             <label>Name:</label>
             <input name="name" type="text"/>

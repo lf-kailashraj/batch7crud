@@ -12,7 +12,7 @@
 </head>
 <body>
     Hello From Signin
-    <form action="users/create" method="POST">
+    <form action="create" method="POST">
         <div>
             <label>Username:</label>
             <input name="username" type="text"/>
