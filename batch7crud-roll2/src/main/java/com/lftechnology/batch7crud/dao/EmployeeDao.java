@@ -19,7 +19,7 @@ public class EmployeeDao {
     public void insert(Employee employee) throws DataException {
         try {
             Connection con = DBConnection.getSqlConnection();
-            String qry = "INSERT INTO userinfo (username,address,email,contact) VALUES (?,?,?,?)";
+            String qry = "INSERT INTO employee (username,address,email,contact) VALUES (?,?,?,?)";
             PreparedStatement preStmt = con.prepareStatement(qry);
             preStmt.setString(1, employee.getName());
             preStmt.setString(2, employee.getAddress());
@@ -27,15 +27,15 @@ public class EmployeeDao {
             preStmt.setString(4, employee.getContact());
             preStmt.execute();
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
     }
 
-    public List<Employee> fetch() throws DataException {
+    public List<Employee> fetch(int page) throws DataException {
         try {
             Connection con = DBConnection.getSqlConnection();
             List<Employee> empList = new ArrayList<Employee>();
-            String qry = "SELECT * FROM userinfo OFFSET 0";
+            String qry = "SELECT * FROM employee OFFSET 0";
             PreparedStatement preStmt = con.prepareStatement(qry);
             ResultSet resultSet = preStmt.executeQuery();
             while (resultSet.next()) {
@@ -50,15 +50,15 @@ public class EmployeeDao {
             }
             return empList;
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
     }
 
-    public Employee fetch(int id) throws DataException {
+    public Employee fetchById(int id) throws DataException {
         try {
             Connection con = DBConnection.getSqlConnection();
             Employee employee = null;
-            String qry = "SELECT * FROM userinfo WHERE id=?";
+            String qry = "SELECT * FROM employee WHERE id=?";
             PreparedStatement preStmt = con.prepareStatement(qry);
             preStmt.setInt(1, id);
             ResultSet resultSet = preStmt.executeQuery();
@@ -72,14 +72,14 @@ public class EmployeeDao {
             }
             return employee;
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
     }
 
-    public void update(Employee employee) throws DataException{
+    public void update(Employee employee) throws DataException {
         try {
             Connection con = DBConnection.getSqlConnection();
-            String qry = "UPDATE userinfo SET username=?, address=?, email=?, contact=? WHERE id=?";
+            String qry = "UPDATE employee SET username=?, address=?, email=?, contact=? WHERE id=?";
             PreparedStatement preStmt = con.prepareStatement(qry);
             preStmt.setString(1, employee.getName());
             preStmt.setString(2, employee.getAddress());
@@ -88,19 +88,19 @@ public class EmployeeDao {
             preStmt.setInt(5, employee.getId());
             preStmt.execute();
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
     }
 
     public void delete(int empId) throws DataException {
         try {
             Connection con = DBConnection.getSqlConnection();
-            String qry = "DELETE FROM userinfo where id=?";
+            String qry = "DELETE FROM employee where id=?";
             PreparedStatement preStmt = con.prepareStatement(qry);
             preStmt.setInt(1, empId);
             preStmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
     }
 }

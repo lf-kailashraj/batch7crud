@@ -57,19 +57,19 @@ public class EmployeeController extends HttpServlet {
     private void list(HttpServletRequest request, HttpServletResponse response, int page) throws ServletException, IOException {
         try {
             EmployeeService employeeService = new EmployeeService();
-            List<Employee> empList = employeeService.fetch();
+            List<Employee> empList = employeeService.fetch(page);
             request.setAttribute("employeeList", empList);
-            request.getRequestDispatcher("/WEB-INF/views/employees.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/employeesList.jsp").forward(request, response);
         } catch (DataException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             request.setAttribute("message", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
         }
     }
 
     private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/form.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/employeeCreate.jsp").forward(request, response);
     }
 
     private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -86,25 +86,25 @@ public class EmployeeController extends HttpServlet {
         try {
             EmployeeService employeeService = new EmployeeService();
             employeeService.insert(employee);
-            response.sendRedirect(request.getContextPath()+"/employees");
+            response.sendRedirect(request.getContextPath() + "/employees");
         } catch (DataException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             request.setAttribute("message", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
         }
     }
 
     private void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
         try {
             EmployeeService employeeService = new EmployeeService();
-            request.setAttribute("employee", employeeService.fetch(id));
-            request.getRequestDispatcher("/WEB-INF/views/edit.jsp").forward(request, response);
+            request.setAttribute("employee", employeeService.fetchById(id));
+            request.getRequestDispatcher("/WEB-INF/views/employeeEdit.jsp").forward(request, response);
         } catch (DataException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             request.setAttribute("message", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
         }
     }
 
@@ -123,12 +123,12 @@ public class EmployeeController extends HttpServlet {
         try {
             EmployeeService employeeService = new EmployeeService();
             employeeService.update(employee);
-            response.sendRedirect(request.getContextPath()+"/employees");
+            response.sendRedirect(request.getContextPath() + "/employees");
         } catch (DataException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             request.setAttribute("message", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
         }
     }
 
@@ -140,8 +140,8 @@ public class EmployeeController extends HttpServlet {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             request.setAttribute("message", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
         }
-        response.sendRedirect(request.getContextPath()+"/employees");
+        response.sendRedirect(request.getContextPath() + "/employees");
     }
 }

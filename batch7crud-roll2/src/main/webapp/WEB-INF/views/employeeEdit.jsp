@@ -34,7 +34,6 @@
     </tr>
     </tbody>
   </table>
-  <br/>
   <input type="reset" value="Reset">
   <input type="submit" value="Edit">
 </form>

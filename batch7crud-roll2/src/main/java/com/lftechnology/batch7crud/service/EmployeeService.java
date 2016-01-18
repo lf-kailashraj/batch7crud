@@ -14,26 +14,47 @@ import java.util.List;
 public class EmployeeService {
     private EmployeeDao employeeDao;
 
-    public EmployeeService() throws DataException {
+    public EmployeeService() {
         employeeDao = new EmployeeDao();
     }
 
     public void insert(Employee employee) throws DataException {
-        employeeDao.insert(employee);
+        try {
+            employeeDao.insert(employee);
+        } catch (DataException de) {
+            throw new DataException(de.getMessage());
+        }
     }
 
-    public List<Employee> fetch() throws DataException {
-        return employeeDao.fetch();
+    public List<Employee> fetch(int page) throws DataException {
+        try {
+            return employeeDao.fetch(page);
+        } catch (DataException de) {
+            throw new DataException(de.getMessage());
+        }
     }
 
-    public Employee fetch(int id) throws DataException {
-        return employeeDao.fetch(id);
+    public Employee fetchById(int id) throws DataException {
+        try {
+            return employeeDao.fetchById(id);
+        } catch (DataException de) {
+            throw new DataException(de.getMessage());
+        }
     }
 
-    public void update(Employee employee) throws  DataException{
-        employeeDao.update(employee);
+    public void update(Employee employee) throws DataException {
+        try {
+            employeeDao.update(employee);
+        } catch (DataException de) {
+            throw new DataException(de.getMessage());
+        }
     }
+
     public void delete(int empId) throws DataException {
-        employeeDao.delete(empId);
+        try {
+            employeeDao.delete(empId);
+        } catch (DataException de) {
+            throw new DataException(de.getMessage());
+        }
     }
 }

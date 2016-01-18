@@ -40,7 +40,7 @@
 </table>
 <a href="employees/create">Add Employee</a>
 <script>
-    var deleteElement = document.getElementsByClassName('delete');
+    var deleteElement = document.querySelector('delete');
     for (var i = 0; i < deleteElement.length; i++) {
         deleteElement[i].onclick = function (e) {
             e.preventDefault();
