@@ -7,9 +7,15 @@
 <title>Insert title here</title>
 </head>
 <body>
-Sup!
-From register
-test
-
+	<h1>Sign Up Form</h1>
+	<div>
+		<form action="signup" method="post">
+			<input name="fname" type="text"/>
+			<input name="lname" type="text"/>
+			<input name="username" type="text"/>
+			<input name="password" type="password"/>
+			<input type="submit"/>	
+		</form>
+	</div>
 </body>
 </html>
