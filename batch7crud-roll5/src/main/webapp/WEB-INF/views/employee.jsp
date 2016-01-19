@@ -5,9 +5,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="/batch7crud-roll5/" target="_self">
 <title>Employees</title>
 </head>
 <body>
+	<h1>List Of Employees</h1>
 	<table border="2px">
 		<thead>
 			<tr>
@@ -30,8 +32,8 @@
 					<td>${employee.getLastName()}</td>
 					<td>${employee.getDepartment()}</td>
 					<td>${employee.getAddress()}</td>
-					<td><a href="employee/edit">Edit</a></td>
-					<td><a href= "employee/delete">Delete</a></td>
+					<td><a href="employees/${employee.getId()}/edit">Edit</a></td>
+					<td><a href="employees/${employee.getId()}/delete">Delete</a></td>
 				</tr>
 
 			</c:forEach>

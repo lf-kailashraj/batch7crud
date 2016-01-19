@@ -13,55 +13,104 @@ import com.lftechnology.batch7crud.model.Employee;
 
 public class EmployeeDAO {
 
-	public List<Employee> fetch() throws DataException {
-		try {
-			List<Employee> empList = new ArrayList<Employee>();
-			Employee emp = null;
-			String sql = "SELECT * FROM employee LIMIT 20";
+    public List<Employee> fetch() throws DataException {
+        try {
+            List<Employee> empList = new ArrayList<Employee>();
+            Employee emp = null;
+            String sql = "SELECT * FROM employee LIMIT 20";
 
-			Connection conn = DBConnection.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet result = ps.executeQuery();
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet result = ps.executeQuery();
 
-			while (result.next()) {
-				emp = new Employee();
-				emp.setId(result.getInt("id"));
-				emp.setFirstName(result.getString("first_name"));
-				emp.setLastName(result.getString("last_name"));
-				emp.setDepartment(result.getString("department"));
-				emp.setAddress(result.getString("address"));
-				empList.add(emp);
+            while (result.next()) {
+                emp = new Employee();
+                emp.setId(result.getInt("id"));
+                emp.setFirstName(result.getString("first_name"));
+                emp.setLastName(result.getString("last_name"));
+                emp.setDepartment(result.getString("department"));
+                emp.setAddress(result.getString("address"));
+                empList.add(emp);
 
-			}
+            }
 
-			return empList;
+            return empList;
 
-		} catch (SQLException e) {
-			throw new DataException();
-		}
+        } catch (SQLException e) {
+            throw new DataException();
+        }
 
-	}
+    }
 
-	public boolean create(Employee employee) throws DataException {
-		try {
-			String sql = "insert into employee (first_name, last_name, department, address)" + "values(?, ?, ?, ?)";
-			Connection conn = DBConnection.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
+    public Employee fetchById(int id) throws DataException {
+        try {
+            Employee emp = null;
+            String sql = "SELECT * FROM employee where id = ?";
 
-			ps.setString(1, employee.getFirstName());
-			ps.setString(2, employee.getLastName());
-			ps.setString(3, employee.getDepartment());
-			ps.setString(4, employee.getAddress());
-			System.out.println(ps);
-			if (ps.executeUpdate() != 0) {
-				return true;
-			} else {
-				return false;
-			}
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
 
-		} catch (SQLException e) {
-			throw new DataException();
-		}
+            ResultSet rs = ps.executeQuery();
 
-	}
+            while (rs.next()) {
+                emp = new Employee();
+                emp.setId(rs.getInt("id"));
+                emp.setFirstName(rs.getString("first_name"));
+                emp.setLastName(rs.getString("last_name"));
+                emp.setDepartment(rs.getString("department"));
+                emp.setAddress(rs.getString("address"));
+
+            }
+
+            return emp;
+
+        } catch (SQLException e) {
+            throw new DataException();
+        }
+
+    }
+
+    public boolean create(Employee employee) throws DataException {
+        try {
+            String sql = "insert into employee (first_name, last_name, department, address) values(?, ?, ?, ?)";
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, employee.getFirstName());
+            ps.setString(2, employee.getLastName());
+            ps.setString(3, employee.getDepartment());
+            ps.setString(4, employee.getAddress());
+
+            if (ps.executeUpdate() != 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new DataException();
+        }
+
+    }
+
+    public void edit(Employee employee, int id) throws DataException {
+        try {
+            String sql = "update employee set first_name = ?, last_name = ?, department = ?, address = ? where id = ?";
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, employee.getFirstName());
+            ps.setString(2, employee.getLastName());
+            ps.setString(3, employee.getDepartment());
+            ps.setString(4, employee.getAddress());
+            ps.setInt(5, id);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DataException();
+        }
+
+    }
 }
