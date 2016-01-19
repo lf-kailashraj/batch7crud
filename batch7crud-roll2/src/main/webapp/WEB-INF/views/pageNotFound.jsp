@@ -12,8 +12,8 @@
     <title>Page Not Found</title>
 </head>
 <body>
-  <h1>Page Not Found</h1>
-  ${message}
-  <a href="employees">Go Back</a>
+<h1>Page Not Found</h1>
+${message}
+<a href="employees">Go Back</a>
 </body>
 </html>

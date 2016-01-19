@@ -28,20 +28,21 @@ public class EmployeeDao {
             preStmt.setString(3, employee.getEmail());
             preStmt.setString(4, employee.getContact());
             preStmt.execute();
+            preStmt.close();
             con.close();
         } catch (SQLException e) {
             throw new DataException(e.getMessage());
         }
     }
 
-    public List<Employee> fetch(int page) throws DataException {
+    public List<Employee> fetch(int noOfRecordsPerPage, int page) throws DataException {
         try {
             con = DBConnection.getSqlConnection();
             List<Employee> empList = new ArrayList<Employee>();
-            page = page * 10;
-            String qry = "SELECT * FROM employee LIMIT 10 OFFSET ?";
+            String qry = "SELECT * FROM employee LIMIT ? OFFSET ?";
             PreparedStatement preStmt = con.prepareStatement(qry);
-            preStmt.setInt(1, page);
+            preStmt.setInt(1, noOfRecordsPerPage);
+            preStmt.setInt(2, page);
             ResultSet resultSet = preStmt.executeQuery();
             while (resultSet.next()) {
                 Employee employee = new Employee();
@@ -50,9 +51,9 @@ public class EmployeeDao {
                 employee.setAddress(resultSet.getString("address"));
                 employee.setEmail(resultSet.getString("email"));
                 employee.setContact(resultSet.getString("contact"));
-
                 empList.add(employee);
             }
+            preStmt.close();
             con.close();
             return empList;
         } catch (SQLException e) {
@@ -76,6 +77,7 @@ public class EmployeeDao {
                 employee.setEmail(resultSet.getString("email"));
                 employee.setContact(resultSet.getString("contact"));
             }
+            preStmt.close();
             con.close();
             return employee;
         } catch (SQLException e) {
@@ -94,6 +96,7 @@ public class EmployeeDao {
             preStmt.setString(4, employee.getContact());
             preStmt.setInt(5, employee.getId());
             preStmt.execute();
+            preStmt.close();
             con.close();
         } catch (SQLException e) {
             throw new DataException(e.getMessage());
@@ -107,6 +110,7 @@ public class EmployeeDao {
             PreparedStatement preStmt = con.prepareStatement(qry);
             preStmt.setInt(1, empId);
             preStmt.executeUpdate();
+            preStmt.close();
             con.close();
         } catch (SQLException e) {
             throw new DataException(e.getMessage());
@@ -123,6 +127,7 @@ public class EmployeeDao {
             while (resultSet.next()) {
                 total = resultSet.getInt("total");
             }
+            preStmt.close();
             con.close();
             return total;
         } catch (SQLException e) {

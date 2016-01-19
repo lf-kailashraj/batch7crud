@@ -13,93 +13,92 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by romit on 1/14/16.
  */
 @WebServlet(name = "EmployeeController", urlPatterns = { "/employees/*" })
 
-public class EmployeeController extends HttpServlet {
+public class EmployeeController extends CommonHttpServlet {
+    public static final Logger logger = Logger.getLogger(EmployeeController.class.getName());
+    public static final String EMPLOYEE_PATH = "/employees";
+
+    @Override
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
 
-        if (pathInfo == null || pathInfo.equals("/")) {
-            int page = 1;
-            if (request.getParameter("page") != null) {
-                try {
-                    page = Integer.parseInt(request.getParameter("page"));
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    request.setAttribute("message", e.getMessage());
-                    request.getRequestDispatcher("/WEB-INF/views/pageNotFound.jsp").forward(request, response);
-                }
-                list(request, response, page);
-            }
+        if (("/").equals(pathInfo) || pathInfo == null) {
+            list(request, response);
+        }
 
-        } else {
-            String[] pathParts = pathInfo.split("/");
-            if (pathParts[1].equals("create")) {
-                createProcess(request, response);
-            } else if (pathParts[2].equals("delete")) {
-                try {
-                    int id = Integer.parseInt(pathParts[1]);
-                    deleteProcess(request, response, id);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    request.setAttribute("message", e.getMessage());
-                    request.getRequestDispatcher("/WEB-INF/views/pageNotFound.jsp").forward(request, response);
-                }
-            } else if (pathParts[2].equals("edit")) {
-                try {
-                    int id = Integer.parseInt(pathParts[1]);
-                    editProcess(request, response, id);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    request.setAttribute("message", e.getMessage());
-                    request.getRequestDispatcher("/WEB-INF/views/pageNotFound.jsp").forward(request, response);
-                }
+        String[] pathParts = pathInfo.split("/");
+        if (("create").equals(pathParts[1])) {
+            createProcess(request, response);
+        } else if (("delete").equals(pathParts[2])) {
+            try {
+                int id = Integer.parseInt(pathParts[1]);
+                deleteProcess(request, response, id);
+            } catch (NumberFormatException e) {
+                logger.log(Level.SEVERE, e.getMessage(), e);
+                displayPageNotFound(request, response);
+            }
+        } else if ("edit".equals(pathParts[2])) {
+            try {
+                int id = Integer.parseInt(pathParts[1]);
+                editProcess(request, response, id);
+            } catch (NumberFormatException e) {
+                logger.log(Level.SEVERE, e.getMessage(), e);
+                displayPageNotFound(request, response);
             }
         }
     }
+
+    @Override
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
 
-        if (pathInfo == null || pathInfo.equals("/")) {
-            int page = 1;
-            if (request.getParameter("page") != null)
-                try {
-                    page = Integer.parseInt(request.getParameter("page"));
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    request.setAttribute("message", e.getMessage());
-                    request.getRequestDispatcher("/WEB-INF/views/pageNotFound.jsp").forward(request, response);
-                }
-            list(request, response, page);
+        if (pathInfo == null || ("/").equals(pathInfo)) {
+            list(request, response);
         } else {
             String[] pathParts = pathInfo.split("/");
-            if (pathParts[1].equals("create")) {
+            if (("create").equals(pathParts[1])) {
                 create(request, response);
-            } else if (pathParts[2].equals("edit")) {
+            } else if (("edit").equals(pathParts[2])) {
                 try {
                     int id = Integer.parseInt(pathParts[1]);
                     edit(request, response, id);
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    request.setAttribute("message", e.getMessage());
-                    request.getRequestDispatcher("/WEB-INF/views/pageNotFound.jsp").forward(request, response);
+                    logger.log(Level.SEVERE, e.getMessage(), e);
+                    displayPageNotFound(request, response);
                 }
             }
         }
     }
 
-    private void list(HttpServletRequest request, HttpServletResponse response, int page) throws ServletException, IOException {
+    private int getPageNo(HttpServletRequest request) {
         try {
+            if (request.getParameter("page") != null) {
+                return Integer.parseInt(request.getParameter("page"));
+            } else {
+                return 1;
+            }
+        } catch (NumberFormatException e) {
+            return 1;
+        }
+    }
+
+    private void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            int page = getPageNo(request);
             EmployeeService employeeService = new EmployeeService();
-            List<Employee> empList = employeeService.fetch(page - 1);
+            List<Employee> empList = employeeService.fetch(10, (page - 1) * 10);
             int totalNoOfRecords = employeeService.getTotalNoOfRecords();
-            if (empList.size() == 0) {
-                request.getRequestDispatcher("/WEB-INF/views/pageNotFound.jsp").forward(request, response);
+            if (empList.isEmpty()) {
+                displayPageNotFound(request, response);
             }
             int noOfPages = (int) Math.ceil(totalNoOfRecords * 1.0 / 10);
             request.setAttribute("employeeList", empList);
@@ -107,14 +106,11 @@ public class EmployeeController extends HttpServlet {
             request.setAttribute("currentPage", page);
             request.getRequestDispatcher("/WEB-INF/views/employeesList.jsp").forward(request, response);
         } catch (DataException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            request.setAttribute("message", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            displayErrorPage(request, response, e.getMessage());
         } catch (NumberFormatException e) {
-            e.printStackTrace();
-            request.setAttribute("message", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/pageNotFound.jsp").forward(request, response);
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            displayPageNotFound(request, response);
         }
     }
 
@@ -136,12 +132,10 @@ public class EmployeeController extends HttpServlet {
         try {
             EmployeeService employeeService = new EmployeeService();
             employeeService.insert(employee);
-            response.sendRedirect(request.getContextPath() + "/employees");
+            response.sendRedirect(request.getContextPath() + EMPLOYEE_PATH);
         } catch (DataException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            request.setAttribute("message", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            displayErrorPage(request, response, e.getMessage());
         }
     }
 
@@ -151,10 +145,8 @@ public class EmployeeController extends HttpServlet {
             request.setAttribute("employee", employeeService.fetchById(id));
             request.getRequestDispatcher("/WEB-INF/views/employeeEdit.jsp").forward(request, response);
         } catch (DataException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            request.setAttribute("message", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            displayErrorPage(request, response, e.getMessage());
         }
     }
 
@@ -173,12 +165,10 @@ public class EmployeeController extends HttpServlet {
         try {
             EmployeeService employeeService = new EmployeeService();
             employeeService.update(employee);
-            response.sendRedirect(request.getContextPath() + "/employees");
+            response.sendRedirect(request.getContextPath() + EMPLOYEE_PATH);
         } catch (DataException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            request.setAttribute("message", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            displayErrorPage(request, response, e.getMessage());
         }
     }
 
@@ -187,11 +177,9 @@ public class EmployeeController extends HttpServlet {
             EmployeeService employeeService = new EmployeeService();
             employeeService.delete(id);
         } catch (DataException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            request.setAttribute("message", e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            displayErrorPage(request, response, e.getMessage());
         }
-        response.sendRedirect(request.getContextPath() + "/employees");
+        response.sendRedirect(request.getContextPath() + EMPLOYEE_PATH);
     }
 }

@@ -14,8 +14,7 @@ public class DBConnection {
             Context initCtx = new InitialContext();
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
             DataSource ds = (DataSource) envCtx.lookup("jdbc/formdb");
-            Connection con = ds.getConnection();
-            return con;
+            return ds.getConnection();
         } catch (NamingException e) {
             throw new DataException(e.getMessage());
         } catch (SQLException e) {

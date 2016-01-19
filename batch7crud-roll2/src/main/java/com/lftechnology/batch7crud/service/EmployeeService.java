@@ -22,8 +22,8 @@ public class EmployeeService {
         employeeDao.insert(employee);
     }
 
-    public List<Employee> fetch(int page) throws DataException {
-        return employeeDao.fetch(page);
+    public List<Employee> fetch(int noOfRecordsPerPage, int page) throws DataException {
+        return employeeDao.fetch(noOfRecordsPerPage, page);
     }
 
     public Employee fetchById(int id) throws DataException {
