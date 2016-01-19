@@ -42,9 +42,9 @@ public class EmployeeController extends HttpServlet {
         if (path != null) {
 
             String[] pathParts = path.split("/");
-            for (String s : pathParts) {
-                System.out.println("parts: " + s);
-            }
+            /*
+             * for (String s : pathParts) { System.out.println("parts: " + s); }
+             */
             if (pathParts[1].equals("create"))
                 create(request, response);
 
@@ -66,14 +66,40 @@ public class EmployeeController extends HttpServlet {
         // doGet(request, response);
         String path = request.getPathInfo();
         if (path != null) {
-            System.out.println(path);
             String[] pathParts = path.split("/");
+
             if (pathParts[1].equals("createProcess")) {
                 createProcess(request, response);
-            } else if (pathParts[2].equals("editProcess")) {
+
+            }
+
+            else if (pathParts[2].equals("editProcess")) {
                 int id = Integer.parseInt(pathParts[1]);
                 editProcess(request, response, id);
+
             }
+
+            else if (pathParts[2].equals("deleteProcess")) {
+                int id = Integer.parseInt(pathParts[1]);
+                deleteProcess(request, response, id);
+            }
+
+        } else {
+            fetchData(request, response);
+        }
+
+    }
+
+    private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id) {
+        // TODO Auto-generated method stub
+        try {
+            employeeService.deleteById(id);
+
+            response.sendRedirect("/batch7crud-roll5/employees");
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
     }
@@ -95,7 +121,6 @@ public class EmployeeController extends HttpServlet {
     private void editProcess(HttpServletRequest request, HttpServletResponse response, int id) {
         // TODO Auto-generated method stub
         try {
-            System.out.println("done");
             emp.setFirstName(request.getParameter("firstName"));
             emp.setLastName(request.getParameter("lastName"));
             emp.setDepartment(request.getParameter("department"));

@@ -71,9 +71,25 @@ public class EmployeeDAO {
 
     }
 
+    public void deleteById(int id) throws DataException {
+        try {
+            String sql = "DELETE FROM employee WHERE id = ?";
+
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DataException();
+        }
+
+    }
+
     public boolean create(Employee employee) throws DataException {
         try {
-            String sql = "insert into employee (first_name, last_name, department, address) values(?, ?, ?, ?)";
+            String sql = "INSERT INTO employee (first_name, last_name, department, address) VALUES(?, ?, ?, ?)";
             Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -96,7 +112,7 @@ public class EmployeeDAO {
 
     public void edit(Employee employee, int id) throws DataException {
         try {
-            String sql = "update employee set first_name = ?, last_name = ?, department = ?, address = ? where id = ?";
+            String sql = "UPDATE employee SET first_name = ?, last_name = ?, department = ?, address = ? WHERE id = ?";
             Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
 

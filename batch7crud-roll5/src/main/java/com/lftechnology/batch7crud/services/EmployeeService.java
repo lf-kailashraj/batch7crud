@@ -29,4 +29,9 @@ public class EmployeeService {
 
     }
 
+    public void deleteById(int id) throws DataException {
+        employeeDAO.deleteById(id);
+
+    }
+
 }
