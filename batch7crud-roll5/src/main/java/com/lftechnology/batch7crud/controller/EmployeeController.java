@@ -38,7 +38,6 @@ public class EmployeeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO Auto-generated method stub
         String path = request.getPathInfo();
-        System.out.println(path);
         if (path != null) {
 
             String[] pathParts = path.split("/");
@@ -52,17 +51,23 @@ public class EmployeeController extends HttpServlet {
                 int id = Integer.parseInt(pathParts[1]);
                 edit(request, response, id);
             }
+            
+            else if (pathParts[1].equals("page")) {
+                int pageNo = Integer.parseInt(pathParts[2]);
+                fetchData(request, response, pageNo-1);
+            }
 
         }
 
         else {
-            fetchData(request, response);
+            int pageNo = 1;
+            fetchData(request, response, pageNo-1);
         }
 
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
+        // TODO Auto-enerated method stub
         // doGet(request, response);
         String path = request.getPathInfo();
         if (path != null) {
@@ -85,7 +90,8 @@ public class EmployeeController extends HttpServlet {
             }
 
         } else {
-            fetchData(request, response);
+            int pageNo = 1;
+            fetchData(request, response, pageNo-1);
         }
 
     }
@@ -173,11 +179,11 @@ public class EmployeeController extends HttpServlet {
 
     }
 
-    private void fetchData(HttpServletRequest request, HttpServletResponse response) {
+    private void fetchData(HttpServletRequest request, HttpServletResponse response, int pageNo) {
         // TODO Auto-generated method stub
         try {
             List<Employee> employeeList = new ArrayList<Employee>();
-            employeeList = employeeService.fetch();
+            employeeList = employeeService.fetch(pageNo);
             request.setAttribute("employeeList", employeeList);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/employee.jsp");
             dispatcher.forward(request, response);

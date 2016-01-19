@@ -45,11 +45,11 @@
 
 	<script>
 		var delBtn = document.getElementsByClassName('deleteBtn');
-		console.log('laxman');
 
 		for (var i = 0; i < delBtn.length; i++) {
 			delBtn[i].onclick = function(e) {
 				e.preventDefault();
+
 				var href = this.getAttribute('href');
 				var doConfirm = confirm('Are you sure to delete??');
 

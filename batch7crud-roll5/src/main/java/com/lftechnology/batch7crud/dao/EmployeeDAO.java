@@ -13,14 +13,15 @@ import com.lftechnology.batch7crud.model.Employee;
 
 public class EmployeeDAO {
 
-    public List<Employee> fetch() throws DataException {
+    public List<Employee> fetch(int pageNo) throws DataException {
         try {
             List<Employee> empList = new ArrayList<Employee>();
             Employee emp = null;
-            String sql = "SELECT * FROM employee LIMIT 20";
-
+            String sql = "SELECT * FROM employee LIMIT 10 OFFSET ?";
             Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, pageNo*10);
+            
             ResultSet result = ps.executeQuery();
 
             while (result.next()) {

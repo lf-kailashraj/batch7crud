@@ -9,8 +9,8 @@ import com.lftechnology.batch7crud.model.Employee;
 public class EmployeeService {
     EmployeeDAO employeeDAO = new EmployeeDAO();
 
-    public List<Employee> fetch() throws DataException {
-        return employeeDAO.fetch();
+    public List<Employee> fetch(int pageNo) throws DataException {
+        return employeeDAO.fetch(pageNo);
 
     }
 
