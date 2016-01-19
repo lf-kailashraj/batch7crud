@@ -5,7 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<base href="/batch7crud-roll3/">
+<base href="${pageContext.request.contextPath}/">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>List</title>
 </head>
@@ -23,8 +23,8 @@
 				<td>${student.getId()}</td>
 				<td>${student.getRoll()}</td>
 				<td>${student.getName()}</td>
-				<td><a href="student/${stdList[i].getId()}/edit">edit</a></td>
-				<td><a href="student/${stdList[i].getId()}/delete" class="deleteItem">delete</a></td>
+				<td><a href="student/${student.getId()}/edit">edit</a></td>
+				<td><a href="student/${student.getId()}/delete" class="deleteItem">delete</a></td>
 			</tr>
 		</c:forEach>
 	</table>

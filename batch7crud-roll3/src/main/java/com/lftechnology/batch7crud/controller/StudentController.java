@@ -22,7 +22,7 @@ public class StudentController extends HttpServlet {
 
 	private static final String MESSAGE = "message";
 	private static final String ERROR_PAGE = "/WEB-INF/views/error.jsp";
-	private static final String LIST_PAGE = "/batch7crud-roll3/student";
+	private static final String LIST_PAGE = "/student";
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -48,7 +48,7 @@ public class StudentController extends HttpServlet {
 					deleteProcess(request, response, Integer.parseInt(pathParts[1]));
 
 				} else {
-					response.sendRedirect(LIST_PAGE);
+					response.sendRedirect(request.getContextPath() + LIST_PAGE);
 				}
 			}
 		} catch (NumberFormatException e) {
@@ -119,7 +119,7 @@ public class StudentController extends HttpServlet {
 		student.setName(name);
 		try {
 			studentService.insert(student);
-			response.sendRedirect(LIST_PAGE);
+			response.sendRedirect(request.getContextPath() + LIST_PAGE);
 		} catch (DataException e) {
 			logger.log(Level.SEVERE, e.getMessage());
 
@@ -158,7 +158,7 @@ public class StudentController extends HttpServlet {
 
 			studentService.edit(student, id);
 
-			response.sendRedirect(LIST_PAGE);
+			response.sendRedirect(request.getContextPath() + LIST_PAGE);
 		} catch (NumberFormatException e) {
 			logger.log(Level.SEVERE, e.getMessage());
 		} catch (DataException e) {
@@ -174,7 +174,7 @@ public class StudentController extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			studentService.delete(id);
-			response.sendRedirect(LIST_PAGE);
+			response.sendRedirect(request.getContextPath() + LIST_PAGE);
 		} catch (DataException e) {
 			logger.log(Level.SEVERE, e.getMessage());
 
