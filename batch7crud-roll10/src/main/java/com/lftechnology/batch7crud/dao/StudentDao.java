@@ -4,7 +4,6 @@ import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.utils.DbConnection;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,17 +16,18 @@ import java.util.logging.Logger;
  * Created on 1/14/16
  */
 public class StudentDao {
-    private static Logger logger = Logger.getLogger(StudentDao.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StudentDao.class.getName());
 
     public List<Student> fetch(Integer offset, Integer limit) throws DataException {
         List<Student> studentList = new ArrayList<Student>();
         try {
             Connection conn = DbConnection.getConnection();
 
-            String query = "select * from student limit " + limit + " Offset " + offset;
-            Statement stmt = conn.createStatement();
-            ResultSet studentResult = stmt.executeQuery(query);
-
+            String query = "select * from student limit ? Offset ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1,limit);
+            ps.setInt(2,offset);
+            ResultSet studentResult = ps.executeQuery();
 
             while (studentResult.next()) {
                 Integer id = studentResult.getInt("id");
@@ -50,11 +50,12 @@ public class StudentDao {
                 studentList.add(student);
             }
 
+            ps.close();
             conn.close();
             return studentList;
 
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
         }
     }
@@ -77,7 +78,7 @@ public class StudentDao {
             conn.close();
 
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
         }
 
@@ -96,7 +97,7 @@ public class StudentDao {
             conn.close();
 
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
         }
     }
@@ -119,7 +120,7 @@ public class StudentDao {
             ps1.close();
             conn.close();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
         }
     }
@@ -156,7 +157,7 @@ public class StudentDao {
 
 
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
         }
 
@@ -181,7 +182,7 @@ public class StudentDao {
                 return null;
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException();
         }
     }

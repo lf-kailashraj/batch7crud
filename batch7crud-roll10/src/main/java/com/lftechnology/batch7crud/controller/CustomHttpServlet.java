@@ -5,14 +5,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 /**
  * @Author Binod Shrestha <binodshrestha@lftechnology.com>
  * Created on 1/19/16
  */
 public abstract class CustomHttpServlet extends HttpServlet{
-    private static Logger logger = Logger.getLogger(CustomHttpServlet.class.getName());
     private static final String ERROR_MESSAGE = "errorMessage";
 
     public void showPageNotFound(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

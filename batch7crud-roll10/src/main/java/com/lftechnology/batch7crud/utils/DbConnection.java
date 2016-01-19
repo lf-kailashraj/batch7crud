@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class DbConnection {
 
-    private static Logger logger = Logger.getLogger(DbConnection.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DbConnection.class.getName());
 
     private DbConnection() {
     }
@@ -30,10 +30,10 @@ public class DbConnection {
             DataSource ds = (DataSource) envContext.lookup("jdbc/library");
             return ds.getConnection();
         } catch (NamingException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException();
         }
     }

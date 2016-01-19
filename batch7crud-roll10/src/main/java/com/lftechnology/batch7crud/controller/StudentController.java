@@ -27,7 +27,7 @@ import static java.lang.Math.ceil;
  */
 @WebServlet("/students/*")
 public class StudentController extends CustomHttpServlet {
-    private static Logger logger = Logger.getLogger(StudentController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
     private static StudentService studentService = new StudentService();
     private static final String ERROR_MESSAGE = "errorMessage";
     private static final Integer TOTAL_DATA_TO_FETCH = 2;
@@ -44,7 +44,7 @@ public class StudentController extends CustomHttpServlet {
                     page = Integer.parseInt(pageText);
                 }
             } catch (NumberFormatException e) {
-                logger.log(Level.SEVERE, e.getMessage(), e);
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
 
             list(req, resp, page);
@@ -75,7 +75,7 @@ public class StudentController extends CustomHttpServlet {
 
         } else if ("edit".equalsIgnoreCase(params[2])) {
             Integer studentId = TypeCaster.toInt(params[1]);
-            if ((studentId == null)) {
+            if (studentId == null) {
                 showPageNotFound(req, resp);
             } else {
                 editProcess(req, resp, studentId);
@@ -103,7 +103,7 @@ public class StudentController extends CustomHttpServlet {
             req.setAttribute("currentPage", page);
             req.getServletContext().getRequestDispatcher("/WEB-INF/views/students.jsp").forward(req, resp);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             showServerError(req, resp, e);
         }
     }
@@ -144,7 +144,7 @@ public class StudentController extends CustomHttpServlet {
             req.setAttribute(ERROR_MESSAGE, "number format error in 'roll'");
             create(req, resp);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             showServerError(req, resp, e);
         }
     }
@@ -156,7 +156,7 @@ public class StudentController extends CustomHttpServlet {
             req.setAttribute("student", student);
             req.getServletContext().getRequestDispatcher("/WEB-INF/views/editStudent.jsp").forward(req, resp);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             showServerError(req, resp, e);
         }
     }
@@ -170,7 +170,7 @@ public class StudentController extends CustomHttpServlet {
         try {
             date = dateFormat.parse(dob);
         } catch (ParseException e) {
-            logger.severe(e.getMessage());
+            LOGGER.severe(e.getMessage());
         }
 
         Integer roll = Integer.parseInt(req.getParameter("roll"));
@@ -191,7 +191,7 @@ public class StudentController extends CustomHttpServlet {
             studentService.update(student);
             resp.sendRedirect("/students");
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             showServerError(req, resp, e);
         }
     }
@@ -201,7 +201,7 @@ public class StudentController extends CustomHttpServlet {
             studentService.delete(id);
             resp.sendRedirect("/students");
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             showServerError(req, resp, e);
         }
     }
