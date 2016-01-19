@@ -3,18 +3,14 @@ package com.lftechnology.batch7crud.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 import com.lftechnology.batch7crud.dao.StudentDAO;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 
 public class StudentService {
-	private StudentDAO stdDAO;
-	
-	public StudentService(){
-		stdDAO = new StudentDAO();
-	}
+	private StudentDAO stdDAO = new StudentDAO();
+
 	public void insert(Student student) throws DataException {
 		stdDAO.insert(student);
 	}
@@ -30,8 +26,8 @@ public class StudentService {
 		student = stdDAO.fetchStudentById(id);
 		return student;
 	}
-	
-	public int fetchTotal() throws DataException{
+
+	public int fetchTotal() throws DataException {
 		return stdDAO.fetchTotal();
 	}
 

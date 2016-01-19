@@ -5,16 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.lftechnology.batch7crud.db.DBConnection;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 
 public class StudentDAO {
-	Student student = new Student();
-
+	private Logger logger = Logger.getLogger("StudentDAO");
 	public void insert(Student student) throws DataException {
 		try {
 			String sql = "insert into Students(roll, name) values (?,?)";
@@ -25,6 +25,8 @@ public class StudentDAO {
 			stmnt.setString(2, student.getName());
 			stmnt.execute();
 		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage());
+			
 			throw new DataException(e.getMessage());
 		}
 	}
@@ -42,7 +44,7 @@ public class StudentDAO {
 			ResultSet result = stmnt.executeQuery();
 
 			while (result.next()) {
-				student = new Student();
+				Student student = new Student();
 				student.setId(result.getInt("id"));
 				student.setRoll(result.getInt("roll"));
 				student.setName(result.getString("name"));
@@ -51,6 +53,8 @@ public class StudentDAO {
 
 			return stdList;
 		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage());
+			
 			throw new DataException(e.getMessage());
 		}
 	}
@@ -68,6 +72,8 @@ public class StudentDAO {
 			}
 			return totalSize;
 		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage());
+			
 			throw new DataException(e.getMessage());
 		}
 	}
@@ -80,7 +86,7 @@ public class StudentDAO {
 			PreparedStatement stmnt = conn.prepareStatement(sql);
 			stmnt.setInt(1, id);
 			ResultSet result = stmnt.executeQuery();
-
+			Student student = null;
 			while (result.next()) {
 				student.setId(result.getInt("id"));
 				student.setRoll(result.getInt("roll"));
@@ -88,6 +94,8 @@ public class StudentDAO {
 			}
 			return student;
 		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage());
+			
 			throw new DataException(e.getMessage());
 		}
 	}
@@ -103,6 +111,8 @@ public class StudentDAO {
 			stmnt.setInt(3, id);
 			stmnt.executeUpdate();
 		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage());
+			
 			throw new DataException(e.getMessage());
 		}
 
@@ -117,6 +127,8 @@ public class StudentDAO {
 			stmnt.setInt(1, id);
 			stmnt.executeUpdate();
 		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage());
+			
 			throw new DataException(e.getMessage());
 		}
 	}

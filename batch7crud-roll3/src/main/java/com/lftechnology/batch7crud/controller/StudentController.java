@@ -1,10 +1,9 @@
 package com.lftechnology.batch7crud.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,60 +15,66 @@ import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.service.StudentService;
 
-/**
- * Servlet implementation class StudentController
- */
 @WebServlet("/student/*")
 public class StudentController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+	private StudentService studentService = new StudentService();
+	private Logger logger = Logger.getLogger("StudentController");
 
+	private static final String MESSAGE = "message";
+	private static final String ERROR_PAGE = "/WEB-INF/views/error.jsp";
+	private static final String LIST_PAGE = "/batch7crud-roll3/student";
+
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String pathInfo = request.getPathInfo();
-		if (pathInfo == null) {
-			list(request, response, 1);
-		} else {
-			String[] pathParts = pathInfo.split("/");
-
-			if (pathParts[1].equals("create")) {
-				create(request, response);
-			} else if (pathParts[1] != null && pathParts.length == 2) {
-				int page = 1;
-				if (pathParts[1] != null) {
-					page = Integer.parseInt(pathParts[1]);
-				}
-				list(request, response, page);
-			} else if (pathParts[1] != null && pathParts[2].equals("edit")) {
-				edit(request, response, Integer.parseInt(pathParts[1]));
-
-			} else if (pathParts[1] != null && pathParts[2].equals("delete")) {
-				deleteProcess(request, response, Integer.parseInt(pathParts[1]));
-
+		try {
+			if (pathInfo == null) {
+				list(request, response, 1);
 			} else {
-				response.sendRedirect("/batch7crud-roll3/student");
+				String[] pathParts = pathInfo.split("/");
+
+				if ("create".equals(pathParts[1])) {
+					create(request, response);
+				} else if (pathParts[1] != null && pathParts.length == 2) {
+					int page;
+					page = Integer.parseInt(pathParts[1]);
+
+					list(request, response, page);
+				} else if (pathParts[1] != null && "edit".equals(pathParts[2])) {
+					edit(request, response, Integer.parseInt(pathParts[1]));
+
+				} else if (pathParts[1] != null && "delete".equals(pathParts[2])) {
+					deleteProcess(request, response, Integer.parseInt(pathParts[1]));
+
+				} else {
+					response.sendRedirect(LIST_PAGE);
+				}
 			}
+		} catch (NumberFormatException e) {
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 	}
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String pathInfo = request.getPathInfo();
 		String[] pathParts = pathInfo.split("/");
-		
+
 		try {
-			if (pathParts[1].equals("create")) {
+			if ("create".equals(pathParts[1])) {
 				createProcess(request, response);
-			} else if (pathParts[2].equals("edit")) {
+			} else if ("edit".equals(pathParts[2])) {
 				editProcess(request, response, Integer.parseInt(pathParts[1]));
-			} else if (pathParts[2].equals("delete")) {
+			} else if ("delete".equals(pathParts[2])) {
 				deleteProcess(request, response, Integer.parseInt(pathParts[1]));
 			} else {
 				list(request, response, 1);
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 	}
 
@@ -77,10 +82,9 @@ public class StudentController extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			int pageSize = 3;
-			StudentService stdService = new StudentService();
-			List<Student> stdList = stdService.fetch(page, pageSize);
-			int count = stdService.fetchTotal();
-			
+			List<Student> stdList = studentService.fetch(page, pageSize);
+			int count = studentService.fetchTotal();
+
 			request.setAttribute("stdList", stdList);
 			request.setAttribute("pageSize", pageSize);
 
@@ -88,11 +92,11 @@ public class StudentController extends HttpServlet {
 			request.setAttribute("pageNum", page);
 			request.getRequestDispatcher("/WEB-INF/views/student/list.jsp").forward(request, response);
 		} catch (DataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
+
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.setAttribute("message", e.getMessage());
-			request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
+			request.setAttribute(MESSAGE, e.getMessage());
+			request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
 		}
 	}
 
@@ -106,37 +110,39 @@ public class StudentController extends HttpServlet {
 		String name = request.getParameter("name");
 
 		Student student = new Student();
-		student.setRoll(Integer.parseInt(roll));
-		student.setName(name);
-
-		StudentService stdService = new StudentService();
 		try {
-			stdService.insert(student);
-			response.sendRedirect("/batch7crud-roll3/student");
+			student.setRoll(Integer.parseInt(roll));
+		} catch (NumberFormatException e) {
+			logger.log(Level.SEVERE, e.getMessage());
+		}
+
+		student.setName(name);
+		try {
+			studentService.insert(student);
+			response.sendRedirect(LIST_PAGE);
 		} catch (DataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			request.setAttribute("message", e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage());
+
+			request.setAttribute(MESSAGE, e.getMessage());
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
+			request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
 		}
 
 	}
 
 	private void edit(HttpServletRequest request, HttpServletResponse response, int id)
 			throws ServletException, IOException {
-		StudentService stdService = new StudentService();
 		Student student;
 		try {
-			student = stdService.fetchStudentById(id);
+			student = studentService.fetchStudentById(id);
 			request.setAttribute("student", student);
 			request.getRequestDispatcher("/WEB-INF/views/student/edit.jsp").forward(request, response);
 		} catch (DataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			request.setAttribute("message", e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage());
+
+			request.setAttribute(MESSAGE, e.getMessage());
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
+			request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
 		}
 
 	}
@@ -144,38 +150,37 @@ public class StudentController extends HttpServlet {
 	private void editProcess(HttpServletRequest request, HttpServletResponse response, int id)
 			throws ServletException, IOException {
 		try {
-			StudentService stdService = new StudentService();
-
 			String roll = request.getParameter("roll");
 			String name = request.getParameter("name");
 			Student student = new Student();
 			student.setRoll(Integer.parseInt(roll));
 			student.setName(name);
 
-			stdService.edit(student, id);
+			studentService.edit(student, id);
 
-			response.sendRedirect("/batch7crud-roll3/student");
+			response.sendRedirect(LIST_PAGE);
+		} catch (NumberFormatException e) {
+			logger.log(Level.SEVERE, e.getMessage());
 		} catch (DataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			request.setAttribute("message", e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage());
+
+			request.setAttribute(MESSAGE, e.getMessage());
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
+			request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
 		}
 	}
 
 	private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id)
 			throws ServletException, IOException {
 		try {
-			StudentService stdService = new StudentService();
-			stdService.delete(id);
-			response.sendRedirect("/batch7crud-roll3/student");
+			studentService.delete(id);
+			response.sendRedirect(LIST_PAGE);
 		} catch (DataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			request.setAttribute("message", e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage());
+
+			request.setAttribute(MESSAGE, e.getMessage());
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
+			request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
 		}
 	}
 }

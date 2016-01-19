@@ -1,6 +1,9 @@
 package com.lftechnology.batch7crud.db;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -9,6 +12,11 @@ import com.lftechnology.batch7crud.exception.DataException;
 import java.sql.Connection;
 
 public class DBConnection {
+	private static Logger logger = Logger.getLogger("DBConnection");
+	
+	private DBConnection() {
+	}
+
 	public static Connection getConnection() throws DataException {
 		try {
 			Context initCtx = new InitialContext();
@@ -19,11 +27,14 @@ public class DBConnection {
 
 			envCtx.lookup("jdbc/students_info");
 
-			Connection conn = ds.getConnection();
-			return conn;
+			return ds.getConnection();
 		} catch (SQLException e) {
+			logger.log(Level.SEVERE, e.getMessage());
+			
 			throw new DataException(e.getMessage());
 		} catch (NamingException e) {
+			logger.log(Level.SEVERE, e.getMessage());
+			
 			throw new DataException(e.getMessage());
 		}
 	}
