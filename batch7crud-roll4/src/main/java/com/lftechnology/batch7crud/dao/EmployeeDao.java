@@ -7,12 +7,15 @@ import com.lftechnology.batch7crud.util.DbConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by pratishshr on 1/14/16.
  */
 public class EmployeeDao {
     private Connection connection;
+    private Logger logger = Logger.getLogger("EmployeeDaoLog");
 
     public EmployeeDao() throws DataException {
         connection = DbConnection.getConnection();
@@ -38,6 +41,7 @@ public class EmployeeDao {
             }
             return employeeList;
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             throw new DataException(e.getMessage());
         }
     }
@@ -60,6 +64,7 @@ public class EmployeeDao {
             return e;
 
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             throw new DataException(e.getMessage());
         }
     }
@@ -74,6 +79,7 @@ public class EmployeeDao {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             throw new DataException(e.getMessage());
         }
     }
@@ -89,6 +95,7 @@ public class EmployeeDao {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             throw new DataException(e.getMessage());
         }
     }
@@ -101,6 +108,7 @@ public class EmployeeDao {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             throw new DataException(e.getMessage());
         }
     }
@@ -117,6 +125,7 @@ public class EmployeeDao {
             return noOfRecords;
 
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage());
             throw new DataException(e.getMessage());
         }
     }

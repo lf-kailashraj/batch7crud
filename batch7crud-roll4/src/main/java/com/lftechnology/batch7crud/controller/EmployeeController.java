@@ -24,7 +24,7 @@ public class EmployeeController extends HttpServlet {
     private static final String ERROR_PAGE = "/WEB-INF/views/error.jsp";
     private static final String MESSAGE = "message";
 
-    private Logger logger = Logger.getLogger("appLogger");
+    private Logger logger = Logger.getLogger("EmployeeControllerLog");
     private EmployeeService employeeService;
 
     public EmployeeController() throws DataException {
