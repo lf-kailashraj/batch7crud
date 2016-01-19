@@ -17,16 +17,22 @@ import java.io.IOException;
 @WebServlet(name = "StudentEntryController", urlPatterns = {"/Students/NewEntry"})
 public class StudentEntryController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        createProcess(request,response);
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        create(request,response);
+    }
+
+    private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getServletContext().getRequestDispatcher("/WEB-INF/views/newEntry.jsp").forward(request,response);
+    }
+
+    private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         String address = request.getParameter("address");
         int roll = Integer.parseInt(request.getParameter("roll"));
-
-        System.out.println(name);
-        System.out.println(address);
-        Student s = new Student();
-        s.setName(name);
-        s.setAddress(address);
-        s.setRoll(roll);
+        Student s = new Student(name,address,roll);
 
         StudentServices stdServices = new StudentServices();
         try {
@@ -37,7 +43,5 @@ public class StudentEntryController extends HttpServlet {
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getServletContext().getRequestDispatcher("/WEB-INF/views/newEntry.jsp").forward(request,response);
-    }
+
 }
