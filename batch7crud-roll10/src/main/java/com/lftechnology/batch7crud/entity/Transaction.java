@@ -11,7 +11,7 @@ public class Transaction {
     private Date issueDate;
     private Date returnDate;
     private Person person;
-    private BookPer bookPer;
+    private BookCode bookCode;
 
 
     public Integer getId() {
@@ -46,11 +46,11 @@ public class Transaction {
         this.person = person;
     }
 
-    public BookPer getBookPer() {
-        return bookPer;
+    public BookCode getBookCode() {
+        return bookCode;
     }
 
-    public void setBookPer(BookPer bookPer) {
-        this.bookPer = bookPer;
+    public void setBookCode(BookCode bookCode) {
+        this.bookCode = bookCode;
     }
 }

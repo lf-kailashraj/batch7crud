@@ -4,9 +4,9 @@ package com.lftechnology.batch7crud.entity;
  * @Author binodnme
  * Created on 1/17/16
  */
-public class BookPer {
+public class BookCode {
     private Integer id;
-    private String bookCode;
+    private String code;
     private Boolean availability;
     private Book book;
 
@@ -19,12 +19,12 @@ public class BookPer {
         this.id = id;
     }
 
-    public String getBookCode() {
-        return bookCode;
+    public String getCode() {
+        return code;
     }
 
-    public void setBookCode(String bookCode) {
-        this.bookCode = bookCode;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Boolean getAvailability() {

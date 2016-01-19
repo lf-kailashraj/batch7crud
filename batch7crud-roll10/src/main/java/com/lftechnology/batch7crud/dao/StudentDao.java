@@ -15,18 +15,21 @@ import java.util.List;
  * Created on 1/14/16
  */
 public class StudentDao {
-    private Connection conn = null;
-
 
     public List<Student> fetch(Integer page) throws DataException {
         List<Student> studentList = new ArrayList<Student>();
         try {
-            conn = DbConnection.getConnection();
-            Statement stmt = conn.createStatement();
+            Connection conn = DbConnection.getConnection();
 
-            Integer totalDataToFetch = 1;
+            Integer totalDataToFetch = 30;
             Integer offset = (page-1)*totalDataToFetch;
             String query = "select * from student limit "+totalDataToFetch+" Offset "+offset;
+//            String query = "select * from student ";
+//            String query = "select * from student limit ? offset ?";
+//            PreparedStatement ps = conn.prepareStatement(query);
+//            ps.setInt(1,totalDataToFetch);
+//            ps.setInt(2,offset);
+            Statement stmt = conn.createStatement();
             ResultSet studentResult = stmt.executeQuery(query);
 
             while(studentResult.next()){
@@ -34,81 +37,57 @@ public class StudentDao {
                 Integer rollNo = studentResult.getInt("roll");
                 String department = studentResult.getString("department");
                 String batch = studentResult.getString("batch");
+                String name = studentResult.getString("name");
+                String address = studentResult.getString("address");
+                Date dob = studentResult.getDate("dob");
 
-                String query1 = "select * from person where id="+id;
-                Statement statement = conn.createStatement();
-                ResultSet personResult = statement.executeQuery(query1);
+                Student student = new Student();
+                student.setId(id);
+                student.setRoll(rollNo);
+                student.setDepartment(department);
+                student.setBatch(batch);
+                student.setName(name);
+                student.setAddress(address);
+                student.setDob(dob);
 
-                if (personResult.next()){
-                    String name = personResult.getString("name");
-                    String address = personResult.getString("address");
-                    Date dob = personResult.getDate("dob");
-
-                    Student student = new Student();
-                    student.setId(id);
-                    student.setRoll(rollNo);
-                    student.setDepartment(department);
-                    student.setBatch(batch);
-
-                    student.setName(name);
-                    student.setAddress(address);
-                    student.setDob(dob);
-
-                    studentList.add(student);
-                }
+                studentList.add(student);
             }
+
+            conn.close();
+            return studentList;
+
         } catch (NamingException e) {
             e.printStackTrace();
-            throw new DataException();
+            throw new DataException(e.getMessage());
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
-
-        return studentList;
     }
 
 
     public void insert(Student stud) throws DataException {
         try {
-            conn = DbConnection.getConnection();
-            conn.setAutoCommit(false);
+            Connection conn = DbConnection.getConnection();
 
-            String personQuery = "insert into person(name, address, dob) values(?,?,?)";
-            PreparedStatement ps = conn.prepareStatement(personQuery);
-            ps.setString(1,stud.getName());
-            ps.setString(2,stud.getAddress());
-            ps.setDate(3, new java.sql.Date(stud.getDob().getTime()));
-            ps.executeUpdate();
-
-//            ResultSet resultSet = stmt.executeQuery("SELECT currval('person_id_seq')");
-            ResultSet resultSet = ps.executeQuery("SELECT last_value FROM person_id_seq");
-            resultSet.next();
-            Integer id = resultSet.getInt("last_value");
-            stud.setId(id);
-
-            String studentQuery = "insert into student (id,department,batch,roll) values(?,?,?,?)";
+            String studentQuery = "insert into student (name,address,dob,department,batch,roll) values(?,?,?,?,?,?)";
             PreparedStatement ps1 = conn.prepareStatement(studentQuery);
-            ps1.setInt(1,stud.getId());
-            ps1.setString(2,stud.getDepartment());
-            ps1.setString(3,stud.getBatch());
-            ps1.setInt(4,stud.getRoll());
+            ps1.setString(1,stud.getName());
+            ps1.setString(2,stud.getAddress());
+            ps1.setDate(3, new java.sql.Date(stud.getDob().getTime()));
+            ps1.setString(4,stud.getDepartment());
+            ps1.setString(5,stud.getBatch());
+            ps1.setInt(6, stud.getRoll());
             ps1.executeUpdate();
 
-            conn.commit();
+            conn.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-                throw new DataException("exception on rolling back");
-            }
-            throw new DataException("data insertion error");
+            throw new DataException(e.getMessage());
         } catch (NamingException e) {
             e.printStackTrace();
-            throw new DataException("data insertion error");
+            throw new DataException(e.getMessage());
         }
 
     }
@@ -116,29 +95,19 @@ public class StudentDao {
 
     public void delete(Integer studentId) throws DataException {
         try {
-            conn = DbConnection.getConnection();
-            conn.setAutoCommit(false);
-            Statement stmt = conn.createStatement();
-            String query = "delete from person where id="+studentId;
-            stmt.executeUpdate(query);
+            Connection conn = DbConnection.getConnection();
 
-            String query1 = "delete from student where id="+studentId;
-            stmt.executeUpdate(query1);
-
-            conn.commit();
+            String query = "delete from student where id=?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1,studentId);
+            ps.executeUpdate();
 
         } catch (NamingException e) {
             e.printStackTrace();
-            throw new DataException();
-
+            throw new DataException(e.getMessage());
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-                throw new DataException();
-            }
+            throw new DataException(e.getMessage());
         }
     }
 
@@ -146,76 +115,61 @@ public class StudentDao {
     public void update(Student stud) throws DataException {
         //update the student record
         try {
-            conn = DbConnection.getConnection();
+            Connection conn = DbConnection.getConnection();
 
-            conn.setAutoCommit(false);
-
-            String personQuery = "UPDATE person SET name=?, address=?, dob=? where id="+stud.getId();
-
-            PreparedStatement ps = conn.prepareStatement(personQuery);
-            ps.setString(1,stud.getName());
-            ps.setString(2,stud.getAddress());
-            ps.setDate(3, new java.sql.Date(stud.getDob().getTime()));
-            ps.executeUpdate();
-
-
-            String studentQuery = "UPDATE student set department=?, batch=?, roll=? WHERE id="+stud.getId();
+            String studentQuery = "UPDATE student set name=?, address=?, dob=?, department=?, batch=?, roll=? WHERE id=?";
             PreparedStatement ps1 = conn.prepareStatement(studentQuery);
-            ps1.setString(1,stud.getDepartment());
-            ps1.setString(2,stud.getBatch());
-            ps1.setInt(3,stud.getRoll());
+            ps1.setString(1,stud.getName());
+            ps1.setString(2,stud.getAddress());
+            ps1.setDate(3, new java.sql.Date(stud.getDob().getTime()));
+            ps1.setString(4,stud.getDepartment());
+            ps1.setString(5,stud.getBatch());
+            ps1.setInt(6,stud.getRoll());
+            ps1.setInt(7,stud.getId());
             ps1.executeUpdate();
-
-            conn.commit();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-                throw new DataException("exception on rolling back");
-            }
-            throw new DataException("data insertion error");
+            throw new DataException(e.getMessage());
         } catch (NamingException e) {
             e.printStackTrace();
-            throw new DataException("data insertion error");
+            throw new DataException(e.getMessage());
         }
     }
 
 
-    public Student getStudentById(Integer id) throws DataException {
+    public Student fetchById(Integer id) throws DataException {
         try {
-            String query = "select * from student where id="+id;
+            String query = "select * from student where id=?";
             Connection conn = DbConnection.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet studentResult = stmt.executeQuery(query);
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1,id);
 
-            while (studentResult.next()){
+            ResultSet studentResult = ps.executeQuery();
+
+            if (studentResult.next()){
                 Student student = new Student();
                 student.setId(studentResult.getInt("id"));
                 student.setRoll(studentResult.getInt("roll"));
                 student.setDepartment(studentResult.getString("department"));
                 student.setBatch(studentResult.getString("batch"));
 
-                String personQuery = "select * from person where id="+id;
-                ResultSet personResult = stmt.executeQuery(personQuery);
-                personResult.next();
-
-                student.setName(personResult.getString("name"));
-                student.setAddress(personResult.getString("address"));
-                student.setDob(personResult.getDate("dob"));
+                student.setName(studentResult.getString("name"));
+                student.setAddress(studentResult.getString("address"));
+                student.setDob(studentResult.getDate("dob"));
 
                 return student;
+            }else{
+                return null;
             }
 
         } catch (NamingException e) {
             e.printStackTrace();
-            throw new DataException("exception on getting student data by id");
+            throw new DataException(e.getMessage());
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DataException("exception on getting student data by id");
+            throw new DataException(e.getMessage());
         }
-        return null;
+
     }
 }

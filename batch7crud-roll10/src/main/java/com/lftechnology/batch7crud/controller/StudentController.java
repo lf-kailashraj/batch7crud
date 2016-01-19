@@ -28,7 +28,7 @@ public class StudentController extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         String servletPath = req.getPathInfo();
-        System.out.println("servlet path: "+servletPath);
+
         if(servletPath == null || "/".equalsIgnoreCase(servletPath)){
             Integer page = 1;
             try{
@@ -54,8 +54,6 @@ public class StudentController extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String servletPath = req.getPathInfo();
-        System.out.println("servlet path " + servletPath);
-
         String[] params = servletPath.split("/");
 
         if(params[1].equalsIgnoreCase("create")){
@@ -66,7 +64,11 @@ public class StudentController extends HttpServlet{
             editProcess(req, resp, studentId);
         }else if(params[2].equalsIgnoreCase("delete")){
             Integer studentId = TypeCaster.toInt(params[1]);
-            deleteProcess(req, resp, studentId);
+            if((studentId == null)){
+
+            }else{
+                deleteProcess(req, resp, studentId);
+            }
         }
     }
 
@@ -75,11 +77,12 @@ public class StudentController extends HttpServlet{
         try {
             List<Student> studentList = studentService.fetch(page);
             req.setAttribute("studentList", studentList);
-            req.setAttribute("nextPageNum",page+1);
+            req.setAttribute("nextPageNum", page+1);
             req.getServletContext().getRequestDispatcher("/WEB-INF/views/students.jsp").forward(req, resp);
         } catch (DataException e) {
             e.printStackTrace();
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            req.setAttribute("errorMessage", e.getMessage());
             req.getServletContext().getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
         }
     }
@@ -94,47 +97,66 @@ public class StudentController extends HttpServlet{
         String name= req.getParameter("name");
         String address = req.getParameter("address");
         String dob = req.getParameter("dob");
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
-        Date date=null;
-        try {
-            date = dateFormat.parse(dob);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        Integer roll = Integer.parseInt(req.getParameter("roll"));
         String department = req.getParameter("department");
         String batch = req.getParameter("batch");
-
-        Student student = new Student();
-        student.setBatch(batch);
-        student.setDepartment(department);
-        student.setRoll(roll);
-
-        student.setName(name);
-        student.setAddress(address);
-        student.setDob(date);
+        String rollText = req.getParameter("roll");
 
         try {
-            studentService.insert(student);
-            resp.sendRedirect("/students");
-        } catch (DataException e) {
-            e.printStackTrace();
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            req.getServletContext().getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
+            Date date = dateFormat.parse(dob);
+            Integer roll = Integer.parseInt(rollText);
+
+            Student student = new Student();
+            student.setBatch(batch);
+            student.setDepartment(department);
+            student.setRoll(roll);
+
+            student.setName(name);
+            student.setAddress(address);
+            student.setDob(date);
+
+            try {
+                studentService.insert(student);
+                resp.sendRedirect("/students");
+            } catch (DataException e) {
+                e.printStackTrace();
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                req.setAttribute("errorMessage", e.getMessage());
+                req.getServletContext().getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
+            }
+        } catch (ParseException e) {
+            req.setAttribute("errorMessage", "error while parsing date");
+            req.setAttribute("name", name);
+            req.setAttribute("address", address);
+            req.setAttribute("dob", dob);
+            req.setAttribute("department", department);
+            req.setAttribute("batch", batch);
+            req.setAttribute("roll", rollText);
+            create(req, resp);
+        } catch (NumberFormatException e){
+            req.setAttribute("errorMessage", "number format error in 'roll'");
+            req.setAttribute("name", name);
+            req.setAttribute("address", address);
+            req.setAttribute("dob", dob);
+            req.setAttribute("department", department);
+            req.setAttribute("batch", batch);
+            req.setAttribute("roll", rollText);
+            create(req, resp);
         }
+
     }
 
 
     private void edit(HttpServletRequest req, HttpServletResponse resp, Integer id) throws ServletException, IOException {
-        Student student = null;
+
         try {
-            student = studentService.getStudentById(id);
+            Student student = studentService.fetchById(id);
             req.setAttribute("student",student);
             req.getServletContext().getRequestDispatcher("/WEB-INF/views/editStudent.jsp").forward(req, resp);
         } catch (DataException e) {
             e.printStackTrace();
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            req.setAttribute("errorMessage", e.getMessage());
             req.getServletContext().getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
         }
     }
@@ -172,6 +194,7 @@ public class StudentController extends HttpServlet{
         } catch (DataException e) {
             e.printStackTrace();
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            req.setAttribute("errorMessage", e.getMessage());
             req.getServletContext().getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
         }
     }
@@ -184,6 +207,8 @@ public class StudentController extends HttpServlet{
         } catch (DataException e) {
             e.printStackTrace();
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            req.setAttribute("errorMessage", e.getMessage());
+            req.getServletContext().getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
         }
     }
 }

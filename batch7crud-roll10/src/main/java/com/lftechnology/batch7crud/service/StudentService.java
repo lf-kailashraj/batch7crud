@@ -1,6 +1,5 @@
 package com.lftechnology.batch7crud.service;
 
-import com.lftechnology.batch7crud.dao.PersonDao;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.dao.StudentDao;
 import com.lftechnology.batch7crud.exception.DataException;
@@ -30,7 +29,7 @@ public class StudentService {
         studentDao.update(student);
     }
 
-    public Student getStudentById(Integer id) throws DataException {
-        return studentDao.getStudentById(id);
+    public Student fetchById(Integer id) throws DataException {
+        return studentDao.fetchById(id);
     }
 }

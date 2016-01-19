@@ -12,5 +12,6 @@
 </head>
 <body>
   <div>error</div>
+  <p>${errorMessage}</p>
 </body>
 </html>
