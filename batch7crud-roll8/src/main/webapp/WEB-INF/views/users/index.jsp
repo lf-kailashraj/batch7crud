@@ -18,11 +18,8 @@
         <%--</c:when>--%>
     <%--</c:choose>--%>
     <div>
-        <a href="#">Manage Employees</a>
+        <a href="/employees">Manage Employees</a>
+        <p><a href="#">Manage your Deets</a></p>
     </div>
-
-
-
-
 </body>
 </html>

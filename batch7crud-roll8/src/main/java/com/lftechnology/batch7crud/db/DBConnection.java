@@ -17,8 +17,8 @@ public class DBConnection {
         try {
             Context initContext = new InitialContext();
             Context envContext = (Context) initContext.lookup("java:/comp/env");
-            DataSource ds = (DataSource) envContext.lookup("jdbc/employeemgt");
-            Connection conn = ds.getConnection();
+            DataSource dataSource = (DataSource) envContext.lookup("jdbc/employeemgt");
+            Connection conn = dataSource.getConnection();
             return conn;
         } catch (SQLException e) {
             throw new DataException();

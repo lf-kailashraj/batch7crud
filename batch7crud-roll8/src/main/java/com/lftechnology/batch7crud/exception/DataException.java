@@ -5,7 +5,7 @@ package com.lftechnology.batch7crud.exception;
  */
 public class DataException extends Exception {
     public DataException(){
-        super("Sql ma error cha hai!");
+        super("Error encountered at SQL");
     }
 
     public DataException(String message){

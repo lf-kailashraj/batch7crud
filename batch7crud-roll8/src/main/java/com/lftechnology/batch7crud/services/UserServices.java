@@ -13,9 +13,10 @@ import java.util.List;
  */
 public class UserServices {
     List<User> userList = new ArrayList<User>();
-    public void create(String name, String username, String email, String password) throws DataException {
+    public Boolean create(User user) throws DataException {
         UserDao userDao = new UserDao();
-        userDao.create(name, username, email, password);
+        userDao.create(user);
+        return null;
     }
 
 }
