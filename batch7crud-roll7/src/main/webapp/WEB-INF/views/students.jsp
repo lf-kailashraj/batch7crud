@@ -18,6 +18,7 @@
         <td><c:out value="${student.roll}" /></td>
         <td><c:out value="${student.name}" /></td>
         <td><c:out value="${student.address}" /></td>
+        <td><a href = "/Students/${student.roll}/edit">Edit</a></td>
       </tr>
     </c:forEach>
   </table>
