@@ -1,6 +1,8 @@
 package com.lftechnology.batch7crud.controller;
 
 import java.io.IOException;
+import java.sql.SQLData;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,8 +15,8 @@ import com.lftechnology.batch7crud.util.TypeCaster;
 @WebServlet({ "/" })
 public class IndexController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer i = TypeCaster.toInt("123");
-        System.out.println("value of i: " + i);
+//        Integer i = TypeCaster.toInt("123");
+//        System.out.println("value of i: " + i);
         req.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
-    };
+    }
 }
