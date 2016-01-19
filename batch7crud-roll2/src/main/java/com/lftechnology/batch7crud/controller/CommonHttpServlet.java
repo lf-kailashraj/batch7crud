@@ -26,4 +26,14 @@ public abstract class CommonHttpServlet extends HttpServlet {
         req.setAttribute(ERROR_MESSAGE, message);
         req.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(req, res);
     }
+
+    public String[] getPathParameters(HttpServletRequest request) {
+        String urlPath = request.getRequestURI().substring(request.getContextPath().length());
+        return urlPath.split("/");
+    }
+
+    public int parameterValueAsInt(HttpServletRequest request, int index) throws NumberFormatException {
+        String[] paths = getPathParameters(request);
+        return Integer.parseInt(paths[index]);
+    }
 }

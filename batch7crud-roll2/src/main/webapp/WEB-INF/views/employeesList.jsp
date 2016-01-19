@@ -17,32 +17,33 @@
 <h1>Form Data</h1>
 <table border="1px solid black">
     <tbody>
-    <tr>
+    <a>
         <td>Id</td>
         <td>Name</td>
         <td>Address</td>
         <td>Email</td>
         <td>Contact</td>
-        <td colspan="2">Operations</td>
-    </tr>
-    <c:if test="${currentPage == 1}">
-        <c:set var="count" value="1"/>
-    </c:if>
-    <c:if test="${currentPage > 1}">
-        <c:set var="count" value="${(currentPage -1)*10 +1}"/>
-    </c:if>
-    <c:forEach items="${employeeList}" var="employee">
+        <td colspan="3">Operations</td>
+        </tr>
+        <c:if test="${currentPage == 1}">
+            <c:set var="count" value="1"/>
+        </c:if>
+        <c:if test="${currentPage > 1}">
+            <c:set var="count" value="${(currentPage -1)*10 +1}"/>
+        </c:if>
+        <c:forEach items="${employeeList}" var="employee">
         <tr>
             <td>${count}</td>
             <td>${employee.getName()}</td>
             <td>${employee.getAddress()}</td>
             <td>${employee.getEmail()}</td>
             <td>${employee.getContact()}</td>
-            <td><a href="employees/${employee.getId()}/edit" class="edit">Edit</a></td>
+            <td><a href="employees/${employee.getId()}">View</a></td>
+            <td><a href="employees/${employee.getId()}/edit">Edit</a></td>
             <td><a href="employees/${employee.getId()}/delete" class="delete">Delete</a></td>
         </tr>
-        <c:set var="count" value="${count+1}"/>
-    </c:forEach>
+            <c:set var="count" value="${count+1}"/>
+        </c:forEach>
     </tbody>
 </table>
 <table>

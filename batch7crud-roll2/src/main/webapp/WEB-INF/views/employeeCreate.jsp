@@ -9,7 +9,7 @@
 <html>
 <head>
     <base href="${pageContext.request.contextPath}/">
-    <title>Form Page</title>
+    <title>Create Page</title>
 </head>
 <body>
 <h1>User information form!</h1>
@@ -37,7 +37,6 @@
         </tr>
         </tbody>
     </table>
-    <br/>
     <input type="reset" value="Reset">
     <input type="submit" value="Submit">
 </form>

@@ -20,62 +20,39 @@ import java.util.logging.Logger;
  * Created by romit on 1/14/16.
  */
 @WebServlet(name = "EmployeeController", urlPatterns = { "/employees/*" })
-
 public class EmployeeController extends CommonHttpServlet {
-    public static final Logger logger = Logger.getLogger(EmployeeController.class.getName());
+    public static final Logger logger = Logger.getLogger("employeeLogger");
     public static final String EMPLOYEE_PATH = "/employees";
 
     @Override
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String pathInfo = request.getPathInfo();
+        String[] pathParts = getPathParameters(request);
 
-        if (("/").equals(pathInfo) || pathInfo == null) {
-            list(request, response);
-        }
-
-        String[] pathParts = pathInfo.split("/");
-        if (("create").equals(pathParts[1])) {
+        if (pathParts.length == 3 && "create".equals(pathParts[2])) {
             createProcess(request, response);
-        } else if (("delete").equals(pathParts[2])) {
-            try {
-                int id = Integer.parseInt(pathParts[1]);
-                deleteProcess(request, response, id);
-            } catch (NumberFormatException e) {
-                logger.log(Level.SEVERE, e.getMessage(), e);
-                displayPageNotFound(request, response);
-            }
-        } else if ("edit".equals(pathParts[2])) {
-            try {
-                int id = Integer.parseInt(pathParts[1]);
-                editProcess(request, response, id);
-            } catch (NumberFormatException e) {
-                logger.log(Level.SEVERE, e.getMessage(), e);
-                displayPageNotFound(request, response);
-            }
+        } else if (pathParts.length == 4 && "edit".equals(pathParts[3])) {
+            editProcess(request, response);
+        } else if (pathParts.length == 4 && "delete".equals(pathParts[3])) {
+            deleteProcess(request, response);
+        } else {
+            displayPageNotFound(request, response);
         }
     }
 
     @Override
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String pathInfo = request.getPathInfo();
+        String[] pathParts = getPathParameters(request);
 
-        if (pathInfo == null || ("/").equals(pathInfo)) {
+        if (pathParts.length == 2 && "employees".equals(pathParts[1])) {
             list(request, response);
+        } else if (pathParts.length == 3 && "create".equals(pathParts[2])) {
+            create(request, response);
+        } else if (pathParts.length == 4 && "edit".equals(pathParts[3])) {
+            edit(request, response);
+        } else if (pathParts.length == 3) {
+            view(request, response);
         } else {
-            String[] pathParts = pathInfo.split("/");
-            if (("create").equals(pathParts[1])) {
-                create(request, response);
-            } else if (("edit").equals(pathParts[2])) {
-                try {
-                    int id = Integer.parseInt(pathParts[1]);
-                    edit(request, response, id);
-                } catch (NumberFormatException e) {
-                    logger.log(Level.SEVERE, e.getMessage(), e);
-                    displayPageNotFound(request, response);
-                }
-            }
+            displayPageNotFound(request, response);
         }
     }
 
@@ -108,9 +85,6 @@ public class EmployeeController extends CommonHttpServlet {
         } catch (DataException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
             displayErrorPage(request, response, e.getMessage());
-        } catch (NumberFormatException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
-            displayPageNotFound(request, response);
         }
     }
 
@@ -119,17 +93,18 @@ public class EmployeeController extends CommonHttpServlet {
     }
 
     private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String address = request.getParameter("address");
-        String email = request.getParameter("email");
-        String contact = request.getParameter("contact");
-        Employee employee = new Employee();
-        employee.setName(name);
-        employee.setAddress(address);
-        employee.setEmail(email);
-        employee.setContact(contact);
-
         try {
+            String name = request.getParameter("name");
+            String address = request.getParameter("address");
+            String email = request.getParameter("email");
+            String contact = request.getParameter("contact");
+
+            Employee employee = new Employee();
+            employee.setName(name);
+            employee.setAddress(address);
+            employee.setEmail(email);
+            employee.setContact(contact);
+
             EmployeeService employeeService = new EmployeeService();
             employeeService.insert(employee);
             response.sendRedirect(request.getContextPath() + EMPLOYEE_PATH);
@@ -139,10 +114,34 @@ public class EmployeeController extends CommonHttpServlet {
         }
     }
 
-    private void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
+    private void view(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            int id = parameterValueAsInt(request, 2);
             EmployeeService employeeService = new EmployeeService();
-            request.setAttribute("employee", employeeService.fetchById(id));
+            Employee employee = employeeService.fetchById(id);
+            if (employee == null) {
+                displayPageNotFound(request, response);
+            }
+            request.setAttribute("employee", employee);
+            request.getRequestDispatcher("/WEB-INF/views/employeeView.jsp").forward(request, response);
+        } catch (DataException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            displayErrorPage(request, response, e.getMessage());
+        } catch (NumberFormatException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            displayPageNotFound(request, response);
+        }
+    }
+
+    private void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            int id = parameterValueAsInt(request, 2);
+            EmployeeService employeeService = new EmployeeService();
+            Employee employee = employeeService.fetchById(id);
+            if (employee == null) {
+                displayPageNotFound(request, response);
+            }
+            request.setAttribute("employee", employee);
             request.getRequestDispatcher("/WEB-INF/views/employeeEdit.jsp").forward(request, response);
         } catch (DataException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
@@ -150,19 +149,21 @@ public class EmployeeController extends CommonHttpServlet {
         }
     }
 
-    private void editProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String address = request.getParameter("address");
-        String email = request.getParameter("email");
-        String contact = request.getParameter("contact");
-        Employee employee = new Employee();
-        employee.setId(id);
-        employee.setName(name);
-        employee.setAddress(address);
-        employee.setEmail(email);
-        employee.setContact(contact);
-
+    private void editProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            int id = parameterValueAsInt(request, 2);
+            String name = request.getParameter("name");
+            String address = request.getParameter("address");
+            String email = request.getParameter("email");
+            String contact = request.getParameter("contact");
+
+            Employee employee = new Employee();
+            employee.setId(id);
+            employee.setName(name);
+            employee.setAddress(address);
+            employee.setEmail(email);
+            employee.setContact(contact);
+
             EmployeeService employeeService = new EmployeeService();
             employeeService.update(employee);
             response.sendRedirect(request.getContextPath() + EMPLOYEE_PATH);
@@ -172,8 +173,9 @@ public class EmployeeController extends CommonHttpServlet {
         }
     }
 
-    private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
+    private void deleteProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            int id = parameterValueAsInt(request, 2);
             EmployeeService employeeService = new EmployeeService();
             employeeService.delete(id);
         } catch (DataException e) {
