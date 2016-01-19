@@ -10,11 +10,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by sanjay on 1/14/16.
  */
 public class StudentDAO {
+    private Logger logger = Logger.getLogger("appLogger");
 
     public void insert(Student s) throws DataException//get the object
     {
@@ -29,7 +32,9 @@ public class StudentDAO {
             System.out.println(pstmt.toString());
 
             pstmt.executeUpdate();
+            conn.close();
         } catch (SQLException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
             throw new DataException();
         }
     }
@@ -57,9 +62,12 @@ public class StudentDAO {
                 std.setGrade(rs.getInt(6));
                 stdList.add(std);
             }
+            conn.close();
+
             return stdList;
 
         } catch (SQLException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
             throw new DataException();
         }
     }
@@ -73,6 +81,7 @@ public class StudentDAO {
             System.out.println(pstmt.toString());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
             throw new DataException();
         }
     }
@@ -95,9 +104,12 @@ public class StudentDAO {
                 std.setAddress(rs.getString(5));
                 std.setGrade(rs.getInt(6));
             }
+            conn.close();
+
             return std;
 
         } catch (SQLException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
             throw new DataException();
         }
     }
@@ -107,17 +119,19 @@ public class StudentDAO {
     {
         try {
             Connection conn = DBConnection.getConnection();
-            ResultSet rs;
-            PreparedStatement pstmt= conn.prepareStatement("UPDATE tbl_userinfo SET firstname=?, middlename=?, lastname=?,address=?,grade=? WHERE id=?");
+            PreparedStatement pstmt= conn.prepareStatement("UPDATE tbl_userinfo SET firstname=?, middlename=?, lastname=?, address=?, grade=? WHERE id=?");
             pstmt.setString(1, s.getFirstName());
             pstmt.setString(2, s.getMiddleName());
             pstmt.setString(3, s.getLastName());
             pstmt.setString(4, s.getAddress());
             pstmt.setInt(5, s.getGrade());
             pstmt.setInt(6, s.getId());
+            System.out.println(s.getFirstName() + ", kk " + s.getMiddleName() + ", " + s.getLastName() + ", " + s.getAddress() + ", " + s.getGrade() + ", " + s.getId());
+            int i = pstmt.executeUpdate();
+            conn.close();
 
-            pstmt.executeUpdate();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
             throw new DataException();
         }
     }
@@ -131,8 +145,11 @@ public class StudentDAO {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next())
                 totalStudents = rs.getInt(1);
+            conn.close();
+
             return totalStudents;
         } catch (SQLException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
             throw new DataException();
         }
     }

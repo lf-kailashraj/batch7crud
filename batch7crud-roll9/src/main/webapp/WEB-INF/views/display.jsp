@@ -30,20 +30,21 @@
       <td>${studentList.getLastName()}</td>
       <td>${studentList.getAddress()}</td>
       <td>${studentList.getGrade()}</td>
-      <td><form action="Delete" method="POST"><input type="submit" value="Edit"></form></td>
-      <td><a href="students/${studentList.getId()}/delete" class="delete">Delete This</a></td>
+        <td><a href="students/${studentList.getId()}/edit" class="edit">Edit This</a></td>
+
+        <td><a href="students/${studentList.getId()}/delete" class="delete">Delete This</a></td>
     </tr>
     </c:forEach>
 
 
   </table>
-<span><a href = "students?page=${page-1}" >Previous</a></span>
+<c:if test="${page>1}"><span><a href="students?page=${page-1}">Previous</a></span> </c:if>
     <span>
         <c:forEach begin="1" end="${totalPages}" var="counter">
-            <span><a href = "students?page=${counter}">${counter} </a></span>
-d        </c:forEach>
+            <span><a href = "students?page=${counter}"> ${counter} </a></span>
+        </c:forEach>
     </span>
-<span><a href = "students?page=${page+1}">Next</a></span>
+<c:if test="${page<=totalPages}"><span><a href="students?page=${page+1}">Next</a></span> </c:if>
 
 <script>
     var deleteElement = document.getElementsByClassName("delete");
@@ -53,6 +54,20 @@ d        </c:forEach>
             var form = document.createElement('form');
             var destinationLink = e.target.getAttribute("href");
             form.setAttribute("method", "POST");
+            form.setAttribute("action", destinationLink);
+            if (confirm("Are you sure you want to delete this?") == true) {
+                form.submit();
+            }
+        };
+    };
+
+    var editElement = document.getElementsByClassName("edit");
+    for(var i=0;i<deleteElement.length ;i++){
+        editElement[i].onclick = function(e) {
+            e.preventDefault();
+            var form = document.createElement('form');
+            var destinationLink = e.target.getAttribute("href");
+            form.setAttribute("method", "GET");
             form.setAttribute("action", destinationLink);
             form.submit();
         };

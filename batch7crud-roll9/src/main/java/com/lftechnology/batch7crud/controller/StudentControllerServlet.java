@@ -13,12 +13,15 @@ import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by sanjay on 1/18/16.
  */
 @WebServlet("/students/*")
 public class StudentControllerServlet extends HttpServlet {
+    private Logger logger = Logger.getLogger("appLogger");
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
         String[] pathParts=null;
@@ -104,10 +107,11 @@ public class StudentControllerServlet extends HttpServlet {
             stdList = studentService.fetch(page,LIMIT);
             int totalCount = studentService.studentCount();
             request.setAttribute("studentList", stdList);
-            request.setAttribute("page",page);
+            request.setAttribute("page", page);
             request.setAttribute("totalPages",totalCount/LIMIT);
             request.getServletContext().getRequestDispatcher("/WEB-INF/views/display.jsp").forward(request, response);
         } catch (DataException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
             System.out.println("--------------" + ex);
         }
     }
@@ -128,6 +132,7 @@ public class StudentControllerServlet extends HttpServlet {
             studentService.save(s);
             response.sendRedirect(request.getContextPath());
         }catch (DataException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
             System.out.println("--------------" + ex);
         }
     }
@@ -140,6 +145,7 @@ public class StudentControllerServlet extends HttpServlet {
             System.out.println(s.getAddress());
             request.getServletContext().getRequestDispatcher("/WEB-INF/views/edit.jsp").forward(request, response);
         }catch (DataException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
             System.out.println("--------------" + ex);
         }
     }
@@ -158,6 +164,7 @@ public class StudentControllerServlet extends HttpServlet {
             System.out.println(s.getAddress());
             response.sendRedirect(request.getContextPath()+"/students");
         }catch (DataException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
             System.out.println("--------------" + ex);
         }
     }
@@ -168,6 +175,7 @@ public class StudentControllerServlet extends HttpServlet {
             studentService.delete(id);
             response.sendRedirect(request.getContextPath()+"/students");
         }catch (DataException ex) {
+            logger.log(Level.SEVERE, ex.getMessage());
             System.out.println("--------------" + ex);
         }
     }
