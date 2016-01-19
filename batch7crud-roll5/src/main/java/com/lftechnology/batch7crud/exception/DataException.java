@@ -12,5 +12,9 @@ public class DataException extends Exception {
     public DataException() {
         super("Sql error");
     }
+    
+    public DataException(String message){
+        super(message);
+    }
 
 }

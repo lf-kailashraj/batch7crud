@@ -38,7 +38,8 @@ public class EmployeeDAO {
             return empList;
 
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
+        
         }
 
     }
@@ -67,7 +68,7 @@ public class EmployeeDAO {
             return emp;
 
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
 
     }
@@ -83,7 +84,7 @@ public class EmployeeDAO {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
 
     }
@@ -106,7 +107,7 @@ public class EmployeeDAO {
             }
 
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
 
     }
@@ -126,7 +127,7 @@ public class EmployeeDAO {
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
 
     }

@@ -20,9 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/employees/*")
 public class EmployeeController extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+    
     EmployeeService employeeService = new EmployeeService();
     Employee emp = new Employee();
-    private static final long serialVersionUID = 1L;
+    public static String employeeListUrl = "/batch7crud-roll5/employees";
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -35,63 +37,62 @@ public class EmployeeController extends HttpServlet {
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO Auto-generated method stub
         String path = request.getPathInfo();
         if (path != null) {
 
             String[] pathParts = path.split("/");
-            /*
-             * for (String s : pathParts) { System.out.println("parts: " + s); }
-             */
-            if (pathParts[1].equals("create"))
+            
+            if ("create".equals(pathParts[1]))
                 create(request, response);
 
-            else if (pathParts[2].equals("edit")) {
+            else if ("edit".equals(pathParts[2])) {
                 int id = Integer.parseInt(pathParts[1]);
                 edit(request, response, id);
             }
-            
-            else if (pathParts[1].equals("page")) {
+
+            else if ("page".equals(pathParts[1])) {
                 int pageNo = Integer.parseInt(pathParts[2]);
-                fetchData(request, response, pageNo-1);
+                fetchData(request, response, pageNo - 1);
             }
 
         }
 
         else {
             int pageNo = 1;
-            fetchData(request, response, pageNo-1);
+            fetchData(request, response, pageNo - 1);
         }
 
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-enerated method stub
-        // doGet(request, response);
         String path = request.getPathInfo();
         if (path != null) {
             String[] pathParts = path.split("/");
 
-            if (pathParts[1].equals("createProcess")) {
+            if ("createProcess".equals(pathParts[1])) {
                 createProcess(request, response);
 
             }
 
-            else if (pathParts[2].equals("editProcess")) {
+            else if ("editProcess".equals(pathParts[2])) {
                 int id = Integer.parseInt(pathParts[1]);
                 editProcess(request, response, id);
 
             }
 
-            else if (pathParts[2].equals("deleteProcess")) {
+            else if ("deleteProcess".equals(pathParts[2])) {
                 int id = Integer.parseInt(pathParts[1]);
                 deleteProcess(request, response, id);
             }
 
         } else {
             int pageNo = 1;
-            fetchData(request, response, pageNo-1);
+            fetchData(request, response, pageNo - 1);
         }
 
     }
@@ -101,7 +102,7 @@ public class EmployeeController extends HttpServlet {
         try {
             employeeService.deleteById(id);
 
-            response.sendRedirect("/batch7crud-roll5/employees");
+            response.sendRedirect(employeeListUrl);
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -134,7 +135,7 @@ public class EmployeeController extends HttpServlet {
 
             employeeService.edit(emp, id);
 
-            response.sendRedirect("/batch7crud-roll5/employees");
+            response.sendRedirect(employeeListUrl);
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -168,7 +169,7 @@ public class EmployeeController extends HttpServlet {
             boolean status = employeeService.create(emp);
 
             if (status == true) {
-                response.sendRedirect("/batch7crud-roll5/employees");
+                response.sendRedirect(employeeListUrl);
 
             }
 
