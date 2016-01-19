@@ -8,13 +8,35 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.lftechnology.batch7crud.util.TypeCaster;
-
-@WebServlet({ "/" })
+/**
+ * @author madandhungana <madandhungana@lftechnology.com>
+ * Jan 18, 2016
+ */
+@WebServlet("/")
 public class IndexController extends HttpServlet {
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer i = TypeCaster.toInt("123");
-        System.out.println("value of i: " + i);
-        req.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
-    };
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public IndexController() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        request.getRequestDispatcher("WEB-INF/views/index.jsp").forward(request, response);
+    }
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO Auto-generated method stub
+    }
+
 }
