@@ -19,4 +19,9 @@ public class EmployeeServices {
         return null;
     }
 
+    public List<Employee> fetch() throws DataException {
+        EmployeeDao employeeDao = new EmployeeDao();
+        return employeeDao.fetch();
+    }
+
 }

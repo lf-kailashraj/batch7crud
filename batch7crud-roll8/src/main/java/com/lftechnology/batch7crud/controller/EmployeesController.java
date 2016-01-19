@@ -2,9 +2,7 @@ package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
-import com.lftechnology.batch7crud.model.User;
 import com.lftechnology.batch7crud.services.EmployeeServices;
-import com.lftechnology.batch7crud.services.UserServices;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by grishma on 1/19/16.
@@ -21,7 +21,7 @@ public class EmployeesController extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getPathInfo();
         if (path == null) {
-            request.getServletContext().getRequestDispatcher("/WEB-INF/views/employees/index.jsp").forward(request, response);
+            fetch(request, response);
         }
         else {
             String[] parts = path.split("/");
@@ -64,7 +64,8 @@ public class EmployeesController extends HttpServlet{
             employee.setPhone(phone);
 
             employeeServices.create(employee);
-            fetch(request, response);
+            response.sendRedirect("/employees");
+//            fetch(request, response);
         } catch (DataException e) {
             e.printStackTrace();
             // check here for error and do required redirection and message display
@@ -74,6 +75,14 @@ public class EmployeesController extends HttpServlet{
     }
 
     private void fetch(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.sendRedirect("/employees");
+        try {
+            List<Employee> employeeList = new ArrayList<Employee>();
+            EmployeeServices employeeServices = new EmployeeServices();
+            employeeList = employeeServices.fetch();
+            request.setAttribute("employeeList", employeeList);
+            request.getServletContext().getRequestDispatcher("/WEB-INF/views/employees/index.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
