@@ -11,7 +11,7 @@
 <html>
 <head>
   <title>Display Page</title>
-    <base href=${pageContext.request.contextPath}/students/" />
+    <base href=${pageContext.request.contextPath}/" />
 
 </head>
 <style>
@@ -22,7 +22,7 @@
 <body>
 <table>
 
-  <c:forEach items="${studentList}" var="studentList" varStatus="counter">
+    <c:forEach items="${studentList}" var="studentList" varStatus="counter">
     <tr>
       <td>${counter.count}</td>
       <td>${studentList.getFirstName()}</td>
@@ -31,11 +31,20 @@
       <td>${studentList.getAddress()}</td>
       <td>${studentList.getGrade()}</td>
       <td><form action="Delete" method="POST"><input type="submit" value="Edit"></form></td>
-      <td><a href="${studentList.getId()}/delete" class="delete">Delete This</a></td>
+      <td><a href="students/${studentList.getId()}/delete" class="delete">Delete This</a></td>
     </tr>
-  </c:forEach>
+    </c:forEach>
+
 
   </table>
+<span><a href = "students?page=${page-1}" >Previous</a></span>
+    <span>
+        <c:forEach begin="1" end="${totalPages}" var="counter">
+            <span><a href = "students?page=${counter}">${counter} </a></span>
+d        </c:forEach>
+    </span>
+<span><a href = "students?page=${page+1}">Next</a></span>
+
 <script>
     var deleteElement = document.getElementsByClassName("delete");
     for(var i=0;i<deleteElement.length ;i++){
@@ -45,7 +54,6 @@
             var destinationLink = e.target.getAttribute("href");
             form.setAttribute("method", "POST");
             form.setAttribute("action", destinationLink);
-//            console.log(destinationLink);
             form.submit();
         };
     };

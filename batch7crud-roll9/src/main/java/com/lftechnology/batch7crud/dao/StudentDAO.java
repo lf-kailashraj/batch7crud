@@ -29,19 +29,22 @@ public class StudentDAO {
             System.out.println(pstmt.toString());
 
             pstmt.executeUpdate();
-            System.out.println("Insert Success");
         } catch (SQLException ex) {
             throw new DataException();
         }
     }
 
-    public List<Student> fetch(int page) throws DataException
+    public List<Student> fetch(int page,int LIMIT) throws DataException
     {
         try {
             Connection conn = DBConnection.getConnection();
             List<Student> stdList = new ArrayList<Student>();
             ResultSet rs=null;
-            PreparedStatement pstmt= conn.prepareStatement("SELECT * from tbl_userinfo;");
+
+            int startOffset = (page-1) *LIMIT;
+            PreparedStatement pstmt= conn.prepareStatement("SELECT * from tbl_userinfo LIMIT ? OFFSET ?");
+            pstmt.setInt(1,LIMIT);
+            pstmt.setInt(2,startOffset);
 
             rs = pstmt.executeQuery();
             while(rs.next()){
@@ -54,7 +57,6 @@ public class StudentDAO {
                 std.setGrade(rs.getInt(6));
                 stdList.add(std);
             }
-            System.out.println("fetch Success");
             return stdList;
 
         } catch (SQLException ex) {
@@ -70,7 +72,6 @@ public class StudentDAO {
             pstmt.setInt(1, id);
             System.out.println(pstmt.toString());
             pstmt.executeUpdate();
-            System.out.println("Delete Success");
         } catch (SQLException ex) {
             throw new DataException();
         }
@@ -94,7 +95,6 @@ public class StudentDAO {
                 std.setAddress(rs.getString(5));
                 std.setGrade(rs.getInt(6));
             }
-            System.out.println(id+"fetch By Id Success"+std.getAddress());
             return std;
 
         } catch (SQLException ex) {
@@ -117,9 +117,21 @@ public class StudentDAO {
             pstmt.setInt(6, s.getId());
 
             pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new DataException();
+        }
+    }
 
-            System.out.println(s.getId()+"fetch By Id Success");
-
+    public int studentCount() throws DataException//get the object
+    {
+        try {
+            int totalStudents = 0;
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement("SELECT count(*) FROM tbl_userinfo");
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next())
+                totalStudents = rs.getInt(1);
+            return totalStudents;
         } catch (SQLException ex) {
             throw new DataException();
         }

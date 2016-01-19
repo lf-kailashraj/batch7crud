@@ -15,8 +15,8 @@ public class StudentService {
     public void save(Student s) throws DataException{
         stdDAO.insert(s);
     }
-    public List<Student> fetch(int page) throws DataException{
-        return stdDAO.fetch(page);
+    public List<Student> fetch(int page, int LIMIT) throws DataException{
+        return stdDAO.fetch(page,LIMIT);
     }
     public void delete(int id) throws DataException{
         stdDAO.delete(id);
@@ -27,5 +27,9 @@ public class StudentService {
     public void edit(Student s) throws DataException{
         stdDAO.edit(s);
     }
+    public int studentCount() throws DataException{
+        return stdDAO.studentCount();
+    }
+
 
 }

@@ -99,9 +99,13 @@ public class StudentControllerServlet extends HttpServlet {
         System.out.println("fetch the data of students");
         List<Student> stdList = new ArrayList<Student>();
         try {
+            int LIMIT = 20;
             StudentService studentService = new StudentService();
-            stdList = studentService.fetch(page);
+            stdList = studentService.fetch(page,LIMIT);
+            int totalCount = studentService.studentCount();
             request.setAttribute("studentList", stdList);
+            request.setAttribute("page",page);
+            request.setAttribute("totalPages",totalCount/LIMIT);
             request.getServletContext().getRequestDispatcher("/WEB-INF/views/display.jsp").forward(request, response);
         } catch (DataException ex) {
             System.out.println("--------------" + ex);
