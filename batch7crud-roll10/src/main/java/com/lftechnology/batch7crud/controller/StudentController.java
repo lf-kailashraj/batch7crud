@@ -36,11 +36,11 @@ public class StudentController extends CustomHttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String[] params = params(req);
 
-        if (params.length<=1) {
+        if (params.length <= 1) {
             Integer page = 1;
             try {
                 String pageText = req.getParameter("page");
-                if(pageText!=null){
+                if (pageText != null) {
                     page = Integer.parseInt(pageText);
                 }
             } catch (NumberFormatException e) {
@@ -67,7 +67,8 @@ public class StudentController extends CustomHttpServlet {
 
     }
 
-    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String[] params = params(req);
 
         if ("create".equalsIgnoreCase(params[1])) {
@@ -93,10 +94,10 @@ public class StudentController extends CustomHttpServlet {
 
     private void list(HttpServletRequest req, HttpServletResponse resp, int page) throws ServletException, IOException {
         try {
-            Integer offset = (page - 1)*TOTAL_DATA_TO_FETCH;
+            Integer offset = (page - 1) * TOTAL_DATA_TO_FETCH;
             List<Student> studentList = studentService.fetch(offset, TOTAL_DATA_TO_FETCH);
             Integer totalRecord = studentService.fetchTotalRecordNumber();
-            Double totalPages = ceil(totalRecord*1.0 / TOTAL_DATA_TO_FETCH);
+            Double totalPages = ceil(totalRecord * 1.0 / TOTAL_DATA_TO_FETCH);
 
             req.setAttribute("studentList", studentList);
             req.setAttribute("totalPages", totalPages.intValue());
