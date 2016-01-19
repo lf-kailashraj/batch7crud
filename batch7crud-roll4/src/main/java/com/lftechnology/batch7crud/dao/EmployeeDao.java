@@ -4,7 +4,6 @@ import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.util.DbConnection;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,6 @@ public class EmployeeDao {
 
             while (rs.next()) {
                 Employee e = new Employee();
-
                 e.setId(rs.getInt("id"));
                 e.setFirstName(rs.getString("first_name"));
                 e.setLastName(rs.getString("last_name"));
@@ -40,7 +38,7 @@ public class EmployeeDao {
             }
             return employeeList;
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
     }
 
@@ -62,7 +60,7 @@ public class EmployeeDao {
             return e;
 
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
     }
 
@@ -76,7 +74,7 @@ public class EmployeeDao {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
     }
 
@@ -91,7 +89,7 @@ public class EmployeeDao {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
     }
 
@@ -103,7 +101,7 @@ public class EmployeeDao {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
     }
 
@@ -119,7 +117,7 @@ public class EmployeeDao {
             return noOfRecords;
 
         } catch (SQLException e) {
-            throw new DataException("Error in count");
+            throw new DataException(e.getMessage());
         }
     }
 

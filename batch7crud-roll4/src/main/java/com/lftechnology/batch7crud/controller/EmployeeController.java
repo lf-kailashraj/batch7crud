@@ -3,7 +3,6 @@ package com.lftechnology.batch7crud.controller;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
-import jdk.nashorn.internal.ir.RuntimeNode;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by pratishshr on 1/14/16.
@@ -20,27 +21,32 @@ import java.util.Arrays;
 @WebServlet(name = "EmployeeController", urlPatterns = { "/employees/*" })
 
 public class EmployeeController extends HttpServlet {
+    private static final String ERROR_PAGE = "/WEB-INF/views/error.jsp";
+    private static final String MESSAGE = "message";
+
+    private Logger logger = Logger.getLogger("appLogger");
     private EmployeeService employeeService;
 
-    public EmployeeController() throws DataException {
+    public EmployeeController() throws DataExceptigion {
         employeeService = new EmployeeService();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String urlPath = request.getPathInfo();
 
-        if (urlPath == null || urlPath.equals("/")) {
+        if (urlPath == null || "/".equals(urlPath)) {
             int page = 1;
 
             if (request.getParameter("page") != null) {
                 try {
                     page = Integer.parseInt(request.getParameter("page"));
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                    request.setAttribute("message", e.getMessage());
+                    logger.log(Level.SEVERE, e.getMessage());
 
-                    RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    request.setAttribute(MESSAGE, e.getMessage());
+
+                    RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
                     view.forward(request, response);
                 }
             } else {
@@ -50,54 +56,57 @@ public class EmployeeController extends HttpServlet {
 
         } else {
             String[] paths = urlPath.split("/");
-            System.out.println(Arrays.toString(paths));
-            if (paths[1].equals("create")) {
+
+            if ("create".equals(paths[1])) {
                 create(request, response);
             } else if (paths[2].equals("edit")) {
                 try {
                     int id = Integer.parseInt(paths[1]);
                     edit(request, response, id);
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                    request.setAttribute("message", e.getMessage());
+                    logger.log(Level.SEVERE, e.getMessage());
 
-                    RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    request.setAttribute(MESSAGE, e.getMessage());
+
+                    RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
                     view.forward(request, response);
                 }
             }
         }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String urlPath = request.getPathInfo();
 
-        if(urlPath != null || !urlPath.equals("/")){
+        if (urlPath != null || !"/".equals(urlPath)) {
             String[] paths = urlPath.split("/");
-            if (paths[1].equals("create")) {
+            if ("create".equals(paths[1])) {
                 createProcess(request, response);
-            } else if (paths[2].equals("edit")) {
+            } else if ("edit".equals(paths[2])) {
                 try {
                     int id = Integer.parseInt(paths[1]);
                     editProcess(request, response, id);
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                    request.setAttribute("message", e.getMessage());
+                    logger.log(Level.SEVERE, e.getMessage());
 
-                    RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    request.setAttribute(MESSAGE, e.getMessage());
+
+                    RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
                     view.forward(request, response);
                 }
-            } else if (paths[2].equals("delete")) {
+            } else if ("delete".equals(paths[2])) {
                 try {
                     int id = Integer.parseInt(paths[1]);
                     deleteProcess(request, response, id);
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                    request.setAttribute("message", e.getMessage());
+                    logger.log(Level.SEVERE, e.getMessage());
 
-                    RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    request.setAttribute(MESSAGE, e.getMessage());
+
+                    RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
                     view.forward(request, response);
                 }
 
@@ -121,11 +130,12 @@ public class EmployeeController extends HttpServlet {
             view.forward(request, response);
 
         } catch (DataException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            request.setAttribute("message", e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage());
 
-            RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            request.setAttribute(MESSAGE, e.getMessage());
+
+            RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
             view.forward(request, response);
         }
     }
@@ -151,10 +161,12 @@ public class EmployeeController extends HttpServlet {
             employeeService.save(employee);
             response.sendRedirect(request.getContextPath() + "/employees");
         } catch (DataException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            logger.log(Level.SEVERE, e.getMessage());
 
-            RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            request.setAttribute(MESSAGE, e.getMessage());
+
+            RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
             view.forward(request, response);
         }
     }
@@ -167,10 +179,12 @@ public class EmployeeController extends HttpServlet {
             RequestDispatcher view = request.getRequestDispatcher(forward);
             view.forward(request, response);
         } catch (DataException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            logger.log(Level.SEVERE, e.getMessage());
 
-            RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            request.setAttribute(MESSAGE, e.getMessage());
+
+            RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
             view.forward(request, response);
         }
 
@@ -191,10 +205,12 @@ public class EmployeeController extends HttpServlet {
             employeeService.update(employee);
             response.sendRedirect(request.getContextPath() + "/employees");
         } catch (DataException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            logger.log(Level.SEVERE, e.getMessage());
 
-            RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            request.setAttribute(MESSAGE, e.getMessage());
+
+            RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
             view.forward(request, response);
         }
 
@@ -205,10 +221,12 @@ public class EmployeeController extends HttpServlet {
             employeeService.deleteEmployee(id);
             response.sendRedirect(request.getContextPath() + "/employees");
         } catch (DataException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            logger.log(Level.SEVERE, e.getMessage());
 
-            RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            request.setAttribute(MESSAGE, e.getMessage());
+
+            RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
             view.forward(request, response);
         }
     }

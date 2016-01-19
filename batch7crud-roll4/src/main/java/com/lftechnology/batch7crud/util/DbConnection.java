@@ -13,14 +13,18 @@ import java.sql.*;
  */
 public class DbConnection {
 
+    private DbConnection() {
+
+    }
+
     public static Connection getConnection() throws DataException {
         try {
             Context initCtx = new InitialContext();
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
             DataSource ds = (DataSource) envCtx.lookup("jdbc/ems");
 
-            Connection connection = ds.getConnection();
-            return connection;
+            return ds.getConnection();
+
         } catch (SQLException e) {
             throw new DataException(e.getMessage());
         } catch (NamingException e) {

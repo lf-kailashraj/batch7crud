@@ -12,7 +12,8 @@
     <title>Add User</title>
 </head>
 <body>
-    <h1>Add User</h1>
+<h1>Add User</h1>
+
     <form action="employees/create" method="post">
         First Name: <input type="text" name="firstName">
         <br/>
