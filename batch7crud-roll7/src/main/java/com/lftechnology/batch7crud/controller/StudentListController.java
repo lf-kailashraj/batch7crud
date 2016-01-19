@@ -25,6 +25,9 @@ public class StudentListController extends HttpServlet {
             if("NewEntry".equals(urlparts[1])){
                 createProcess(request, response);
             }
+            else if("edit".equals(urlparts[2])){
+                editProcess(request,response,Integer.parseInt(urlparts[1]));
+            }
         }
     }
 
@@ -84,7 +87,18 @@ public class StudentListController extends HttpServlet {
         }
     }
 
-    private void editProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
+    private void editProcess(HttpServletRequest request, HttpServletResponse response, int roll) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        String address = request.getParameter("address");
+//        int rollnumber = Integer.parseInt(request.getParameter("roll"));
+        Student s = new Student(name,address,roll);
 
+        StudentServices stdServices = new StudentServices();
+        try {
+            stdServices.update(s);
+            response.sendRedirect("/Students");
+        } catch (DataException e) {
+            e.printStackTrace();
+        }
     }
 }
