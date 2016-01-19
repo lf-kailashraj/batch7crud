@@ -8,34 +8,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <base href="${pageContext.request.contextPath}/">
-  <title>Edit Page</title>
+    <base href="${pageContext.request.contextPath}/">
+    <title>Edit Page</title>
 </head>
 <body>
 <h1>Edit information</h1>
+
 <form name="jspForm" method="POST" action="employees/${employee.getId()}/edit">
-  <table>
-    <tbody>
-    <tr>
-      <td>Name:</td>
-      <td><input type="text" name="name" value="${employee.getName()}"></td>
-    </tr>
-    <tr>
-      <td>Address:</td>
-      <td><input type="text" name="address" value="${employee.getAddress()}"></td>
-    </tr>
-    <tr>
-      <td>Email:</td>
-      <td><input type="text" name="email" value="${employee.getEmail()}"></td>
-    </tr>
-    <tr>
-      <td>Contact Number:</td>
-      <td><input type="number" name="contact" value="${employee.getContact()}"></td>
-    </tr>
-    </tbody>
-  </table>
-  <input type="reset" value="Reset">
-  <input type="submit" value="Edit">
+    Name: <input type="text" name="name" value="${employee.getName()}">
+    <br/>
+    Address: <input type="text" name="address" value="${employee.getAddress()}">
+    <br/>
+    Email: <input type="text" name="email" value="${employee.getEmail()}">
+    <br/>
+    Contact Number: <input type="number" name="contact" value="${employee.getContact()}">
+    <br/>
+    <input type="reset" value="Reset">
+    <input type="submit" value="Edit">
 </form>
 </body>
 </html>

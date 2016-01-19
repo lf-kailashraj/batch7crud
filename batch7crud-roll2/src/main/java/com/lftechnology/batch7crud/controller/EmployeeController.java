@@ -17,7 +17,8 @@ import java.util.List;
 /**
  * Created by romit on 1/14/16.
  */
-@WebServlet(name = "EmployeeController", urlPatterns = {"/employees/*"})
+@WebServlet(name = "EmployeeController", urlPatterns = { "/employees/*" })
+
 public class EmployeeController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
@@ -29,11 +30,23 @@ public class EmployeeController extends HttpServlet {
             if (pathParts[1].equals("create")) {
                 createProcess(request, response);
             } else if (pathParts[2].equals("delete")) {
-                int id = Integer.parseInt(pathParts[1]);
-                deleteProcess(request, response, id);
+                try {
+                    int id = Integer.parseInt(pathParts[1]);
+                    deleteProcess(request, response, id);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    request.setAttribute("message", e.getMessage());
+                    request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
+                }
             } else if (pathParts[2].equals("edit")) {
-                int id = Integer.parseInt(pathParts[1]);
-                editProcess(request, response, id);
+                try {
+                    int id = Integer.parseInt(pathParts[1]);
+                    editProcess(request, response, id);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    request.setAttribute("message", e.getMessage());
+                    request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
+                }
             }
         }
     }
@@ -48,8 +61,14 @@ public class EmployeeController extends HttpServlet {
             if (pathParts[1].equals("create")) {
                 create(request, response);
             } else if (pathParts[2].equals("edit")) {
-                int id = Integer.parseInt(pathParts[1]);
-                edit(request, response, id);
+                try {
+                    int id = Integer.parseInt(pathParts[1]);
+                    edit(request, response, id);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    request.setAttribute("message", e.getMessage());
+                    request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
+                }
             }
         }
     }

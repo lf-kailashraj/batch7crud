@@ -19,42 +19,26 @@ public class EmployeeService {
     }
 
     public void insert(Employee employee) throws DataException {
-        try {
-            employeeDao.insert(employee);
-        } catch (DataException de) {
-            throw new DataException(de.getMessage());
-        }
+        employeeDao.insert(employee);
     }
 
     public List<Employee> fetch(int page) throws DataException {
-        try {
-            return employeeDao.fetch(page);
-        } catch (DataException de) {
-            throw new DataException(de.getMessage());
-        }
+        return employeeDao.fetch(page);
     }
 
     public Employee fetchById(int id) throws DataException {
-        try {
-            return employeeDao.fetchById(id);
-        } catch (DataException de) {
-            throw new DataException(de.getMessage());
-        }
+        return employeeDao.fetchById(id);
     }
 
     public void update(Employee employee) throws DataException {
-        try {
-            employeeDao.update(employee);
-        } catch (DataException de) {
-            throw new DataException(de.getMessage());
-        }
+        employeeDao.update(employee);
+    }
+
+    public int getTotalNoOfRecords() throws DataException {
+        return employeeDao.getTotalNoOfRecords();
     }
 
     public void delete(int empId) throws DataException {
-        try {
-            employeeDao.delete(empId);
-        } catch (DataException de) {
-            throw new DataException(de.getMessage());
-        }
+        employeeDao.delete(empId);
     }
 }

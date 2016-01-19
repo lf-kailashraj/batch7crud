@@ -1,6 +1,5 @@
 package com.lftechnology.batch7crud.util;
 
-
 import com.lftechnology.batch7crud.exception.DataException;
 
 import javax.naming.Context;

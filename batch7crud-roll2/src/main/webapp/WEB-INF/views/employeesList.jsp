@@ -40,7 +40,7 @@
 </table>
 <a href="employees/create">Add Employee</a>
 <script>
-    var deleteElement = document.querySelector('delete');
+    var deleteElement = document.querySelector('a.delete');
     for (var i = 0; i < deleteElement.length; i++) {
         deleteElement[i].onclick = function (e) {
             e.preventDefault();
@@ -48,8 +48,8 @@
             var confirmStatus = confirm('Are you sure to delete?');
             if (confirmStatus == true) {
                 var formElement = document.createElement('form');
-                formElement.setAttribute('action',link);
-                formElement.setAttribute('method','POST');
+                formElement.setAttribute('action', link);
+                formElement.setAttribute('method', 'POST');
                 document.body.appendChild(formElement);
                 formElement.submit();
             }
