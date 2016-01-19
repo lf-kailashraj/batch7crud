@@ -5,7 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Hello</title>
+    <base href="${pageContext.request.contextPath}/">
+    <title>Hello</title>
 </head>
 <body>
 

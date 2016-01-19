@@ -9,7 +9,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>erron</title>
+    <base href="${pageContext.request.contextPath}/">
+    <title>error</title>
 </head>
 <body>
 

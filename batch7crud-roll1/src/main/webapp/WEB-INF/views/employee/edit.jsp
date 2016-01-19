@@ -12,6 +12,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <base href="${pageContext.request.contextPath}/">
     <title>update</title>
 </head>
 <body>

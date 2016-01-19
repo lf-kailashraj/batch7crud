@@ -9,25 +9,28 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-public class DatabaseConnection{
+public class DatabaseConnection {
 
-	public Connection getConnection() throws DataException{
+	public static Connection getConnection()
+					throws DataException {
 
-        try {
+		try {
 
-            Context initContext = new InitialContext();
-            Context envContext = (Context) initContext.lookup("java:/comp/env");
-            DataSource dataSource = (DataSource) envContext.lookup("jdbc/lf_testdatabase");
-            Connection connection = dataSource.getConnection();
-            return connection;
+			Context initContext = new InitialContext();
+			Context envContext = (Context) initContext.lookup("java:/comp/env");
+			DataSource dataSource = (DataSource) envContext.lookup(
+							"jdbc/lf_testdatabase");
+			Connection connection = dataSource.getConnection();
+			return connection;
 
-        }catch (NamingException ne){
-            ne.printStackTrace();
-            throw new DataException();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DataException();
-        }
+		}
+		catch (NamingException ne) {
+			ne.printStackTrace();
+			throw new DataException();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException();
+		}
 	}
 }

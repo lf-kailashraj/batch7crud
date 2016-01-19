@@ -5,8 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>list</title>
+    <base href="${pageContext.request.contextPath}/">
+    <title>list</title>
 </head>
 <body>
 
@@ -22,22 +22,22 @@
 			</tr>
 		</thead>
 		<tbody>
-        <c:forEach items="${employees}" var="employee">
-            <tr>
-                <td><c:out value="${employee.id}" /></td>
-                <td><c:out value="${employee.userName}" /></td>
-                <td><c:out value="${employee.password}" /></td>
-                <td><c:out value="${employee.fullName}" /></td>
-                <td><c:out value="${employee.department}" /></td>
-                <td><c:out value="${employee.address}" /></td>
-                <td><a href="employees/${employee.id}/delete" class="delete"> Delete</a></td>
-                <td><a href="employees/${employee.id}/edit" class="edit"> Edit</a></td>
-            </tr>
-        </c:forEach>
-
-        <a href="employees/create">Add Employee</a>
+            <c:forEach items="${employees}" var="employee">
+                <tr>
+                    <td><c:out value="${employee.id}" /></td>
+                    <td><c:out value="${employee.userName}" /></td>
+                    <td><c:out value="${employee.password}" /></td>
+                    <td><c:out value="${employee.fullName}" /></td>
+                    <td><c:out value="${employee.department}" /></td>
+                    <td><c:out value="${employee.address}" /></td>
+                    <td><a href="employees/${employee.id}/delete" class="delete"> Delete</a></td>
+                    <td><a href="employees/${employee.id}/edit" class="edit"> Edit</a></td>
+                </tr>
+            </c:forEach>
 		</tbody>
 	</table>
+
+    <a href="employees/create">Add Employee</a>
 
     <script>
 
