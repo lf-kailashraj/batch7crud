@@ -80,4 +80,16 @@ public class StudentDataAccess {
         }
     }
 
+    public void delete(int roll) throws DataException{
+        try{
+            String query = "delete from students where roll = ?";
+            PreparedStatement ps = DbUtilities.getPreparedStatement(query);
+            ps.setInt(1,roll);
+            ps.executeUpdate();
+
+        }catch(SQLException ex){
+            throw new DataException(ex.getMessage());
+        }
+    }
+
 }

@@ -26,4 +26,8 @@ public class StudentServices {
     public void update(Student s) throws DataException{
         studentDao.update(s);
     }
+
+    public void delete(int roll) throws DataException{
+        studentDao.delete(roll);
+    }
 }

@@ -26,7 +26,10 @@ public class StudentListController extends HttpServlet {
                 createProcess(request, response);
             }
             else if("edit".equals(urlparts[2])){
-                editProcess(request,response,Integer.parseInt(urlparts[1]));
+                editProcess(request, response, Integer.parseInt(urlparts[1]));
+            }
+            else if("delete".equals(urlparts[2])){
+                deleteProcess(request,response,Integer.parseInt(urlparts[1]));
             }
         }
     }
@@ -38,10 +41,10 @@ public class StudentListController extends HttpServlet {
         else {
             String[] urlparts = urlpath.split("/");
             if("NewEntry".equals(urlparts[1])){
-                create(request,response);
+                create(request, response);
             }
             else if("edit".equals(urlparts[2])){
-                edit(request,response,Integer.parseInt(urlparts[1]));
+                edit(request, response, Integer.parseInt(urlparts[1]));
             }
         }
 
@@ -80,7 +83,7 @@ public class StudentListController extends HttpServlet {
     private void edit(HttpServletRequest request, HttpServletResponse response, int roll) throws ServletException, IOException {
         StudentServices stdservice = new StudentServices();
         try{
-            request.setAttribute("student",stdservice.fetchById(roll));
+            request.setAttribute("student", stdservice.fetchById(roll));
             request.getRequestDispatcher("/WEB-INF/views/editEntry.jsp").forward(request, response);
         } catch (DataException e){
             e.printStackTrace();
@@ -96,6 +99,16 @@ public class StudentListController extends HttpServlet {
         StudentServices stdServices = new StudentServices();
         try {
             stdServices.update(s);
+            response.sendRedirect("/Students");
+        } catch (DataException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int roll) throws ServletException, IOException {
+        StudentServices stdServices = new StudentServices();
+        try {
+            stdServices.delete(roll);
             response.sendRedirect("/Students");
         } catch (DataException e) {
             e.printStackTrace();
