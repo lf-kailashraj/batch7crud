@@ -27,7 +27,7 @@ public class EmployeeController extends HttpServlet {
     private Logger logger = Logger.getLogger("appLogger");
     private EmployeeService employeeService;
 
-    public EmployeeController() throws DataExceptigion {
+    public EmployeeController() throws DataException {
         employeeService = new EmployeeService();
     }
 
