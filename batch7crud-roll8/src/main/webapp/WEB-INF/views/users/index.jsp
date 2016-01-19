@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: grishma
@@ -11,8 +12,17 @@
     <title>Users</title>
 </head>
 <body>
+    <%--<c:choose>--%>
+        <%--<c:when test="${success}">--%>
+            <%--Welcome user!--%>
+        <%--</c:when>--%>
+    <%--</c:choose>--%>
+    <div>
+        <a href="#">Manage Employees</a>
+    </div>
 
-Users Collection Here
+
+
 
 </body>
 </html>
