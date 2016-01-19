@@ -8,7 +8,6 @@
 <title>Hello</title>
 </head>
 <body>
-	<div>Hello world!!</div>
 
     <ul>
         <li><a href="employees/create">Add Employee</a></li>

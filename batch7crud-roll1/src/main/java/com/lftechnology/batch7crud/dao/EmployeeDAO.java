@@ -10,11 +10,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeDAOImpl{
+public class EmployeeDAO {
 
 	DatabaseConnection databaseConnection = new DatabaseConnection();
 
-	public int insert(Employee employee) throws DataException {
+	public void insert(Employee employee) throws DataException {
 
         try {
             Connection connection = databaseConnection.getConnection();
@@ -26,7 +26,7 @@ public class EmployeeDAOImpl{
             statement.setString(4, employee.getFullName());
             statement.setString(5, employee.getDepartment());
             statement.setString(6, employee.getAddress());
-            return statement.executeUpdate();
+            statement.executeUpdate();
         }catch (SQLException e){
             throw new DataException();
         }
@@ -40,10 +40,9 @@ public class EmployeeDAOImpl{
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
             ResultSet result = statement.executeQuery();
             List<Employee> employees = new ArrayList<Employee>();
-            Employee employee = null;
 
             while(result.next()){
-                employee = new Employee();
+                Employee employee = new Employee();
                 employee.setId(result.getInt("id"));
                 employee.setUserName(result.getString("userName"));
                 employee.setPassword(result.getString("password"));
@@ -59,7 +58,7 @@ public class EmployeeDAOImpl{
 
 	}
 
-    public Employee getEmployeeById(int id) throws DataException{
+    public Employee fetchById(int id) throws DataException{
 
         try{
             Connection connection = databaseConnection.getConnection();
@@ -82,7 +81,7 @@ public class EmployeeDAOImpl{
         }
     }
 
-    public int update(Employee employee) throws DataException{
+    public void update(Employee employee) throws DataException{
         try{
             Connection connection = databaseConnection.getConnection();
             String sqlQuery = "update employee set id=?, userName=?, password=?,fullName=?," +
@@ -95,19 +94,19 @@ public class EmployeeDAOImpl{
             preparedStatement.setString(5,employee.getDepartment());
             preparedStatement.setString(6, employee.getAddress());
             preparedStatement.setInt(7, employee.getId());
-            return preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
         }catch (SQLException e){
             throw new DataException();
         }
     }
 
-    public int delete(int id) throws DataException{
+    public void delete(int id) throws DataException{
         try{
             Connection connection = databaseConnection.getConnection();
             String sqlQuery = "delete from employee where id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
             preparedStatement.setInt(1, id);
-            return preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
         }catch (SQLException e){
             throw new DataException();
         }

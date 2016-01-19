@@ -2,7 +2,7 @@ package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
-import com.lftechnology.batch7crud.service.EmployeeServiceImpl;
+import com.lftechnology.batch7crud.service.EmployeeService;
 import com.lftechnology.batch7crud.util.TypeCaster;
 
 import java.io.IOException;
@@ -20,8 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet({"/employees/*"})
 public class EmployeeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
-
+    EmployeeService employeeService = new EmployeeService();
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -76,7 +75,6 @@ public class EmployeeController extends HttpServlet {
 
     private void list(HttpServletRequest request, HttpServletResponse response, int page) throws ServletException, IOException {
 
-        System.out.println("hello");
         try {
             List<Employee> employees = employeeService.fetch();
             request.setAttribute("employees", employees);
@@ -101,16 +99,10 @@ public class EmployeeController extends HttpServlet {
         String department = request.getParameter("department");
         String address = request.getParameter("address");
         Employee employee = new Employee(id,userName,password,fullName,department,address);
-        System.out.println(employee);
 
-        PrintWriter out = response.getWriter();
         try {
-            int resultValue = employeeService.create(employee);
-            if(resultValue != 0){
-                response.sendRedirect("/employees");
-            }else{
-                out.println("<p>employee cannot be added</p>");
-            }
+            employeeService.create(employee);
+            response.sendRedirect("/employees");
         } catch (DataException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -121,7 +113,7 @@ public class EmployeeController extends HttpServlet {
 
     private void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
         try {
-            Employee employee = employeeService.getEmployeeById(id);
+            Employee employee = employeeService.fetchById(id);
             request.setAttribute("employee", employee);
             request.getServletContext().getRequestDispatcher("/WEB-INF/views/employee/edit.jsp").forward(request, response);
         } catch (DataException e) {
@@ -133,7 +125,6 @@ public class EmployeeController extends HttpServlet {
     }
 
     private void editProcess(HttpServletRequest request, HttpServletResponse response,int id) throws ServletException, IOException {
-        System.out.println("updating employee information");
         id = TypeCaster.toInt(request.getParameter("id"));
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
@@ -142,14 +133,9 @@ public class EmployeeController extends HttpServlet {
         String address = request.getParameter("address");
         Employee employee = new Employee(id,userName,password,fullName,department,address);
 
-        PrintWriter out = response.getWriter();
         try {
-            int resultValue = employeeService.update(employee);
-            if(resultValue != 0){
-                response.sendRedirect("/employees");
-            }else{
-                out.println("<p>employee cannot be edited</p>");
-            }
+            employeeService.update(employee);
+            response.sendRedirect("/employees");
         } catch (DataException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -160,13 +146,8 @@ public class EmployeeController extends HttpServlet {
 
     private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
         try {
-            PrintWriter out = response.getWriter();
-            int resultValue = employeeService.delete(id);
-            if(resultValue != 0){
-                response.sendRedirect("/employees");
-            }else{
-                out.println("<p>employee cannot be deleted</p>");
-            }
+            employeeService.delete(id);
+            response.sendRedirect("/employees");
         } catch (DataException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
