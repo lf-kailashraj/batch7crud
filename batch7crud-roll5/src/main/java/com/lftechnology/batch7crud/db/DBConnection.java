@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lftechnology.batch7crud.db;
 
 import java.sql.Connection;
