@@ -24,7 +24,18 @@ public class EmployeeController extends HttpServlet {
         String pathInfo = request.getPathInfo();
 
         if (pathInfo == null || pathInfo.equals("/")) {
-            list(request, response, 1);
+            int page = 1;
+            if (request.getParameter("page") != null) {
+                try {
+                    page = Integer.parseInt(request.getParameter("page"));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    request.setAttribute("message", e.getMessage());
+                    request.getRequestDispatcher("/WEB-INF/views/pageNotFound.jsp").forward(request, response);
+                }
+                list(request, response, page);
+            }
+
         } else {
             String[] pathParts = pathInfo.split("/");
             if (pathParts[1].equals("create")) {
@@ -36,7 +47,7 @@ public class EmployeeController extends HttpServlet {
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                     request.setAttribute("message", e.getMessage());
-                    request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/pageNotFound.jsp").forward(request, response);
                 }
             } else if (pathParts[2].equals("edit")) {
                 try {
@@ -45,7 +56,7 @@ public class EmployeeController extends HttpServlet {
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                     request.setAttribute("message", e.getMessage());
-                    request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/pageNotFound.jsp").forward(request, response);
                 }
             }
         }
@@ -55,7 +66,16 @@ public class EmployeeController extends HttpServlet {
         String pathInfo = request.getPathInfo();
 
         if (pathInfo == null || pathInfo.equals("/")) {
-            list(request, response, 1);
+            int page = 1;
+            if (request.getParameter("page") != null)
+                try {
+                    page = Integer.parseInt(request.getParameter("page"));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    request.setAttribute("message", e.getMessage());
+                    request.getRequestDispatcher("/WEB-INF/views/pageNotFound.jsp").forward(request, response);
+                }
+            list(request, response, page);
         } else {
             String[] pathParts = pathInfo.split("/");
             if (pathParts[1].equals("create")) {
@@ -67,7 +87,7 @@ public class EmployeeController extends HttpServlet {
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                     request.setAttribute("message", e.getMessage());
-                    request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/pageNotFound.jsp").forward(request, response);
                 }
             }
         }
@@ -76,14 +96,25 @@ public class EmployeeController extends HttpServlet {
     private void list(HttpServletRequest request, HttpServletResponse response, int page) throws ServletException, IOException {
         try {
             EmployeeService employeeService = new EmployeeService();
-            List<Employee> empList = employeeService.fetch(page);
+            List<Employee> empList = employeeService.fetch(page - 1);
+            int totalNoOfRecords = employeeService.getTotalNoOfRecords();
+            if (empList.size() == 0) {
+                request.getRequestDispatcher("/WEB-INF/views/pageNotFound.jsp").forward(request, response);
+            }
+            int noOfPages = (int) Math.ceil(totalNoOfRecords * 1.0 / 10);
             request.setAttribute("employeeList", empList);
+            request.setAttribute("noOfPages", noOfPages);
+            request.setAttribute("currentPage", page);
             request.getRequestDispatcher("/WEB-INF/views/employeesList.jsp").forward(request, response);
         } catch (DataException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             request.setAttribute("message", e.getMessage());
             request.getRequestDispatcher("/WEB-INF/views/errorPage.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            request.setAttribute("message", e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/views/pageNotFound.jsp").forward(request, response);
         }
     }
 

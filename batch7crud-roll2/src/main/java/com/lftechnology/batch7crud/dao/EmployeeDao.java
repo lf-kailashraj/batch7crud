@@ -123,8 +123,8 @@ public class EmployeeDao {
             while (resultSet.next()) {
                 total = resultSet.getInt("total");
             }
+            con.close();
             return total;
-
         } catch (SQLException e) {
             throw new DataException(e.getMessage());
         }

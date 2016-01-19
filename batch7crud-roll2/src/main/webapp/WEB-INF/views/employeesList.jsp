@@ -25,9 +25,15 @@
         <td>Contact</td>
         <td colspan="2">Operations</td>
     </tr>
-    <c:forEach items="${employeeList}" var="employee" varStatus="counter">
+    <c:if test="${currentPage == 1}">
+        <c:set var="count" value="1"/>
+    </c:if>
+    <c:if test="${currentPage > 1}">
+        <c:set var="count" value="${(currentPage -1)*10 +1}"/>
+    </c:if>
+    <c:forEach items="${employeeList}" var="employee">
         <tr>
-            <td>${counter.count}</td>
+            <td>${count}</td>
             <td>${employee.getName()}</td>
             <td>${employee.getAddress()}</td>
             <td>${employee.getEmail()}</td>
@@ -35,12 +41,35 @@
             <td><a href="employees/${employee.getId()}/edit" class="edit">Edit</a></td>
             <td><a href="employees/${employee.getId()}/delete" class="delete">Delete</a></td>
         </tr>
+        <c:set var="count" value="${count+1}"/>
     </c:forEach>
+    </tbody>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <c:if test="${currentPage != 1}">
+            <td><a href="employees?page=${currentPage - 1}">Previous</a></td>
+        </c:if>
+        <c:forEach begin="1" end="${noOfPages}" var="i">
+            <c:choose>
+                <c:when test="${currentPage eq i}">
+                    <td>${i}</td>
+                </c:when>
+                <c:otherwise>
+                    <td><a href="employees?page=${i}">${i}</a></td>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+        <c:if test="${currentPage lt noOfPages}">
+            <td><a href="employees?page=${currentPage + 1}">Next</a></td>
+        </c:if>
+    </tr>
     </tbody>
 </table>
 <a href="employees/create">Add Employee</a>
 <script>
-    var deleteElement = document.querySelector('a.delete');
+    var deleteElement = document.querySelectorAll('a.delete');
     for (var i = 0; i < deleteElement.length; i++) {
         deleteElement[i].onclick = function (e) {
             e.preventDefault();
