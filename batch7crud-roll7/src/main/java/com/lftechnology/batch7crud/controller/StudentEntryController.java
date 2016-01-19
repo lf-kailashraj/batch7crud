@@ -31,7 +31,7 @@ public class StudentEntryController extends HttpServlet {
         StudentServices stdServices = new StudentServices();
         try {
             stdServices.addNew(s);
-            response.sendRedirect("/Students/ViewAll");
+            response.sendRedirect("/Students");
         } catch (DataException e) {
             e.printStackTrace();
         }

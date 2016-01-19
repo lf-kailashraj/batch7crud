@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * Created by leapfrog on 1/18/16.
  */
-@WebServlet(name = "StudentListController", urlPatterns = {"/Students/ViewAll/*"})
+@WebServlet(name = "StudentListController", urlPatterns = {"/Students/*"})
 public class StudentListController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

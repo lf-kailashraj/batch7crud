@@ -11,11 +11,12 @@
     <title>New Entry</title>
 </head>
 <body>
-  <form action = "/NewEntry" method="post">
+  <form action = "/Students/NewEntry" method="post">
     <input type = "text" name = "name" placeholder = "Name" />
     <input type = "text" name = "address" placeholder = "Address"/>
     <input type = "text" name = "roll" placeholder = "Roll"/>
     <input type = "submit" />
   </form>
+  <div><a href="/Students">View All</a></div>
 </body>
 </html>

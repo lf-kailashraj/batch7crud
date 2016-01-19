@@ -21,5 +21,6 @@
       </tr>
     </c:forEach>
   </table>
+  <div><a href="/Students/NewEntry">New Entry</a></div>
 </body>
 </html>

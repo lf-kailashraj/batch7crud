@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div>Hello world!!</div>
-	<div><a href="/NewEntry">New Entry</a></div>
-	<%--<div><a href="/ViewAll">View All</a></div>--%>
+	<div><a href="/Students/NewEntry">New Entry</a></div>
+	<div><a href="/Students">View All</a></div>
 </body>
 </html>
