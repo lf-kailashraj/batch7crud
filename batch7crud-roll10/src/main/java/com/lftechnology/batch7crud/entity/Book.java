@@ -12,7 +12,6 @@ public class Book {
     private String edition;
     private String isbn;
 
-
     public Integer getId() {
         return id;
     }

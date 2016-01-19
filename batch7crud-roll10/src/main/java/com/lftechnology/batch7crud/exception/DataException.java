@@ -6,11 +6,11 @@ package com.lftechnology.batch7crud.exception;
  */
 public class DataException extends Exception {
 
-    public DataException(){
+    public DataException() {
         super("data exception");
     }
 
-    public DataException(String message){
+    public DataException(String message) {
         super(message);
     }
 }

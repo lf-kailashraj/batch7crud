@@ -13,8 +13,8 @@
 
 </head>
 <body>
-  <p>here are students</p>
-  <table>
+    <p>here are students</p>
+    <table>
       <tr>
           <th>NAME</th>
           <th>ROLL</th>
@@ -34,12 +34,23 @@
               <td><a class="delete" href="students/${student.id}/delete">delete</a></td>
           </tr>
       </c:forEach>
-  </table>
+    </table>
 
-    <a href="?page=${nextPageNum}">next</a>
+    <div>
+        <c:if test="${currentPage != 1}">
+            <a href="?page=${currentPage-1}">prev</a>
+        </c:if>
+        <c:forEach begin="1" end="${totalPages}" var="i">
+            <a href="?page=${i}">${i}</a>
+        </c:forEach>
+        <c:if test="${currentPage != totalPages}">
+            <a href="?page=${currentPage + 1}">next</a>
+        </c:if>
+    </div>
+
+    
 
     <a href="students/create">add student</a>
-
     <script type="text/javascript">
         var deleteBtn = document.querySelectorAll("a.delete");
 

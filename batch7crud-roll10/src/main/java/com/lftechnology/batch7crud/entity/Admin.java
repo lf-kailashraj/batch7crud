@@ -4,7 +4,7 @@ package com.lftechnology.batch7crud.entity;
  * @Author binodnme
  * Created on 1/17/16
  */
-public class Admin extends Person{
+public class Admin extends Person {
     private Integer personId;
     private String username;
     private String password;

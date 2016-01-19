@@ -4,9 +4,9 @@ import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.service.StudentService;
 import com.lftechnology.batch7crud.util.TypeCaster;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -16,85 +16,104 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static java.lang.Math.ceil;
 
 /**
  * @Author binodnme
  * Created on 1/14/16
  */
 @WebServlet("/students/*")
-public class StudentController extends HttpServlet{
-    StudentService studentService = new StudentService();
+public class StudentController extends CustomHttpServlet {
+    private static Logger logger = Logger.getLogger(StudentController.class.getName());
+    private static StudentService studentService = new StudentService();
+    private static final String ERROR_MESSAGE = "errorMessage";
+    private static final Integer TOTAL_DATA_TO_FETCH = 2;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-        String servletPath = req.getPathInfo();
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String[] params = params(req);
 
-        if(servletPath == null || "/".equalsIgnoreCase(servletPath)){
+        if (params.length<=1) {
             Integer page = 1;
-            try{
-                page = Integer.parseInt(req.getParameter("page"));
-            }catch (NumberFormatException e){}
+            try {
+                String pageText = req.getParameter("page");
+                if(pageText!=null){
+                    page = Integer.parseInt(pageText);
+                }
+            } catch (NumberFormatException e) {
+                logger.log(Level.SEVERE, e.getMessage(), e);
+            }
 
             list(req, resp, page);
 
-        }else{
-            String[] params = servletPath.split("/");
+        } else {
 
-            if(params[1].equalsIgnoreCase("create")){
+            if ("create".equalsIgnoreCase(params[1])) {
                 create(req, resp);
 
-            } else if(params[2].equalsIgnoreCase("edit")){
+            } else if ("edit".equalsIgnoreCase(params[2])) {
                 Integer studentId = TypeCaster.toInt(params[1]);
-                edit(req, resp,studentId);
+                if (studentId == null) {
+                    showPageNotFound(req, resp);
+                } else {
+                    edit(req, resp, studentId);
+                }
+
             }
         }
 
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String servletPath = req.getPathInfo();
-        String[] params = servletPath.split("/");
+    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String[] params = params(req);
 
-        if(params[1].equalsIgnoreCase("create")){
-            createProcess(req,resp);
+        if ("create".equalsIgnoreCase(params[1])) {
+            createProcess(req, resp);
 
-        }else if(params[2].equalsIgnoreCase("edit")){
+        } else if ("edit".equalsIgnoreCase(params[2])) {
             Integer studentId = TypeCaster.toInt(params[1]);
-            editProcess(req, resp, studentId);
-        }else if(params[2].equalsIgnoreCase("delete")){
-            Integer studentId = TypeCaster.toInt(params[1]);
-            if((studentId == null)){
+            if ((studentId == null)) {
+                showPageNotFound(req, resp);
+            } else {
+                editProcess(req, resp, studentId);
+            }
 
-            }else{
+        } else if ("delete".equalsIgnoreCase(params[2])) {
+            Integer studentId = TypeCaster.toInt(params[1]);
+            if (studentId == null) {
+                showPageNotFound(req, resp);
+            } else {
                 deleteProcess(req, resp, studentId);
             }
         }
     }
 
-
     private void list(HttpServletRequest req, HttpServletResponse resp, int page) throws ServletException, IOException {
         try {
-            List<Student> studentList = studentService.fetch(page);
+            Integer offset = (page - 1)*TOTAL_DATA_TO_FETCH;
+            List<Student> studentList = studentService.fetch(offset, TOTAL_DATA_TO_FETCH);
+            Integer totalRecord = studentService.fetchTotalRecordNumber();
+            Double totalPages = ceil(totalRecord*1.0 / TOTAL_DATA_TO_FETCH);
+
             req.setAttribute("studentList", studentList);
-            req.setAttribute("nextPageNum", page+1);
+            req.setAttribute("totalPages", totalPages.intValue());
+            req.setAttribute("currentPage", page);
             req.getServletContext().getRequestDispatcher("/WEB-INF/views/students.jsp").forward(req, resp);
         } catch (DataException e) {
-            e.printStackTrace();
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            req.setAttribute("errorMessage", e.getMessage());
-            req.getServletContext().getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            showServerError(req, resp, e);
         }
     }
-
 
     private void create(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getServletContext().getRequestDispatcher("/WEB-INF/views/createStudent.jsp").forward(req, resp);
     }
 
-
     private void createProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name= req.getParameter("name");
+        String name = req.getParameter("name");
         String address = req.getParameter("address");
         String dob = req.getParameter("dob");
         String department = req.getParameter("department");
@@ -115,50 +134,43 @@ public class StudentController extends HttpServlet{
             student.setAddress(address);
             student.setDob(date);
 
-            try {
-                studentService.insert(student);
-                resp.sendRedirect("/students");
-            } catch (DataException e) {
-                e.printStackTrace();
-                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                req.setAttribute("errorMessage", e.getMessage());
-                req.getServletContext().getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
-            }
+            studentService.insert(student);
+            resp.sendRedirect("/students");
+
         } catch (ParseException e) {
-            req.setAttribute("errorMessage", "error while parsing date");
+            req.setAttribute(ERROR_MESSAGE, "error while parsing date");
             create(req, resp);
-        } catch (NumberFormatException e){
-            req.setAttribute("errorMessage", "number format error in 'roll'");
+        } catch (NumberFormatException e) {
+            req.setAttribute(ERROR_MESSAGE, "number format error in 'roll'");
             create(req, resp);
+        } catch (DataException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            showServerError(req, resp, e);
         }
     }
-
 
     private void edit(HttpServletRequest req, HttpServletResponse resp, Integer id) throws ServletException, IOException {
 
         try {
             Student student = studentService.fetchById(id);
-            req.setAttribute("student",student);
+            req.setAttribute("student", student);
             req.getServletContext().getRequestDispatcher("/WEB-INF/views/editStudent.jsp").forward(req, resp);
         } catch (DataException e) {
-            e.printStackTrace();
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            req.setAttribute("errorMessage", e.getMessage());
-            req.getServletContext().getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            showServerError(req, resp, e);
         }
     }
 
-
     private void editProcess(HttpServletRequest req, HttpServletResponse resp, Integer id) throws ServletException, IOException {
-        String name= req.getParameter("name");
+        String name = req.getParameter("name");
         String address = req.getParameter("address");
         String dob = req.getParameter("dob");
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
-        Date date=null;
+        Date date = null;
         try {
             date = dateFormat.parse(dob);
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
 
         Integer roll = Integer.parseInt(req.getParameter("roll"));
@@ -179,23 +191,18 @@ public class StudentController extends HttpServlet{
             studentService.update(student);
             resp.sendRedirect("/students");
         } catch (DataException e) {
-            e.printStackTrace();
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            req.setAttribute("errorMessage", e.getMessage());
-            req.getServletContext().getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            showServerError(req, resp, e);
         }
     }
-
 
     private void deleteProcess(HttpServletRequest req, HttpServletResponse resp, int id) throws ServletException, IOException {
         try {
             studentService.delete(id);
             resp.sendRedirect("/students");
         } catch (DataException e) {
-            e.printStackTrace();
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            req.setAttribute("errorMessage", e.getMessage());
-            req.getServletContext().getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            showServerError(req, resp, e);
         }
     }
 }

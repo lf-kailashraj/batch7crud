@@ -13,8 +13,8 @@ import java.util.List;
 public class StudentService {
     private StudentDao studentDao = new StudentDao();
 
-    public List<Student> fetch(Integer page) throws DataException {
-        return studentDao.fetch(page);
+    public List<Student> fetch(Integer offset, Integer limit) throws DataException {
+        return studentDao.fetch(offset, limit);
     }
 
     public void insert(Student student) throws DataException {
@@ -31,5 +31,9 @@ public class StudentService {
 
     public Student fetchById(Integer id) throws DataException {
         return studentDao.fetchById(id);
+    }
+
+    public Integer fetchTotalRecordNumber() throws DataException {
+        return studentDao.fetchTotalRecordNumber();
     }
 }

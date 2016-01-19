@@ -12,7 +12,6 @@ public class Fine {
     private Date applyDate;
     private Date endDate;
 
-
     public Integer getId() {
         return id;
     }

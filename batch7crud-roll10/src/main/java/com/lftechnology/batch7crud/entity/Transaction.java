@@ -13,7 +13,6 @@ public class Transaction {
     private Person person;
     private BookCode bookCode;
 
-
     public Integer getId() {
         return id;
     }

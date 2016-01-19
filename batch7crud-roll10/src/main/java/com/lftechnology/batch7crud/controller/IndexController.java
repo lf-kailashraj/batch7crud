@@ -12,8 +12,9 @@ import com.lftechnology.batch7crud.util.TypeCaster;
 
 @WebServlet({ "/" })
 public class IndexController extends HttpServlet {
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("test","testing");
+        req.setAttribute("test", "testing");
         resp.sendRedirect("/students");
     }
 }

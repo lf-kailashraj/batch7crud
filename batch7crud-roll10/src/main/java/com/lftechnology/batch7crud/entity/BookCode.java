@@ -10,7 +10,6 @@ public class BookCode {
     private Boolean availability;
     private Book book;
 
-
     public Integer getId() {
         return id;
     }

@@ -12,7 +12,6 @@ public abstract class Person {
     private String address;
     private Date dob;
 
-
     public Integer getId() {
         return id;
     }
