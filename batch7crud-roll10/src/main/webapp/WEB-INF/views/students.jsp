@@ -31,7 +31,7 @@
               <td>${student.batch}</td>
 
               <td><a href="students/${student.id}/edit">edit</a></td>
-              <td><a class="deleteBtn" href="students/${student.id}/delete">delete</a></td>
+              <td><a class="delete" href="students/${student.id}/delete">delete</a></td>
           </tr>
       </c:forEach>
   </table>
@@ -41,7 +41,7 @@
     <a href="students/create">add student</a>
 
     <script type="text/javascript">
-        var deleteBtn = document.getElementsByClassName("deleteBtn");
+        var deleteBtn = document.querySelectorAll("a.delete");
 
         for (var i = 0; i < deleteBtn.length; i++) {
             deleteBtn[i].onclick = function (e) {

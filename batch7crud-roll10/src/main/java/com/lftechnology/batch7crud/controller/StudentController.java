@@ -126,24 +126,11 @@ public class StudentController extends HttpServlet{
             }
         } catch (ParseException e) {
             req.setAttribute("errorMessage", "error while parsing date");
-            req.setAttribute("name", name);
-            req.setAttribute("address", address);
-            req.setAttribute("dob", dob);
-            req.setAttribute("department", department);
-            req.setAttribute("batch", batch);
-            req.setAttribute("roll", rollText);
             create(req, resp);
         } catch (NumberFormatException e){
             req.setAttribute("errorMessage", "number format error in 'roll'");
-            req.setAttribute("name", name);
-            req.setAttribute("address", address);
-            req.setAttribute("dob", dob);
-            req.setAttribute("department", department);
-            req.setAttribute("batch", batch);
-            req.setAttribute("roll", rollText);
             create(req, resp);
         }
-
     }
 
 

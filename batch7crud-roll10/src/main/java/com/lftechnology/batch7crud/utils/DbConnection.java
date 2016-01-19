@@ -12,6 +12,8 @@ import java.sql.SQLException;
  * Created on 1/18/16
  */
 public class DbConnection {
+    private DbConnection(){}
+
     public static Connection getConnection() throws NamingException, SQLException {
         Context initContext = new InitialContext();
         Context envContext = (Context) initContext.lookup("java:/comp/env");

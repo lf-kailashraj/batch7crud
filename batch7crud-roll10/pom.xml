@@ -10,24 +10,18 @@
 	<artifactId>batch7crud-roll10</artifactId>
 	
 	<dependencies>
+
 		<dependency>
 			<groupId>com.lftechnology</groupId>
 			<artifactId>batch7crud-util</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>mysql</groupId>-->
-            <!--<artifactId>mysql-connector-java</artifactId>-->
-            <!--<version>5.1.6</version>-->
-        <!--</dependency>-->
-
-		<dependency>
+        <dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.4-1201-jdbc41</version>
 		</dependency>
-
 
 	</dependencies>
 

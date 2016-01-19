@@ -13,13 +13,13 @@
 <body>
   <div>
     <form action="create" method="post">
-        <label>name</label><input type="text" name="name" value="${name}"><br>
-        <label>address</label><input type="text" name="address" value="${address}"><br>
-        <label>dob</label><input type="date" name="dob" value="${dob}"><br>
+        <label>name</label><input type="text" name="name" value="${param.name}"><br>
+        <label>address</label><input type="text" name="address" value="${param.address}"><br>
+        <label>dob</label><input type="date" name="dob" value="${param.dob}"><br>
 
-        <label>department</label><input type="text" name="department" value="${department}"><br>
-        <label>batch</label><input type="text" name="batch" value="${batch}"><br>
-        <label>roll</label><input type="number" name="roll" value="${roll}"><br>
+        <label>department</label><input type="text" name="department" value="${param.department}"><br>
+        <label>batch</label><input type="text" name="batch" value="${param.batch}"><br>
+        <label>roll</label><input type="number" name="roll" value="${param.roll}"><br>
 
         <input type="submit">
     </form>
