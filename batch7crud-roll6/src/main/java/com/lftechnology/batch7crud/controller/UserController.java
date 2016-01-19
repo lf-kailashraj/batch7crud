@@ -1,5 +1,6 @@
 package com.lftechnology.batch7crud.controller;
 
+import java.awt.Window.Type;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -66,9 +67,12 @@ public class UserController extends HttpServlet {
             String[] pathArgs = urlString.split("/");
             if (pathArgs[0].equals("") && pathArgs[1].equals("add")) {
                 createProcess(request, response);
-            }else if (pathArgs[0].equals("") && pathArgs[2].equals("edit")) {
+            } else if (pathArgs[0].equals("") && pathArgs[2].equals("edit")) {
                 int userID = TypeCaster.toInt(pathArgs[1]);
                 editProcess(request, response, userID);
+            } else if (pathArgs[0].equals("") && pathArgs[2].equals("delete")) {
+                int userID = TypeCaster.toInt(pathArgs[1]);
+                deleteProcess(request, response, userID);
             }
 
         }
@@ -152,6 +156,15 @@ public class UserController extends HttpServlet {
     }
 
     private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
+        try {
+            userService.deleteUser(id);
+            response.sendRedirect("/batch7crud-roll6/users");
+
+        } catch (DataException e) {
+            System.err.println(e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 }

@@ -44,7 +44,7 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    public void deleteUser(int userID) throws DataException {
+    public void delete(int userID) throws DataException {
         try {
             String query = "delete from user where id= ?";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -55,7 +55,7 @@ public class UserDAOImpl implements UserDAO {
             System.out.println("user deleted");
         } catch (SQLException e) {
             System.err.println(e);
-            throw new DataException();
+            throw new DataException(e.getMessage());
         }
     }
 
@@ -119,10 +119,6 @@ public class UserDAOImpl implements UserDAO {
 
     }
 
-    public void delete(int userID) throws DataException {
-
-    }
-
     public void update(User user) throws DataException {
 
         try {
@@ -133,8 +129,7 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getSurName());
             statement.setString(3, user.getUserName());
-            System.out.println(user.getId());
-            statement.setLong(4, user.getId());
+            statement.setInt(4, user.getId());
 
             statement.executeUpdate();
             System.out.println("User updated");
