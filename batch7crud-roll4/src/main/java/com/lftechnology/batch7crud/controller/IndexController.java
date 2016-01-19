@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.lftechnology.batch7crud.util.TypeCaster;
 
-@WebServlet({"/"})
+@WebServlet({ "/" })
+
 public class IndexController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer i = TypeCaster.toInt("123");

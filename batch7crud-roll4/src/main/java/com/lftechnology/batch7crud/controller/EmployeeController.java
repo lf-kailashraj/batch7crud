@@ -3,6 +3,7 @@ package com.lftechnology.batch7crud.controller;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
+import jdk.nashorn.internal.ir.RuntimeNode;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,7 +17,8 @@ import java.util.Arrays;
 /**
  * Created by pratishshr on 1/14/16.
  */
-@WebServlet(name = "EmployeeController", urlPatterns = {"/employees/*"})
+@WebServlet(name = "EmployeeController", urlPatterns = { "/employees/*" })
+
 public class EmployeeController extends HttpServlet {
     private EmployeeService employeeService;
 
@@ -28,7 +30,23 @@ public class EmployeeController extends HttpServlet {
         String urlPath = request.getPathInfo();
 
         if (urlPath == null || urlPath.equals("/")) {
-            list(request, response, 0);
+            int page = 1;
+
+            if (request.getParameter("page") != null) {
+                try {
+                    page = Integer.parseInt(request.getParameter("page"));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    request.setAttribute("message", e.getMessage());
+
+                    RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+                    view.forward(request, response);
+                }
+            } else {
+                page = 1;
+            }
+            list(request, response, page);
 
         } else {
             String[] paths = urlPath.split("/");
@@ -36,8 +54,17 @@ public class EmployeeController extends HttpServlet {
             if (paths[1].equals("create")) {
                 create(request, response);
             } else if (paths[2].equals("edit")) {
-                int id = Integer.parseInt(paths[1]);
-                edit(request, response, id);
+                try {
+                    int id = Integer.parseInt(paths[1]);
+                    edit(request, response, id);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    request.setAttribute("message", e.getMessage());
+
+                    RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+                    view.forward(request, response);
+                }
             }
         }
     }
@@ -45,27 +72,50 @@ public class EmployeeController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String urlPath = request.getPathInfo();
 
-        if (urlPath == null || urlPath.equals("/")) {
-
-        } else {
+        if(urlPath != null || !urlPath.equals("/")){
             String[] paths = urlPath.split("/");
             if (paths[1].equals("create")) {
                 createProcess(request, response);
             } else if (paths[2].equals("edit")) {
-                int id = Integer.parseInt(paths[1]);
-                editProcess(request, response, id);
+                try {
+                    int id = Integer.parseInt(paths[1]);
+                    editProcess(request, response, id);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    request.setAttribute("message", e.getMessage());
+
+                    RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+                    view.forward(request, response);
+                }
             } else if (paths[2].equals("delete")) {
-                int id = Integer.parseInt(paths[1]);
-                deleteProcess(request, response, id);
+                try {
+                    int id = Integer.parseInt(paths[1]);
+                    deleteProcess(request, response, id);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    request.setAttribute("message", e.getMessage());
+
+                    RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+                    view.forward(request, response);
+                }
+
             }
         }
     }
 
-
     private void list(HttpServletRequest request, HttpServletResponse response, int page) throws ServletException, IOException {
         try {
             String forward = "/WEB-INF/views/employees.jsp";
-            request.setAttribute("employees", employeeService.fetch());
+
+            int noOfRecords = employeeService.fetchNoOfRecords();
+            int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / 20);
+            int recordLimit = 20;
+
+            request.setAttribute("employees", employeeService.fetch(page, recordLimit));
+            request.setAttribute("currentPage", page);
+            request.setAttribute("noOfPages", noOfPages);
 
             RequestDispatcher view = request.getRequestDispatcher(forward);
             view.forward(request, response);
@@ -77,7 +127,6 @@ public class EmployeeController extends HttpServlet {
 
             RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
             view.forward(request, response);
-
         }
     }
 
@@ -113,7 +162,7 @@ public class EmployeeController extends HttpServlet {
     private void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
         try {
             String forward = "/WEB-INF/views/edit.jsp";
-            request.setAttribute("employee", employeeService.fetch(id));
+            request.setAttribute("employee", employeeService.fetchById(id));
 
             RequestDispatcher view = request.getRequestDispatcher(forward);
             view.forward(request, response);

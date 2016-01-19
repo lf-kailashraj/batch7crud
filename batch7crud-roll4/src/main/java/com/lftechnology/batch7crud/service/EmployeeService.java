@@ -17,12 +17,12 @@ public class EmployeeService {
         employeeDao = new EmployeeDao();
     }
 
-    public List<Employee> fetch() throws DataException {
-        return employeeDao.fetch();
+    public List<Employee> fetch(int page, int recordLimit) throws DataException {
+        return employeeDao.fetch(page, recordLimit);
     }
 
-    public Employee fetch(int id) throws DataException {
-        return employeeDao.fetch(id);
+    public Employee fetchById(int id) throws DataException {
+        return employeeDao.fetchById(id);
     }
 
     public void save(Employee employee) throws DataException {
@@ -37,4 +37,7 @@ public class EmployeeService {
         employeeDao.deleteEmployee(id);
     }
 
+    public int fetchNoOfRecords() throws DataException {
+        return employeeDao.fetchNoOfRecords();
+    }
 }

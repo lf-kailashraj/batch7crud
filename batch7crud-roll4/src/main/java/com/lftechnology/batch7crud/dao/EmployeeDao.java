@@ -4,6 +4,7 @@ import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.util.DbConnection;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,14 @@ public class EmployeeDao {
         connection = DbConnection.getConnection();
     }
 
-    public List<Employee> fetch() throws DataException {
+    public List<Employee> fetch(int page, int recordLimit) throws DataException {
         try {
             List<Employee> employeeList = new ArrayList<Employee>();
-            String sql = "SELECT * FROM employees";
+            int offset = (page - 1) * recordLimit;
+            String sql = "SELECT * FROM employees LIMIT ? OFFSET ?";
             PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, recordLimit);
+            stmt.setInt(2, offset);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -40,7 +44,7 @@ public class EmployeeDao {
         }
     }
 
-    public Employee fetch(int id) throws DataException {
+    public Employee fetchById(int id) throws DataException {
         try {
             Employee e = null;
             String sql = "SELECT * FROM employees WHERE id=?";
@@ -77,7 +81,7 @@ public class EmployeeDao {
     }
 
     public void update(Employee employee) throws DataException {
-        try{
+        try {
             String sql = "UPDATE employees SET first_name=?, last_name=?, station=? WHERE id=?";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, employee.getFirstName());
@@ -90,6 +94,7 @@ public class EmployeeDao {
             throw new DataException();
         }
     }
+
     public void deleteEmployee(int id) throws DataException {
         try {
             String sql = "DELETE FROM employees WHERE id=?";
@@ -99,6 +104,22 @@ public class EmployeeDao {
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new DataException();
+        }
+    }
+
+    public int fetchNoOfRecords() throws DataException {
+        try {
+            int noOfRecords = 0;
+            String sql = "SELECT COUNT(*) FROM employees";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                noOfRecords = rs.getInt(1);
+            }
+            return noOfRecords;
+
+        } catch (SQLException e) {
+            throw new DataException("Error in count");
         }
     }
 
