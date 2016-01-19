@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class EmployeeController extends HttpServlet {
     private static final String ERROR_PAGE = "/WEB-INF/views/error.jsp";
     private static final String MESSAGE = "message";
-
+    private static final String EMPLOYEE_LISTING_PAGE = "/employees";
     private Logger logger = Logger.getLogger("EmployeeControllerLog");
     private EmployeeService employeeService;
 
@@ -159,7 +159,7 @@ public class EmployeeController extends HttpServlet {
 
         try {
             employeeService.save(employee);
-            response.sendRedirect(request.getContextPath() + "/employees");
+            response.sendRedirect(request.getContextPath() + EMPLOYEE_LISTING_PAGE);
         } catch (DataException e) {
             logger.log(Level.SEVERE, e.getMessage());
 
@@ -203,7 +203,7 @@ public class EmployeeController extends HttpServlet {
 
         try {
             employeeService.update(employee);
-            response.sendRedirect(request.getContextPath() + "/employees");
+            response.sendRedirect(request.getContextPath() + EMPLOYEE_LISTING_PAGE);
         } catch (DataException e) {
             logger.log(Level.SEVERE, e.getMessage());
 
@@ -219,7 +219,7 @@ public class EmployeeController extends HttpServlet {
     private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
         try {
             employeeService.deleteEmployee(id);
-            response.sendRedirect(request.getContextPath() + "/employees");
+            response.sendRedirect(request.getContextPath() + EMPLOYEE_LISTING_PAGE);
         } catch (DataException e) {
             logger.log(Level.SEVERE, e.getMessage());
 
