@@ -10,35 +10,36 @@ import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 
 public class StudentService {
+	private StudentDAO stdDAO;
+	
+	public StudentService(){
+		stdDAO = new StudentDAO();
+	}
 	public void insert(Student student) throws DataException {
-		StudentDAO stdDAO = new StudentDAO();
 		stdDAO.insert(student);
 	}
 
-	public HashMap<Integer, List> fetch(int page) throws DataException {
-		StudentDAO stdDAO = new StudentDAO();
+	public List<Student> fetch(int page, int pageSize) throws DataException {
 		List<Student> stdList = new ArrayList<Student>();
-		HashMap<Integer, List> hm = new HashMap<Integer, List>();
-		hm = stdDAO.fetch(page);
-		int count;
-		return hm;
+		stdList = stdDAO.fetch(page, pageSize);
+		return stdList;
 	}
 
-	public Student getStudentById(int id) throws DataException {
-		StudentDAO stdDAO = new StudentDAO();
+	public Student fetchStudentById(int id) throws DataException {
 		Student student = new Student();
-		student = stdDAO.getStudentById(id);
+		student = stdDAO.fetchStudentById(id);
 		return student;
+	}
+	
+	public int fetchTotal() throws DataException{
+		return stdDAO.fetchTotal();
 	}
 
 	public void edit(Student student, int id) throws DataException {
-		StudentDAO stdDAO = new StudentDAO();
 		stdDAO.edit(student, id);
 	}
 
 	public void delete(int id) throws DataException {
-		// TODO Auto-generated method stub
-		StudentDAO stdDAO = new StudentDAO();
 		stdDAO.delete(id);
 	}
 }

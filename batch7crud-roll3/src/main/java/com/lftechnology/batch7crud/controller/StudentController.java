@@ -76,16 +76,14 @@ public class StudentController extends HttpServlet {
 	private void list(HttpServletRequest request, HttpServletResponse response, int page)
 			throws ServletException, IOException {
 		try {
-			int maxSize = 3;
+			int pageSize = 3;
 			StudentService stdService = new StudentService();
-			List<Student> stdList = new ArrayList<Student>();
-			HashMap<Integer, List> hm = stdService.fetch(page);
-			int count = 0;
-			for (Entry<Integer, List> m : hm.entrySet()) {
-				count = m.getKey();
-				stdList = m.getValue();
-			}
+			List<Student> stdList = stdService.fetch(page, pageSize);
+			int count = stdService.fetchTotal();
+			
 			request.setAttribute("stdList", stdList);
+			request.setAttribute("pageSize", pageSize);
+
 			request.setAttribute("count", count);
 			request.setAttribute("pageNum", page);
 			request.getRequestDispatcher("/WEB-INF/views/student/list.jsp").forward(request, response);
@@ -130,7 +128,7 @@ public class StudentController extends HttpServlet {
 		StudentService stdService = new StudentService();
 		Student student;
 		try {
-			student = stdService.getStudentById(id);
+			student = stdService.fetchStudentById(id);
 			request.setAttribute("student", student);
 			request.getRequestDispatcher("/WEB-INF/views/student/edit.jsp").forward(request, response);
 		} catch (DataException e) {

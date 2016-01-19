@@ -10,7 +10,6 @@
 <title>List</title>
 </head>
 <body>
-${count}
 	<table border="1">
 		<tr>
 			<td>Id</td>
@@ -30,9 +29,14 @@ ${count}
 		</c:forEach>
 	</table>
 	<a href="student/create">Create</a>
-
-	<a href="student/${pageNum - 1}">Previous</a>${pageNum}
+	
+	<c:if test="${pageNum > 1}">
+		<a href="student/${pageNum - 1}">Previous</a>
+	</c:if>
+	${pageNum}
+	<c:if test="${(pageNum * pageSize) < count}">
 	<a href="student/${pageNum + 1}">Next</a>
+	</c:if>
 </body>
 <script>
 	var deleteBtn = document.getElementsByClassName('deleteItem');
