@@ -13,7 +13,8 @@ table, th, td {
 </style>
 </head>
 <body>
-
+	<a href="/batch7crud-roll6/users/add"> Add User</a>
+	<h1>User List</h1>
 	<table>
 		<thead>
 			<tr>
@@ -31,19 +32,17 @@ table, th, td {
 					<td><c:out value="${user.firstName}"></c:out></td>
 					<td><c:out value="${user.surName}"></c:out></td>
 					<td><c:out value="${user.userName}"></c:out></td>
-					<td>
-					<a href="users/${user.id}/edit">edit</a> 
-					<a href="users/${user.id}/delete" class="deleteUser">delete</a>
-					</td>
+					<td><a href="users/${user.id}/edit">edit</a> <a
+						href="users/${user.id}/delete" class="deleteUser">delete</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
-
-
-
 	</table>
 
-	<a href="/batch7crud-roll6/users/add"> Add User</a>
+	<c:if test="${currentPage}>1">
+		<a href="/batch7crud-roll6/users?page=${currentPage}">Previous</a>
+	</c:if>
+	<a href="">Next</a>
 
 	<script type="text/javascript">
 		var deleteUser = document.getElementsByClassName("deleteUser");
@@ -53,14 +52,13 @@ table, th, td {
 			deleteUser[i].onclick = function(event) {
 				event.preventDefault();
 				var href = this.getAttribute("href");
-				var confirmation = confirm("do you want to delete?");
+				var confirmation = confirm("Do you want to delete?");
 
 				if (confirmation == true) {
 					var form = document.createElement("form");
 					form.action = href;
 					form.method = "post";
 					form.submit();
-
 				}
 			}
 		}

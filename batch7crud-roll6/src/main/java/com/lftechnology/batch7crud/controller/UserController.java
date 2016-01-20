@@ -1,7 +1,6 @@
 package com.lftechnology.batch7crud.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,9 +23,10 @@ import com.lftechnology.batch7crud.util.TypeCaster;
 public class UserController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger logger = Logger.getLogger("UserController");
+    private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
     UserService userService = new UserService();
     private static final String REDIRECT_STRING = "/batch7crud-roll6/users";
+    private static final int LIMIT = 10;
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -41,14 +41,15 @@ public class UserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String urlString = request.getPathInfo();
+        System.out.println("url:"+ urlString);
 
-        if (urlString == null) {
+        if (urlString == null || "/".equals(urlString)) {
             try {
                 this.list(request, response, 1);
             } catch (ServletException e) {
-                logger.log(Level.SEVERE, e.getMessage());
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
             } catch (IOException e) {
-                logger.log(Level.SEVERE, e.getMessage());
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
 
         } else {
@@ -59,23 +60,21 @@ public class UserController extends HttpServlet {
                 try {
                     create(request, response);
                 } catch (ServletException e) {
-                    logger.log(Level.SEVERE, e.getMessage());
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 } catch (IOException e) {
-                    logger.log(Level.SEVERE, e.getMessage());
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 }
             } else if ("".equals(pathArgs[0]) && "edit".equals(pathArgs[2])) {
                 try {
                     int userID = TypeCaster.toInt(pathArgs[1]);
                     edit(request, response, userID);
                 } catch (ServletException e) {
-                    logger.log(Level.SEVERE, e.getMessage());
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 } catch (IOException e) {
-                    logger.log(Level.SEVERE, e.getMessage());
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 }
             }
-
         }
-
     }
 
     /**
@@ -89,9 +88,9 @@ public class UserController extends HttpServlet {
             try {
                 this.list(request, response, 1);
             } catch (ServletException e) {
-                logger.log(Level.SEVERE, e.getMessage());
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
             } catch (IOException e) {
-                logger.log(Level.SEVERE, e.getMessage());
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
         } else {
             String[] pathArgs = urlString.split("/");
@@ -99,27 +98,27 @@ public class UserController extends HttpServlet {
                 try {
                     createProcess(request, response);
                 } catch (ServletException e) {
-                    logger.log(Level.SEVERE, e.getMessage());
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 } catch (IOException e) {
-                    logger.log(Level.SEVERE, e.getMessage());
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 }
             } else if ("".equals(pathArgs[0]) && "edit".equals(pathArgs[2])) {
                 try {
                     int userID = TypeCaster.toInt(pathArgs[1]);
                     editProcess(request, response, userID);
                 } catch (ServletException e) {
-                    logger.log(Level.SEVERE, e.getMessage());
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 } catch (IOException e) {
-                    logger.log(Level.SEVERE, e.getMessage());
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 }
             } else if ("".equals(pathArgs[0]) && "delete".equals(pathArgs[2])) {
                 try {
                     int userID = TypeCaster.toInt(pathArgs[1]);
                     deleteProcess(request, response, userID);
                 } catch (ServletException e) {
-                    logger.log(Level.SEVERE, e.getMessage());
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 } catch (IOException e) {
-                    logger.log(Level.SEVERE, e.getMessage());
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 }
             }
 
@@ -129,11 +128,13 @@ public class UserController extends HttpServlet {
 
     private void list(HttpServletRequest request, HttpServletResponse response, int page) throws ServletException, IOException {
         try {
-            request.setAttribute("users", userService.fetch(page));
+            request.setAttribute("users", userService.fetch(page, LIMIT));
+            request.setAttribute("totalUsers", userService.totalUser());
+            request.setAttribute("currentPage", page);
             request.getRequestDispatcher("/WEB-INF/views/listUser.jsp").forward(request, response);
 
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -159,7 +160,7 @@ public class UserController extends HttpServlet {
             userService.addUser(user);
             response.sendRedirect(REDIRECT_STRING);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
         }
@@ -170,7 +171,7 @@ public class UserController extends HttpServlet {
             request.setAttribute("user", userService.fetchByID(id));
             request.getRequestDispatcher("/WEB-INF/views/editUser.jsp").forward(request, response);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
         }
@@ -193,7 +194,7 @@ public class UserController extends HttpServlet {
             userService.update(user);
             response.sendRedirect(REDIRECT_STRING);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
         }
@@ -205,7 +206,7 @@ public class UserController extends HttpServlet {
             response.sendRedirect(REDIRECT_STRING);
 
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 

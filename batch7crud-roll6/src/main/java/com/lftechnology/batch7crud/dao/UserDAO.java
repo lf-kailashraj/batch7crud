@@ -14,10 +14,12 @@ public interface UserDAO {
 
     public void delete(int userID) throws DataException;
 
-    public List<User> fetch(int page) throws DataException;
+    public List<User> fetch(int page, int limit) throws DataException;
 
     public User fetchByID(int userID) throws DataException;
 
     public void update(User user) throws DataException;
+
+    public int totalUser();
 
 }

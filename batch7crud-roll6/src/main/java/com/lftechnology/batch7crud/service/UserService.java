@@ -7,8 +7,7 @@ import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.User;
 
 /**
- * @author madandhungana <madandhungana@lftechnology.com>
- * Jan 18, 2016
+ * @author madandhungana <madandhungana@lftechnology.com> Jan 18, 2016
  */
 public class UserService {
 
@@ -27,14 +26,18 @@ public class UserService {
         userDAOImpl.update(user);
     }
 
-    public List<User> fetch(int page) throws DataException {
+    public List<User> fetch(int page,int limit) throws DataException {
 
-        return userDAOImpl.fetch(page);
+        return userDAOImpl.fetch(page,limit);
     }
 
     public User fetchByID(int userID) throws DataException {
 
         return userDAOImpl.fetchByID(userID);
+    }
+
+    public int totalUser() {
+        return userDAOImpl.totalUser();
     }
 
 }

@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 
 public class DbConnector {
 
-    private static final Logger logger = Logger.getLogger("UserController");
+    private static final Logger LOGGER = Logger.getLogger("UserController");
 
     private DbConnector() {
 
@@ -28,7 +28,7 @@ public class DbConnector {
             DataSource ds = (DataSource) envCtx.lookup("jdbc/dbInitial");
             connection = ds.getConnection();
         } catch (NamingException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage());
         }
 
         return connection;
