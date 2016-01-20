@@ -14,26 +14,26 @@ import java.util.logging.Logger;
  * Created by pratishshr on 1/14/16.
  */
 public class DbConnection {
-    private static Logger logger = Logger.getLogger("DbConnectionLog");
+  private static final Logger LOGGER = Logger.getLogger("DbConnectionLog");
 
-    private DbConnection() {
+  private DbConnection() {
 
+  }
+
+  public static Connection getConnection() throws DataException {
+    try {
+      Context initCtx = new InitialContext();
+      Context envCtx = (Context) initCtx.lookup("java:comp/env");
+      DataSource ds = (DataSource) envCtx.lookup("jdbc/ems");
+
+      return ds.getConnection();
+
+    } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      throw new DataException(e.getMessage());
+    } catch (NamingException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      throw new DataException(e.getMessage());
     }
-
-    public static Connection getConnection() throws DataException {
-        try {
-            Context initCtx = new InitialContext();
-            Context envCtx = (Context) initCtx.lookup("java:comp/env");
-            DataSource ds = (DataSource) envCtx.lookup("jdbc/ems");
-
-            return ds.getConnection();
-
-        } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
-            throw new DataException(e.getMessage());
-        } catch (NamingException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
-            throw new DataException(e.getMessage());
-        }
-    }
+  }
 }

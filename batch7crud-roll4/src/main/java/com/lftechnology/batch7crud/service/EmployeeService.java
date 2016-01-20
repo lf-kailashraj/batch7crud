@@ -11,33 +11,33 @@ import java.util.List;
  */
 public class EmployeeService {
 
-    private EmployeeDao employeeDao;
+  private EmployeeDao employeeDao;
 
-    public EmployeeService() throws DataException {
-        employeeDao = new EmployeeDao();
-    }
+  public EmployeeService() throws DataException {
+    employeeDao = new EmployeeDao();
+  }
 
-    public List<Employee> fetch(int page, int recordLimit) throws DataException {
-        return employeeDao.fetch(page, recordLimit);
-    }
+  public List<Employee> fetch(int page, int recordLimit) throws DataException {
+    return employeeDao.fetch(page, recordLimit);
+  }
 
-    public Employee fetchById(int id) throws DataException {
-        return employeeDao.fetchById(id);
-    }
+  public Employee fetchById(int id) throws DataException {
+    return employeeDao.fetchById(id);
+  }
 
-    public void save(Employee employee) throws DataException {
-        employeeDao.insert(employee);
-    }
+  public void save(Employee employee) throws DataException {
+    employeeDao.insert(employee);
+  }
 
-    public void update(Employee employee) throws DataException {
-        employeeDao.update(employee);
-    }
+  public void update(Employee employee) throws DataException {
+    employeeDao.update(employee);
+  }
 
-    public void deleteEmployee(int id) throws DataException {
-        employeeDao.deleteEmployee(id);
-    }
+  public void deleteEmployee(int id) throws DataException {
+    employeeDao.deleteEmployee(id);
+  }
 
-    public int fetchNoOfRecords() throws DataException {
-        return employeeDao.fetchNoOfRecords();
-    }
+  public int fetchNoOfRecords() throws DataException {
+    return employeeDao.fetchNoOfRecords();
+  }
 }
