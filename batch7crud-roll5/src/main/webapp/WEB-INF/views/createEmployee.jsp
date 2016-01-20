@@ -9,7 +9,7 @@
 </head>
 <body>
 	<h1>Sign Up Form</h1>
-	<form action="createProcess" method="post">
+	<form action="employees/createProcess" method="post">
 		First Name:<input type="text" name="firstName" /><br> 
 		Last Name:<input  type="text" name="lastName" /><br>
 		Department:<input type="text" name="department" /><br> 

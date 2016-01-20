@@ -20,8 +20,8 @@ public class EmployeeDAO {
             String sql = "SELECT * FROM employee LIMIT 10 OFFSET ?";
             Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, pageNo*10);
-            
+            ps.setInt(1, pageNo * 10);
+
             ResultSet result = ps.executeQuery();
 
             while (result.next()) {
@@ -39,7 +39,7 @@ public class EmployeeDAO {
 
         } catch (SQLException e) {
             throw new DataException(e.getMessage());
-        
+
         }
 
     }
@@ -126,6 +126,23 @@ public class EmployeeDAO {
 
             ps.executeUpdate();
 
+        } catch (SQLException e) {
+            throw new DataException(e.getMessage());
+        }
+
+    }
+
+    public int count() throws DataException {
+        try {
+            String sql = "SELECT COUNT(*) FROM employee";
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            
+            return rs.getInt(1);
+            
         } catch (SQLException e) {
             throw new DataException(e.getMessage());
         }

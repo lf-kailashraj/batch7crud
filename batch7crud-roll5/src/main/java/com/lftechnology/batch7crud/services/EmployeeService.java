@@ -1,5 +1,6 @@
 package com.lftechnology.batch7crud.services;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 import com.lftechnology.batch7crud.dao.EmployeeDAO;
@@ -31,6 +32,11 @@ public class EmployeeService {
 
     public void deleteById(int id) throws DataException {
         employeeDAO.deleteById(id);
+
+    }
+    
+    public int count() throws DataException {
+        return employeeDAO.count();
 
     }
 

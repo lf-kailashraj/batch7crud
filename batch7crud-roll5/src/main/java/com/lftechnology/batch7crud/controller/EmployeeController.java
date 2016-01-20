@@ -60,8 +60,9 @@ public class EmployeeController extends HttpServlet {
         String path = request.getPathInfo();
         if (path != null) {
             String[] pathParts = path.split("/");
-
+            System.out.println(path);
             if ("createProcess".equals(pathParts[1])) {
+                System.out.println("check check");
                 createProcess(request, response);
 
             }
@@ -156,8 +157,14 @@ public class EmployeeController extends HttpServlet {
     private void fetchData(HttpServletRequest request, HttpServletResponse response, int pageNo) {
         try {
             List<Employee> employeeList = new ArrayList<Employee>();
+            int count = employeeService.count();
             employeeList = employeeService.fetch(pageNo);
+            
             request.setAttribute("employeeList", employeeList);
+            request.setAttribute("pageNo", pageNo + 1);
+            request.setAttribute("noOfEmployee", count);
+            request.setAttribute("noEmpInPage", 10);
+            
             RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/employee.jsp");
             dispatcher.forward(request, response);
         } catch (Exception e) {

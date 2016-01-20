@@ -13,7 +13,7 @@
 	<h1>Employee Management System</h1>
 
 	<a href="employees">Employees</a>
-	<a href="employees/create">SignUp</a>
+	
 
 
 </body>

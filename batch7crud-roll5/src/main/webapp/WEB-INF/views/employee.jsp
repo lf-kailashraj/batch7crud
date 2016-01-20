@@ -9,6 +9,7 @@
 <title>Employees</title>
 </head>
 <body>
+	<a href="employees/create">Add Employee</a>
 	<h1>List Of Employees</h1>
 	<table border="2px">
 		<thead>
@@ -26,9 +27,8 @@
 
 		<tbody>
 			<c:forEach items="${employeeList}" var="employee">
-
-				<td>${employee.getId()}</td>
 				<tr>
+					<td>${employee.getId()}</td>
 					<td>${employee.getFirstName()}</td>
 					<td>${employee.getLastName()}</td>
 					<td>${employee.getDepartment()}</td>
@@ -39,10 +39,24 @@
 				</tr>
 
 			</c:forEach>
+
 		</tbody>
 
 	</table>
+	<c:if test="${pageNo > 1}">
+		<a href="employees/page/${pageNo-1}">Previous</a>
+	</c:if>
 
+	<c:set var="counter" value="0" />
+	<c:forEach begin="0" end="${noOfEmployee%noEmpInPage-1}" step="1"
+		varStatus="loop">
+		<c:set var="counter" value="${counter + 1}"/>
+		<a href="employees/page/${counter}">${counter}</a>
+	</c:forEach>
+
+	<c:if test="${pageNo*noEmpInPage < noOfEmployee}">
+		<a href="employees/page/${pageNo+1}">Next</a>
+	</c:if>
 	<script>
 		var delBtn = document.getElementsByClassName('deleteBtn');
 
