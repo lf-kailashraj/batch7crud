@@ -12,26 +12,26 @@ import com.lftechnology.batch7crud.exception.DataException;
 import java.sql.Connection;
 
 public class DBConnection {
-	private static final Logger LOGGER = Logger.getLogger("DBConnection");
+  private static final Logger LOGGER = Logger.getLogger("DBConnection");
 
-	private DBConnection() {
-	}
+  private DBConnection() {
+  }
 
-	public static Connection getConnection() throws DataException {
-		try {
-			Context initCtx = new InitialContext();
+  public static Connection getConnection() throws DataException {
+    try {
+      Context initCtx = new InitialContext();
 
-			Context envCtx = (Context) initCtx.lookup("java:comp/env");
+      Context envCtx = (Context) initCtx.lookup("java:comp/env");
 
-			DataSource ds = (DataSource)
+      DataSource ds = (DataSource)
 
-			envCtx.lookup("jdbc/students_info");
+      envCtx.lookup("jdbc/students_info");
 
-			return ds.getConnection();
-		} catch (SQLException | NamingException e) {
-			LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      return ds.getConnection();
+    } catch (SQLException | NamingException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-			throw new DataException(e.getMessage());
-		}
-	}
+      throw new DataException(e.getMessage());
+    }
+  }
 }

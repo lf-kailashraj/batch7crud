@@ -12,8 +12,8 @@
 	<br />
 	<form action="students/create" method="post">
 		Roll:<input type="number" name="roll" value="${roll}"><br />
-		Name:<input type="text" name="name" value="${name}"><br /> <input
-			type="submit" value="submit" />
+		Name:<input type="text" name="name" value="${name}"><br /> 
+		<input type="submit" value="submit" />
 	</form>
 </body>
 </html>

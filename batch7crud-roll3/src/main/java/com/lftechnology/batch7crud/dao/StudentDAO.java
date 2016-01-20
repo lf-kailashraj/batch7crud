@@ -14,170 +14,115 @@ import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 
 public class StudentDAO {
-	private static final Logger LOGGER = Logger.getLogger("StudentDAO");
+  private static final Logger LOGGER = Logger.getLogger("StudentDAO");
 
-	public void insert(Student student) throws DataException {
-		PreparedStatement stmnt = null;
-		Connection conn = null;
-		try {
-			String sql = "insert into Students(roll, name) values (?,?)";
-			conn = DBConnection.getConnection();
-			stmnt = conn.prepareStatement(sql);
-			stmnt.setInt(1, student.getRoll());
-			stmnt.setString(2, student.getName());
-			stmnt.execute();
-		} catch (SQLException e) {
-			LOGGER.log(Level.SEVERE, e.getMessage(), e);
+  public void insert(Student student) throws DataException {
+    String sql = "insert into Students(roll, name) values (?,?)";
 
-			throw new DataException(e.getMessage());
-		} finally {
-			closeAll(null, stmnt, conn);
-		}
-	}
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement stmnt = conn.prepareStatement(sql);) {
+      stmnt.setInt(1, student.getRoll());
+      stmnt.setString(2, student.getName());
+      stmnt.execute();
+    } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-	public List<Student> fetch(int page, int pageSize) throws DataException {
-		PreparedStatement stmnt = null;
-		Connection conn = null;
-		ResultSet result = null;
-		try {
-			String sql = "select * from Students limit ? offset ?";
+      throw new DataException(e.getMessage());
+    }
+  }
 
-			List<Student> stdList = new ArrayList<Student>();
+  public List<Student> fetch(int page, int pageSize) throws DataException {
+    String sql = "select * from Students limit ? offset ?";
+    List<Student> stdList = new ArrayList<Student>();
 
-			conn = DBConnection.getConnection();
-			stmnt = conn.prepareStatement(sql);
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement stmnt = conn.prepareStatement(sql);) {
+      stmnt.setInt(1, pageSize);
+      stmnt.setInt(2, (page - 1) * pageSize);
 
-			stmnt.setInt(1, pageSize);
-			stmnt.setInt(2, (page - 1) * pageSize);
+      try (ResultSet result = stmnt.executeQuery();) {
+        while (result.next()) {
+          Student student = new Student();
+          student.setId(result.getInt("id"));
+          student.setRoll(result.getInt("roll"));
+          student.setName(result.getString("name"));
+          stdList.add(student);
+        }
+      }
+      
+      return stdList;
+    } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-			result = stmnt.executeQuery();
+      throw new DataException(e.getMessage());
+    }
+  }
 
-			while (result.next()) {
-				Student student = new Student();
-				student.setId(result.getInt("id"));
-				student.setRoll(result.getInt("roll"));
-				student.setName(result.getString("name"));
-				stdList.add(student);
-			}
+  public int fetchTotal() throws DataException {
+    String sql = "SELECT COUNT(*) AS total FROM Students";
+    int totalSize = 0;
 
-			return stdList;
-		} catch (SQLException e) {
-			LOGGER.log(Level.SEVERE, e.getMessage(), e);
+    try (Connection conn = DBConnection.getConnection();
+        PreparedStatement stmnt = conn.prepareStatement(sql);
+        ResultSet result = stmnt.executeQuery();) {
+      while (result.next()) {
+        totalSize = result.getInt("total");
+      }
+      return totalSize;
+    } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-			throw new DataException(e.getMessage());
-		} finally {
-			closeAll(result, stmnt, conn);
-		}
-	}
+      throw new DataException(e.getMessage());
+    }
+  }
 
-	public int fetchTotal() throws DataException {
-		PreparedStatement stmnt = null;
-		Connection conn = null;
-		ResultSet count = null;
-		try {
-			String sql = "SELECT COUNT(*) AS total FROM Students";
-			int totalSize = 0;
-			conn = DBConnection.getConnection();
-			stmnt = conn.prepareStatement(sql);
+  public Student fetchStudentById(int id) throws DataException {
+    String sql = "Select * from Students where id=?";
+    Student student = null;
 
-			count = stmnt.executeQuery();
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement stmnt = conn.prepareStatement(sql);) {
+      stmnt.setInt(1, id);
 
-			while (count.next()) {
-				totalSize = count.getInt("total");
-			}
-			return totalSize;
-		} catch (SQLException e) {
-			LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      try (ResultSet result = stmnt.executeQuery();) {
 
-			throw new DataException(e.getMessage());
-		} finally {
-			closeAll(count, stmnt, conn);
-		}
-	}
+        while (result.next()) {
+          student = new Student();
+          student.setId(result.getInt("id"));
+          student.setRoll(result.getInt("roll"));
+          student.setName(result.getString("name"));
+        }
+        return student;
+      }
+    } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-	public Student fetchStudentById(int id) throws DataException {
-		PreparedStatement stmnt = null;
-		Connection conn = null;
-		ResultSet result = null;
-		try {
-			String sql = "Select * from Students where id=?";
+      throw new DataException(e.getMessage());
+    }
+  }
 
-			conn = DBConnection.getConnection();
-			stmnt = conn.prepareStatement(sql);
-			stmnt.setInt(1, id);
+  public void edit(Student student, int id) throws DataException {
+    String sql = "Update Students set roll=?, name=? where id=?";
 
-			result = stmnt.executeQuery();
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement stmnt = conn.prepareStatement(sql);) {
+      stmnt.setInt(1, student.getRoll());
+      stmnt.setString(2, student.getName());
+      stmnt.setInt(3, id);
+      stmnt.executeUpdate();
+    } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-			Student student = null;
-			while (result.next()) {
-				student = new Student();
-				student.setId(result.getInt("id"));
-				student.setRoll(result.getInt("roll"));
-				student.setName(result.getString("name"));
-			}
-			return student;
-		} catch (SQLException e) {
-			LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      throw new DataException(e.getMessage());
+    }
+  }
 
-			throw new DataException(e.getMessage());
-		} finally {
-			closeAll(result, stmnt, conn);
-		}
-	}
+  public void delete(int id) throws DataException {
+    String sql = "Delete from Students where id=?";
 
-	public void edit(Student student, int id) throws DataException {
-		PreparedStatement stmnt = null;
-		Connection conn = null;
-		try {
-			String sql = "Update Students set roll=?, name=? where id=?";
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement stmnt = conn.prepareStatement(sql);) {
+      stmnt.setInt(1, id);
+      stmnt.executeUpdate();
+    } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-			conn = DBConnection.getConnection();
-			stmnt = conn.prepareStatement(sql);
-			stmnt.setInt(1, student.getRoll());
-			stmnt.setString(2, student.getName());
-			stmnt.setInt(3, id);
-			stmnt.executeUpdate();
-		} catch (SQLException e) {
-			LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-			throw new DataException(e.getMessage());
-		} finally {
-			closeAll(null, stmnt, conn);
-		}
-
-	}
-
-	public void delete(int id) throws DataException {
-		PreparedStatement stmnt = null;
-		Connection conn = null;
-		try {
-			String sql = "Delete from Students where id=?";
-
-			conn = DBConnection.getConnection();
-			stmnt = conn.prepareStatement(sql);
-			stmnt.setInt(1, id);
-			stmnt.executeUpdate();
-		} catch (SQLException e) {
-			LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-			throw new DataException(e.getMessage());
-		} finally {
-			closeAll(null, stmnt, conn);
-		}
-	}
-
-	private void closeAll(ResultSet result, PreparedStatement stmnt, Connection conn) {
-		try {
-			if (result != null)
-				result.close();
-			if (stmnt != null)
-				stmnt.close();
-			if (conn != null)
-				conn.close();
-		} catch (SQLException e1) {
-			LOGGER.log(Level.SEVERE, e1.getMessage(), e1);
-		}
-
-	}
-
+      throw new DataException(e.getMessage());
+    }
+  }
 }

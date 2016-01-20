@@ -19,7 +19,7 @@
 			<td></td>
 			<td></td>
 		</tr>
-		<c:forEach items="${stdList}" var="student">
+		<c:forEach items="${studentList}" var="student">
 			<tr>
 				<td>${student.getId()}</td>
 				<td>${student.getRoll()}</td>
@@ -33,12 +33,12 @@
 	</table>
 	<a href="students/create">Create</a>
 
-	<c:if test="${pageNum > 1}">
-		<a href="students?page=${pageNum - 1}">Previous</a>
+	<c:if test="${page > 1}">
+		<a href="students?page=${page - 1}">Previous</a>
 	</c:if>
-	${pageNum}
-	<c:if test="${(pageNum * pageSize) < count}">
-		<a href="students?page=${pageNum + 1}">Next</a>
+	${page}
+	<c:if test="${(page * pageSize) < count}">
+		<a href="students?page=${page + 1}">Next</a>
 	</c:if>
 </body>
 <script>
@@ -47,7 +47,7 @@
 		deleteBtn[i].onclick = function(e) {
 			e.preventDefault();
 			var href = this.getAttribute("href");
-			var confirmation = confirm("do you want to delete?");
+			var confirmation = confirm("Do you want to delete?");
 
 			if (confirmation == true) {
 				var form = document.createElement("form");
