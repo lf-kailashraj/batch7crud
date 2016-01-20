@@ -35,7 +35,7 @@ public class EmployeeDao {
     public List<Employee> fetch() throws DataException {
         try {
             List<Employee> employeeList = new ArrayList<Employee>();
-            String sql = "SELECT * FROM employee";
+            String sql = "SELECT * FROM employee order by id";
             Connection conn = DBConnection.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
             ResultSet result = statement.executeQuery();
