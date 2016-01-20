@@ -12,7 +12,7 @@ import com.lftechnology.batch7crud.exception.DataException;
 import java.sql.Connection;
 
 public class DBConnection {
-	private static Logger logger = Logger.getLogger("DBConnection");
+	private static final Logger LOGGER = Logger.getLogger("DBConnection");
 
 	private DBConnection() {
 	}
@@ -29,7 +29,7 @@ public class DBConnection {
 
 			return ds.getConnection();
 		} catch (SQLException | NamingException e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+			LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
 			throw new DataException(e.getMessage());
 		}

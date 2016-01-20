@@ -14,7 +14,7 @@ public abstract class CustomHttpServlet extends HttpServlet {
 
 	private static final String MESSAGE = "message";
 	private static final String ERROR_PAGE = "/WEB-INF/views/error.jsp";
-	private static Logger logger = Logger.getLogger("CustomHttpServletLog");
+	private static final Logger LOGGER = Logger.getLogger("CustomHttpServletLog");
 
 	public void show404(HttpServletRequest request, HttpServletResponse response) {
 		response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -24,9 +24,9 @@ public abstract class CustomHttpServlet extends HttpServlet {
 		try {
 			view.forward(request, response);
 		} catch (ServletException e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+			LOGGER.log(Level.SEVERE, e.getMessage(), e);
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+			LOGGER.log(Level.SEVERE, e.getMessage(), e);
 		}
 	}
 
@@ -37,7 +37,7 @@ public abstract class CustomHttpServlet extends HttpServlet {
 		try {
 			view.forward(request, response);
 		} catch (ServletException | IOException e1) {
-			logger.log(Level.SEVERE, e1.getMessage(), e1);
+			LOGGER.log(Level.SEVERE, e1.getMessage(), e1);
 		}
 	}
 

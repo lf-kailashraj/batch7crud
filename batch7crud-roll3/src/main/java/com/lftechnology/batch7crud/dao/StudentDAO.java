@@ -14,7 +14,7 @@ import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 
 public class StudentDAO {
-	private Logger logger = Logger.getLogger("StudentDAO");
+	private static final Logger LOGGER = Logger.getLogger("StudentDAO");
 
 	public void insert(Student student) throws DataException {
 		PreparedStatement stmnt = null;
@@ -27,7 +27,7 @@ public class StudentDAO {
 			stmnt.setString(2, student.getName());
 			stmnt.execute();
 		} catch (SQLException e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+			LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
 			throw new DataException(e.getMessage());
 		} finally {
@@ -62,7 +62,7 @@ public class StudentDAO {
 
 			return stdList;
 		} catch (SQLException e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+			LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
 			throw new DataException(e.getMessage());
 		} finally {
@@ -87,7 +87,7 @@ public class StudentDAO {
 			}
 			return totalSize;
 		} catch (SQLException e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+			LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
 			throw new DataException(e.getMessage());
 		} finally {
@@ -117,7 +117,7 @@ public class StudentDAO {
 			}
 			return student;
 		} catch (SQLException e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+			LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
 			throw new DataException(e.getMessage());
 		} finally {
@@ -138,7 +138,7 @@ public class StudentDAO {
 			stmnt.setInt(3, id);
 			stmnt.executeUpdate();
 		} catch (SQLException e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+			LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
 			throw new DataException(e.getMessage());
 		} finally {
@@ -158,7 +158,7 @@ public class StudentDAO {
 			stmnt.setInt(1, id);
 			stmnt.executeUpdate();
 		} catch (SQLException e) {
-			logger.log(Level.SEVERE, e.getMessage(), e);
+			LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
 			throw new DataException(e.getMessage());
 		} finally {
@@ -175,7 +175,7 @@ public class StudentDAO {
 			if (conn != null)
 				conn.close();
 		} catch (SQLException e1) {
-			logger.log(Level.SEVERE, e1.getMessage(), e1);
+			LOGGER.log(Level.SEVERE, e1.getMessage(), e1);
 		}
 
 	}
