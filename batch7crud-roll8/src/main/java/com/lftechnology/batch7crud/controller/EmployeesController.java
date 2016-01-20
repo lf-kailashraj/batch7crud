@@ -37,7 +37,6 @@ public class EmployeesController extends HttpServlet{
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         String path = request.getPathInfo();
 
         if (path == null) {
@@ -45,12 +44,16 @@ public class EmployeesController extends HttpServlet{
         }
         else {
             String[] parts = path.split("/");
-            if (parts[2].equals("createProcess")) {
+            if (parts[1].equals("createProcess")) {
                 createProcess(request, response);
             }
-            else if (parts[3].equals("editProcess")) {
+            else if (parts[2].equals("editProcess")) {
                 int id = Integer.parseInt(parts[1]);
                 editProcess(request, response, id);
+            }
+            else if (parts[2].equals("deleteProcess")) {
+                int id = Integer.parseInt(parts[1]);
+                deleteProcess(request, response, id);
             }
         }
     }
@@ -124,6 +127,18 @@ public class EmployeesController extends HttpServlet{
             e.printStackTrace();
         }
 
+    }
+
+    private void deleteProcess(HttpServletRequest request, HttpServletResponse response, Integer id) {
+        try {
+            EmployeeServices employeeServices = new EmployeeServices();
+            employeeServices.delete(id);
+            response.sendRedirect("/employees");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DataException e) {
+            e.printStackTrace();
+        }
     }
 
     private void fetch(HttpServletRequest request, HttpServletResponse response) throws IOException {
