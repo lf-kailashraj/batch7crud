@@ -3,6 +3,7 @@ package com.lftechnology.batch7crud.entity;
 import java.util.Date;
 
 /**
+ * Transaction class holds the information of entities involved in transaction.
  * @Author Binod Shrestha <binodshrestha@lftechnology.com>
  * Created on 1/17/16
  */

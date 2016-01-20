@@ -1,13 +1,14 @@
 package com.lftechnology.batch7crud.entity;
 
 /**
+ * BookCode is used to identify each and every book uniquely.
  * @Author Binod Shrestha <binodshrestha@lftechnology.com>
  * Created on 1/17/16
  */
 public class BookCode {
   private Integer id;
   private String code;
-  private Boolean availability;
+  private Boolean isAvailable;
   private Book book;
 
   public Integer getId() {
@@ -26,12 +27,12 @@ public class BookCode {
     this.code = code;
   }
 
-  public Boolean getAvailability() {
-    return availability;
+  public Boolean getIsAvailable() {
+    return isAvailable;
   }
 
-  public void setAvailability(Boolean availability) {
-    this.availability = availability;
+  public void setIsAvailable(Boolean isAvailable) {
+    this.isAvailable = isAvailable;
   }
 
   public Book getBook() {

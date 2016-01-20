@@ -1,5 +1,6 @@
 package com.lftechnology.batch7crud.dao;
 
+import com.lftechnology.batch7crud.constants.Constant;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.utils.DbUtils;
@@ -12,34 +13,40 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * A StudentDao class performs the CRUD operation in Student entity.
+ *
  * @Author Binod Shrestha <binodshrestha@lftechnology.com>
  * Created on 1/14/16
  */
 public class StudentDao {
   private static final Logger LOGGER = Logger.getLogger(StudentDao.class.getName());
+  private static final String FETCH_STUDENT_LIMIT_OFFSET = "SELECT * FROM student LIMIT ? OFFSET ?";
+  private static final String FETCH_STUDENT_BY_ID = "SELECT * FROM student WHERE id=?";
+  private static final String INSERT_INTO_STUDENT = "INSERT INTO student (name,address,dob,department,batch,roll) VALUES(?,?,?,?,?,?)";
+  private static final String DELETE_FROM_STUDENT = "DELETE FROM student WHERE id=?";
+  private static final String UPDATE_STUDENT = "UPDATE student SET name=?, address=?, dob=?, department=?, batch=?, roll=? WHERE id=?";
+  private static final String FETCH_TOTAL_STUDENT_COUNT = "SELECT count(*) AS total FROM student";
 
   public List<Student> fetch(Integer offset, Integer limit) throws DataException {
-    List<Student> studentList = new ArrayList<Student>();
-    Connection conn = null;
-    PreparedStatement ps = null;
-    ResultSet studentResult = null;
-    try {
-      conn = DbUtils.getConnection();
+    List<Student> studentList = new ArrayList<>();
+    ResultSet studentResult;
 
-      String query = "SELECT * FROM student LIMIT ? OFFSET ?";
-      ps = conn.prepareStatement(query);
+    try (Connection conn = DbUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(FETCH_STUDENT_LIMIT_OFFSET)
+    ) {
+
       ps.setInt(1, limit);
       ps.setInt(2, offset);
       studentResult = ps.executeQuery();
 
       while (studentResult.next()) {
-        Integer id = studentResult.getInt("id");
-        Integer rollNo = studentResult.getInt("roll");
-        String department = studentResult.getString("department");
-        String batch = studentResult.getString("batch");
-        String name = studentResult.getString("name");
-        String address = studentResult.getString("address");
-        Date dob = studentResult.getDate("dob");
+        Integer id = studentResult.getInt(Constant.ID);
+        Integer rollNo = studentResult.getInt(Constant.ROLL);
+        String department = studentResult.getString(Constant.DEPARTMENT);
+        String batch = studentResult.getString(Constant.BATCH);
+        String name = studentResult.getString(Constant.NAME);
+        String address = studentResult.getString(Constant.ADDRESS);
+        Date dob = studentResult.getDate(Constant.DOB);
 
         Student student = new Student();
         student.setId(id);
@@ -58,21 +65,14 @@ public class StudentDao {
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
-    } finally {
-      DbUtils.closeResultSet(studentResult);
-      DbUtils.closePreparedStatement(ps);
-      DbUtils.closeConnection(conn);
     }
   }
 
   public void insert(Student stud) throws DataException {
-    Connection conn = null;
-    PreparedStatement ps = null;
-    try {
-      conn = DbUtils.getConnection();
+    try (Connection conn = DbUtils.getConnection();
+      PreparedStatement ps = conn.prepareStatement(INSERT_INTO_STUDENT)
+    ) {
 
-      String studentQuery = "INSERT INTO student (name,address,dob,department,batch,roll) VALUES(?,?,?,?,?,?)";
-      ps = conn.prepareStatement(studentQuery);
       ps.setString(1, stud.getName());
       ps.setString(2, stud.getAddress());
       ps.setDate(3, new java.sql.Date(stud.getDob().getTime()));
@@ -84,41 +84,27 @@ public class StudentDao {
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
-    } finally {
-      DbUtils.closePreparedStatement(ps);
-      DbUtils.closeConnection(conn);
     }
-
   }
 
   public void delete(Integer studentId) throws DataException {
-    Connection conn = null;
-    PreparedStatement ps = null;
-    try {
-      conn = DbUtils.getConnection();
+    try(Connection conn = DbUtils.getConnection();
+      PreparedStatement ps = conn.prepareStatement(DELETE_FROM_STUDENT)
+    ) {
 
-      String query = "DELETE FROM student WHERE id=?";
-      ps = conn.prepareStatement(query);
       ps.setInt(1, studentId);
       ps.executeUpdate();
 
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
-    } finally {
-      DbUtils.closePreparedStatement(ps);
-      DbUtils.closeConnection(conn);
     }
   }
 
   public void update(Student student) throws DataException {
-    Connection conn = null;
-    PreparedStatement ps = null;
-    try {
-      conn = DbUtils.getConnection();
-
-      String studentQuery = "UPDATE student SET name=?, address=?, dob=?, department=?, batch=?, roll=? WHERE id=?";
-      ps = conn.prepareStatement(studentQuery);
+    try(Connection conn = DbUtils.getConnection();
+      PreparedStatement ps = conn.prepareStatement(UPDATE_STUDENT)
+    ) {
       ps.setString(1, student.getName());
       ps.setString(2, student.getAddress());
       ps.setDate(3, new java.sql.Date(student.getDob().getTime()));
@@ -131,73 +117,53 @@ public class StudentDao {
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
-    } finally {
-      DbUtils.closePreparedStatement(ps);
-      DbUtils.closeConnection(conn);
     }
   }
 
   public Student fetchById(Integer id) throws DataException {
-    Connection conn = null;
-    PreparedStatement ps = null;
-    ResultSet studentResult = null;
-    try {
-      String query = "SELECT * FROM student WHERE id=?";
-      conn = DbUtils.getConnection();
-      ps = conn.prepareStatement(query);
+    ResultSet studentResult;
+    try(Connection conn = DbUtils.getConnection();
+      PreparedStatement ps = conn.prepareStatement(FETCH_STUDENT_BY_ID)
+    ) {
       ps.setInt(1, id);
-
       studentResult = ps.executeQuery();
 
+      Student student = null;
       if (studentResult.next()) {
-        Student student = new Student();
-        student.setId(studentResult.getInt("id"));
-        student.setRoll(studentResult.getInt("roll"));
-        student.setDepartment(studentResult.getString("department"));
-        student.setBatch(studentResult.getString("batch"));
+        student = new Student();
+        student.setId(studentResult.getInt(Constant.ID));
+        student.setRoll(studentResult.getInt(Constant.ROLL));
+        student.setDepartment(studentResult.getString(Constant.DEPARTMENT));
+        student.setBatch(studentResult.getString(Constant.BATCH));
 
-        student.setName(studentResult.getString("name"));
-        student.setAddress(studentResult.getString("address"));
-        student.setDob(studentResult.getDate("dob"));
+        student.setName(studentResult.getString(Constant.NAME));
+        student.setAddress(studentResult.getString(Constant.ADDRESS));
+        student.setDob(studentResult.getDate(Constant.DOB));
 
-        return student;
-      } else {
-        return null;
       }
+      return student;
 
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
-    } finally {
-      DbUtils.closeResultSet(studentResult);
-      DbUtils.closePreparedStatement(ps);
-      DbUtils.closeConnection(conn);
     }
-
   }
 
   public Integer fetchTotalRecordNumber() throws DataException {
-    Connection conn = null;
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    try {
-      String query = "SELECT count(*) AS total FROM student";
-      conn = DbUtils.getConnection();
-      ps = conn.prepareStatement(query);
+    ResultSet rs;
+    try(Connection conn = DbUtils.getConnection();
+      PreparedStatement ps = conn.prepareStatement(FETCH_TOTAL_STUDENT_COUNT)
+    ) {
       rs = ps.executeQuery();
 
       if (rs.next()) {
         return rs.getInt("total");
       } else {
-        return null;
+        return 0;
       }
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException();
-    } finally {
-      DbUtils.closeResultSet(rs);
-      DbUtils.closePreparedStatement(ps);
-      DbUtils.closeConnection(conn);
     }
   }
 }

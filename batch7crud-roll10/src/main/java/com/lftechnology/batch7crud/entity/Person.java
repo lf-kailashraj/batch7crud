@@ -3,6 +3,7 @@ package com.lftechnology.batch7crud.entity;
 import java.util.Date;
 
 /**
+ * Person class holds the basic details of a person.
  * @Author Binod Shrestha <binodshrestha@lftechnology.com>
  * Created on 1/17/16
  */

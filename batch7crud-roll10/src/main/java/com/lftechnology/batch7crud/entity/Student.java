@@ -1,6 +1,7 @@
 package com.lftechnology.batch7crud.entity;
 
 /**
+ * Student class holds the student information and getter & setter methods.
  * @Author Binod Shrestha <binodshrestha@lftechnology.com>
  * Created on 1/14/16
  */

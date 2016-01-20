@@ -1,14 +1,16 @@
 package com.lftechnology.batch7crud.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
+ * Fine class holds the information that are used to calculate the late fee.
  * @Author Binod Shrestha <binodshrestha@lftechnology.com>
  * Created on 1/17/16
  */
 public class Fine {
   private Integer id;
-  private Integer amountPerDay;
+  private BigDecimal amountPerDay;
   private Date applyDate;
   private Date endDate;
 
@@ -20,11 +22,11 @@ public class Fine {
     this.id = id;
   }
 
-  public Integer getAmountPerDay() {
+  public BigDecimal getAmountPerDay() {
     return amountPerDay;
   }
 
-  public void setAmountPerDay(Integer amountPerDay) {
+  public void setAmountPerDay(BigDecimal amountPerDay) {
     this.amountPerDay = amountPerDay;
   }
 
