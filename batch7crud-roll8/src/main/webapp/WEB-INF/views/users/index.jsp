@@ -9,17 +9,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Users</title>
+  <title>Users</title>
 </head>
 <body>
-    <%--<c:choose>--%>
-        <%--<c:when test="${success}">--%>
-            <%--Welcome user!--%>
-        <%--</c:when>--%>
-    <%--</c:choose>--%>
-    <div>
-        <a href="/employees">Manage Employees</a>
-        <p><a href="#">Manage your Deets</a></p>
-    </div>
+  <%--<c:choose>--%>
+  <%--<c:when test="${success}">--%>
+  <%--Welcome user!--%>
+  <%--</c:when>--%>
+  <%--</c:choose>--%>
+  <div>
+    <a href="/employees">Manage Employees</a>
+    <p><a href="#">Manage your Deets</a></p>
+  </div>
 </body>
 </html>

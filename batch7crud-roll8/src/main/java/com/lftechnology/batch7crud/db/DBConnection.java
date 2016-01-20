@@ -13,17 +13,17 @@ import java.sql.SQLException;
  * Created by grishma on 1/18/16.
  */
 public class DBConnection {
-    public static Connection getConnection() throws DataException {
-        try {
-            Context initContext = new InitialContext();
-            Context envContext = (Context) initContext.lookup("java:/comp/env");
-            DataSource dataSource = (DataSource) envContext.lookup("jdbc/employeemgt");
-            Connection conn = dataSource.getConnection();
-            return conn;
-        } catch (SQLException e) {
-            throw new DataException();
-        } catch (NamingException e) {
-            throw new DataException();
-        }
+  public static Connection getConnection() throws DataException {
+    try {
+      Context initContext = new InitialContext();
+      Context envContext = (Context) initContext.lookup("java:/comp/env");
+      DataSource dataSource = (DataSource) envContext.lookup("jdbc/employeemgt");
+      Connection conn = dataSource.getConnection();
+      return conn;
+    } catch (SQLException e) {
+      throw new DataException();
+    } catch (NamingException e) {
+      throw new DataException();
     }
+  }
 }

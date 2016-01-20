@@ -8,30 +8,30 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Sign Up</title>
+  <title>Sign Up</title>
 </head>
 <body>
-    <form action="create" method="POST">
-        <div>
-            <label>Name:</label>
-            <input name="name" type="text"/>
-        </div>
-        <div>
-            <label>Email:</label>
-            <input name="email" type="text"/>
-        </div>
-        <div>
-            <label>Username:</label>
-            <input name="username" type="text"/>
-        </div>
-        <div>
-            <label>Password:</label>
-            <input name="password" type="password"/>
-        </div>
-        <div>
-            <input type="submit"/>
-        </div>
+<form action="create" method="POST">
+  <div>
+    <label>Name:</label>
+    <input name="name" type="text"/>
+  </div>
+  <div>
+    <label>Email:</label>
+    <input name="email" type="text"/>
+  </div>
+  <div>
+    <label>Username:</label>
+    <input name="username" type="text"/>
+  </div>
+  <div>
+    <label>Password:</label>
+    <input name="password" type="password"/>
+  </div>
+  <div>
+    <input type="submit"/>
+  </div>
 
-    </form>
+</form>
 </body>
 </html>

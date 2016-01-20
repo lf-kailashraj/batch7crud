@@ -8,23 +8,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Sign In</title>
+  <title>Sign In</title>
 </head>
 <body>
-    Hello From Signin
-    <form action="create" method="POST">
-        <div>
-            <label>Username:</label>
-            <input name="username" type="text"/>
-        </div>
-        <div>
-            <label>Password:</label>
-            <input name="password" type="password"/>
-        </div>
-        <div>
-            <input type="submit"/>
-    </div>
+Hello From Signin
+<form action="create" method="POST">
+  <div>
+    <label>Username:</label>
+    <input name="username" type="text"/>
+  </div>
+  <div>
+    <label>Password:</label>
+    <input name="password" type="password"/>
+  </div>
+  <div>
+    <input type="submit"/>
+  </div>
 
-    </form>
+</form>
 </body>
 </html>
