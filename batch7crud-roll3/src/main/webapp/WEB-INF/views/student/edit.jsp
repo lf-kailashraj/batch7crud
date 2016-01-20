@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action = "student/${student.getId()}/edit" method = "post">
+<form action = "students/${student.getId()}/edit" method = "post">
 Roll:<input type="number" name="roll" value = "${student.getRoll()}"><br/>  
 Name:<input type="text" name="name" value = "${student.getName()}"><br/>
 <input type="submit" value="submit"/>    

@@ -5,11 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<base href="/batch7crud-roll3/">
+<base href="${pageContext.request.contextPath}/">
 <title>Hello</title>
 </head>
 <body>
 	<div><h1>School Management System</h1></div>
-	<a href = "student">Student</a>
+	<a href = "students">Student</a>
 </body>
 </html>

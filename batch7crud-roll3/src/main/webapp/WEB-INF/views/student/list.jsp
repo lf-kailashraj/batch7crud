@@ -17,25 +17,27 @@
 			<td>Name</td>
 			<td></td>
 			<td></td>
+			<td></td>
 		</tr>
 		<c:forEach items = "${stdList}" var="student" >
 			<tr>
 				<td>${student.getId()}</td>
 				<td>${student.getRoll()}</td>
 				<td>${student.getName()}</td>
-				<td><a href="student/${student.getId()}/edit">edit</a></td>
-				<td><a href="student/${student.getId()}/delete" class="deleteItem">delete</a></td>
+				<td><a href="students/${student.getId()}">show</a></td>
+				<td><a href="students/${student.getId()}/edit">edit</a></td>
+				<td><a href="students/${student.getId()}/delete" class="deleteItem">delete</a></td>
 			</tr>
 		</c:forEach>
 	</table>
-	<a href="student/create">Create</a>
+	<a href="students/create">Create</a>
 	
 	<c:if test="${pageNum > 1}">
-		<a href="student/${pageNum - 1}">Previous</a>
+		<a href="students?page=${pageNum - 1}">Previous</a>
 	</c:if>
 	${pageNum}
 	<c:if test="${(pageNum * pageSize) < count}">
-	<a href="student/${pageNum + 1}">Next</a>
+	<a href="students?page=${pageNum + 1}">Next</a>
 	</c:if>
 </body>
 <script>
@@ -50,7 +52,6 @@
 				var form = document.createElement("form");
 				form.action = href;
 				form.method = "post";
-				console.log(form);
 				document.body.appendChild(form);
 				form.submit();
 			}

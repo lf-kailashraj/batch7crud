@@ -1,0 +1,66 @@
+package com.lftechnology.batch7crud.controller;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class CustomHttpServlet extends HttpServlet {
+
+	private static final String MESSAGE = "message";
+	private static final String ERROR_PAGE = "/WEB-INF/views/error.jsp";
+	private static Logger logger = Logger.getLogger("CustomHttpServletLog");
+
+	public void show404(HttpServletRequest request, HttpServletResponse response) {
+		response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		request.setAttribute(MESSAGE, "Page Not Found");
+		RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
+
+		try {
+			view.forward(request, response);
+		} catch (ServletException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+		}
+	}
+
+	public void show500(HttpServletRequest request, HttpServletResponse response, Throwable e) {
+		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		request.setAttribute(MESSAGE, e.getMessage());
+		RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
+		try {
+			view.forward(request, response);
+		} catch (ServletException | IOException e1) {
+			logger.log(Level.SEVERE, e1.getMessage(), e1);
+		}
+	}
+
+	public String[] parameterValues(HttpServletRequest request) {
+		String urlPath = request.getRequestURI().substring(request.getContextPath().length());
+		return urlPath.split("/");
+	}
+
+	public int parameterValueAsInt(HttpServletRequest request, int index){
+		String[] paths = parameterValues(request);
+		return Integer.parseInt(paths[index]);
+	}
+
+	public int getPageNumber(HttpServletRequest request) {
+		try {
+			if (request.getParameter("page") != null) {
+				return Integer.parseInt(request.getParameter("page"));
+			} else {
+				return 1;
+			}
+		} catch (NumberFormatException e) {
+			return 1;
+		}
+	}
+
+}

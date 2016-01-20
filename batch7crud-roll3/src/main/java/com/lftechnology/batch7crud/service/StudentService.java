@@ -1,7 +1,5 @@
 package com.lftechnology.batch7crud.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.lftechnology.batch7crud.dao.StudentDAO;
@@ -16,15 +14,11 @@ public class StudentService {
 	}
 
 	public List<Student> fetch(int page, int pageSize) throws DataException {
-		List<Student> stdList = new ArrayList<Student>();
-		stdList = stdDAO.fetch(page, pageSize);
-		return stdList;
+		return stdDAO.fetch(page, pageSize);
 	}
 
 	public Student fetchStudentById(int id) throws DataException {
-		Student student = new Student();
-		student = stdDAO.fetchStudentById(id);
-		return student;
+		return stdDAO.fetchStudentById(id);
 	}
 
 	public int fetchTotal() throws DataException {

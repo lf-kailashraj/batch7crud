@@ -13,7 +13,7 @@ import java.sql.Connection;
 
 public class DBConnection {
 	private static Logger logger = Logger.getLogger("DBConnection");
-	
+
 	private DBConnection() {
 	}
 
@@ -28,13 +28,9 @@ public class DBConnection {
 			envCtx.lookup("jdbc/students_info");
 
 			return ds.getConnection();
-		} catch (SQLException e) {
-			logger.log(Level.SEVERE, e.getMessage());
-			
-			throw new DataException(e.getMessage());
-		} catch (NamingException e) {
-			logger.log(Level.SEVERE, e.getMessage());
-			
+		} catch (SQLException | NamingException e) {
+			logger.log(Level.SEVERE, e.getMessage(), e);
+
 			throw new DataException(e.getMessage());
 		}
 	}

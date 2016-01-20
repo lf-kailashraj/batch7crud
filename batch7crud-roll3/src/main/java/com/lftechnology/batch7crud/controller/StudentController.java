@@ -2,12 +2,9 @@ package com.lftechnology.batch7crud.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,89 +12,71 @@ import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.service.StudentService;
 
-@WebServlet("/student/*")
-public class StudentController extends HttpServlet {
-	private StudentService studentService = new StudentService();
-	private Logger logger = Logger.getLogger("StudentController");
-
-	private static final String MESSAGE = "message";
-	private static final String ERROR_PAGE = "/WEB-INF/views/error.jsp";
-	private static final String LIST_PAGE = "/student";
+@WebServlet("/students/*")
+public class StudentController extends CustomHttpServlet {
+	private static final String LIST_PAGE = "/students";
+	private static StudentService studentService = new StudentService();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String pathInfo = request.getPathInfo();
+		String[] parameters = parameterValues(request);
 		try {
-			if (pathInfo == null) {
-				list(request, response, 1);
+			if (parameters.length == 2) {
+				list(request, response);
+			} else if (parameters.length == 3 && "create".equals(parameters[2])) {
+				create(request, response);
+			} else if (parameters.length == 4 && "edit".equals(parameters[3])) {
+				edit(request, response);
+			} else if (parameters.length == 3) {
+				show(request, response);
 			} else {
-				String[] pathParts = pathInfo.split("/");
-
-				if ("create".equals(pathParts[1])) {
-					create(request, response);
-				} else if (pathParts[1] != null && pathParts.length == 2) {
-					int page;
-					page = Integer.parseInt(pathParts[1]);
-
-					list(request, response, page);
-				} else if (pathParts[1] != null && "edit".equals(pathParts[2])) {
-					edit(request, response, Integer.parseInt(pathParts[1]));
-
-				} else if (pathParts[1] != null && "delete".equals(pathParts[2])) {
-					deleteProcess(request, response, Integer.parseInt(pathParts[1]));
-
-				} else {
-					response.sendRedirect(request.getContextPath() + LIST_PAGE);
-				}
+				show404(request, response);
 			}
-		} catch (NumberFormatException e) {
-			logger.log(Level.SEVERE, e.getMessage());
+		} catch (DataException | IOException | ServletException e) {
+			show500(request, response, e);
 		}
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String pathInfo = request.getPathInfo();
-		String[] pathParts = pathInfo.split("/");
-
 		try {
-			if ("create".equals(pathParts[1])) {
+			String[] parameters = parameterValues(request);
+			if (parameters.length == 3 && "create".equals(parameters[2])) {
 				createProcess(request, response);
-			} else if ("edit".equals(pathParts[2])) {
-				editProcess(request, response, Integer.parseInt(pathParts[1]));
-			} else if ("delete".equals(pathParts[2])) {
-				deleteProcess(request, response, Integer.parseInt(pathParts[1]));
+			} else if (parameters.length == 4 && "edit".equals(parameters[3])) {
+				editProcess(request, response);
+			} else if (parameters.length == 4 && "delete".equals(parameters[3])) {
+				deleteProcess(request, response);
 			} else {
-				list(request, response, 1);
+				show404(request, response);
 			}
-
-		} catch (NumberFormatException e) {
-			logger.log(Level.SEVERE, e.getMessage());
+		} catch (DataException | IOException | ServletException e) {
+			show500(request, response, e);
 		}
 	}
 
-	private void list(HttpServletRequest request, HttpServletResponse response, int page)
-			throws ServletException, IOException {
-		try {
-			int pageSize = 3;
-			List<Student> stdList = studentService.fetch(page, pageSize);
-			int count = studentService.fetchTotal();
+	private void list(HttpServletRequest request, HttpServletResponse response)
+			throws DataException, ServletException, IOException {
+		int pageSize = 3;
+		int page = getPageNumber(request);
+		List<Student> stdList = studentService.fetch(page, pageSize);
+		int count = studentService.fetchTotal();
 
-			request.setAttribute("stdList", stdList);
-			request.setAttribute("pageSize", pageSize);
+		request.setAttribute("stdList", stdList);
+		request.setAttribute("pageSize", pageSize);
 
-			request.setAttribute("count", count);
-			request.setAttribute("pageNum", page);
-			request.getRequestDispatcher("/WEB-INF/views/student/list.jsp").forward(request, response);
-		} catch (DataException e) {
-			logger.log(Level.SEVERE, e.getMessage());
+		request.setAttribute("count", count);
+		request.setAttribute("pageNum", page);
+		request.getRequestDispatcher("/WEB-INF/views/student/list.jsp").forward(request, response);
+	}
 
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.setAttribute(MESSAGE, e.getMessage());
-			request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-		}
+	private void show(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
+		int id = parameterValueAsInt(request, 2);
+		Student student = studentService.fetchStudentById(id);
+		request.setAttribute("student", student);
+		request.getRequestDispatcher("/WEB-INF/views/student/show.jsp").forward(request, response);
 	}
 
 	private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -105,82 +84,64 @@ public class StudentController extends HttpServlet {
 	}
 
 	private void createProcess(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException, IOException, DataException {
 		String roll = request.getParameter("roll");
 		String name = request.getParameter("name");
-
-		Student student = new Student();
 		try {
-			student.setRoll(Integer.parseInt(roll));
-		} catch (NumberFormatException e) {
-			logger.log(Level.SEVERE, e.getMessage());
-		}
 
-		student.setName(name);
-		try {
-			studentService.insert(student);
-			response.sendRedirect(request.getContextPath() + LIST_PAGE);
-		} catch (DataException e) {
-			logger.log(Level.SEVERE, e.getMessage());
-
-			request.setAttribute(MESSAGE, e.getMessage());
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-		}
-
-	}
-
-	private void edit(HttpServletRequest request, HttpServletResponse response, int id)
-			throws ServletException, IOException {
-		Student student;
-		try {
-			student = studentService.fetchStudentById(id);
-			request.setAttribute("student", student);
-			request.getRequestDispatcher("/WEB-INF/views/student/edit.jsp").forward(request, response);
-		} catch (DataException e) {
-			logger.log(Level.SEVERE, e.getMessage());
-
-			request.setAttribute(MESSAGE, e.getMessage());
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-		}
-
-	}
-
-	private void editProcess(HttpServletRequest request, HttpServletResponse response, int id)
-			throws ServletException, IOException {
-		try {
-			String roll = request.getParameter("roll");
-			String name = request.getParameter("name");
 			Student student = new Student();
 			student.setRoll(Integer.parseInt(roll));
 			student.setName(name);
+			response.sendRedirect(request.getContextPath() + LIST_PAGE);
+		} catch (NumberFormatException e) {
+			request.setAttribute("roll", roll);
+			request.setAttribute("name", name);
 
+			request.setAttribute("message", "Fill valid Roll");
+			request.getRequestDispatcher("/WEB-INF/views/student/create.jsp").forward(request, response);
+		}
+	}
+
+	private void edit(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, DataException {
+		try {
+			int id = parameterValueAsInt(request, 2);
+			Student student = studentService.fetchStudentById(id);
+			request.setAttribute("student", student);
+			request.getRequestDispatcher("/WEB-INF/views/student/edit.jsp").forward(request, response);
+		} catch (NumberFormatException e) {
+			show404(request, response);
+		}
+
+	}
+
+	private void editProcess(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, DataException {
+		String roll = request.getParameter("roll");
+		String name = request.getParameter("name");
+
+		try {
+			int id = parameterValueAsInt(request, 2);
+			Student student = new Student();
+			student.setRoll(Integer.parseInt(roll));
+			student.setName(name);
 			studentService.edit(student, id);
 
 			response.sendRedirect(request.getContextPath() + LIST_PAGE);
 		} catch (NumberFormatException e) {
-			logger.log(Level.SEVERE, e.getMessage());
-		} catch (DataException e) {
-			logger.log(Level.SEVERE, e.getMessage());
+			request.setAttribute("roll", roll);
+			request.setAttribute("name", name);
+			request.setAttribute("message", "Fill valid Roll");
 
-			request.setAttribute(MESSAGE, e.getMessage());
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/student/edit.jsp").forward(request, response);
 		}
 	}
 
-	private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id)
-			throws ServletException, IOException {
-		try {
-			studentService.delete(id);
-			response.sendRedirect(request.getContextPath() + LIST_PAGE);
-		} catch (DataException e) {
-			logger.log(Level.SEVERE, e.getMessage());
+	private void deleteProcess(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, DataException {
+		int id = parameterValueAsInt(request, 2);
+		studentService.delete(id);
 
-			request.setAttribute(MESSAGE, e.getMessage());
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-		}
+		response.sendRedirect(request.getContextPath() + LIST_PAGE);
 	}
 }

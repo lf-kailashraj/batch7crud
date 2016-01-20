@@ -8,19 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/")
-public class HomeController extends HttpServlet {
+public class HomeController extends CustomHttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
+		try {
+			request.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
+		} catch (ServletException | IOException e) {
+			show500(request, response, e);
+		}
 	}
-
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 }
