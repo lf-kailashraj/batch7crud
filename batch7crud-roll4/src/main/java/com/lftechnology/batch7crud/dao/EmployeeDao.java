@@ -48,17 +48,9 @@ public class EmployeeDao {
       throw new DataException(e.getMessage());
 
     } finally {
-      try {
-        if (rs != null)
-          rs.close();
-        if (stmt != null)
-          stmt.close();
-        if (connection != null)
-          connection.close();
-
-      } catch (SQLException e) {
-        LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      }
+      DbConnection.closeResultSet(rs);
+      DbConnection.closePreparedStatement(stmt);
+      DbConnection.closeConnection(connection);
     }
   }
 
@@ -89,17 +81,9 @@ public class EmployeeDao {
       throw new DataException(e.getMessage());
 
     } finally {
-      try {
-        if (rs != null)
-          rs.close();
-        if (stmt != null)
-          stmt.close();
-        if (connection != null)
-          connection.close();
-
-      } catch (SQLException e) {
-        LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      }
+      DbConnection.closeResultSet(rs);
+      DbConnection.closePreparedStatement(stmt);
+      DbConnection.closeConnection(connection);
     }
   }
 
@@ -121,21 +105,14 @@ public class EmployeeDao {
       throw new DataException(e.getMessage());
 
     } finally {
-      try {
-        if (stmt != null)
-          stmt.close();
-        if (connection != null)
-          connection.close();
-      } catch (SQLException e) {
-        LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      }
+      DbConnection.closePreparedStatement(stmt);
+      DbConnection.closeConnection(connection);
     }
   }
 
   public void update(Employee employee) throws DataException {
     Connection connection = null;
     PreparedStatement stmt = null;
-    ResultSet rs = null;
 
     try {
       connection = DbConnection.getConnection();
@@ -152,14 +129,8 @@ public class EmployeeDao {
       throw new DataException(e.getMessage());
 
     } finally {
-      try {
-        if (stmt != null)
-          stmt.close();
-        if (connection != null)
-          connection.close();
-      } catch (SQLException e) {
-        LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      }
+      DbConnection.closePreparedStatement(stmt);
+      DbConnection.closeConnection(connection);
     }
   }
 
@@ -181,16 +152,9 @@ public class EmployeeDao {
       throw new DataException(e.getMessage());
 
     } finally {
-      try {
-        if (rs != null)
-          rs.close();
-        if (stmt != null)
-          stmt.close();
-        if (connection != null)
-          connection.close();
-      } catch (SQLException e) {
-        LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      }
+      DbConnection.closeResultSet(rs);
+      DbConnection.closePreparedStatement(stmt);
+      DbConnection.closeConnection(connection);
     }
   }
 
@@ -216,16 +180,9 @@ public class EmployeeDao {
       throw new DataException(e.getMessage());
 
     } finally {
-      try {
-        if (rs != null)
-          rs.close();
-        if (stmt != null)
-          stmt.close();
-        if (connection != null)
-          connection.close();
-      } catch (SQLException e) {
-        LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      }
+      DbConnection.closeResultSet(rs);
+      DbConnection.closePreparedStatement(stmt);
+      DbConnection.closeConnection(connection);
     }
   }
 

@@ -36,4 +36,36 @@ public class DbConnection {
       throw new DataException(e.getMessage());
     }
   }
+
+  public static void closePreparedStatement(PreparedStatement... ps) {
+    for (PreparedStatement p : ps) {
+      try {
+        if (p != null)
+          p.close();
+      } catch (SQLException e) { // NOSONAR
+        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      }
+    }
+  }
+
+  public static void closeResultSet(ResultSet... rs) {
+    for (ResultSet r : rs) {
+      try {
+        if (r != null)
+          r.close();
+      } catch (SQLException e) { // NOSONAR
+        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      }
+    }
+  }
+
+  public static void closeConnection(Connection conn) {
+    if (conn != null) {
+      try {
+        conn.close();
+      } catch (SQLException e) { // NOSONAR
+        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      }
+    }
+  }
 }
