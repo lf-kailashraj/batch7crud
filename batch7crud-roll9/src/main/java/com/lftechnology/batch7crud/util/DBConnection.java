@@ -8,12 +8,16 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by sanjay on 1/18/16.
  */
 public class DBConnection {
     private static Connection conn = null;
+    private static final Logger logger = Logger.getLogger("DBConnectionLog");
+    private DBConnection(){}
 
     public static Connection getConnection() throws DataException {
         try {
@@ -23,8 +27,10 @@ public class DBConnection {
             conn = ds.getConnection();
             return conn;
         } catch (NamingException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             throw new DataException();
         } catch (SQLException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             throw new DataException();
         }
 

@@ -17,8 +17,7 @@ import java.util.logging.Logger;
  * Created by sanjay on 1/14/16.
  */
 public class StudentDAO {
-    private Logger logger = Logger.getLogger("appLogger");
-
+    private Logger LOGGER = Logger.getLogger("appLogger");
     public void insert(Student s) throws DataException//get the object
     {
         try {
@@ -29,28 +28,26 @@ public class StudentDAO {
             pstmt.setString(3, s.getLastName());
             pstmt.setString(4, s.getAddress());
             pstmt.setInt(5, s.getGrade());
-            System.out.println(pstmt.toString());
-
             pstmt.executeUpdate();
             conn.close();
         } catch (SQLException ex) {
-            logger.log(Level.SEVERE, ex.getMessage());
+            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
             throw new DataException();
         }
     }
 
-    public List<Student> fetch(int page,int LIMIT) throws DataException
+    public List<Student> fetch(int page, int limit) throws DataException
     {
         try {
             Connection conn = DBConnection.getConnection();
             List<Student> stdList = new ArrayList<Student>();
             ResultSet rs=null;
 
-            int startOffset = (page-1) *LIMIT;
-            PreparedStatement pstmt= conn.prepareStatement("SELECT * from tbl_userinfo LIMIT ? OFFSET ?");
-            pstmt.setInt(1,LIMIT);
-            pstmt.setInt(2,startOffset);
 
+            int startOffset = (page-1) * limit;
+            PreparedStatement pstmt= conn.prepareStatement("SELECT * from tbl_userinfo LIMIT ? OFFSET ?");
+            pstmt.setInt(1, limit);
+            pstmt.setInt(2, startOffset);
             rs = pstmt.executeQuery();
             while(rs.next()){
                 Student std = new Student();
@@ -63,11 +60,9 @@ public class StudentDAO {
                 stdList.add(std);
             }
             conn.close();
-
             return stdList;
-
         } catch (SQLException ex) {
-            logger.log(Level.SEVERE, ex.getMessage());
+            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
             throw new DataException();
         }
     }
@@ -76,12 +71,11 @@ public class StudentDAO {
     {
         try {
             Connection conn = DBConnection.getConnection();
-            PreparedStatement pstmt= conn.prepareStatement("DELETE FROM tbl_userinfo WHERE id=?;");
+            PreparedStatement pstmt= conn.prepareStatement("DELETE FROM tbl_userinfo WHERE id=?");
             pstmt.setInt(1, id);
-            System.out.println(pstmt.toString());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
-            logger.log(Level.SEVERE, ex.getMessage());
+            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
             throw new DataException();
         }
     }
@@ -109,11 +103,10 @@ public class StudentDAO {
             return std;
 
         } catch (SQLException ex) {
-            logger.log(Level.SEVERE, ex.getMessage());
+            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
             throw new DataException();
         }
     }
-
 
     public void edit(Student s) throws DataException
     {
@@ -126,12 +119,11 @@ public class StudentDAO {
             pstmt.setString(4, s.getAddress());
             pstmt.setInt(5, s.getGrade());
             pstmt.setInt(6, s.getId());
-            System.out.println(s.getFirstName() + ", kk " + s.getMiddleName() + ", " + s.getLastName() + ", " + s.getAddress() + ", " + s.getGrade() + ", " + s.getId());
-            int i = pstmt.executeUpdate();
+            pstmt.executeUpdate();
             conn.close();
 
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, ex.getMessage());
+            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
             throw new DataException();
         }
     }
@@ -145,13 +137,13 @@ public class StudentDAO {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next())
                 totalStudents = rs.getInt(1);
+            pstmt.close();
             conn.close();
 
             return totalStudents;
         } catch (SQLException ex) {
-            logger.log(Level.SEVERE, ex.getMessage());
+            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
             throw new DataException();
         }
     }
-
 }

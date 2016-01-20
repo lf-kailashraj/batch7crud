@@ -24,7 +24,9 @@ public class Student {
         return grade;
     }
 
-    public void setGrade(int grade) { this.grade = grade; }
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
 
     public int getId() {
         return id;
