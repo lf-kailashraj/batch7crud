@@ -10,6 +10,7 @@
 <html>
 <head>
     <title>Employees</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 <body>
     <div>
@@ -38,7 +39,7 @@
                             <td>${employee.getDesignation()}</td>
                             <td>${employee.getPhone()}</td>
                             <td><a href="employees/${employee.getId()}/edit">Edit</a></td>
-                            <td><a href= "employees/delete">Delete</a></td>
+                            <td><a class="delete" href= "employees/${employee.getId()}/deleteProcess">Delete</a></td>
                         </tr>
                     </c:forEach>
                     </tbody>
@@ -46,6 +47,19 @@
             </div>
         </div>
     </div>
+    <script>
+        $(".delete").click(function (event) {
+            event.preventDefault();
+            var href = this.getAttribute('href');
+            if(confirm("Are you sure you want to delete this?")) {
+                var form = document.createElement("form");
+                form.action = href;
+                form.method = "POST";
+                $("body").append(form);
+                form.submit();
+            }
+        });
+    </script>
 </body>
 </html>
 
