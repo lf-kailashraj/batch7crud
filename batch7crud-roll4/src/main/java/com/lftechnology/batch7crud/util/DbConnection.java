@@ -29,10 +29,10 @@ public class DbConnection {
             return ds.getConnection();
 
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
         } catch (NamingException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
         }
     }

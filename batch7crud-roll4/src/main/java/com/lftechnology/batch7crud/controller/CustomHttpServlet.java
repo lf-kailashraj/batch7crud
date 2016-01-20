@@ -48,7 +48,7 @@ public class CustomHttpServlet extends HttpServlet {
         return urlPath.split("/");
     }
 
-    public int parameterValueAsInt(HttpServletRequest request, int index) throws NumberFormatException {
+    public int parameterValueAsInt(HttpServletRequest request, int index) {
         String[] paths = parameterValues(request);
         return Integer.parseInt(paths[index]);
     }

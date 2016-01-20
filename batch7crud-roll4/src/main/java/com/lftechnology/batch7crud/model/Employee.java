@@ -9,9 +9,6 @@ public class Employee {
     private String lastName;
     private String station;
 
-    public Employee() {
-    }
-
     public int getId() {
         return id;
     }

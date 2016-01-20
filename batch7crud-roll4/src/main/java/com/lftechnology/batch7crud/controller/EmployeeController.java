@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,8 +20,8 @@ import java.util.logging.Logger;
 
 public class EmployeeController extends CustomHttpServlet {
     private static final String EMPLOYEE_LISTING_PAGE = "/employees";
+    private static final Logger LOGGER = Logger.getLogger("EmployeeControllerLog");
 
-    private static Logger logger = Logger.getLogger("EmployeeControllerLog");
     private static EmployeeService employeeService;
 
     public EmployeeController() throws DataException {
@@ -79,7 +78,7 @@ public class EmployeeController extends CustomHttpServlet {
             view.forward(request, response);
 
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
     }
@@ -105,7 +104,7 @@ public class EmployeeController extends CustomHttpServlet {
             employeeService.save(employee);
             response.sendRedirect(request.getContextPath() + EMPLOYEE_LISTING_PAGE);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
     }
@@ -119,7 +118,7 @@ public class EmployeeController extends CustomHttpServlet {
             RequestDispatcher view = request.getRequestDispatcher(forward);
             view.forward(request, response);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
     }
@@ -133,7 +132,7 @@ public class EmployeeController extends CustomHttpServlet {
             RequestDispatcher view = request.getRequestDispatcher(forward);
             view.forward(request, response);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
 
@@ -155,7 +154,7 @@ public class EmployeeController extends CustomHttpServlet {
             employeeService.update(employee);
             response.sendRedirect(request.getContextPath() + EMPLOYEE_LISTING_PAGE);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
 
@@ -167,7 +166,7 @@ public class EmployeeController extends CustomHttpServlet {
             employeeService.deleteEmployee(employeeId);
             response.sendRedirect(request.getContextPath() + EMPLOYEE_LISTING_PAGE);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
     }
