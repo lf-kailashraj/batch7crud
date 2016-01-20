@@ -43,20 +43,22 @@
 		</tbody>
 
 	</table>
+
 	<c:if test="${pageNo > 1}">
-		<a href="employees/page/${pageNo-1}">Previous</a>
+		<a href="employees?page=${pageNo-1}">Previous</a>
 	</c:if>
 
 	<c:set var="counter" value="0" />
-	<c:forEach begin="0" end="${noOfEmployee%noEmpInPage-1}" step="1"
+	<c:forEach begin="0" end="${noOfEmployee/noEmpInPage}" step="1"
 		varStatus="loop">
-		<c:set var="counter" value="${counter + 1}"/>
-		<a href="employees/page/${counter}">${counter}</a>
+		<c:set var="counter" value="${counter + 1}" />
+		<a href="employees?page=${counter}">${counter}</a>
 	</c:forEach>
 
 	<c:if test="${pageNo*noEmpInPage < noOfEmployee}">
-		<a href="employees/page/${pageNo+1}">Next</a>
+		<a href="employees?page=${pageNo+1}">Next</a>
 	</c:if>
+
 	<script>
 		var delBtn = document.getElementsByClassName('deleteBtn');
 

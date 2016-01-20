@@ -16,4 +16,14 @@
     <servlet-name>EmployeeController</servlet-name>
     <url-pattern>/EmployeeController</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CustomHttpServlet</display-name>
+    <servlet-name>CustomHttpServlet</servlet-name>
+    <servlet-class>com.lftechnology.batch7crud.controller.CustomHttpServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CustomHttpServlet</servlet-name>
+    <url-pattern>/CustomHttpServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

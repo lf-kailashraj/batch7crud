@@ -8,16 +8,15 @@
 <title>Edit Employee</title>
 </head>
 <body>
+
 	<h1>Edit Employee Form</h1>
 	<form action="employees/${employee.getId()}/editProcess" method="post">
-		First Name:<input type="text" name="firstName" value = ${employee.getFirstName()} /><br>
-		Last Name:<input type="text" name="lastName" value = ${employee.getLastName()} /><br> 
-		Department:<input type="text" name="department" value = ${employee.getDepartment()} /><br> 
-		Address:<input type="text" name="address" value = ${employee.getAddress()} /><br> 
+		First Name:<input type="text" name="firstName" value = "${employee.getFirstName()}" /><br>
+		Last Name:<input type="text" name="lastName" value = "${employee.getLastName()}" /><br> 
+		Department:<input type="text" name="department" value = "${employee.getDepartment()}" /><br> 
+		Address:<input type="text" name="address" value = "${employee.getAddress()}" /><br> 
 			    <input type="submit" name="create" value="Submit">
 	</form>
-
-
 
 </body>
 </html>

@@ -1,9 +1,5 @@
 package com.lftechnology.batch7crud.model;
 
-/**
- * @author leapfrog
- *
- */
 public class Employee {
 
     int id;

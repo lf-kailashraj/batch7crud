@@ -6,51 +6,43 @@ import com.lftechnology.batch7crud.services.EmployeeService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class EmployeeController
- */
-
 @WebServlet("/employees/*")
-public class EmployeeController extends HttpServlet {
+public class EmployeeController extends CustomHttpServlet {
     private static final long serialVersionUID = 1L;
+    private static final String EMPLOYEE_LIST_URL = "/batch7crud-roll5/employees";
+    private static final Logger LOGGER = Logger.getLogger("EmployeeControllerLog");
 
-    EmployeeService employeeService = new EmployeeService();
-    Employee emp = new Employee();
-
-    public static String employeeListUrl = "/batch7crud-roll5/employees";
+    private static EmployeeService employeeService = new EmployeeService();
+    private static Employee emp = new Employee();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getPathInfo();
+
         if (path != null) {
             String[] pathParts = path.split("/");
 
-            if ("create".equals(pathParts[1]))
+            if (pathParts.length == 2 && "create".equals(pathParts[1]))
                 create(request, response);
 
-            else if ("edit".equals(pathParts[2])) {
-                int id = Integer.parseInt(pathParts[1]);
-                edit(request, response, id);
+            else if (pathParts.length == 3 && "edit".equals(pathParts[2])) {
+                edit(request, response);
             }
 
-            else if ("page".equals(pathParts[1])) {
-                int pageNo = Integer.parseInt(pathParts[2]);
-                fetchData(request, response, pageNo - 1);
-            }
-
+            else
+                show404(request, response);
         }
 
         else {
-            int pageNo = 1;
-            fetchData(request, response, pageNo - 1);
+            fetchData(request, response);
         }
 
     }
@@ -58,79 +50,78 @@ public class EmployeeController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getPathInfo();
+
         if (path != null) {
             String[] pathParts = path.split("/");
-            System.out.println(path);
-            if ("createProcess".equals(pathParts[1])) {
-                System.out.println("check check");
-                createProcess(request, response);
 
+            if ("createProcess".equals(pathParts[1])) {
+                createProcess(request, response);
             }
 
             else if ("editProcess".equals(pathParts[2])) {
-                int id = Integer.parseInt(pathParts[1]);
-                editProcess(request, response, id);
-
+                editProcess(request, response);
             }
 
             else if ("deleteProcess".equals(pathParts[2])) {
-                int id = Integer.parseInt(pathParts[1]);
-                deleteProcess(request, response, id);
+                deleteProcess(request, response);
             }
 
         } else {
-            int pageNo = 1;
-            fetchData(request, response, pageNo - 1);
+            fetchData(request, response);
         }
 
     }
 
-    private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id) {
+    private void deleteProcess(HttpServletRequest request, HttpServletResponse response) {
         try {
-            employeeService.deleteById(id);
+            int employeeId = parameterValueAsInt(request, 2);
+            employeeService.deleteById(employeeId);
 
-            response.sendRedirect(employeeListUrl);
+            response.sendRedirect(EMPLOYEE_LIST_URL);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            show500(request, response, e);
         }
 
     }
 
-    private void edit(HttpServletRequest request, HttpServletResponse response, int id) {
+    private void edit(HttpServletRequest request, HttpServletResponse response) {
         try {
-            emp = employeeService.fetchById(id);
-            request.setAttribute("employee", emp);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/editEmployee.jsp");
-            dispatcher.forward(request, response);
+            int employeeId = parameterValueAsInt(request, 2);
+            request.setAttribute("employee", employeeService.fetchById(employeeId));
+            request.getRequestDispatcher("/WEB-INF/views/editEmployee.jsp").forward(request, response);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            show500(request, response, e);
         }
     }
 
-    private void editProcess(HttpServletRequest request, HttpServletResponse response, int id) {
+    private void editProcess(HttpServletRequest request, HttpServletResponse response) {
         try {
             emp.setFirstName(request.getParameter("firstName"));
             emp.setLastName(request.getParameter("lastName"));
             emp.setDepartment(request.getParameter("department"));
             emp.setAddress(request.getParameter("address"));
 
-            employeeService.edit(emp, id);
+            int employeeId = parameterValueAsInt(request, 2);
+            employeeService.edit(emp, employeeId);
 
-            response.sendRedirect(employeeListUrl);
+            response.sendRedirect(EMPLOYEE_LIST_URL);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            show500(request, response, e);
         }
 
     }
 
     private void create(HttpServletRequest request, HttpServletResponse response) {
         try {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/createEmployee.jsp");
-            dispatcher.forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/createEmployee.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            show500(request, response, e);
         }
 
     }
@@ -142,33 +133,32 @@ public class EmployeeController extends HttpServlet {
             emp.setDepartment(request.getParameter("department"));
             emp.setAddress(request.getParameter("address"));
 
-            boolean status = employeeService.create(emp);
-
-            if (status == true) {
-                response.sendRedirect(employeeListUrl);
-            }
-
+            response.sendRedirect(EMPLOYEE_LIST_URL);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            show500(request, response, e);
         }
 
     }
 
-    private void fetchData(HttpServletRequest request, HttpServletResponse response, int pageNo) {
+    private void fetchData(HttpServletRequest request, HttpServletResponse response) {
+        List<Employee> employeeList = new ArrayList<Employee>();
+
         try {
-            List<Employee> employeeList = new ArrayList<Employee>();
-            int count = employeeService.count();
-            employeeList = employeeService.fetch(pageNo);
-            
+            int employeeCount = employeeService.count();
+            int pageNo = pageNumber(request);
+
+            employeeList = employeeService.fetch(pageNo - 1);
+
             request.setAttribute("employeeList", employeeList);
-            request.setAttribute("pageNo", pageNo + 1);
-            request.setAttribute("noOfEmployee", count);
+            request.setAttribute("pageNo", pageNo);
+            request.setAttribute("noOfEmployee", employeeCount);
             request.setAttribute("noEmpInPage", 10);
-            
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/employee.jsp");
-            dispatcher.forward(request, response);
+
+            request.getRequestDispatcher("/WEB-INF/views/employee.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            show500(request, response, e);
         }
 
     }
