@@ -96,4 +96,19 @@ public class EmployeeDao {
             throw new DataException();
         }
     }
+
+    public void delete(Integer id) throws DataException {
+        try {
+            String sql = "delete from employee where id = ?";
+            Connection conn = null;
+            conn = DBConnection.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataException();
+        }
+
+    }
 }
