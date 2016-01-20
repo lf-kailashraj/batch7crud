@@ -6,12 +6,9 @@ import com.lftechnology.batch7crud.service.EmployeeService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +18,7 @@ import java.util.logging.Logger;
  */
 @WebServlet(name = "EmployeeController", urlPatterns = { "/employees/*" })
 public class EmployeeController extends CommonHttpServlet {
-  private static final Logger logger = Logger.getLogger("employeeLogger");
+  private static final Logger LOGGER = Logger.getLogger("employeeLogger");
   private static final String EMPLOYEE_PATH = "/employees";
 
   @Override
@@ -83,7 +80,7 @@ public class EmployeeController extends CommonHttpServlet {
       request.setAttribute("currentPage", page);
       request.getRequestDispatcher("/WEB-INF/views/employeesList.jsp").forward(request, response);
     } catch (DataException e) {
-      logger.log(Level.SEVERE, e.getMessage(), e);
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
     }
   }
@@ -109,7 +106,7 @@ public class EmployeeController extends CommonHttpServlet {
       employeeService.insert(employee);
       response.sendRedirect(request.getContextPath() + EMPLOYEE_PATH);
     } catch (DataException e) {
-      logger.log(Level.SEVERE, e.getMessage(), e);
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
     }
   }
@@ -125,10 +122,10 @@ public class EmployeeController extends CommonHttpServlet {
       request.setAttribute("employee", employee);
       request.getRequestDispatcher("/WEB-INF/views/employeeView.jsp").forward(request, response);
     } catch (DataException e) {
-      logger.log(Level.SEVERE, e.getMessage(), e);
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
     } catch (NumberFormatException e) {
-      logger.log(Level.SEVERE, e.getMessage(), e);
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayPageNotFound(request, response);
     }
   }
@@ -144,7 +141,7 @@ public class EmployeeController extends CommonHttpServlet {
       request.setAttribute("employee", employee);
       request.getRequestDispatcher("/WEB-INF/views/employeeEdit.jsp").forward(request, response);
     } catch (DataException e) {
-      logger.log(Level.SEVERE, e.getMessage(), e);
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
     }
   }
@@ -168,7 +165,7 @@ public class EmployeeController extends CommonHttpServlet {
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + EMPLOYEE_PATH);
     } catch (DataException e) {
-      logger.log(Level.SEVERE, e.getMessage(), e);
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
     }
   }
@@ -179,7 +176,7 @@ public class EmployeeController extends CommonHttpServlet {
       EmployeeService employeeService = new EmployeeService();
       employeeService.delete(id);
     } catch (DataException e) {
-      logger.log(Level.SEVERE, e.getMessage(), e);
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
     }
     response.sendRedirect(request.getContextPath() + EMPLOYEE_PATH);

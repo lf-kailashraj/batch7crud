@@ -15,7 +15,11 @@ import java.util.logging.Logger;
  */
 
 public class DBConnection {
-  private static final Logger logger = Logger.getLogger("dbConnectionLogger");
+  private static final Logger LOGGER = Logger.getLogger("dbConnectionLogger");
+
+  private DBConnection() {
+
+  }
 
   public static Connection getSqlConnection() throws DataException {
     try {
@@ -24,10 +28,10 @@ public class DBConnection {
       DataSource ds = (DataSource) envCtx.lookup("jdbc/formdb");
       return ds.getConnection();
     } catch (NamingException e) {
-      logger.log(Level.SEVERE, e.getMessage(), e);
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     } catch (SQLException e) {
-      logger.log(Level.SEVERE, e.getMessage(), e);
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
   }

@@ -4,8 +4,6 @@ import com.lftechnology.batch7crud.dao.EmployeeDao;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 
-import javax.xml.crypto.Data;
-import java.sql.SQLException;
 import java.util.List;
 
 /**

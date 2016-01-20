@@ -11,11 +11,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Romit Amgai <romitamgai@lftechnology.com> on 1/19/16.
  */
 public class EmployeeDao {
+  private static final Logger LOGGER = Logger.getLogger("employeeDaoLogger");
   private Connection con;
 
   public void insert(Employee employee) throws DataException {
@@ -31,6 +34,7 @@ public class EmployeeDao {
       preStmt.close();
       con.close();
     } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
   }
@@ -57,6 +61,7 @@ public class EmployeeDao {
       con.close();
       return empList;
     } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
   }
@@ -81,6 +86,7 @@ public class EmployeeDao {
       con.close();
       return employee;
     } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
   }
@@ -99,6 +105,7 @@ public class EmployeeDao {
       preStmt.close();
       con.close();
     } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
   }
@@ -113,6 +120,7 @@ public class EmployeeDao {
       preStmt.close();
       con.close();
     } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
   }
@@ -131,6 +139,7 @@ public class EmployeeDao {
       con.close();
       return total;
     } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
   }
