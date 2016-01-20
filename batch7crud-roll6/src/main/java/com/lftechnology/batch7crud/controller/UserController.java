@@ -39,10 +39,14 @@ public class UserController extends CustomHttpServlet {
                 if (arg != null) {
                     page = Integer.parseInt(arg);
                 }
+                this.list(request, response, page);
+            } catch (ServletException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
             } catch (NumberFormatException e) {
                 LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
-            this.list(request, response, page);
 
         } else {
 
