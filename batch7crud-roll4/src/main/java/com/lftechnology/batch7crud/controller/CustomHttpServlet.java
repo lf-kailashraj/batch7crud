@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Created by pratishshr on 1/19/16.
  */
-public class CustomHttpServlet extends HttpServlet {
+public abstract class CustomHttpServlet extends HttpServlet {
 
   private static final String ERROR_PAGE = "/WEB-INF/views/error.jsp";
   private static final String MESSAGE = "message";
