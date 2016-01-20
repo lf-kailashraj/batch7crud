@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: romit
+  User: Romit Amgai <romitamgai@lftechnology.com>
   Date: 1/14/16
   Time: 4:41 PM
   To change this template use File | Settings | File Templates.
@@ -12,9 +12,9 @@
     <title>Create Page</title>
 </head>
 <body>
-<h1>User information form!</h1>
+<h1>Employee information form!</h1>
 
-<p>Enter your information</p>
+<p>Enter employee information</p>
 
 <form name="jspForm" method="POST" action="employees/create">
     <table>

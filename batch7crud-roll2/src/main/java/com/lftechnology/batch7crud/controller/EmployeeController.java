@@ -68,15 +68,17 @@ public class EmployeeController extends CommonHttpServlet {
   private void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       int page = getPageNo(request);
+      int recordsPerPage = 10;
       EmployeeService employeeService = new EmployeeService();
-      List<Employee> empList = employeeService.fetch(10, (page - 1) * 10);
+      List<Employee> empList = employeeService.fetch(10, (page - 1) * recordsPerPage);
       int totalNoOfRecords = employeeService.getTotalNoOfRecords();
-      if (empList.isEmpty()) {
+      double validNoOfPages = Math.ceil((float) totalNoOfRecords / 10.0);
+      if (page != 1 && page > validNoOfPages) {
         displayPageNotFound(request, response);
+        return;
       }
-      int noOfPages = (int) Math.ceil(totalNoOfRecords * 1.0 / 10);
       request.setAttribute("employeeList", empList);
-      request.setAttribute("noOfPages", noOfPages);
+      request.setAttribute("noOfPages", validNoOfPages);
       request.setAttribute("currentPage", page);
       request.getRequestDispatcher("/WEB-INF/views/employeesList.jsp").forward(request, response);
     } catch (DataException e) {
@@ -118,6 +120,7 @@ public class EmployeeController extends CommonHttpServlet {
       Employee employee = employeeService.fetchById(id);
       if (employee == null) {
         displayPageNotFound(request, response);
+        return;
       }
       request.setAttribute("employee", employee);
       request.getRequestDispatcher("/WEB-INF/views/employeeView.jsp").forward(request, response);
@@ -137,12 +140,16 @@ public class EmployeeController extends CommonHttpServlet {
       Employee employee = employeeService.fetchById(id);
       if (employee == null) {
         displayPageNotFound(request, response);
+        return;
       }
       request.setAttribute("employee", employee);
       request.getRequestDispatcher("/WEB-INF/views/employeeEdit.jsp").forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
+    } catch (NumberFormatException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      displayPageNotFound(request, response);
     }
   }
 
@@ -167,6 +174,9 @@ public class EmployeeController extends CommonHttpServlet {
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
+    } catch (NumberFormatException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      displayPageNotFound(request, response);
     }
   }
 

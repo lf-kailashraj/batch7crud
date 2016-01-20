@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
-  User: romit
+  User: Romit Amgai <romitamgai@lftechnology.com>
   Date: 1/14/16
   Time: 2:50 AM
   To change this template use File | Settings | File Templates.
@@ -10,11 +10,11 @@
 <html>
 <head>
     <base href="${pageContext.request.contextPath}/">
-    <title>Display Page</title>
+    <title>Employee List Page</title>
 </head>
 <body>
 
-<h1>Form Data</h1>
+<h1>Employee List</h1>
 <table border="1px solid black">
     <tbody>
     <a>
