@@ -12,38 +12,38 @@
     <title>Students</title>
 </head>
 <body>
-  <table>
+<table>
     <c:forEach items="${students}" var="student">
-      <tr>
-        <td><c:out value="${student.roll}" /></td>
-        <td><c:out value="${student.name}" /></td>
-        <td><c:out value="${student.address}" /></td>
-        <td><a href = "/Students/${student.roll}/edit">Edit</a></td>
-        <td><a href = "/Students/${student.roll}/delete" class = "delete">Delete</a></td>
+        <tr>
+            <td><c:out value="${student.roll}"/></td>
+            <td><c:out value="${student.name}"/></td>
+            <td><c:out value="${student.address}"/></td>
+            <td><a href="/Students/${student.roll}/edit">Edit</a></td>
+            <td><a href="/Students/${student.roll}/delete" class="delete">Delete</a></td>
 
-      </tr>
+        </tr>
     </c:forEach>
-  </table>
-  <div><a href="/Students/NewEntry">New Entry</a></div>
+</table>
+<div><a href="/Students/NewEntry">New Entry</a></div>
 
 <script>
-  var deleteBtn = document.getElementsByClassName("delete");
+    var deleteBtn = document.getElementsByClassName("delete");
 
-  for (var i = 0; i < deleteBtn.length; i++) {
-    deleteBtn[i].onclick = function (e) {
-      e.preventDefault();
-      var href = this.getAttribute("href");
-      var confirmation = confirm("Are you sure?");
+    for (var i = 0; i < deleteBtn.length; i++) {
+        deleteBtn[i].onclick = function (e) {
+            e.preventDefault();
+            var href = this.getAttribute("href");
+            var confirmation = confirm("Are you sure?");
 
-      if(confirmation == true){
-        var form = document.createElement("form");
-        form.action = href;
-        form.method = "post";
-        form.submit();
-      }
+            if (confirmation == true) {
+                var form = document.createElement("form");
+                form.action = href;
+                form.method = "post";
+                form.submit();
+            }
 
+        }
     }
-  }
 
 </script>
 </body>

@@ -11,11 +11,11 @@
     <title></title>
 </head>
 <body>
-<form action = "/Students/${student.roll}/edit" method="post">
-  Name: <input type = "text" name = "name" value = "${student.name}"  />
-  Address: <input type = "text" name = "address" value = "${student.address}"/>
-  Roll: <input type = "text" name = "roll" value = "${student.roll}"/>
-  <input type = "submit" />
+<form action="/Students/${student.roll}/edit" method="post">
+    Name: <input type="text" name="name" value="${student.name}"/>
+    Address: <input type="text" name="address" value="${student.address}"/>
+    Roll: <input type="text" name="roll" value="${student.roll}"/>
+    <input type="submit"/>
 </form>
 <div><a href="/Students">View All</a></div>
 

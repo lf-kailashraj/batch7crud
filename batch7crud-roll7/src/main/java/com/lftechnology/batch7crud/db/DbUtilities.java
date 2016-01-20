@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 public class DbUtilities {
     public static PreparedStatement getPreparedStatement(String sql) throws DataException {
-        try{
+        try {
             PreparedStatement ps = null;
             Connection conn = null;
             Context initCtx = new InitialContext();
@@ -25,13 +25,11 @@ public class DbUtilities {
             conn = ds.getConnection();
             ps = conn.prepareStatement(sql);
             return ps;
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
+            throw new DataException();
+        } catch (NamingException ex) {
             throw new DataException();
         }
-        catch(NamingException ex){
-            throw new DataException();
-        }
-
 
     }
 }

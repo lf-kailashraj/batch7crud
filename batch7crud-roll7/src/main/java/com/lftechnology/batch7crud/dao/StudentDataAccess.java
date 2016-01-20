@@ -3,14 +3,13 @@ package com.lftechnology.batch7crud.dao;
 import com.lftechnology.batch7crud.db.DbUtilities;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Student;
-
-import javax.naming.NamingException;
-import javax.xml.crypto.Data;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by leapfrog on 1/18/16.
@@ -26,7 +25,8 @@ public class StudentDataAccess {
             ps.executeUpdate();
         }
         catch (SQLException ex){
-            System.out.println("SQLException");
+            Logger logger = Logger.getLogger("myLogger");
+            logger.log(Level.SEVERE, "SQLException");
         }
     }
 
@@ -76,7 +76,8 @@ public class StudentDataAccess {
             ps.executeUpdate();
         }
         catch (SQLException ex){
-            System.out.println("SQLException");
+            Logger logger = Logger.getLogger("myLogger");
+            logger.log(Level.SEVERE, "SQLException");
         }
     }
 

@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class StudentServices {
     private StudentDataAccess studentDao = new StudentDataAccess();
+
     public void addNew(Student s) throws DataException {
         studentDao.addNew(s);
     }
@@ -19,15 +20,15 @@ public class StudentServices {
         return studentDao.fetch(page);
     }
 
-    public Student fetchById(int roll) throws DataException{
+    public Student fetchById(int roll) throws DataException {
         return studentDao.fetchById(roll);
     }
 
-    public void update(Student s) throws DataException{
+    public void update(Student s) throws DataException {
         studentDao.update(s);
     }
 
-    public void delete(int roll) throws DataException{
+    public void delete(int roll) throws DataException {
         studentDao.delete(roll);
     }
 }
