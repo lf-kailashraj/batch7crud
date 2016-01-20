@@ -62,7 +62,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public List<User> fetch(int page, int limit) throws DataException {
         String query = "select * from user order by id  limit ? offset ?";
-        List<User> userList = new ArrayList<User>();
+        List<User> userList = new ArrayList<>();
         int offset = (page - 1) * limit;
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, limit);

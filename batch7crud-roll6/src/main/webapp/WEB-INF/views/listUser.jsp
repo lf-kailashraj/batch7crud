@@ -39,11 +39,15 @@ table, th, td {
 		</tbody>
 	</table>
 
-	<c:if test="${currentPage}>1">
-		<a href="/batch7crud-roll6/users?page=${currentPage}">Previous</a>
+	<c:if test="${currentPage >1}">
+		<a href="?page=${currentPage-1}">Previous</a>
 	</c:if>
-	<a href="">Next</a>
-
+	<c:forEach begin="1" end="${noOfPages}" var="i">
+		<a href="?page=${i}">${i}</a>
+	</c:forEach>
+	<c:if test="${currentPage < noOfPages }">
+		<a href="?page=${currentPage+1}">Next</a>
+	</c:if>
 	<script type="text/javascript">
 		var deleteUser = document.getElementsByClassName("deleteUser");
 

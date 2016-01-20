@@ -28,7 +28,7 @@ public class DbConnector {
             DataSource ds = (DataSource) envCtx.lookup("jdbc/dbInitial");
             connection = ds.getConnection();
         } catch (NamingException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(),e);
         }
 
         return connection;
