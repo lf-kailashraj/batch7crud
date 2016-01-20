@@ -11,7 +11,7 @@
 <html>
 <head>
     <title>Display Page</title>
-    <base href=${pageContext.request.contextPath}/"/>
+    <base href="${pageContext.request.contextPath}/" />
 
 </head>
 <style>

@@ -17,13 +17,16 @@ import java.util.logging.Logger;
  * Created by sanjay on 1/14/16.
  */
 public class StudentDAO {
-  private static Logger LOGGER = Logger.getLogger("appLogger");
+  private static final Logger LOGGER = Logger.getLogger("appLogger");
+
 
   public void insert(Student s) throws DataException//get the object
   {
+    Connection conn = null;
+    PreparedStatement pstmt=null;
     try {
-      Connection conn = DBConnection.getConnection();
-      PreparedStatement pstmt = conn.prepareStatement("INSERT INTO tbl_userinfo (firstname,middlename,lastname,address,grade) VALUES (?,?,?,?,?);");
+      conn =  DBConnection.getConnection();
+      pstmt = conn.prepareStatement("INSERT INTO tbl_userinfo (firstname,middlename,lastname,address,grade) VALUES (?,?,?,?,?);");
       pstmt.setString(1, s.getFirstName());
       pstmt.setString(2, s.getMiddleName());
       pstmt.setString(3, s.getLastName());
@@ -34,18 +37,22 @@ public class StudentDAO {
     } catch (SQLException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       throw new DataException();
+    } finally {
+      DBConnection.closePreparedStatement();
+      DBConnection.closeConnection(conn);
     }
   }
 
   public List<Student> fetch(int page, int limit) throws DataException {
+
+    Connection conn = null;
+    PreparedStatement pstmt=null;
+    ResultSet rs = null;
     try {
-      Connection conn = DBConnection.getConnection();
+      conn = DBConnection.getConnection();
       List<Student> stdList = new ArrayList<Student>();
-      ResultSet rs;
-
-
       int startOffset = (page - 1) * limit;
-      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM tbl_userinfo LIMIT ? OFFSET ?");
+      pstmt = conn.prepareStatement("SELECT * FROM tbl_userinfo LIMIT ? OFFSET ?");
       pstmt.setInt(1, limit);
       pstmt.setInt(2, startOffset);
       rs = pstmt.executeQuery();
@@ -64,28 +71,39 @@ public class StudentDAO {
     } catch (SQLException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       throw new DataException();
+    } finally {
+      DBConnection.closeResultSet(rs);
+      DBConnection.closePreparedStatement(pstmt);
+      DBConnection.closeConnection(conn);
     }
   }
 
   public void delete(int id) throws DataException//get the object
   {
+    Connection conn = null;
+    PreparedStatement pstmt=null;
     try {
-      Connection conn = DBConnection.getConnection();
-      PreparedStatement pstmt = conn.prepareStatement("DELETE FROM tbl_userinfo WHERE id=?");
+      conn = DBConnection.getConnection();
+      pstmt = conn.prepareStatement("DELETE FROM tbl_userinfo WHERE id=?");
       pstmt.setInt(1, id);
       pstmt.executeUpdate();
     } catch (SQLException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       throw new DataException();
+    } finally {
+      DBConnection.closePreparedStatement(pstmt);
+      DBConnection.closeConnection(conn);
     }
   }
 
   public Student fetchById(int id) throws DataException {
+    Connection conn = null;
+    PreparedStatement pstmt=null;
+    ResultSet rs = null;
     try {
-      Connection conn = DBConnection.getConnection();
+      conn = DBConnection.getConnection();
       Student std = null;
-      ResultSet rs;
-      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM tbl_userinfo WHERE id=?");
+      pstmt = conn.prepareStatement("SELECT * FROM tbl_userinfo WHERE id=?");
       pstmt.setInt(1, id);
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -97,20 +115,23 @@ public class StudentDAO {
         std.setAddress(rs.getString(5));
         std.setGrade(rs.getInt(6));
       }
-      conn.close();
-
       return std;
-
     } catch (SQLException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       throw new DataException();
+    } finally {
+      DBConnection.closeResultSet(rs);
+      DBConnection.closePreparedStatement(pstmt);
+      DBConnection.closeConnection(conn);
     }
   }
 
   public void edit(Student s) throws DataException {
+    Connection conn = null;
+    PreparedStatement pstmt=null;
     try {
-      Connection conn = DBConnection.getConnection();
-      PreparedStatement pstmt = conn.prepareStatement("UPDATE tbl_userinfo SET firstname=?, middlename=?, lastname=?, address=?, grade=? WHERE id=?");
+      conn = DBConnection.getConnection();
+      pstmt = conn.prepareStatement("UPDATE tbl_userinfo SET firstname=?, middlename=?, lastname=?, address=?, grade=? WHERE id=?");
       pstmt.setString(1, s.getFirstName());
       pstmt.setString(2, s.getMiddleName());
       pstmt.setString(3, s.getLastName());
@@ -122,16 +143,23 @@ public class StudentDAO {
     } catch (Exception ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       throw new DataException();
+    } finally {
+      DBConnection.closePreparedStatement(pstmt);
+      DBConnection.closeConnection(conn);
     }
   }
 
   public int studentCount() throws DataException//get the object
   {
+    Connection conn = null;
+    PreparedStatement pstmt=null;
+    ResultSet rs = null;
     try {
       int totalStudents = 0;
-      Connection conn = DBConnection.getConnection();
-      PreparedStatement pstmt = conn.prepareStatement("SELECT count(*) FROM tbl_userinfo");
-      ResultSet rs = pstmt.executeQuery();
+      conn = DBConnection.getConnection();
+      String query = "SELECT count(*) FROM tbl_userinfo";
+      pstmt = conn.prepareStatement(query);
+      rs = pstmt.executeQuery();
       while (rs.next())
         totalStudents = rs.getInt(1);
       pstmt.close();
@@ -141,6 +169,10 @@ public class StudentDAO {
     } catch (SQLException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       throw new DataException();
+    } finally {
+      DBConnection.closeResultSet(rs);
+      DBConnection.closePreparedStatement(pstmt);
+      DBConnection.closeConnection(conn);
     }
   }
 }
