@@ -32,13 +32,9 @@ public class CustomHttpServlet extends HttpServlet {
   }
 
   public int pageNumber(HttpServletRequest request) {
-    try {
-      if (request.getParameter("page") != null) {
-        return Integer.parseInt(request.getParameter("page"));
-      } else {
-        return 1;
-      }
-    } catch (NumberFormatException e) {
+    if (request.getParameter("page") != null) {
+      return Integer.parseInt(request.getParameter("page"));
+    } else {
       return 1;
     }
   }
@@ -48,7 +44,7 @@ public class CustomHttpServlet extends HttpServlet {
     return urlPath.split("/");
   }
 
-  public int parameterValueAsInt(HttpServletRequest request, int index) throws NumberFormatException {
+  public int parameterValueAsInt(HttpServletRequest request, int index) {
     String[] paths = parameterValues(request);
     return Integer.parseInt(paths[index]);
   }

@@ -84,6 +84,8 @@ public class EmployeeController extends CustomHttpServlet {
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
+    } catch (NumberFormatException e) {
+      show404(request, response);
     }
   }
 
