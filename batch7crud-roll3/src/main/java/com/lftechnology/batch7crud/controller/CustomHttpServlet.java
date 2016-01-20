@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class CustomHttpServlet extends HttpServlet {
+public abstract class CustomHttpServlet extends HttpServlet {
 
 	private static final String MESSAGE = "message";
 	private static final String ERROR_PAGE = "/WEB-INF/views/error.jsp";
@@ -46,19 +46,15 @@ public class CustomHttpServlet extends HttpServlet {
 		return urlPath.split("/");
 	}
 
-	public int parameterValueAsInt(HttpServletRequest request, int index){
+	public int parameterValueAsInt(HttpServletRequest request, int index) {
 		String[] paths = parameterValues(request);
 		return Integer.parseInt(paths[index]);
 	}
 
 	public int getPageNumber(HttpServletRequest request) {
-		try {
-			if (request.getParameter("page") != null) {
-				return Integer.parseInt(request.getParameter("page"));
-			} else {
-				return 1;
-			}
-		} catch (NumberFormatException e) {
+		if (request.getParameter("page") != null) {
+			return Integer.parseInt(request.getParameter("page"));
+		} else {
 			return 1;
 		}
 	}

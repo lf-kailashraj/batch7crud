@@ -18,10 +18,9 @@ public class StudentController extends CustomHttpServlet {
 	private static StudentService studentService = new StudentService();
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String[] parameters = parameterValues(request);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 		try {
+			String[] parameters = parameterValues(request);
 			if (parameters.length == 2) {
 				list(request, response);
 			} else if (parameters.length == 3 && "create".equals(parameters[2])) {
@@ -39,8 +38,7 @@ public class StudentController extends CustomHttpServlet {
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			String[] parameters = parameterValues(request);
 			if (parameters.length == 3 && "create".equals(parameters[2])) {
@@ -60,10 +58,19 @@ public class StudentController extends CustomHttpServlet {
 	private void list(HttpServletRequest request, HttpServletResponse response)
 			throws DataException, ServletException, IOException {
 		int pageSize = 3;
-		int page = getPageNumber(request);
+		int page = 1;
+		try {
+			page = getPageNumber(request);
+		} catch (NumberFormatException e) {
+			show404(request, response);
+		}
 		List<Student> stdList = studentService.fetch(page, pageSize);
 		int count = studentService.fetchTotal();
 
+		if (page != 1 && page > Math.ceil(count / (float) pageSize)) {
+			show404(request, response);
+			return;
+		}
 		request.setAttribute("stdList", stdList);
 		request.setAttribute("pageSize", pageSize);
 
@@ -74,10 +81,14 @@ public class StudentController extends CustomHttpServlet {
 
 	private void show(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, DataException {
-		int id = parameterValueAsInt(request, 2);
-		Student student = studentService.fetchStudentById(id);
-		request.setAttribute("student", student);
-		request.getRequestDispatcher("/WEB-INF/views/student/show.jsp").forward(request, response);
+		try {
+			int id = parameterValueAsInt(request, 2);
+			Student student = studentService.fetchStudentById(id);
+			request.setAttribute("student", student);
+			request.getRequestDispatcher("/WEB-INF/views/student/show.jsp").forward(request, response);
+		} catch (NumberFormatException e) {
+			show404(request, response);
+		}
 	}
 
 	private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -102,7 +113,7 @@ public class StudentController extends CustomHttpServlet {
 			request.setAttribute("message", "Fill valid Roll");
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			request.getRequestDispatcher("/WEB-INF/views/student/create.jsp").forward(request, response);
-		} 
+		}
 	}
 
 	private void edit(HttpServletRequest request, HttpServletResponse response)

@@ -25,7 +25,6 @@ public class StudentDAO {
 			stmnt = conn.prepareStatement(sql);
 			stmnt.setInt(1, student.getRoll());
 			stmnt.setString(2, student.getName());
-			System.out.println("ljksdf");
 			stmnt.execute();
 		} catch (SQLException e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);
