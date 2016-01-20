@@ -22,12 +22,17 @@ public class EmployeesController extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getPathInfo();
         if (path == null) {
-            fetch(request, response);
+            Integer pageNo = 1;
+            fetch(request, response, pageNo);
         }
         else {
             String[] parts = path.split("/");
             if (parts[1].equals("create")) {
                 create(request, response);
+            }
+            else if (parts[1].equals("page")) {
+                Integer pageNo = Integer.parseInt(parts[2]);
+                fetch(request, response, pageNo);
             }
             else if (parts[2].equals("edit")) {
                 int id = Integer.parseInt(parts[1]);
@@ -141,11 +146,14 @@ public class EmployeesController extends HttpServlet{
         }
     }
 
-    private void fetch(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void fetch(HttpServletRequest request, HttpServletResponse response, Integer pageNo) throws IOException {
+        Integer pageLimit = 2;
+        pageNo --;
+        System.out.println(pageNo);
         try {
             List<Employee> employeeList = new ArrayList<Employee>();
             EmployeeServices employeeServices = new EmployeeServices();
-            employeeList = employeeServices.fetch();
+            employeeList = employeeServices.fetch(pageLimit, pageNo);
             request.setAttribute("employeeList", employeeList);
             request.getServletContext().getRequestDispatcher("/WEB-INF/views/employees/index.jsp").forward(request, response);
         } catch (Exception e) {

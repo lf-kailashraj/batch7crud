@@ -10,16 +10,15 @@ import java.util.List;
  * Created by grishma on 1/19/16.
  */
 public class EmployeeServices {
-//    List<Employee> employeeList = new ArrayList<Employee>();
 
     public void create(Employee employee) throws DataException {
         EmployeeDao employeeDao = new EmployeeDao();
         employeeDao.create(employee);
     }
 
-    public List<Employee> fetch() throws DataException {
+    public List<Employee> fetch(Integer pageLimit, Integer pageNo) throws DataException {
         EmployeeDao employeeDao = new EmployeeDao();
-        return employeeDao.fetch();
+        return employeeDao.fetch(pageLimit, pageNo);
     }
 
     public Employee fetchById(Integer id) throws DataException {

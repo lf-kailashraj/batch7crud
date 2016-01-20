@@ -27,17 +27,18 @@ public class EmployeeDao {
             statement.setString(4, employee.getPhone());
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DataException();
         }
     }
 
-    public List<Employee> fetch() throws DataException {
+    public List<Employee> fetch(Integer pageLimit, Integer pageNo) throws DataException {
         try {
             List<Employee> employeeList = new ArrayList<Employee>();
-            String sql = "SELECT * FROM employee order by id";
+            String sql = "SELECT * FROM employee order by id limit ? offset ?";
             Connection conn = DBConnection.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, pageLimit);
+            statement.setInt(2, pageLimit*pageNo);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 Employee employee = new Employee();
@@ -50,8 +51,6 @@ public class EmployeeDao {
             }
             return employeeList;
         } catch (SQLException e) {
-            throw new DataException();
-        } catch (DataException e) {
             throw new DataException();
         }
     }
@@ -100,13 +99,11 @@ public class EmployeeDao {
     public void delete(Integer id) throws DataException {
         try {
             String sql = "delete from employee where id = ?";
-            Connection conn = null;
-            conn = DBConnection.getConnection();
+            Connection conn = DBConnection.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DataException();
         }
 
