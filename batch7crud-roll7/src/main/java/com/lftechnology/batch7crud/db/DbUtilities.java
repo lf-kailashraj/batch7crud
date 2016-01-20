@@ -21,16 +21,12 @@ public class DbUtilities {
 
     }
     private static final Logger LOGGER = Logger.getLogger("DbUtilitiesLogger");
-    public static PreparedStatement getPreparedStatement(String sql) throws DataException {
+    public static Connection getConncetion() throws DataException {
         try {
-            PreparedStatement ps = null;
-            Connection conn = null;
             Context initCtx = new InitialContext();
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
             DataSource ds = (DataSource) envCtx.lookup("jdbc/lfform");
-            conn = ds.getConnection();
-            ps = conn.prepareStatement(sql);
-            return ps;
+            return  ds.getConnection();
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE,ex.getMessage(),ex);
             throw new DataException();

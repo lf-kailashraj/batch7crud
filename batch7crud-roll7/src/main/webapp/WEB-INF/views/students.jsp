@@ -12,19 +12,24 @@
     <title>Students</title>
 </head>
 <body>
+<div><a href="/Students/NewEntry">New Entry</a></div>
+
+
 <table>
     <c:forEach items="${students}" var="student">
         <tr>
-            <td><c:out value="${student.roll}"/></td>
+            <td><c:out value="${student.id}"/></td>
             <td><c:out value="${student.name}"/></td>
             <td><c:out value="${student.address}"/></td>
-            <td><a href="/Students/${student.roll}/edit">Edit</a></td>
+            <td><c:out value="${student.roll}"/></td>
+            <td><a href="/Students/${student.id}/edit">Edit</a></td>
             <td><a href="/Students/${student.roll}/delete" class="delete">Delete</a></td>
 
         </tr>
     </c:forEach>
 </table>
-<div><a href="/Students/NewEntry">New Entry</a></div>
+<div><a href="#">Next</a></div>
+<div><a href="#">Previous</a></div>
 
 <script>
     var deleteBtn = document.getElementsByClassName("delete");

@@ -20,12 +20,12 @@ public class StudentServices {
         return studentDao.fetch(page);
     }
 
-    public Student fetchById(int roll) throws DataException {
-        return studentDao.fetchById(roll);
+    public Student fetchById(int id) throws DataException {
+        return studentDao.fetchById(id);
     }
 
-    public void update(Student s) throws DataException {
-        studentDao.update(s);
+    public void update(Student s,int id) throws DataException {
+        studentDao.update(s,id);
     }
 
     public void delete(int roll) throws DataException {

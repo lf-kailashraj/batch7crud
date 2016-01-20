@@ -11,7 +11,7 @@
     <title></title>
 </head>
 <body>
-<form action="/Students/${student.roll}/edit" method="post">
+<form action="/Students/${student.id}/edit" method="post">
     Name: <input type="text" name="name" value="${student.name}"/>
     Address: <input type="text" name="address" value="${student.address}"/>
     Roll: <input type="text" name="roll" value="${student.roll}"/>

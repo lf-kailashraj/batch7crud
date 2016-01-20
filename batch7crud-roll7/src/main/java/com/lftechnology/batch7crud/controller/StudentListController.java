@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * Created by leapfrog on 1/18/16.
  */
 @WebServlet(name = "StudentListController", urlPatterns = { "/Students/*" }) public class StudentListController extends HttpServlet {
-    private static final Logger LOGGER = Logger.getLogger("StudentDataAccessLogger");
+    private static final Logger LOGGER = Logger.getLogger("StudentLogger");
 
     @Override protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String urlpath = request.getPathInfo();
@@ -30,6 +30,7 @@ import java.util.logging.Logger;
                 if ("NewEntry".equals(urlparts[1])) {
                     createProcess(request, response);
                 } else if ("edit".equals(urlparts[2])) {
+                    System.out.println("from edit, urlparts1"+urlparts[1]);
                     editProcess(request, response, Integer.parseInt(urlparts[1]));
                 } else if ("delete".equals(urlparts[2])) {
                     deleteProcess(request, response, Integer.parseInt(urlparts[1]));
@@ -40,7 +41,8 @@ import java.util.logging.Logger;
         }
     }
 
-    @Override protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String urlpath = request.getPathInfo();
         try {
             if (urlpath == null)
@@ -75,32 +77,48 @@ import java.util.logging.Logger;
             throws ServletException, IOException, DataException {
         String name = request.getParameter("name");
         String address = request.getParameter("address");
-        int roll = Integer.parseInt(request.getParameter("roll"));
-        Student s = new Student(name, address, roll);
+        String roll = request.getParameter("roll");
+        try{
 
-        StudentServices stdServices = new StudentServices();
-        stdServices.addNew(s);
-        response.sendRedirect("/Students");
+            int rollNum = Integer.parseInt(roll);
+            Student s = new Student();
+            s.setName(name);
+            s.setAddress(address);
+            s.setRoll(rollNum);
+
+            StudentServices stdServices = new StudentServices();
+            stdServices.addNew(s);
+            response.sendRedirect("/Students");
+        }catch(NumberFormatException e){
+            request.setAttribute("error","invalid roll");
+            request.getServletContext().getRequestDispatcher("/WEB-INF/views/newEntry.jsp").forward(request, response);
+        }
+
 
     }
 
-    private void edit(HttpServletRequest request, HttpServletResponse response, int roll)
+    private void edit(HttpServletRequest request, HttpServletResponse response, int id)
             throws ServletException, IOException, DataException {
         StudentServices stdservice = new StudentServices();
 
-        request.setAttribute("student", stdservice.fetchById(roll));
+        request.setAttribute("student", stdservice.fetchById(id));
         request.getRequestDispatcher("/WEB-INF/views/editEntry.jsp").forward(request, response);
 
     }
 
-    private void editProcess(HttpServletRequest request, HttpServletResponse response, int roll)
+    private void editProcess(HttpServletRequest request, HttpServletResponse response, int id)
             throws ServletException, IOException, DataException {
         String name = request.getParameter("name");
         String address = request.getParameter("address");
-        Student s = new Student(name, address, roll);
+        int roll = Integer.parseInt(request.getParameter("roll"));
+        Student s = new Student();
+        s.setName(name);
+        s.setAddress(address);
+        s.setRoll(roll);
+        s.setId(id);
 
         StudentServices stdServices = new StudentServices();
-        stdServices.update(s);
+        stdServices.update(s,id);
         response.sendRedirect("/Students");
 
     }

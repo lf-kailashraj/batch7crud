@@ -3,6 +3,8 @@ package com.lftechnology.batch7crud.dao;
 import com.lftechnology.batch7crud.db.DbUtilities;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Student;
+
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,10 +18,13 @@ import java.util.logging.Logger;
  */
 public class StudentDataAccess {
     private static final Logger LOGGER = Logger.getLogger("StudentDataAccessLogger");
+    PreparedStatement ps = null;
+    Connection conn = null;
     public void addNew(Student s) throws DataException{
         try{
             String query = "insert into students (name,address,roll) values (?,?,?);";
-            PreparedStatement ps = DbUtilities.getPreparedStatement(query);
+            conn = DbUtilities.getConncetion();
+            ps = conn.prepareStatement(query);
             ps.setString(1, s.getName());
             ps.setString(2, s.getAddress());
             ps.setInt(3, s.getRoll());
@@ -34,10 +39,12 @@ public class StudentDataAccess {
     public List<Student> fetch(int page) throws DataException{
         try{
             List<Student> studentList = new ArrayList<Student>();
-            PreparedStatement ps = DbUtilities.getPreparedStatement("select * from students");
+            String query = "select * from students";
+            conn = DbUtilities.getConncetion();
+            ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                Student s = new Student(rs.getString(1),rs.getString(2),rs.getInt(3));
+                Student s = new Student(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getInt(4));
                 studentList.add(s);
             }
             rs.close();
@@ -50,19 +57,21 @@ public class StudentDataAccess {
         }
     }
 
-    public Student fetchById(int roll) throws DataException{
+    public Student fetchById(int id) throws DataException{
         try{
-            String query = "select * from students where roll = ?";
-            PreparedStatement ps = DbUtilities.getPreparedStatement(query);
-            ps.setInt(1,roll);
+            String query = "select * from students where id = ?";
+            conn = DbUtilities.getConncetion();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1,id);
             ResultSet rs = ps.executeQuery();
 
             Student s = null;
             while(rs.next()){
                 s = new Student();
+                s.setId(rs.getInt("id"));
                 s.setName(rs.getString("name"));
                 s.setAddress(rs.getString("address"));
-                s.setRoll(Integer.parseInt(rs.getString("roll")));
+                s.setRoll(rs.getInt("roll"));
             }
             rs.close();
             ps.close();
@@ -74,13 +83,16 @@ public class StudentDataAccess {
         }
     }
 
-    public void update(Student s) throws DataException{
+    public void update(Student s,int id) throws DataException{
         try{
-            String query = "update students set name = ?,address = ? where roll = ?";
-            PreparedStatement ps = DbUtilities.getPreparedStatement(query);
+            String query = "update students set name = ?, address = ?, roll = ? where id = ?";
+            conn = DbUtilities.getConncetion();
+            ps = conn.prepareStatement(query);
             ps.setString(1, s.getName());
             ps.setString(2, s.getAddress());
             ps.setInt(3, s.getRoll());
+            ps.setInt(4,id);
+            System.out.println("ID"+id);
             ps.executeUpdate();
             ps.close();
         }
@@ -92,7 +104,8 @@ public class StudentDataAccess {
     public void delete(int roll) throws DataException{
         try{
             String query = "delete from students where roll = ?";
-            PreparedStatement ps = DbUtilities.getPreparedStatement(query);
+            conn = DbUtilities.getConncetion();
+            ps = conn.prepareStatement(query);
             ps.setInt(1,roll);
             ps.executeUpdate();
             ps.close();
