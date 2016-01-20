@@ -5,7 +5,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Hello</title>
+	<base href = "${pageContext.request.contextPath}/">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<title>Hello</title>
 </head>
 <body>
 	<div>Hello world!!</div>

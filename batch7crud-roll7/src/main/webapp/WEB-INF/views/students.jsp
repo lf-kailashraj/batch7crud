@@ -9,27 +9,44 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <base href = "${pageContext.request.contextPath}/">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
     <title>Students</title>
 </head>
 <body>
 <div><a href="/Students/NewEntry">New Entry</a></div>
 
 
-<table>
+<table border="1">
+    <tr>
+        <td>Id</td>
+        <td>Name</td>
+        <td>Address</td>
+        <td>Roll</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
     <c:forEach items="${students}" var="student">
         <tr>
             <td><c:out value="${student.id}"/></td>
             <td><c:out value="${student.name}"/></td>
             <td><c:out value="${student.address}"/></td>
             <td><c:out value="${student.roll}"/></td>
+            <td><a href="Students/${student.id}">View</a></td>
             <td><a href="/Students/${student.id}/edit">Edit</a></td>
             <td><a href="/Students/${student.roll}/delete" class="delete">Delete</a></td>
-
         </tr>
     </c:forEach>
 </table>
-<div><a href="#">Next</a></div>
-<div><a href="#">Previous</a></div>
+<c:if test="${pageNum > 1}">
+    <a href="Students?page=${pageNum - 1}">Previous</a>
+</c:if>
+${pageNum}
+<c:if test="${(pageNum * pageSize) < totalStudents}">
+    <a href="Students?page=${pageNum + 1}">Next</a>
+</c:if>
 
 <script>
     var deleteBtn = document.getElementsByClassName("delete");

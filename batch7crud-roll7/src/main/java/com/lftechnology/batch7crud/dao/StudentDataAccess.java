@@ -36,12 +36,14 @@ public class StudentDataAccess {
         }
     }
 
-    public List<Student> fetch(int page) throws DataException{
+    public List<Student> fetch(int page,int pageSize) throws DataException{
         try{
             List<Student> studentList = new ArrayList<Student>();
-            String query = "select * from students";
+            String query = "select * from students limit ? offset ?";
             conn = DbUtilities.getConncetion();
             ps = conn.prepareStatement(query);
+            ps.setInt(1, pageSize);
+            ps.setInt(2, (page - 1) * pageSize);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 Student s = new Student(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getInt(4));
@@ -54,6 +56,26 @@ public class StudentDataAccess {
         }catch(SQLException ex){
             LOGGER.log(Level.SEVERE,ex.getMessage(),ex);
             throw new DataException();
+        }
+    }
+
+    public int fetchTotal() throws DataException {
+        try {
+            String query = "SELECT COUNT(*) AS total FROM students";
+            int totalSize = 0;
+            conn = DbUtilities.getConncetion();
+            ps = conn.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                totalSize = rs.getInt("total");
+            }
+            return totalSize;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            throw new DataException(e.getMessage());
         }
     }
 
@@ -92,7 +114,6 @@ public class StudentDataAccess {
             ps.setString(2, s.getAddress());
             ps.setInt(3, s.getRoll());
             ps.setInt(4,id);
-            System.out.println("ID"+id);
             ps.executeUpdate();
             ps.close();
         }

@@ -4,6 +4,7 @@ import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Student;
 import com.lftechnology.batch7crud.service.StudentServices;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,21 +22,16 @@ import java.util.logging.Logger;
     private static final Logger LOGGER = Logger.getLogger("StudentLogger");
 
     @Override protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String urlpath = request.getPathInfo();
+        String[] urlpath = urlParts(request);
         try {
-            if (urlpath == null)
-                list(request, response, 1);
-            else {
-                String[] urlparts = urlpath.split("/");
-                if ("NewEntry".equals(urlparts[1])) {
-                    createProcess(request, response);
-                } else if ("edit".equals(urlparts[2])) {
-                    System.out.println("from edit, urlparts1"+urlparts[1]);
-                    editProcess(request, response, Integer.parseInt(urlparts[1]));
-                } else if ("delete".equals(urlparts[2])) {
-                    deleteProcess(request, response, Integer.parseInt(urlparts[1]));
-                }
-            }
+            if(urlpath.length == 3 && "NewEntry".equals(urlpath[2]))
+                createProcess(request, response);
+            else if(urlpath.length == 4 && "edit".equals(urlpath[3]))
+                editProcess(request, response, Integer.parseInt(urlpath[2]));
+            else if(urlpath.length == 4 && "delete".equals(urlpath[3]))
+                deleteProcess(request, response, Integer.parseInt(urlpath[2]));
+            else
+                showErrorPage(request,response);
         } catch (DataException | ServletException | IOException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -43,28 +39,44 @@ import java.util.logging.Logger;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String urlpath = request.getPathInfo();
+        String[] urlpath = urlParts(request);
         try {
-            if (urlpath == null)
-                list(request, response, 1);
-            else {
-                String[] urlparts = urlpath.split("/");
-                if ("NewEntry".equals(urlparts[1])) {
-                    create(request, response);
-                } else if ("edit".equals(urlparts[2])) {
-                    edit(request, response, Integer.parseInt(urlparts[1]));
-                }
-            }
+            if (urlpath.length == 2 )
+                list(request, response);
+            else if(urlpath.length == 3 && "NewEntry".equals(urlpath[2]))
+                create(request, response);
+            else if(urlpath.length == 4 && "edit".equals(urlpath[3]))
+                edit(request, response, Integer.parseInt(urlpath[2]));
+            else if(urlpath.length == 3)
+                show(request,response);
+            else
+                showErrorPage(request, response);
         } catch (DataException | ServletException | IOException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
-    private void list(HttpServletRequest request, HttpServletResponse response, int page)
+    private void list(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, DataException {
         StudentServices stdservice = new StudentServices();
+        int pageSize = 3;
+        int page = 1;
+        try{
+            page = getPageNumber(request);
+        }
+        catch(NumberFormatException e){
+            showErrorPage(request, response);
+        }
+        int totalStudents = stdservice.fetchTotal();
 
-        request.setAttribute("students", stdservice.fetch(page));
+        if(page !=1 && page > Math.ceil(totalStudents/(float)pageSize)){
+            showErrorPage(request,response);
+        }
+        request.setAttribute("students", stdservice.fetch(page,pageSize));
+        request.setAttribute("pageSize",pageSize);
+        request.setAttribute("totalStudents",totalStudents);
+        request.setAttribute("pageNum",page);
+
         request.getServletContext().getRequestDispatcher("/WEB-INF/views/students.jsp").forward(request, response);
 
     }
@@ -118,7 +130,7 @@ import java.util.logging.Logger;
         s.setId(id);
 
         StudentServices stdServices = new StudentServices();
-        stdServices.update(s,id);
+        stdServices.update(s, id);
         response.sendRedirect("/Students");
 
     }
@@ -129,5 +141,47 @@ import java.util.logging.Logger;
         stdServices.delete(roll);
         response.sendRedirect("/Students");
 
+    }
+
+    private void show(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, DataException {
+        try {
+            int id = urlInteger(request, 2);
+            StudentServices stdService = new StudentServices();
+            Student student = stdService.fetchById(id);
+            request.setAttribute("student", student);
+            request.getRequestDispatcher("/WEB-INF/views/show.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+           System.out.println("Number Format Exception");
+        }
+    }
+
+    public void showErrorPage(HttpServletRequest request, HttpServletResponse response) {
+        RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+        try {
+            view.forward(request, response);
+        } catch (ServletException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+    }
+
+    public String[] urlParts(HttpServletRequest request) {
+        String urlPath = request.getRequestURI().substring(request.getContextPath().length());
+        return urlPath.split("/");
+    }
+
+    public int urlInteger(HttpServletRequest request, int index) {
+        String[] paths = urlParts(request);
+        return Integer.parseInt(paths[index]);
+    }
+
+    public int getPageNumber(HttpServletRequest request) {
+        if (request.getParameter("page") != null) {
+            return Integer.parseInt(request.getParameter("page"));
+        } else {
+            return 1;
+        }
     }
 }

@@ -16,8 +16,12 @@ public class StudentServices {
         studentDao.addNew(s);
     }
 
-    public List<Student> fetch(int page) throws DataException {
-        return studentDao.fetch(page);
+    public List<Student> fetch(int page,int pageSize) throws DataException {
+        return studentDao.fetch(page,pageSize);
+    }
+
+    public int fetchTotal() throws DataException{
+        return studentDao.fetchTotal();
     }
 
     public Student fetchById(int id) throws DataException {
