@@ -3,8 +3,6 @@ package com.lftechnology.batch7crud.services;
 import com.lftechnology.batch7crud.dao.StudentDAO;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**

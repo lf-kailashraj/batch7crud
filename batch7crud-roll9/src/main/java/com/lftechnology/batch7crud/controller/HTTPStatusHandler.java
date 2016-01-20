@@ -14,7 +14,7 @@ public abstract class HTTPStatusHandler extends HttpServlet {
   private static final String ERROR_PAGE = "/WEB-INF/views/error-page.jsp";
   private static final String MESSAGE = "";
 
-  public void show404(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void show404(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     request.setAttribute(MESSAGE, "Page Not Found");
 
@@ -22,7 +22,7 @@ public abstract class HTTPStatusHandler extends HttpServlet {
     view.forward(request, response);
   }
 
-  public void show500(HttpServletRequest request, HttpServletResponse response, Throwable e) throws ServletException, IOException {
+  protected void show500(HttpServletRequest request, HttpServletResponse response, Throwable e) throws ServletException, IOException {
     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     request.setAttribute(MESSAGE, e.getMessage());
 

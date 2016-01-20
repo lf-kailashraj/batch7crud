@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 @WebServlet("/students/*")
 public class StudentControllerServlet extends HTTPStatusHandler {
   private static final Logger LOGGER = Logger.getLogger("appLogger");
-  private static final String ERROR_PAGE = "/WEB-INF/views/error-page.jsp";
   private static StudentService studentService = new StudentService();
 
   @Override
