@@ -7,18 +7,28 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Created by Romit Amgai <romitamgai@lftechnology.com> on 1/19/16.
+ */
 
 public class DBConnection {
-    public static Connection getSqlConnection() throws DataException {
-        try {
-            Context initCtx = new InitialContext();
-            Context envCtx = (Context) initCtx.lookup("java:comp/env");
-            DataSource ds = (DataSource) envCtx.lookup("jdbc/formdb");
-            return ds.getConnection();
-        } catch (NamingException e) {
-            throw new DataException(e.getMessage());
-        } catch (SQLException e) {
-            throw new DataException(e.getMessage());
-        }
+  private static final Logger logger = Logger.getLogger("dbConnectionLogger");
+
+  public static Connection getSqlConnection() throws DataException {
+    try {
+      Context initCtx = new InitialContext();
+      Context envCtx = (Context) initCtx.lookup("java:comp/env");
+      DataSource ds = (DataSource) envCtx.lookup("jdbc/formdb");
+      return ds.getConnection();
+    } catch (NamingException e) {
+      logger.log(Level.SEVERE, e.getMessage(), e);
+      throw new DataException(e.getMessage());
+    } catch (SQLException e) {
+      logger.log(Level.SEVERE, e.getMessage(), e);
+      throw new DataException(e.getMessage());
     }
+  }
 }

@@ -8,11 +8,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Created by Romit Amgai <romitamgai@lftechnology.com> on 1/19/16.
+ */
+
 @WebServlet({ "/" })
 
 public class IndexController extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
-    }
+  @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    req.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
+  }
 }
