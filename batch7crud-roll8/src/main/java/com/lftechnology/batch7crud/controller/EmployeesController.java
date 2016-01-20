@@ -4,6 +4,7 @@ import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.services.EmployeeServices;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,7 +27,12 @@ public class EmployeesController extends HttpServlet{
         else {
             String[] parts = path.split("/");
             if (parts[1].equals("create")) {
-                create(request, response);}
+                create(request, response);
+            }
+            else if (parts[2].equals("edit")) {
+                int id = Integer.parseInt(parts[1]);
+                edit(request, response, id);
+            }
         }
     }
 
@@ -39,14 +45,34 @@ public class EmployeesController extends HttpServlet{
         }
         else {
             String[] parts = path.split("/");
-            if (parts[1].equals("createProcess")) {
+            if (parts[2].equals("createProcess")) {
                 createProcess(request, response);
+            }
+            else if (parts[3].equals("editProcess")) {
+                int id = Integer.parseInt(parts[1]);
+                editProcess(request, response, id);
             }
         }
     }
 
     private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getServletContext().getRequestDispatcher("/WEB-INF/views/employees/new.jsp").forward(request, response);
+    }
+
+    private void edit(HttpServletRequest request, HttpServletResponse response, Integer id) throws ServletException, IOException {
+        try{
+            Employee employee = new Employee();
+            EmployeeServices employeeServices = new EmployeeServices();
+            employee = employeeServices.fetchById(id);
+            request.setAttribute("employee", employee);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/employees/edit.jsp");
+            dispatcher.forward(request, response);
+        }
+        catch (DataException e) {
+            e.printStackTrace();
+            //needs to be handled
+        }
+
     }
 
     private void createProcess(HttpServletRequest request, HttpServletResponse response) {
@@ -65,13 +91,39 @@ public class EmployeesController extends HttpServlet{
 
             employeeServices.create(employee);
             response.sendRedirect("/employees");
-//            fetch(request, response);
         } catch (DataException e) {
             e.printStackTrace();
             // check here for error and do required redirection and message display
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void editProcess(HttpServletRequest request, HttpServletResponse response, Integer id) {
+        try{
+
+            String name = request.getParameter("name");
+            String address = request.getParameter("address");
+            String designation = request.getParameter("designation");
+            String phone = request.getParameter("phone");
+
+            Employee employee = new Employee();
+            employee.setName(name);
+            employee.setAddress(address);
+            employee.setDesignation(designation);
+            employee.setPhone(phone);
+
+            EmployeeServices employeeServices = new EmployeeServices();
+            employeeServices.edit(employee, id);
+            response.sendRedirect("/employees");
+        }
+        catch (DataException e) {
+            e.printStackTrace();
+            //needs to be handled
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void fetch(HttpServletRequest request, HttpServletResponse response) throws IOException {

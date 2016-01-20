@@ -4,7 +4,6 @@ import com.lftechnology.batch7crud.db.DBConnection;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 
-import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,8 +17,6 @@ import java.util.List;
 public class EmployeeDao {
 
     public void create(Employee employee) throws DataException {
-        Statement stmt = null;
-
         try {
             String sql = "INSERT INTO employee (name, address, designation, phone) VALUES (?,?,?,?)";
             Connection conn = DBConnection.getConnection();
@@ -37,24 +34,65 @@ public class EmployeeDao {
 
     public List<Employee> fetch() throws DataException {
         try {
-            List<Employee> empList = new ArrayList<Employee>();
+            List<Employee> employeeList = new ArrayList<Employee>();
             String sql = "SELECT * FROM employee";
             Connection conn = DBConnection.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                Employee emp = new Employee();
-                emp.setId(result.getInt("id"));
-                emp.setName(result.getString("name"));
-                emp.setAddress(result.getString("address"));
-                emp.setDesignation(result.getString("designation"));
-                emp.setPhone(result.getString("phone"));
-                empList.add(emp);
+                Employee employee = new Employee();
+                employee.setId(result.getInt("id"));
+                employee.setName(result.getString("name"));
+                employee.setAddress(result.getString("address"));
+                employee.setDesignation(result.getString("designation"));
+                employee.setPhone(result.getString("phone"));
+                employeeList.add(employee);
             }
-            return empList;
+            return employeeList;
         } catch (SQLException e) {
             throw new DataException();
         } catch (DataException e) {
+            throw new DataException();
+        }
+    }
+
+    public Employee fetchById(Integer id) throws DataException {
+        try {
+            Employee employee = null;
+            String sql = "SELECT * FROM employee where id = ?";
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                employee = new Employee();
+                employee.setId(result.getInt("id"));
+                employee.setName(result.getString("name"));
+                employee.setAddress(result.getString("address"));
+                employee.setDesignation(result.getString("designation"));
+                employee.setPhone(result.getString("phone"));
+            }
+            return employee;
+        }
+        catch (SQLException e) {
+            throw new DataException();
+        }
+    }
+
+    public void edit(Employee employee, Integer id) throws DataException {
+        try {
+            String sql = "update employee set name = ?, address = ?, designation = ?, phone = ? where id = ?";
+
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, employee.getName());
+            statement.setString(2, employee.getAddress());
+            statement.setString(3, employee.getDesignation());
+            statement.setString(4, employee.getPhone());
+            statement.setInt(5, id);
+            statement.executeUpdate();
+        }
+        catch (SQLException e) {
             throw new DataException();
         }
     }

@@ -22,7 +22,6 @@
                 <table border="1px">
                     <thead>
                     <tr>
-                        <th>Id</th>
                         <th>Name</th>
                         <th>Address</th>
                         <th>Designation</th>
@@ -34,12 +33,11 @@
                     <tbody>
                     <c:forEach items="${employeeList}" var="employee">
                         <tr>
-                            <td>${employee.getId()}</td>
                             <td>${employee.getName()}</td>
                             <td>${employee.getAddress()}</td>
                             <td>${employee.getDesignation()}</td>
                             <td>${employee.getPhone()}</td>
-                            <td><a href="employees/edit">Edit</a></td>
+                            <td><a href="employees/${employee.getId()}/edit">Edit</a></td>
                             <td><a href= "employees/delete">Delete</a></td>
                         </tr>
                     </c:forEach>
