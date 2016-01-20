@@ -12,10 +12,9 @@ import java.util.List;
 public class EmployeeServices {
 //    List<Employee> employeeList = new ArrayList<Employee>();
 
-    public Boolean create(Employee employee) throws DataException {
+    public void create(Employee employee) throws DataException {
         EmployeeDao employeeDao = new EmployeeDao();
         employeeDao.create(employee);
-        return null;
     }
 
     public List<Employee> fetch() throws DataException {
@@ -31,6 +30,11 @@ public class EmployeeServices {
     public void edit(Employee employee, Integer id) throws DataException {
         EmployeeDao employeeDao = new EmployeeDao();
         employeeDao.edit(employee, id);
+    }
+
+    public void delete(Integer id) throws DataException {
+        EmployeeDao employeeDao = new EmployeeDao();
+        employeeDao.delete(id);
     }
 
 }
