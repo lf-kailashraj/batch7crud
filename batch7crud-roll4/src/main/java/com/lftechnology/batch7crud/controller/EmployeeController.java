@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,12 +20,10 @@ import java.util.logging.Logger;
 @WebServlet(name = "EmployeeController", urlPatterns = { "/employees/*" })
 
 public class EmployeeController extends CustomHttpServlet {
-    private static final String ERROR_PAGE = "/WEB-INF/views/error.jsp";
-    private static final String MESSAGE = "message";
     private static final String EMPLOYEE_LISTING_PAGE = "/employees";
 
-    private Logger logger = Logger.getLogger("EmployeeControllerLog");
-    private EmployeeService employeeService;
+    private static Logger logger = Logger.getLogger("EmployeeControllerLog");
+    private static EmployeeService employeeService;
 
     public EmployeeController() throws DataException {
         employeeService = new EmployeeService();
@@ -38,11 +37,14 @@ public class EmployeeController extends CustomHttpServlet {
             list(request, response);
         } else if (parameters.length == 3 && "create".equals(parameters[2])) {
             create(request, response);
+        } else if (parameters.length == 3) {
+            viewProfile(request, response);
         } else if (parameters.length == 4 && "edit".equals(parameters[3])) {
             edit(request, response);
         } else {
             show404(request, response);
         }
+
     }
 
     @Override
@@ -77,7 +79,7 @@ public class EmployeeController extends CustomHttpServlet {
             view.forward(request, response);
 
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
     }
@@ -103,7 +105,21 @@ public class EmployeeController extends CustomHttpServlet {
             employeeService.save(employee);
             response.sendRedirect(request.getContextPath() + EMPLOYEE_LISTING_PAGE);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            show500(request, response, e);
+        }
+    }
+
+    private void viewProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            int employeeId = parameterValueAsInt(request, 2);
+            String forward = "/WEB-INF/views/profile.jsp";
+            request.setAttribute("employee", employeeService.fetchById(employeeId));
+
+            RequestDispatcher view = request.getRequestDispatcher(forward);
+            view.forward(request, response);
+        } catch (DataException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
     }
@@ -117,7 +133,7 @@ public class EmployeeController extends CustomHttpServlet {
             RequestDispatcher view = request.getRequestDispatcher(forward);
             view.forward(request, response);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
 
@@ -139,7 +155,7 @@ public class EmployeeController extends CustomHttpServlet {
             employeeService.update(employee);
             response.sendRedirect(request.getContextPath() + EMPLOYEE_LISTING_PAGE);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
 
@@ -151,7 +167,7 @@ public class EmployeeController extends CustomHttpServlet {
             employeeService.deleteEmployee(employeeId);
             response.sendRedirect(request.getContextPath() + EMPLOYEE_LISTING_PAGE);
         } catch (DataException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
     }

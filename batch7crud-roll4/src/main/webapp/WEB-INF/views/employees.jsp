@@ -35,7 +35,7 @@
         <c:forEach var="employee" items="${employees}">
             <tr>
                 <td>${count}</td>
-                <td>${employee.getFirstName()}</td>
+                <td><a href="employees/${employee.getId()}">${employee.getFirstName()}</a></td>
                 <td>${employee.getLastName()}</td>
                 <td>${employee.getStation()}</td>
                 <td>

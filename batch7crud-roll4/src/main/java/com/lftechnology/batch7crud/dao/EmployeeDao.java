@@ -30,6 +30,7 @@ public class EmployeeDao {
             stmt.setInt(1, recordLimit);
             stmt.setInt(2, offset);
             ResultSet rs = stmt.executeQuery();
+            stmt.close();
 
             while (rs.next()) {
                 Employee e = new Employee();
@@ -41,7 +42,7 @@ public class EmployeeDao {
             }
             return employeeList;
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
         }
     }
@@ -53,6 +54,7 @@ public class EmployeeDao {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
+            stmt.close();
 
             while (rs.next()) {
                 e = new Employee();
@@ -64,7 +66,7 @@ public class EmployeeDao {
             return e;
 
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
         }
     }
@@ -78,8 +80,9 @@ public class EmployeeDao {
             stmt.setString(3, employee.getStation());
 
             stmt.executeUpdate();
+            stmt.close();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
         }
     }
@@ -94,8 +97,9 @@ public class EmployeeDao {
             stmt.setInt(4, employee.getId());
 
             stmt.executeUpdate();
+            stmt.close();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
         }
     }
@@ -107,8 +111,9 @@ public class EmployeeDao {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
             stmt.executeUpdate();
+            stmt.close();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
         }
     }
@@ -119,13 +124,14 @@ public class EmployeeDao {
             String sql = "SELECT COUNT(*) FROM employees";
             PreparedStatement stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
+            stmt.close();
             while (rs.next()) {
                 noOfRecords = rs.getInt(1);
             }
             return noOfRecords;
 
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
         }
     }
