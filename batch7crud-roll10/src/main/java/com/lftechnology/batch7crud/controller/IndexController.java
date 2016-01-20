@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet({ "/" })
 public class IndexController extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("test", "testing");
-        resp.sendRedirect("/students");
-    }
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    req.setAttribute("test", "testing");
+    resp.sendRedirect("/students");
+  }
 }

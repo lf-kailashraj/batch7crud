@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
-  User: binodnme
+  User: binod <binodshrestha@lftechnology.com>
   Date: 1/14/16
   Time: 1:09 PM
   To change this template use File | Settings | File Templates.
@@ -9,11 +9,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>students</title>
+    <title>Students</title>
 
 </head>
 <body>
-    <p>here are students</p>
     <table>
       <tr>
           <th>NAME</th>
@@ -58,7 +57,7 @@
             deleteBtn[i].onclick = function (e) {
                 e.preventDefault();
                 var href = this.getAttribute("href");
-                var confirmation = confirm("do you want to delete?");
+                var confirmation = confirm("Do you want to delete?");
 
                 if(confirmation == true){
                     var form = document.createElement("form");
@@ -66,7 +65,6 @@
                     form.method = "post";
                     form.submit();
                 }
-
             }
         }
     </script>
