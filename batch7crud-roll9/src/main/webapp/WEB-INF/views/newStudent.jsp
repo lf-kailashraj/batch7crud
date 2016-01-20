@@ -9,23 +9,33 @@
 <html>
 <head>
     <title>New Student Registration</title>
-  <base href="/students" />
+    <base href="/students"/>
 
 </head>
 <body>
-  <form action="${pageContext.request.contextPath}/students/create" method="POST">
-    <input type="text" required="required" placeholder="First Name" name="fname" />
-    <input type="text" required="required" placeholder="Middle Name" name="mname" />
-    <input type="text" required="required" placeholder="Last Name" name="lname" />
-    <input type="text" required="required" placeholder="Address" name="address" />
-    <select name="grade">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-    </select>
-   <input type="submit"/>
-  </form>
+<form action="${pageContext.request.contextPath}/students/create" method="POST">
+    <label for="fname">First Name: </label>
+
+    <div><input type="text" required="required" placeholder="First Name" name="fname" id="fname"/></div>
+    <label for="mname">Middle Name: </label>
+
+    <div><input type="text" required="required" placeholder="Middle Name" name="mname" id="mname"/></div>
+    <label for="lname">Last Name: </label>
+
+    <div><input type="text" required="required" placeholder="Last Name" name="lname" id="lname"/></div>
+    <label for="address">Address: </label>
+
+    <div><input type="text" required="required" placeholder="Address" name="address" id="address"/></div>
+    <label for="grade">Grade: </label>
+
+    <div><select name="grade" id="grade">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select></div>
+    <input type="submit"/>
+</form>
 </body>
 </html>

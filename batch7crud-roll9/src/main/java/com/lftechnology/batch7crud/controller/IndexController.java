@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.lftechnology.batch7crud.util.TypeCaster;
 
-@WebServlet({ "/" })
+@WebServlet({"/"})
 public class IndexController extends HttpServlet {
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
-    }
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    request.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
+  }
 }

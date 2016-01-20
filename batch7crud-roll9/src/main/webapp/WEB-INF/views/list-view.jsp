@@ -6,43 +6,64 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-  <title>Display Page</title>
-    <base href=${pageContext.request.contextPath}/" />
+    <title>Display Page</title>
+    <base href=${pageContext.request.contextPath}/"/>
 
 </head>
 <style>
-    table td{
-        border:1px solid;
+    table td {
+        border: 1px solid;
+        padding: 10px;
     }
+
+    table {
+        border: 1px solid;
+    }
+
+    table th {
+        border: 2px solid;
+
+    }
+
+
 </style>
 <body>
 <table>
 
-    <c:forEach items="${studentList}" var="studentList" varStatus="counter">
     <tr>
-      <td><a href="students/${studentList.getId()}/view" class="view">${counter.count+(page-1)*20}</a></td>
-      <td>${studentList.getFirstName()}</td>
-      <td>${studentList.getMiddleName()}</td>
-      <td>${studentList.getLastName()}</td>
-      <td>${studentList.getAddress()}</td>
-      <td>${studentList.getGrade()}</td>
-        <td><a href="students/${studentList.getId()}/edit" class="edit">Edit This</a></td>
+        <th>S.N.</th>
+        <th>First Name</th>
+        <th>Middle Name</th>
+        <th>Last Name</th>
 
-        <td><a href="students/${studentList.getId()}/delete" class="delete">Delete This</a></td>
+        <th>Address</th>
+        <th>Grade</th>
     </tr>
+    <c:forEach items="${studentList}" var="studentList" varStatus="counter">
+        <tr>
+            <td><a href="students/${studentList.getId()}/view" class="view">${counter.count+(page-1)*20}</a></td>
+            <td>${studentList.getFirstName()}</td>
+            <td>${studentList.getMiddleName()}</td>
+            <td>${studentList.getLastName()}</td>
+            <td>${studentList.getAddress()}</td>
+            <td>${studentList.getGrade()}</td>
+            <td><a href="students/${studentList.getId()}/edit" class="edit">Edit This</a></td>
+
+            <td><a href="students/${studentList.getId()}/delete" class="delete">Delete This</a></td>
+        </tr>
     </c:forEach>
-  </table>
+</table>
 
 <c:if test="${page>1}"><span><a href="students?page=${page-1}">Previous</a></span> </c:if>
     <span>
         <c:forEach begin="1" end="${totalPages}" var="counter">
             <c:if test="${page == counter}"><span> ${counter} </span>
             </c:if>
-            <c:if test="${page != counter}"><span><a href = "students?page=${counter}"> ${counter} </a></span>
+            <c:if test="${page != counter}"><span><a href="students?page=${counter}"> ${counter} </a></span>
             </c:if>
 
         </c:forEach>
@@ -51,8 +72,8 @@
 
 <script>
     var deleteElement = document.getElementsByClassName("delete");
-    for(var i=0;i<deleteElement.length ;i++){
-        deleteElement[i].onclick = function(e) {
+    for (var i = 0; i < deleteElement.length; i++) {
+        deleteElement[i].onclick = function (e) {
             e.preventDefault();
             var form = document.createElement('form');
             var destinationLink = e.target.getAttribute("href");
@@ -62,11 +83,12 @@
                 form.submit();
             }
         };
-    };
+    }
+    ;
 
     var editElement = document.getElementsByClassName("edit");
-    for(var i=0;i<deleteElement.length ;i++){
-        editElement[i].onclick = function(e) {
+    for (var i = 0; i < deleteElement.length; i++) {
+        editElement[i].onclick = function (e) {
             e.preventDefault();
             var form = document.createElement('form');
             var destinationLink = e.target.getAttribute("href");
@@ -74,11 +96,12 @@
             form.setAttribute("action", destinationLink);
             form.submit();
         };
-    };
+    }
+    ;
 
     var viewElement = document.getElementsByClassName("view");
-    for(var i=0;i<viewElement.length ;i++){
-        viewElement[i].onclick = function(e) {
+    for (var i = 0; i < viewElement.length; i++) {
+        viewElement[i].onclick = function (e) {
             e.preventDefault();
             var form = document.createElement('form');
             var destinationLink = e.target.getAttribute("href");
@@ -86,7 +109,8 @@
             form.setAttribute("action", destinationLink);
             form.submit();
         };
-    };
+    }
+    ;
 </script>
 </body>
 </html>

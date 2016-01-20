@@ -9,21 +9,22 @@
 <html>
 <head>
     <title>SMIS | ${student.getFirstName()} | Details</title>
-    <base href="${pageContext.request.contextPath}/" />
+    <base href="${pageContext.request.contextPath}/"/>
 
 </head>
 <body>
-  <p>${student.getFirstName()} ${student.getMiddleName()} ${student.getLastName()}</p>
-  <p>${student.getAddress()}</p>
-  <p>${student.getGrade()}</p>
-   <span>
-        <c:forEach begin="1" end="${total}" var="counter">
-            <span><a href = "students?page=${counter}"> ${counter} </a></span>
-        </c:forEach>
-    </span>
-  <td><a href="students/${student.getId()}/edit" class="edit">Edit This</a></td>
+<h2>Detail View</h2>
+<label>Name: </label><span>${student.getFirstName()} ${student.getMiddleName()} ${student.getLastName()}</span>
+<label>Address: </label> <span>${student.getAddress()}</span>
+<label>Grade: </label><span>${student.getGrade()}</span>
+<%--<span>--%>
+<%--<c:forEach begin="1" end="${total}" var="counter">--%>
+<%--<span><a href = "students?page=${counter}"> ${counter} </a></span>--%>
+<%--</c:forEach>--%>
+<%--</span>--%>
+<td><a href="students/${student.getId()}/edit" class="edit">Edit This</a></td>
 
-  <td><a href="students/${student.getId()}/delete" class="delete">Delete This</a></td>
+<td><a href="students/${student.getId()}/delete" class="delete">Delete This</a></td>
 
 </body>
 </html>
