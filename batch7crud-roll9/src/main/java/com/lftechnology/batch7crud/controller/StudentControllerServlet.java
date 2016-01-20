@@ -84,8 +84,10 @@ public class StudentControllerServlet extends HTTPStatusHandler {
       request.setAttribute("page", page);
       request.setAttribute("totalPages", Math.ceil(totalCount / (double) limit));
       request.getServletContext().getRequestDispatcher(forward).forward(request, response);
-    } catch (Exception ex) {
+    } catch (DataException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+      show404(request, response);
+    } catch (NumberFormatException ex) {
       show404(request, response);
     }
   }

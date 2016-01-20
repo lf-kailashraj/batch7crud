@@ -31,13 +31,9 @@ public abstract class HTTPStatusHandler extends HttpServlet {
   }
 
   public int pageNumber(HttpServletRequest request) {
-    try {
-      if (request.getParameter("page") != null) {
-        return Integer.parseInt(request.getParameter("page"));
-      } else {
-        return 1;
-      }
-    } catch (NumberFormatException e) {
+    if (request.getParameter("page") != null) {
+      return Integer.parseInt(request.getParameter("page"));
+    } else {
       return 1;
     }
   }
