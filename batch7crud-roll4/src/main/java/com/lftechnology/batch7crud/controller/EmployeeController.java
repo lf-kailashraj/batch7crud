@@ -69,6 +69,11 @@ public class EmployeeController extends CustomHttpServlet {
       int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / 20);
       int recordLimit = 20;
 
+      if (page != 1 && page > noOfPages) {
+        show404(request, response);
+        return;
+      }
+
       request.setAttribute("employees", employeeService.fetch(page, recordLimit));
       request.setAttribute("currentPage", page);
       request.setAttribute("noOfPages", noOfPages);
@@ -119,6 +124,8 @@ public class EmployeeController extends CustomHttpServlet {
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
+    } catch (NumberFormatException e) {
+      show404(request, response);
     }
   }
 
@@ -133,6 +140,8 @@ public class EmployeeController extends CustomHttpServlet {
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
+    } catch (NumberFormatException e) {
+      show404(request, response);
     }
 
   }
@@ -155,6 +164,8 @@ public class EmployeeController extends CustomHttpServlet {
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
+    } catch (NumberFormatException e) {
+      show404(request, response);
     }
 
   }
@@ -167,6 +178,8 @@ public class EmployeeController extends CustomHttpServlet {
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
+    } catch (NumberFormatException e) {
+      show404(request, response);
     }
   }
 }
