@@ -15,6 +15,7 @@ import java.util.logging.Logger;
  * Created by leapfrog on 1/18/16.
  */
 public class StudentDataAccess {
+    public static final Logger LOGGER = Logger.getLogger("StudentDataAccessLogger");
     public void addNew(Student s) throws DataException{
         try{
             String query = "insert into students (name,address,roll) values (?,?,?);";
@@ -25,8 +26,7 @@ public class StudentDataAccess {
             ps.executeUpdate();
         }
         catch (SQLException ex){
-            Logger logger = Logger.getLogger("myLogger");
-            logger.log(Level.SEVERE, "SQLException");
+            LOGGER.log(Level.SEVERE, ex.getMessage());
         }
     }
 
@@ -41,6 +41,7 @@ public class StudentDataAccess {
             return studentList;
 
         }catch(SQLException ex){
+            LOGGER.log(Level.SEVERE,ex.getMessage());
             throw new DataException();
         }
     }
@@ -62,7 +63,8 @@ public class StudentDataAccess {
             return s;
 
         }catch(SQLException ex){
-            throw new DataException(ex.getMessage());
+            LOGGER.log(Level.SEVERE,ex.getMessage());
+            throw new DataException();
         }
     }
 
@@ -76,8 +78,7 @@ public class StudentDataAccess {
             ps.executeUpdate();
         }
         catch (SQLException ex){
-            Logger logger = Logger.getLogger("myLogger");
-            logger.log(Level.SEVERE, "SQLException");
+            LOGGER.log(Level.SEVERE, ex.getMessage());
         }
     }
 
@@ -89,7 +90,8 @@ public class StudentDataAccess {
             ps.executeUpdate();
 
         }catch(SQLException ex){
-            throw new DataException(ex.getMessage());
+            LOGGER.log(Level.SEVERE,ex.getMessage());
+            throw new DataException();
         }
     }
 

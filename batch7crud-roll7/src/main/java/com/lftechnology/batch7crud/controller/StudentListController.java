@@ -10,12 +10,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by leapfrog on 1/18/16.
  */
 @WebServlet(name = "StudentListController", urlPatterns = { "/Students/*" })
 public class StudentListController extends HttpServlet {
+    public static final Logger LOGGER = Logger.getLogger("StudentDataAccessLogger");
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String urlpath = request.getPathInfo();
@@ -54,7 +57,7 @@ public class StudentListController extends HttpServlet {
             request.setAttribute("students", stdservice.fetch(page));
             request.getServletContext().getRequestDispatcher("/WEB-INF/views/students.jsp").forward(request, response);
         } catch (DataException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE,e.getMessage());
         }
     }
 
@@ -73,7 +76,7 @@ public class StudentListController extends HttpServlet {
             stdServices.addNew(s);
             response.sendRedirect("/Students");
         } catch (DataException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -83,7 +86,7 @@ public class StudentListController extends HttpServlet {
             request.setAttribute("student", stdservice.fetchById(roll));
             request.getRequestDispatcher("/WEB-INF/views/editEntry.jsp").forward(request, response);
         } catch (DataException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -97,7 +100,7 @@ public class StudentListController extends HttpServlet {
             stdServices.update(s);
             response.sendRedirect("/Students");
         } catch (DataException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage());
         }
     }
 
@@ -107,7 +110,7 @@ public class StudentListController extends HttpServlet {
             stdServices.delete(roll);
             response.sendRedirect("/Students");
         } catch (DataException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage());
         }
     }
 }
