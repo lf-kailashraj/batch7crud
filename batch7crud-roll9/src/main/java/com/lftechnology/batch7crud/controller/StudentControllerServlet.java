@@ -66,6 +66,8 @@ public class StudentControllerServlet extends HTTPStatusHandler {
     } catch (DataException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       show500(request, response, ex);
+    } catch(NumberFormatException ex){
+      show404(request, response);
     }
   }
 
@@ -105,6 +107,8 @@ public class StudentControllerServlet extends HTTPStatusHandler {
     } catch (DataException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       show404(request, response);
+    } catch(NumberFormatException ex){
+      show404(request, response);
     }
   }
 
@@ -118,7 +122,10 @@ public class StudentControllerServlet extends HTTPStatusHandler {
     } catch (DataException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       show500(request, response, ex);
+    } catch(NumberFormatException ex){
+      show404(request, response);
     }
+
   }
 
   private void editProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -136,6 +143,8 @@ public class StudentControllerServlet extends HTTPStatusHandler {
     } catch (DataException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       show404(request, response);
+    } catch(NumberFormatException ex){
+      show404(request, response);
     }
   }
 
@@ -147,6 +156,8 @@ public class StudentControllerServlet extends HTTPStatusHandler {
     } catch (DataException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       show500(request, response, ex);
+    } catch(NumberFormatException ex){
+      show404(request, response);
     }
   }
 }
