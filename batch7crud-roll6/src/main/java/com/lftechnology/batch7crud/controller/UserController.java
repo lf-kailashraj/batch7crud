@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.http.HTTPException;
 
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.User;
@@ -30,89 +31,63 @@ public class UserController extends CustomHttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String[] pathArgs = pathArgs(request);
+        try {
+            String[] pathArgs = pathArgs(request);
 
-        if (pathArgs.length <= 1) {
-            int page = 1;
-            try {
+            if (pathArgs.length <= 1) {
+                int page = 1;
                 String arg = request.getParameter("page");
                 if (arg != null) {
                     page = Integer.parseInt(arg);
                 }
                 this.list(request, response, page);
-            } catch (ServletException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            } catch (NumberFormatException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            }
+            } else {
 
-        } else {
+                if ("".equals(pathArgs[0]) && "add".equals(pathArgs[1])) {
 
-            if ("".equals(pathArgs[0]) && "add".equals(pathArgs[1])) {
-                try {
                     create(request, response);
-                } catch (ServletException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                }
-            } else if ("".equals(pathArgs[0]) && "edit".equals(pathArgs[2])) {
-                try {
+
+                } else if ("".equals(pathArgs[0]) && "edit".equals(pathArgs[2])) {
+
                     int userID = TypeCaster.toInt(pathArgs[1]);
                     edit(request, response, userID);
-                } catch (ServletException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
                 }
             }
+        } catch (HTTPException | IOException | NumberFormatException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            String urlString = request.getPathInfo();
+            if (urlString == null) {
 
-        String urlString = request.getPathInfo();
-        if (urlString == null) {
-            try {
                 this.list(request, response, 1);
-            } catch (ServletException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            }
-        } else {
-            String[] pathArgs = urlString.split("/");
-            if ("".equals(pathArgs[0]) && "add".equals(pathArgs[1])) {
-                try {
+
+            } else {
+                String[] pathArgs = urlString.split("/");
+                if ("".equals(pathArgs[0]) && "add".equals(pathArgs[1])) {
+
                     createProcess(request, response);
-                } catch (ServletException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                }
-            } else if ("".equals(pathArgs[0]) && "edit".equals(pathArgs[2])) {
-                try {
+
+                } else if ("".equals(pathArgs[0]) && "edit".equals(pathArgs[2])) {
+
                     int userID = TypeCaster.toInt(pathArgs[1]);
                     editProcess(request, response, userID);
-                } catch (ServletException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                }
-            } else if ("".equals(pathArgs[0]) && "delete".equals(pathArgs[2])) {
-                try {
+
+                } else if ("".equals(pathArgs[0]) && "delete".equals(pathArgs[2])) {
+
                     int userID = TypeCaster.toInt(pathArgs[1]);
                     deleteProcess(request, response, userID);
-                } catch (ServletException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                }
-            }
 
+                }
+
+            }
+        } catch (HTTPException | IOException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
     }
@@ -169,7 +144,6 @@ public class UserController extends CustomHttpServlet {
         } catch (DataException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             showServerError(request, response, e);
-
         }
     }
 

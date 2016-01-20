@@ -7,13 +7,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+	input{
+			display:block;
+	}
+</style>
 </head>
 <body>
 	<form method="post" action="/batch7crud-roll6/users/${user.id}/edit">
-		First Name: <input type = "text" name = "firstname" value ="${user.firstName}"><br/>
-		Surname : <input type = "text" name = "surname" value = "${user.surName }"><br/>
-		Username: <input type = "text" name="username" value = "${user.userName }"><br/>
-		Password: <input type = "password" name = "password" value = "${user.password }"><br/>
+		<span>First Name:</span> <input type = "text" name = "firstname" value ="${user.firstName}">
+		<span>Surname :</span> <input type = "text" name = "surname" value = "${user.surName }">
+		<span>Username:</span> <input type = "text" name="username" value = "${user.userName }">
+		<span>Password:</span> <input type = "password" name = "password" value = "${user.password }">
 		<input type="submit" value = "submit">
 	
 	</form>

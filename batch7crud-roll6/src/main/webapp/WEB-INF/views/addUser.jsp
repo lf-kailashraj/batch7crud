@@ -5,15 +5,22 @@
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 <title>Insert title here</title>
+<style>
+	input{
+		display:block;
+	}
+</style>
 </head>
 <body>
 	<h1>Hello fill up this form</h1>
 	<form action="add" method="post">
-		First Name: <input name="firstname" type="text"><br>
-		Surname : <input name="surname" type="text"><br>
-		Username: <input name="username" type="text"><br>
-		Password: <input name="password" type="password"><br>
-		<input type="submit" value="submit">
+		
+			<span>First Name:</span> <input name="firstname" type="text">
+			<span>Surname :</span> <input name="surname" type="text">
+			<span>Username:</span> <input name="username" type="text">
+			<span>Password:</span> <input name="password" type="password">
+			<input type="submit" value="submit">
+	
 	</form>
 </body>
 </html>
