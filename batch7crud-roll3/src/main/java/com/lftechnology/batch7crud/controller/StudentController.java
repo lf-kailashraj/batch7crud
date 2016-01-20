@@ -72,7 +72,8 @@ public class StudentController extends CustomHttpServlet {
 		request.getRequestDispatcher("/WEB-INF/views/student/list.jsp").forward(request, response);
 	}
 
-	private void show(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
+	private void show(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, DataException {
 		int id = parameterValueAsInt(request, 2);
 		Student student = studentService.fetchStudentById(id);
 		request.setAttribute("student", student);
@@ -87,19 +88,21 @@ public class StudentController extends CustomHttpServlet {
 			throws ServletException, IOException, DataException {
 		String roll = request.getParameter("roll");
 		String name = request.getParameter("name");
+		Student student = null;
 		try {
-
-			Student student = new Student();
+			student = new Student();
 			student.setRoll(Integer.parseInt(roll));
 			student.setName(name);
+			studentService.insert(student);
 			response.sendRedirect(request.getContextPath() + LIST_PAGE);
 		} catch (NumberFormatException e) {
 			request.setAttribute("roll", roll);
 			request.setAttribute("name", name);
 
 			request.setAttribute("message", "Fill valid Roll");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			request.getRequestDispatcher("/WEB-INF/views/student/create.jsp").forward(request, response);
-		}
+		} 
 	}
 
 	private void edit(HttpServletRequest request, HttpServletResponse response)

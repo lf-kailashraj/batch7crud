@@ -25,18 +25,14 @@ public class StudentDAO {
 			stmnt = conn.prepareStatement(sql);
 			stmnt.setInt(1, student.getRoll());
 			stmnt.setString(2, student.getName());
+			System.out.println("ljksdf");
 			stmnt.execute();
 		} catch (SQLException e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);
 
 			throw new DataException(e.getMessage());
 		} finally {
-			try {
-				stmnt.close();
-				conn.close();
-			} catch (SQLException e1) {
-				logger.log(Level.SEVERE, e1.getMessage(), e1);
-			}
+			closeAll(null, stmnt, conn);
 		}
 	}
 
@@ -71,13 +67,7 @@ public class StudentDAO {
 
 			throw new DataException(e.getMessage());
 		} finally {
-			try {
-				result.close();
-				stmnt.close();
-				conn.close();
-			} catch (SQLException e1) {
-				logger.log(Level.SEVERE, e1.getMessage(), e1);
-			}
+			closeAll(result, stmnt, conn);
 		}
 	}
 
@@ -102,13 +92,7 @@ public class StudentDAO {
 
 			throw new DataException(e.getMessage());
 		} finally {
-			try {
-				count.close();
-				stmnt.close();
-				conn.close();
-			} catch (SQLException e1) {
-				logger.log(Level.SEVERE, e1.getMessage(), e1);
-			}
+			closeAll(count, stmnt, conn);
 		}
 	}
 
@@ -138,13 +122,7 @@ public class StudentDAO {
 
 			throw new DataException(e.getMessage());
 		} finally {
-			try {
-				result.close();
-				stmnt.close();
-				conn.close();
-			} catch (SQLException e1) {
-				logger.log(Level.SEVERE, e1.getMessage(), e1);
-			}
+			closeAll(result, stmnt, conn);
 		}
 	}
 
@@ -165,12 +143,7 @@ public class StudentDAO {
 
 			throw new DataException(e.getMessage());
 		} finally {
-			try {
-				stmnt.close();
-				conn.close();
-			} catch (SQLException e1) {
-				logger.log(Level.SEVERE, e1.getMessage(), e1);
-			}
+			closeAll(null, stmnt, conn);
 		}
 
 	}
@@ -190,13 +163,22 @@ public class StudentDAO {
 
 			throw new DataException(e.getMessage());
 		} finally {
-			try {
-				stmnt.close();
-				conn.close();
-			} catch (SQLException e1) {
-				logger.log(Level.SEVERE, e1.getMessage(), e1);
-			}
+			closeAll(null, stmnt, conn);
 		}
+	}
+
+	private void closeAll(ResultSet result, PreparedStatement stmnt, Connection conn) {
+		try {
+			if (result != null)
+				result.close();
+			if (stmnt != null)
+				stmnt.close();
+			if (conn != null)
+				conn.close();
+		} catch (SQLException e1) {
+			logger.log(Level.SEVERE, e1.getMessage(), e1);
+		}
+
 	}
 
 }
