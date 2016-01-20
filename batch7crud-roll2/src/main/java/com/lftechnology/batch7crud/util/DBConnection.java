@@ -35,4 +35,37 @@ public class DBConnection {
       throw new DataException(e.getMessage());
     }
   }
+
+  public static void closeResultSets(ResultSet... rs) {
+    for (ResultSet r : rs) {
+      if (r != null) {
+        try {
+          r.close();
+        } catch (SQLException e) { //NOSONAR
+        }
+      }
+    }
+  }
+
+  public static void closePreparedStatements(PreparedStatement... ps) {
+    for (PreparedStatement p : ps) {
+      if (p != null) {
+        try {
+          p.close();
+        } catch (SQLException e) { //NOSONAR
+
+        }
+      }
+    }
+  }
+
+  public static void closeConnection(Connection con) {
+    if (con != null) {
+      try {
+        con.close();
+      } catch (SQLException e) { //NOSONAR
+
+      }
+    }
+  }
 }
