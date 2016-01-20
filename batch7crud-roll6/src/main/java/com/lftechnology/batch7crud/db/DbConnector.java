@@ -1,8 +1,9 @@
 package com.lftechnology.batch7crud.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -10,6 +11,12 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public class DbConnector {
+
+    private static final Logger logger = Logger.getLogger("UserController");
+
+    private DbConnector() {
+
+    }
 
     public static Connection getMySqlConnection() throws SQLException {
         Connection connection = null;
@@ -21,7 +28,7 @@ public class DbConnector {
             DataSource ds = (DataSource) envCtx.lookup("jdbc/dbInitial");
             connection = ds.getConnection();
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getMessage());
         }
 
         return connection;

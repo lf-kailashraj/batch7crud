@@ -7,7 +7,8 @@ import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.User;
 
 /**
- * @author madandhungana <madandhungana@lftechnology.com> Jan 18, 2016
+ * @author madandhungana <madandhungana@lftechnology.com>
+ * Jan 18, 2016
  */
 public class UserService {
 
