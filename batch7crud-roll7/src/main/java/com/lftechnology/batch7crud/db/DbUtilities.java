@@ -20,7 +20,7 @@ public class DbUtilities {
     private DbUtilities(){
 
     }
-    public static final Logger LOGGER = Logger.getLogger("DbUtilitiesLogger");
+    private static final Logger LOGGER = Logger.getLogger("DbUtilitiesLogger");
     public static PreparedStatement getPreparedStatement(String sql) throws DataException {
         try {
             PreparedStatement ps = null;
@@ -32,10 +32,10 @@ public class DbUtilities {
             ps = conn.prepareStatement(sql);
             return ps;
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE,ex.getMessage());
+            LOGGER.log(Level.SEVERE,ex.getMessage(),ex);
             throw new DataException();
         } catch (NamingException ex) {
-            LOGGER.log(Level.SEVERE,ex.getMessage());
+            LOGGER.log(Level.SEVERE,ex.getMessage(),ex);
             throw new DataException();
         }
 

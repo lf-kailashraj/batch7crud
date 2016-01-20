@@ -15,33 +15,37 @@ import java.util.logging.Logger;
  * Created by leapfrog on 1/18/16.
  */
 public class StudentDataAccess {
-    public static final Logger LOGGER = Logger.getLogger("StudentDataAccessLogger");
+    private static final Logger LOGGER = Logger.getLogger("StudentDataAccessLogger");
     public void addNew(Student s) throws DataException{
         try{
             String query = "insert into students (name,address,roll) values (?,?,?);";
             PreparedStatement ps = DbUtilities.getPreparedStatement(query);
             ps.setString(1, s.getName());
             ps.setString(2, s.getAddress());
-            ps.setInt(3,s.getRoll());
+            ps.setInt(3, s.getRoll());
             ps.executeUpdate();
+            ps.close();
         }
         catch (SQLException ex){
-            LOGGER.log(Level.SEVERE, ex.getMessage());
+            LOGGER.log(Level.SEVERE, ex.getMessage(),ex);
         }
     }
 
     public List<Student> fetch(int page) throws DataException{
         try{
             List<Student> studentList = new ArrayList<Student>();
-            ResultSet rs = DbUtilities.getPreparedStatement("select * from students").executeQuery();
+            PreparedStatement ps = DbUtilities.getPreparedStatement("select * from students");
+            ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 Student s = new Student(rs.getString(1),rs.getString(2),rs.getInt(3));
                 studentList.add(s);
             }
+            rs.close();
+            ps.close();
             return studentList;
 
         }catch(SQLException ex){
-            LOGGER.log(Level.SEVERE,ex.getMessage());
+            LOGGER.log(Level.SEVERE,ex.getMessage(),ex);
             throw new DataException();
         }
     }
@@ -60,10 +64,12 @@ public class StudentDataAccess {
                 s.setAddress(rs.getString("address"));
                 s.setRoll(Integer.parseInt(rs.getString("roll")));
             }
+            rs.close();
+            ps.close();
             return s;
 
         }catch(SQLException ex){
-            LOGGER.log(Level.SEVERE,ex.getMessage());
+            LOGGER.log(Level.SEVERE,ex.getMessage(),ex);
             throw new DataException();
         }
     }
@@ -74,11 +80,12 @@ public class StudentDataAccess {
             PreparedStatement ps = DbUtilities.getPreparedStatement(query);
             ps.setString(1, s.getName());
             ps.setString(2, s.getAddress());
-            ps.setInt(3,s.getRoll());
+            ps.setInt(3, s.getRoll());
             ps.executeUpdate();
+            ps.close();
         }
         catch (SQLException ex){
-            LOGGER.log(Level.SEVERE, ex.getMessage());
+            LOGGER.log(Level.SEVERE, ex.getMessage(),ex);
         }
     }
 
@@ -88,9 +95,10 @@ public class StudentDataAccess {
             PreparedStatement ps = DbUtilities.getPreparedStatement(query);
             ps.setInt(1,roll);
             ps.executeUpdate();
+            ps.close();
 
         }catch(SQLException ex){
-            LOGGER.log(Level.SEVERE,ex.getMessage());
+            LOGGER.log(Level.SEVERE,ex.getMessage(),ex);
             throw new DataException();
         }
     }
