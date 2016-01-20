@@ -19,7 +19,6 @@ public abstract class CustomHttpServlet extends HttpServlet {
         try {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             request.setAttribute(MESSAGE, "Page Not Found");
-            System.out.println("not found");
             request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
         } catch (ServletException | IOException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
