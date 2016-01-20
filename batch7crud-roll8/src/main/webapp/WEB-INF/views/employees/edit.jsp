@@ -14,7 +14,7 @@
     <div>
         <h1>Edit Employee Form</h1>
         <div>
-            <form action="${employee.getId()}/editProcess" method="POST">
+            <form action="editProcess" method="POST">
                 <div>
                     <label>Name:</label>
                     <input name="name" type="text" value = ${employee.getName()}>
