@@ -73,13 +73,19 @@ public class EmployeeDao {
 
   public void insert(Employee employee) throws DataException {
     try (Connection connection = DbConnection.getConnection();
-            PreparedStatement stmt = connection.prepareStatement(QUERY_INSERT_INTO_EMPLOYEES)) {
+            PreparedStatement stmt = connection.prepareStatement(QUERY_INSERT_INTO_EMPLOYEES, Statement.RETURN_GENERATED_KEYS)) {
 
       stmt.setString(1, employee.getFirstName());
       stmt.setString(2, employee.getLastName());
       stmt.setString(3, employee.getStation());
 
       stmt.executeUpdate();
+
+      ResultSet rs = stmt.getGeneratedKeys();
+
+      if(rs.next()) {
+        employee.setId(rs.getInt(1));
+      }
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
@@ -122,9 +128,10 @@ public class EmployeeDao {
       int noOfRecords = 0;
       ResultSet rs = stmt.executeQuery();
 
-      while (rs.next()) {
+      if (rs.next()) {
         noOfRecords = rs.getInt(1);
       }
+
       return noOfRecords;
 
     } catch (SQLException e) {

@@ -27,6 +27,7 @@ public class EmployeeController extends CustomHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
 
   private static EmployeeService employeeService;
+  public static final int RECORD_LIMIT = 20;
 
   public EmployeeController() {
     employeeService = new EmployeeService();
@@ -69,27 +70,25 @@ public class EmployeeController extends CustomHttpServlet {
     try {
       int page = pageNumber(request);
       int noOfRecords = employeeService.fetchNoOfRecords();
-      int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / 20);
-      int recordLimit = 20;
+      int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / 20.0);
 
       if (page != 1 && page > noOfPages) {
         show404(request, response);
         return;
       }
 
-      request.setAttribute(ATTRIB_EMPLOYEES, employeeService.fetch(page, recordLimit));
+      request.setAttribute(ATTRIB_EMPLOYEES, employeeService.fetch(page, RECORD_LIMIT));
       request.setAttribute(ATTRIB_CURRENT_PAGE, page);
       request.setAttribute(ATTRIB_NO_OF_PAGES, noOfPages);
 
       RequestDispatcher view = request.getRequestDispatcher(URL_EMPLOYEE_LISTING_PAGE);
       view.forward(request, response);
 
-    } catch (DataException e) {
+    } catch (DataException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
-    } catch (NumberFormatException e) {
-      show404(request, response);
     }
+
   }
 
   private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -123,12 +122,11 @@ public class EmployeeController extends CustomHttpServlet {
       request.setAttribute(ATTRIB_EMPLOYEE, employeeService.fetchById(employeeId));
       RequestDispatcher view = request.getRequestDispatcher(URL_EMPLOYEE_PROFILE_PAGE);
       view.forward(request, response);
-    } catch (DataException e) {
+    } catch (DataException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
-    } catch (NumberFormatException e) {
-      show404(request, response);
     }
+
   }
 
   private void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -138,11 +136,9 @@ public class EmployeeController extends CustomHttpServlet {
       request.setAttribute(ATTRIB_EMPLOYEE, employeeService.fetchById(employeeId));
       RequestDispatcher view = request.getRequestDispatcher(URL_EMPLOYEE_EDIT_PAGE);
       view.forward(request, response);
-    } catch (DataException e) {
+    } catch (DataException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
-    } catch (NumberFormatException e) {
-      show404(request, response);
     }
 
   }
@@ -163,11 +159,9 @@ public class EmployeeController extends CustomHttpServlet {
 
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + ROUTE_EMPLOYEES);
-    } catch (DataException e) {
+    } catch (DataException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
-    } catch (NumberFormatException e) {
-      show404(request, response);
     }
 
   }
@@ -177,11 +171,9 @@ public class EmployeeController extends CustomHttpServlet {
       int employeeId = parameterValueAsInt(request, 2);
       employeeService.deleteEmployee(employeeId);
       response.sendRedirect(request.getContextPath() + ROUTE_EMPLOYEES);
-    } catch (DataException e) {
+    } catch (DataException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
-    } catch (NumberFormatException e) {
-      show404(request, response);
     }
   }
 }
