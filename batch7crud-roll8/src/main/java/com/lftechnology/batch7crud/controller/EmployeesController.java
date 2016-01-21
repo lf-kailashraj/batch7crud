@@ -13,12 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by grishma on 1/19/16.
  */
 @WebServlet({ "/employees/*" })
 public class EmployeesController extends HttpServlet{
+  private static final Logger LOGGER = Logger.getLogger("employeeLogger");
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String path = request.getPathInfo();
     if (path == null) {
@@ -75,7 +78,7 @@ public class EmployeesController extends HttpServlet{
       dispatcher.forward(request, response);
     }
     catch (DataException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       //needs to be handled
     }
 
@@ -98,10 +101,9 @@ public class EmployeesController extends HttpServlet{
       employeeServices.create(employee);
       response.sendRedirect("/employees");
     } catch (DataException e) {
-      e.printStackTrace();
-      // check here for error and do required redirection and message display
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     } catch (IOException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
   }
 
@@ -124,10 +126,10 @@ public class EmployeesController extends HttpServlet{
       response.sendRedirect("/employees");
     }
     catch (DataException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       //needs to be handled
     } catch (IOException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
 
   }
@@ -137,10 +139,12 @@ public class EmployeesController extends HttpServlet{
       EmployeeServices employeeServices = new EmployeeServices();
       employeeServices.delete(id);
       response.sendRedirect("/employees");
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (DataException e) {
-      e.printStackTrace();
+    }
+    catch (IOException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+    }
+    catch (DataException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
   }
 
@@ -161,8 +165,9 @@ public class EmployeesController extends HttpServlet{
       }
 
       request.getServletContext().getRequestDispatcher("/WEB-INF/views/employees/index.jsp").forward(request, response);
-    } catch (Exception e) {
-      e.printStackTrace();
+    }
+    catch (Exception e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
   }
 
@@ -180,13 +185,13 @@ public class EmployeesController extends HttpServlet{
       }
 
     } catch (NumberFormatException e) {
-        e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     } catch (ServletException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     } catch (IOException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     } catch (DataException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
   }
 
