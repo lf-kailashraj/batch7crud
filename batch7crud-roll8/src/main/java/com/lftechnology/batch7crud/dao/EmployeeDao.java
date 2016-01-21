@@ -10,13 +10,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Grishma Shrestha grishmashrestha@lftechnology.com on 1/18/16.
  */
 
 public class EmployeeDao {
-
+  private static final Logger LOGGER = Logger.getLogger("employeeLogger");
   public void create(Employee employee) throws DataException {
     try {
       String sql = "INSERT INTO employee (name, address, designation, phone) VALUES (?,?,?,?)";
@@ -28,18 +30,19 @@ public class EmployeeDao {
       statement.setString(4, employee.getPhone());
       statement.executeUpdate();
     } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException();
     }
   }
 
-  public List<Employee> fetch(Integer pageLimit, Integer pageNo) throws DataException {
+  public List<Employee> fetch(Integer pageLimit, Integer offset) throws DataException {
     try {
       List<Employee> employeeList = new ArrayList<Employee>();
       String sql = "SELECT * FROM employee order by id limit ? offset ?";
       Connection conn = DBConnection.getConnection();
       PreparedStatement statement = conn.prepareStatement(sql);
       statement.setInt(1, pageLimit);
-      statement.setInt(2, pageLimit * pageNo);
+      statement.setInt(2, offset);
       ResultSet result = statement.executeQuery();
       while (result.next()) {
         Employee employee = new Employee();
@@ -52,6 +55,7 @@ public class EmployeeDao {
       }
       return employeeList;
     } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException();
     }
   }
@@ -75,6 +79,7 @@ public class EmployeeDao {
       return employee;
     }
     catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException();
     }
   }
@@ -93,6 +98,7 @@ public class EmployeeDao {
       statement.executeUpdate();
     }
     catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException();
     }
   }
@@ -105,6 +111,7 @@ public class EmployeeDao {
       statement.setInt(1, id);
       statement.executeUpdate();
     } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException();
     }
   }
@@ -122,6 +129,7 @@ public class EmployeeDao {
         return 0;
       }
     } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException();
     }
   }
