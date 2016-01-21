@@ -1,5 +1,7 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.lftechnology.batch7crud.constants.UrlConstants;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -16,6 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 public class IndexController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    req.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
+    req.getServletContext().getRequestDispatcher(UrlConstants.INDEX_PAGE).forward(req, resp);
   }
 }

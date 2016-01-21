@@ -1,5 +1,8 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.lftechnology.batch7crud.constants.AppConstants;
+import com.lftechnology.batch7crud.constants.AttributeConstants;
+import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
@@ -18,18 +21,17 @@ import java.util.logging.Logger;
  */
 @WebServlet(name = "EmployeeController", urlPatterns = { "/employees/*" })
 public class EmployeeController extends CommonHttpServlet {
-  private static final Logger LOGGER = Logger.getLogger("employeeLogger");
-  private static final String EMPLOYEE_PATH = "/employees";
+  private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] pathParts = getPathParameters(request);
 
-    if (pathParts.length == 3 && "create".equals(pathParts[2])) {
+    if (pathParts.length == 3 && AppConstants.CREATE.equals(pathParts[2])) {
       createProcess(request, response);
-    } else if (pathParts.length == 4 && "edit".equals(pathParts[3])) {
+    } else if (pathParts.length == 4 && AppConstants.EDIT.equals(pathParts[3])) {
       editProcess(request, response);
-    } else if (pathParts.length == 4 && "delete".equals(pathParts[3])) {
+    } else if (pathParts.length == 4 && AppConstants.DELETE.equals(pathParts[3])) {
       deleteProcess(request, response);
     } else {
       displayPageNotFound(request, response);
@@ -40,11 +42,11 @@ public class EmployeeController extends CommonHttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] pathParts = getPathParameters(request);
 
-    if (pathParts.length == 2 && "employees".equals(pathParts[1])) {
+    if (pathParts.length == 2 && AppConstants.EMPLOYEE.equals(pathParts[1])) {
       list(request, response);
-    } else if (pathParts.length == 3 && "create".equals(pathParts[2])) {
+    } else if (pathParts.length == 3 && AppConstants.CREATE.equals(pathParts[2])) {
       create(request, response);
-    } else if (pathParts.length == 4 && "edit".equals(pathParts[3])) {
+    } else if (pathParts.length == 4 && AppConstants.EDIT.equals(pathParts[3])) {
       edit(request, response);
     } else if (pathParts.length == 3) {
       view(request, response);
@@ -55,8 +57,8 @@ public class EmployeeController extends CommonHttpServlet {
 
   private int getPageNo(HttpServletRequest request) {
     try {
-      if (request.getParameter("page") != null) {
-        return Integer.parseInt(request.getParameter("page"));
+      if (request.getParameter(AttributeConstants.PAGE) != null) {
+        return Integer.parseInt(request.getParameter(AttributeConstants.PAGE));
       } else {
         return 1;
       }
@@ -77,10 +79,10 @@ public class EmployeeController extends CommonHttpServlet {
         displayPageNotFound(request, response);
         return;
       }
-      request.setAttribute("employeeList", empList);
-      request.setAttribute("noOfPages", validNoOfPages);
-      request.setAttribute("currentPage", page);
-      request.getRequestDispatcher("/WEB-INF/views/employeesList.jsp").forward(request, response);
+      request.setAttribute(AttributeConstants.EMPLOYEE_LIST, empList);
+      request.setAttribute(AttributeConstants.NO_OF_PAGES, validNoOfPages);
+      request.setAttribute(AttributeConstants.CURRENT_PAGE, page);
+      request.getRequestDispatcher(UrlConstants.EMPLOYEE_LIST_PAGE).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
@@ -88,15 +90,15 @@ public class EmployeeController extends CommonHttpServlet {
   }
 
   private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    request.getRequestDispatcher("/WEB-INF/views/employeeCreate.jsp").forward(request, response);
+    request.getRequestDispatcher(UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request, response);
   }
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
-      String name = request.getParameter("name");
-      String address = request.getParameter("address");
-      String email = request.getParameter("email");
-      String contact = request.getParameter("contact");
+      String name = request.getParameter(AttributeConstants.NAME);
+      String address = request.getParameter(AttributeConstants.ADDRESS);
+      String email = request.getParameter(AttributeConstants.EMAIL);
+      String contact = request.getParameter(AttributeConstants.CONTACT);
 
       Employee employee = new Employee();
       employee.setName(name);
@@ -106,7 +108,7 @@ public class EmployeeController extends CommonHttpServlet {
 
       EmployeeService employeeService = new EmployeeService();
       employeeService.insert(employee);
-      response.sendRedirect(request.getContextPath() + EMPLOYEE_PATH);
+      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
@@ -122,8 +124,8 @@ public class EmployeeController extends CommonHttpServlet {
         displayPageNotFound(request, response);
         return;
       }
-      request.setAttribute("employee", employee);
-      request.getRequestDispatcher("/WEB-INF/views/employeeView.jsp").forward(request, response);
+      request.setAttribute(AttributeConstants.EMPLOYEE, employee);
+      request.getRequestDispatcher(UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
@@ -142,8 +144,8 @@ public class EmployeeController extends CommonHttpServlet {
         displayPageNotFound(request, response);
         return;
       }
-      request.setAttribute("employee", employee);
-      request.getRequestDispatcher("/WEB-INF/views/employeeEdit.jsp").forward(request, response);
+      request.setAttribute(AttributeConstants.EMPLOYEE, employee);
+      request.getRequestDispatcher(UrlConstants.EMPLOYEE_EDIT_PAGE).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
@@ -156,10 +158,10 @@ public class EmployeeController extends CommonHttpServlet {
   private void editProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       int id = parameterValueAsInt(request, 2);
-      String name = request.getParameter("name");
-      String address = request.getParameter("address");
-      String email = request.getParameter("email");
-      String contact = request.getParameter("contact");
+      String name = request.getParameter(AttributeConstants.NAME);
+      String address = request.getParameter(AttributeConstants.ADDRESS);
+      String email = request.getParameter(AttributeConstants.EMAIL);
+      String contact = request.getParameter(AttributeConstants.CONTACT);
 
       Employee employee = new Employee();
       employee.setId(id);
@@ -170,7 +172,7 @@ public class EmployeeController extends CommonHttpServlet {
 
       EmployeeService employeeService = new EmployeeService();
       employeeService.update(employee);
-      response.sendRedirect(request.getContextPath() + EMPLOYEE_PATH);
+      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
@@ -189,6 +191,6 @@ public class EmployeeController extends CommonHttpServlet {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
     }
-    response.sendRedirect(request.getContextPath() + EMPLOYEE_PATH);
+    response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
   }
 }
