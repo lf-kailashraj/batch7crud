@@ -142,14 +142,17 @@ public class StudentController extends CustomHttpServlet {
 
   private void editProcess(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException, DataException {
+    Student student = new Student();
     try {
       int id = parameterValueAsInt(request, 2);
-      Student student = constructStudentFromRequest(request);
       student.setId(id);
+      student = constructStudentFromRequest(request);
+      
       studentService.edit(student);
 
       response.sendRedirect(request.getContextPath() + STUDENT_LIST_CONTROLLER);
     } catch (NumberFormatException e) {
+      request.setAttribute(STUDENT, student);
       request.setAttribute(ROLL, request.getParameter(ROLL));
       request.setAttribute(NAME, request.getParameter(NAME));
       request.setAttribute(MESSAGE, INVALID_ROLL_MESSAGE);
