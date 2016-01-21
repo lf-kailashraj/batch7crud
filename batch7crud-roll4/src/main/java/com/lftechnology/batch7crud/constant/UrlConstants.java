@@ -8,11 +8,12 @@ import java.io.File;
 public class UrlConstants {
   public static final String SEPARATOR = File.separator;
   public static final String VIEW = SEPARATOR + "WEB-INF" + SEPARATOR + "views" + SEPARATOR;
+  public static final String EMPLOYEE_VIEW = VIEW + "employee" + SEPARATOR;
 
-  public static final String URL_EMPLOYEE_LISTING_PAGE = VIEW + "employees.jsp";
-  public static final String URL_EMPLOYEE_CREATE_PAGE = VIEW + "create.jsp";
-  public static final String URL_EMPLOYEE_PROFILE_PAGE = VIEW + "profile.jsp";
-  public static final String URL_EMPLOYEE_EDIT_PAGE = VIEW + "edit.jsp";
+  public static final String URL_EMPLOYEE_LISTING_PAGE = EMPLOYEE_VIEW + "employees.jsp";
+  public static final String URL_EMPLOYEE_CREATE_PAGE = EMPLOYEE_VIEW + "create.jsp";
+  public static final String URL_EMPLOYEE_PROFILE_PAGE = EMPLOYEE_VIEW + "profile.jsp";
+  public static final String URL_EMPLOYEE_EDIT_PAGE = EMPLOYEE_VIEW + "edit.jsp";
 
   public static final String URL_ERROR_PAGE = VIEW + "error.jsp";
 
