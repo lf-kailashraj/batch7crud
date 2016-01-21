@@ -15,6 +15,7 @@ public class CommonConstant {
 
   public static final String PAGE_NUMBER = "page";
   public static final String NUMBER_OF_PAGES = "numberOfPages";
+  public static final int RECORDS_PER_PAGE = 3;
 
   public static final String PAGE_NOT_FOUND = "Page Not Found";
 

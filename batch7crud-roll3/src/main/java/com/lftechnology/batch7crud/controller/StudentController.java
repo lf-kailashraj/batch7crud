@@ -16,6 +16,14 @@ import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.service.StudentService;
 
+/**
+ * This controller handles CRUD operations. It accepts URLs: students/, students
+ * for listing, students/create for creating, students/id/edit for editing,
+ * students/id/delete for deleting and students/id for showing records.
+ * 
+ * @author bishal
+ *
+ */
 @WebServlet("/students/*")
 public class StudentController extends CustomHttpServlet {
   private static StudentService studentService = new StudentService();
@@ -24,50 +32,58 @@ public class StudentController extends CustomHttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) {
     try {
-      String[] parameters = parameterValues(request);
-
-      if (parameters.length == 2) {
-        list(request, response);
-      } else if (parameters.length == 3 && (CREATE).equals(parameters[2])) {
-        create(request, response);
-      } else if (parameters.length == 4 && (EDIT).equals(parameters[3])) {
-        edit(request, response);
-      } else if (parameters.length == 3) {
-        show(request, response);
-      } else {
-        show404(request, response);
-      }
-
+      checkRequestForGet(request, response);
     } catch (DataException | IOException | ServletException e) {
-      show500(request, response, e);
-
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+      show500(request, response, e);
     }
   }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
     try {
-      String[] parameters = parameterValues(request);
-
-      if (parameters.length == 3 && (CREATE).equals(parameters[2])) {
-        createProcess(request, response);
-      } else if (parameters.length == 4 && (EDIT).equals(parameters[3])) {
-        editProcess(request, response);
-      } else if (parameters.length == 4 && (DELETE).equals(parameters[3])) {
-        deleteProcess(request, response);
-      } else {
-        show404(request, response);
-      }
-
+      checkRequestForPost(request, response);
     } catch (DataException | IOException | ServletException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
       show500(request, response, e);
+    }
+  }
+
+  private void checkRequestForGet(HttpServletRequest request, HttpServletResponse response)
+      throws DataException, ServletException, IOException {
+    String[] parameters = parameterValues(request);
+    if (parameters.length == 2) {
+      list(request, response);
+    } else if (parameters.length == 3 && (CREATE).equals(parameters[2])) {
+      create(request, response);
+    } else if (parameters.length == 4 && (EDIT).equals(parameters[3])) {
+      edit(request, response);
+    } else if (parameters.length == 3) {
+      show(request, response);
+    } else {
+      show404(request, response);
+    }
+  }
+
+  private void checkRequestForPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException, DataException {
+    String[] parameters = parameterValues(request);
+
+    if (parameters.length == 3 && (CREATE).equals(parameters[2])) {
+      createProcess(request, response);
+    } else if (parameters.length == 4 && (EDIT).equals(parameters[3])) {
+      editProcess(request, response);
+    } else if (parameters.length == 4 && (DELETE).equals(parameters[3])) {
+      deleteProcess(request, response);
+    } else {
+      show404(request, response);
     }
   }
 
   private void list(HttpServletRequest request, HttpServletResponse response)
       throws DataException, ServletException, IOException {
-    int pageSize = 3;
     int page = 1;
 
     try {
@@ -76,13 +92,16 @@ public class StudentController extends CustomHttpServlet {
       show404(request, response);
     }
 
-    List<Student> studentList = studentService.fetch(page, pageSize);
-    int count = studentService.fetchTotal();
-    int numberOfPages = (int) Math.ceil(count / (float) pageSize);
+    List<Student> studentList = studentService.fetch(page, RECORDS_PER_PAGE);
+
+    int count = studentService.fetchTotalCount();
+    int numberOfPages = (int) Math.ceil(count / (float) RECORDS_PER_PAGE);
+
     if (page != 1 && page > numberOfPages) {
       show404(request, response);
       return;
     }
+
     request.setAttribute(STUDENT_LIST, studentList);
     request.setAttribute(NUMBER_OF_PAGES, numberOfPages);
     request.setAttribute(PAGE_NUMBER, page);
@@ -95,6 +114,10 @@ public class StudentController extends CustomHttpServlet {
       int id = parameterValueAsInt(request, 2);
       Student student = studentService.fetchStudentById(id);
 
+      if (student == null) {
+        show404(request, response);
+        return;
+      }
       request.setAttribute(STUDENT, student);
       request.getRequestDispatcher(EDIT_PAGE).forward(request, response);
     } catch (NumberFormatException e) {
@@ -138,6 +161,10 @@ public class StudentController extends CustomHttpServlet {
       int id = parameterValueAsInt(request, 2);
       Student student = studentService.fetchStudentById(id);
 
+      if (student == null) {
+        show404(request, response);
+        return;
+      }
       request.setAttribute(STUDENT, student);
       request.getRequestDispatcher(EDIT_PAGE).forward(request, response);
     } catch (NumberFormatException e) {

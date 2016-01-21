@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,10 +19,15 @@ public class StudentDAO {
 
   public void insert(Student student) throws DataException {
     try (Connection conn = DBConnection.getConnection();
-        PreparedStatement stmnt = conn.prepareStatement("insert into Students(roll, name) values (?,?)")) {
+        PreparedStatement stmnt = conn.prepareStatement("insert into Students(roll, name) values (?,?)",
+            Statement.RETURN_GENERATED_KEYS)) {
       stmnt.setInt(1, student.getRoll());
       stmnt.setString(2, student.getName());
-      stmnt.execute();
+      stmnt.executeUpdate();
+
+      ResultSet rs = stmnt.getGeneratedKeys();
+      rs.next();
+      student.setId(rs.getInt(1));
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -54,15 +60,14 @@ public class StudentDAO {
     }
   }
 
-  public int fetchTotal() throws DataException {
+  public int fetchTotalCount() throws DataException {
     int totalSize = 0;
 
     try (Connection conn = DBConnection.getConnection();
         PreparedStatement stmnt = conn.prepareStatement("SELECT COUNT(*) AS total FROM Students");
         ResultSet result = stmnt.executeQuery();) {
-      while (result.next()) {
-        totalSize = result.getInt("total");
-      }
+      result.next();
+      totalSize = result.getInt("total");
       return totalSize;
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);

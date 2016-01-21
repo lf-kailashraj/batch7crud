@@ -20,7 +20,6 @@ import static com.lftechnology.batch7crud.constant.CommonConstant.*;
  *
  */
 public abstract class CustomHttpServlet extends HttpServlet {
-
   private static final Logger LOGGER = Logger.getLogger(CustomHttpServlet.class.getName());
 
   public void show404(HttpServletRequest request, HttpServletResponse response) {
@@ -29,9 +28,7 @@ public abstract class CustomHttpServlet extends HttpServlet {
 
     try {
       request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-    } catch (ServletException e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
-    } catch (IOException e) {
+    } catch (ServletException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
   }
@@ -64,5 +61,4 @@ public abstract class CustomHttpServlet extends HttpServlet {
       return 1;
     }
   }
-
 }
