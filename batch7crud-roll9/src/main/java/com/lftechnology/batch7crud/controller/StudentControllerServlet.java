@@ -1,5 +1,6 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.lftechnology.batch7crud.constants.*;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.services.StudentService;
@@ -19,18 +20,18 @@ import java.util.logging.Logger;
  */
 @WebServlet("/students/*")
 public class StudentControllerServlet extends HTTPStatusHandler {
-  private static final Logger LOGGER = Logger.getLogger("appLogger");
+  private static final Logger LOGGER = Logger.getLogger(StudentControllerServlet.class.getName());
   private static StudentService studentService = new StudentService();
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] parameters = parameterValues(request);
 
-    if (parameters.length == 3 && "create".equals(parameters[2])) {
+    if (parameters.length == 3 && Url.CREATE.equals(parameters[2])) {
       createProcess(request, response);
-    } else if (parameters.length == 4 && "edit".equals(parameters[3])) {
+    } else if (parameters.length == 4 && Url.EDIT.equals(parameters[3])) {
       editProcess(request, response);
-    } else if (parameters.length == 4 && "delete".equals(parameters[3])) {
+    } else if (parameters.length == 4 && Url.DELETE.equals(parameters[3])) {
       deleteProcess(request, response);
     } else {
       show404(request, response);
@@ -40,14 +41,13 @@ public class StudentControllerServlet extends HTTPStatusHandler {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] parameters = parameterValues(request);
-
-    if (parameters.length == 2 && "students".equals(parameters[1])) {
+    if (parameters.length == 2 && Url.STUDENTS.equals(parameters[1])) {
       list(request, response);
-    } else if (parameters.length == 3 && "create".equals(parameters[2])) {
+    } else if (parameters.length == 3 && Url.CREATE.equals(parameters[2])) {
       create(request, response);
-    } else if (parameters.length == 4 && "edit".equals(parameters[3])) {
+    } else if (parameters.length == 4 && Url.EDIT.equals(parameters[3])) {
       edit(request, response);
-    } else if (parameters.length == 4 && "view".equals(parameters[3])) {
+    } else if (parameters.length == 4 && Url.VIEW.equals(parameters[3])) {
       view(request, response);
     } else {
       show404(request, response);
@@ -59,10 +59,10 @@ public class StudentControllerServlet extends HTTPStatusHandler {
       int studentId = parameterValueAsInt(request, 2);
       Student std = studentService.fetchById(studentId);
       int totalStudent = studentService.studentCount();
-      request.setAttribute("student", std);
-      request.setAttribute("currentStudent", studentId);
-      request.setAttribute("totalStudent", totalStudent);
-      request.getServletContext().getRequestDispatcher("/WEB-INF/views/detail-view.jsp").forward(request, response);
+      request.setAttribute(Attribute.STUDENT, std);
+      request.setAttribute(Attribute.CURRENT_STUDENT, studentId);
+      request.setAttribute(Attribute.TOTAL_STUDENT, totalStudent);
+      request.getServletContext().getRequestDispatcher(Page.DETAIL_VIEW).forward(request, response);
     } catch (DataException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       show500(request, response, ex);
@@ -74,16 +74,13 @@ public class StudentControllerServlet extends HTTPStatusHandler {
   private void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     List<Student> stdList;
     try {
-      int limit = 20;
-      String forward = "/WEB-INF/views/list-view.jsp";
-
       int page = pageNumber(request);
-      stdList = studentService.fetch(page, limit);
+      stdList = studentService.fetch(page, Numbers.LIMIT);
       int totalCount = studentService.studentCount();
-      request.setAttribute("studentList", stdList);
-      request.setAttribute("page", page);
-      request.setAttribute("totalPages", Math.ceil(totalCount / (double) limit));
-      request.getServletContext().getRequestDispatcher(forward).forward(request, response);
+      request.setAttribute(Attribute.STUDENT_LIST, stdList);
+      request.setAttribute(Attribute.PAGE, page);
+      request.setAttribute(Attribute.TOTAL_PAGE, Math.ceil(totalCount / (double) Numbers.LIMIT));
+      request.getServletContext().getRequestDispatcher(Page.LIST_VIEW).forward(request, response);
     } catch (DataException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       show404(request, response);
@@ -93,16 +90,16 @@ public class StudentControllerServlet extends HTTPStatusHandler {
   }
 
   private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    request.getServletContext().getRequestDispatcher("/WEB-INF/views/newStudent.jsp").forward(request, response);
+    request.getServletContext().getRequestDispatcher(Page.NEW_STUDENT).forward(request, response);
   }
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     Student s = new Student();
-    s.setFirstName(request.getParameter("fname"));
-    s.setMiddleName(request.getParameter("mname"));
-    s.setLastName(request.getParameter("lname"));
-    s.setAddress(request.getParameter("address"));
-    s.setGrade(Integer.parseInt(request.getParameter("grade")));
+    s.setFirstName(request.getParameter(Parameter.FIRST_NAME));
+    s.setMiddleName(request.getParameter(Parameter.MIDDLE_NAME));
+    s.setLastName(request.getParameter(Parameter.LAST_NAME));
+    s.setAddress(request.getParameter(Parameter.ADDRESS));
+    s.setGrade(Integer.parseInt(request.getParameter(Parameter.GRADE)));
     try {
       studentService.save(s);
       response.sendRedirect(request.getContextPath());
@@ -117,9 +114,8 @@ public class StudentControllerServlet extends HTTPStatusHandler {
   private void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       int studentId = parameterValueAsInt(request, 2);
-      String forward = "/WEB-INF/views/edit.jsp";
-      request.setAttribute("student", studentService.fetchById(studentId));
-      RequestDispatcher view = request.getRequestDispatcher(forward);
+      request.setAttribute(Attribute.STUDENT, studentService.fetchById(studentId));
+      RequestDispatcher view = request.getRequestDispatcher(Page.EDIT);
       view.forward(request, response);
     } catch (DataException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
@@ -135,11 +131,11 @@ public class StudentControllerServlet extends HTTPStatusHandler {
       int studentId = parameterValueAsInt(request, 2);
       Student s = new Student();
       s.setId(studentId);
-      s.setFirstName(request.getParameter("fname"));
-      s.setMiddleName(request.getParameter("mname"));
-      s.setLastName(request.getParameter("lname"));
-      s.setAddress(request.getParameter("address"));
-      s.setGrade(Integer.parseInt(request.getParameter("grade")));
+      s.setFirstName(request.getParameter(Parameter.FIRST_NAME));
+      s.setMiddleName(request.getParameter(Parameter.MIDDLE_NAME));
+      s.setLastName(request.getParameter(Parameter.LAST_NAME));
+      s.setAddress(request.getParameter(Parameter.ADDRESS));
+      s.setGrade(Integer.parseInt(request.getParameter(Parameter.GRADE)));
       studentService.edit(s);
       response.sendRedirect(request.getContextPath() + "/students");
     } catch (DataException ex) {

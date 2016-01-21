@@ -6,6 +6,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.io.Closeable;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +18,7 @@ import java.util.logging.Logger;
 /**
  * Created by sanjay on 1/18/16.
  */
-public class DBConnection {
+public class DBConnection implements AutoCloseable{
   private static Connection conn = null;
   private static final Logger LOGGER = Logger.getLogger("DBConnectionLog");
 
@@ -67,5 +69,9 @@ public class DBConnection {
       } catch (SQLException e) { // NOSONAR
       }
     }
+  }
+
+  public void close() throws IOException {
+
   }
 }

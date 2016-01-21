@@ -1,5 +1,9 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.lftechnology.batch7crud.constants.Message;
+import com.lftechnology.batch7crud.constants.Page;
+import com.lftechnology.batch7crud.constants.Parameter;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,14 +15,14 @@ import java.io.IOException;
  * Created by sanjay on 1/19/16.
  */
 public abstract class HTTPStatusHandler extends HttpServlet {
-  private static final String ERROR_PAGE = "/WEB-INF/views/error-page.jsp";
+
   private static final String MESSAGE = "";
 
   protected void show404(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-    request.setAttribute(MESSAGE, "Page Not Found");
+    request.setAttribute(MESSAGE, Message.PAGE_NOT_FOUND);
 
-    RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
+    RequestDispatcher view = request.getRequestDispatcher(Page.ERROR_PAGE);
     view.forward(request, response);
   }
 
@@ -26,13 +30,13 @@ public abstract class HTTPStatusHandler extends HttpServlet {
     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     request.setAttribute(MESSAGE, e.getMessage());
 
-    RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
+    RequestDispatcher view = request.getRequestDispatcher(Page.ERROR_PAGE);
     view.forward(request, response);
   }
 
   public int pageNumber(HttpServletRequest request) {
-    if (request.getParameter("page") != null) {
-      return Integer.parseInt(request.getParameter("page"));
+    if (request.getParameter(Parameter.PAGE) != null) {
+      return Integer.parseInt(request.getParameter(Parameter.PAGE));
     } else {
       return 1;
     }
