@@ -137,7 +137,7 @@ public class StudentControllerServlet extends HTTPStatusHandler {
       s.setAddress(request.getParameter(Parameter.ADDRESS));
       s.setGrade(Integer.parseInt(request.getParameter(Parameter.GRADE)));
       studentService.edit(s);
-      response.sendRedirect(request.getContextPath() + "/students");
+      response.sendRedirect(request.getContextPath() + Url.PATH_SEPERATOR + Url.STUDENTS);
     } catch (DataException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       show404(request, response);
@@ -150,7 +150,7 @@ public class StudentControllerServlet extends HTTPStatusHandler {
     try {
       int studentId = parameterValueAsInt(request, 2);
       studentService.delete(studentId);
-      response.sendRedirect(request.getContextPath() + "/students");
+      response.sendRedirect(request.getContextPath() + Url.PATH_SEPERATOR + Url.STUDENTS);
     } catch (DataException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       show500(request, response, ex);

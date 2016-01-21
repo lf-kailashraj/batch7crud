@@ -1,6 +1,5 @@
 package com.lftechnology.batch7crud.dao;
 
-import com.lftechnology.batch7crud.constants.Query;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.util.DBConnection;
@@ -20,9 +19,17 @@ import java.util.logging.Logger;
 public class StudentDAO {
   private static final Logger LOGGER = Logger.getLogger(StudentDAO.class.getName());
 
+  private static final String UPDATE = "UPDATE tbl_userinfo SET firstname=?, middlename=?, lastname=?, address=?, grade=? WHERE id=?";
+  private static final String LIST = "SELECT * FROM tbl_userinfo LIMIT ? OFFSET ?";
+  private static final String INSERT = "INSERT INTO tbl_userinfo (firstname,middlename,lastname,address,grade) VALUES (?,?,?,?,?)";
+  private static final String SELECT_BY_ID = "SELECT * FROM tbl_userinfo WHERE id=?";
+  private static final String DELETE = "DELETE FROM tbl_userinfo WHERE id=?";
+  private static final String COUNT_STUDENTS = "SELECT count(*) FROM tbl_userinfo";
+
+
   public void insert(Student s) throws DataException//get the object
   {
-    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(Query.INSERT);) {
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(INSERT);) {
       pstmt.setString(1, s.getFirstName());
       pstmt.setString(2, s.getMiddleName());
       pstmt.setString(3, s.getLastName());
@@ -37,7 +44,7 @@ public class StudentDAO {
   }
 
   public List<Student> fetch(int page, int limit) throws DataException {
-    try(Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(Query.LIST)) {
+    try(Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(LIST)) {
       List<Student> stdList = new ArrayList<Student>();
       int startOffset = (page - 1) * limit;
       pstmt.setInt(1, limit);
@@ -61,9 +68,9 @@ public class StudentDAO {
     }
   }
 
-  public void delete(int id) throws DataException//get the object
+  public void delete(int id) throws DataException
   {
-    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(Query.DELETE)){
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(DELETE)){
       pstmt.setInt(1, id);
       pstmt.executeUpdate();
     } catch (SQLException ex) {
@@ -73,7 +80,7 @@ public class StudentDAO {
   }
 
   public Student fetchById(int id) throws DataException {
-    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(Query.SELECT_BY_ID)){
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(SELECT_BY_ID)){
       pstmt.setInt(1, id);
       ResultSet rs = pstmt.executeQuery();
       Student std = null;
@@ -94,7 +101,7 @@ public class StudentDAO {
   }
 
   public void edit(Student s) throws DataException {
-    try(Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(Query.UPDATE)) {
+    try(Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(UPDATE)) {
       pstmt.setString(1, s.getFirstName());
       pstmt.setString(2, s.getMiddleName());
       pstmt.setString(3, s.getLastName());
@@ -109,9 +116,9 @@ public class StudentDAO {
     }
   }
 
-  public int studentCount() throws DataException//get the object
+  public int studentCount() throws DataException
   {
-    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(Query.COUNT_STUDENTS)) {
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(COUNT_STUDENTS)) {
       int totalStudents = 0;
       ResultSet rs = pstmt.executeQuery();
       while (rs.next())
