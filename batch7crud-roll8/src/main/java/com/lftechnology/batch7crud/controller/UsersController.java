@@ -10,12 +10,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Created by Grishma Shrestha grishmashrestha@lftechnology.com on 1/18/16.
  */
 
 @WebServlet({ "/users/*" })
 public class UsersController extends HttpServlet {
+  private static final Logger LOGGER = Logger.getLogger(User.class.getName());
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String path = request.getPathInfo();
@@ -25,10 +29,10 @@ public class UsersController extends HttpServlet {
     }
     else {
       String[] parts = path.split("/");
-      if (parts[1].equals("create")) {
+      if ("create".equals(parts[1])) {
         create(request, response);
       }
-      else if (parts[1].equals("update")) {
+      else if ("update".equals(parts[1])) {
         request.getServletContext().getRequestDispatcher("/WEB-INF/views/users/index.jsp").forward(request, response);
       }
     }
@@ -42,10 +46,10 @@ public class UsersController extends HttpServlet {
     }
     else {
       String[] parts = path.split("/");
-      if (parts[1].equals("signup")) {
+      if ("signup".equals(parts[1])) {
         request.getServletContext().getRequestDispatcher("/WEB-INF/views/users/signup.jsp").forward(request, response);
       }
-      else if (parts[1].equals("signin")) {
+      else if ("signin".equals(parts[1])) {
         request.getServletContext().getRequestDispatcher("/WEB-INF/views/users/signin.jsp").forward(request, response);
       }
     }
@@ -57,7 +61,7 @@ public class UsersController extends HttpServlet {
     response.sendRedirect("/users");
   }
 
-  private void create(HttpServletRequest request, HttpServletResponse response) {
+  private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       String name = request.getParameter("name");
       String username = request.getParameter("username");
@@ -73,13 +77,9 @@ public class UsersController extends HttpServlet {
 
       userService.create(user);
       fetch(request, response);
-    } catch (DataException e) {
-      e.printStackTrace();
-      // check here for error and do required redirection and message display
-    } catch (ServletException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
+    }
+    catch (DataException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
   }
 }
