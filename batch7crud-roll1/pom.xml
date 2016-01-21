@@ -1,46 +1,52 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.lftechnology</groupId>
-        <artifactId>batch7crud</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>
+  <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>batch7crud-roll1</artifactId>
+  <properties>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.targer>1.7</maven.compiler.targer>
+  </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.lftechnology</groupId>
-            <artifactId>batch7crud-util</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+  <parent>
+    <groupId>com.lftechnology</groupId>
+    <artifactId>batch7crud</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
 
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.20</version>
-        </dependency>
+  <artifactId>batch7crud-roll1</artifactId>
 
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.3-1100-jdbc41</version>
-        </dependency>
+  <dependencies>
+    <dependency>
+      <groupId>com.lftechnology</groupId>
+      <artifactId>batch7crud-util</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
 
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.20</version>
+    </dependency>
 
-        <dependency>
-            <groupId>taglibs</groupId>
-            <artifactId>standard</artifactId>
-            <version>1.1.2</version>
-        </dependency>
-    </dependencies>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>9.3-1100-jdbc41</version>
+    </dependency>
 
-    <packaging>war</packaging>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>taglibs</groupId>
+      <artifactId>standard</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+  </dependencies>
+
+  <packaging>war</packaging>
 </project>

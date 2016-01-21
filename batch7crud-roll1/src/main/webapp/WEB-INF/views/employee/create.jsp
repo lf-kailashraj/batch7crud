@@ -8,9 +8,7 @@
 </head>
 <body>
 
-	<form action="create" method="post">
-		<label>Employee Id :</label>
-		<input type="text" name="id">
+	<form action="employees/create" method="post">
 		<label>Name :</label>
 		<input type="text" name="userName">
 		<label>Password :</label>

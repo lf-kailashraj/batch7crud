@@ -1,87 +1,83 @@
 package com.lftechnology.batch7crud.model;
 
 public class Employee {
+  private int id;
+  private String userName;
+  private String password;
+  private String fullName;
+  private String department;
+  private String address;
 
-	private int id;
-	private String userName;
-	private String password;
-	private String fullName;
-	private String department;
-	private String address;
+  public Employee() {
+  }
 
-	public Employee() {
+  public Employee(String userName, String password, String fullName, String department, String address) {
 
-	}
+    this.userName = userName;
+    this.password = password;
+    this.fullName = fullName;
+    this.department = department;
+    this.address = address;
 
-	public Employee(
-					int id, String userName, String password, String fullName,
-					String department, String address) {
+  }
 
-		this.id = id;
-		this.userName = userName;
-		this.password = password;
-		this.fullName = fullName;
-		this.department = department;
-		this.address = address;
-	}
+  public int getId() {
 
-	public int getId() {
+    return id;
+  }
 
-		return id;
-	}
+  public void setId(int id) {
 
-	public void setId(int id) {
+    this.id = id;
+  }
 
-		this.id = id;
-	}
+  public String getUserName() {
 
-	public String getUserName() {
+    return userName;
+  }
 
-		return userName;
-	}
+  public void setUserName(String userName) {
 
-	public void setUserName(String userName) {
+    this.userName = userName;
+  }
 
-		this.userName = userName;
-	}
+  public String getPassword() {
 
-	public String getPassword() {
+    return password;
+  }
 
-		return password;
-	}
+  public void setPassword(String password) {
 
-	public void setPassword(String password) {
+    this.password = password;
+  }
 
-		this.password = password;
-	}
+  public String getFullName() {
 
-	public String getFullName() {
+    return fullName;
+  }
 
-		return fullName;
-	}
+  public void setFullName(String fullName) {
 
-	public void setFullName(String fullName) {
+    this.fullName = fullName;
+  }
 
-		this.fullName = fullName;
-	}
+  public String getDepartment() {
 
-	public String getDepartment() {
+    return department;
+  }
 
-		return department;
-	}
+  public void setDepartment(String department) {
 
-	public void setDepartment(String department) {
+    this.department = department;
+  }
 
-		this.department = department;
-	}
+  public String getAddress() {
 
-	public String getAddress() {
+    return address;
+  }
 
-		return address;
-	}
+  public void setAddress(String address) {
 
-	public void setAddress(String address) {
-
-		this.address = address;
-	}
+    this.address = address;
+  }
 }

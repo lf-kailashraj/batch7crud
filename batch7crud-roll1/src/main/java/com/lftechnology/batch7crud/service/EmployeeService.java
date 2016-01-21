@@ -8,35 +8,29 @@ import java.util.List;
 
 public class EmployeeService {
 
-	private EmployeeDAO employeeDAO = new EmployeeDAO();
+  private EmployeeDAO employeeDAO = new EmployeeDAO();
 
-	public void create(Employee employee)
-					throws DataException {
+  public void create(Employee employee) throws DataException {
+    employeeDAO.insert(employee);
+  }
 
-		employeeDAO.insert(employee);
-	}
+  public List<Employee> fetch(int offset, int limit) throws DataException {
+    return employeeDAO.fetch(offset, limit);
+  }
 
-	public List<Employee> fetch()
-					throws DataException {
+  public Employee fetchById(int id) throws DataException {
+    return employeeDAO.fetchById(id);
+  }
 
-		return employeeDAO.fetch(1);
-	}
+  public Integer fetchNoOfRecords() throws DataException {
+    return employeeDAO.fetchNoOfRecords();
+  }
 
-	public Employee fetchById(int id)
-					throws DataException {
+  public void update(Employee employee, int id) throws DataException {
+    employeeDAO.update(employee, id);
+  }
 
-		return employeeDAO.fetchById(id);
-	}
-
-	public void update(Employee employee)
-					throws DataException {
-
-		employeeDAO.update(employee);
-	}
-
-	public void delete(int id)
-					throws DataException {
-
-		employeeDAO.delete(id);
-	}
+  public void delete(int id) throws DataException {
+    employeeDAO.delete(id);
+  }
 }

@@ -3,7 +3,6 @@ package com.lftechnology.batch7crud.controller;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
-import com.lftechnology.batch7crud.util.TypeCaster;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,199 +17,151 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class EmployeeController
  */
-@WebServlet({ "/employees/*" })
-public class EmployeeController extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
-	EmployeeService employeeService = new EmployeeService();
-	private static Logger logger = Logger.getLogger(EmployeeController.class.getName());
-	private static final String CREATE = "create";
-	private static final String DELETE = "delete";
-	private static final String EDIT = "edit";
+@WebServlet({ "/employees/*" }) public class EmployeeController extends CustomHttpServlet {
+  private EmployeeService employeeService = new EmployeeService();  //NOSONAR
+  private static final long serialVersionUID = 1L;
+  private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
+  private static final String CREATE = "create";
+  private static final String DELETE = "delete";
+  private static final String EDIT = "edit";
+  private static final String LIST_PAGE = "/WEB-INF/views/employee/list.jsp";
+  private static final String CREATE_PAGE = "/WEB-INF/views/employee/create.jsp";
+  private static final String EDIT_PAGE = "/WEB-INF/views/employee/edit.jsp";
+  private static final String EMPLOYEE_LIST = "/employees";
+  private static final String PAGE = "page";
+  private static final int RECORD_TO_FETCH = 2;
 
+  /**
+   * @see HttpServlet#HttpServlet()
+   */
+  public EmployeeController() {
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public EmployeeController() {
+    super();
+  }
 
-		super();
-	}
+  /**
+   * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+   */
+  @Override protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    try {
+      String[] pathParts = params(request);
+      if (pathParts.length <= 1) {
+        int currentPage = 1;
+        String pageText = request.getParameter(PAGE);
+        if (pageText != null) {
+          currentPage = Integer.parseInt(pageText);
+        }
+        list(request, response, currentPage);
+      } else if (CREATE.equals(pathParts[1])) {
+        create(request, response);
+      } else if (EDIT.equals(pathParts[2])) {
+        int id = Integer.parseInt(pathParts[1]);
+        edit(request, response, id);
+      } else {
+        showPageNotFound(request, response);
+      }
+    } catch (ServletException | IOException | NumberFormatException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+    }
+  }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	@Override
-	protected void doGet(
-					HttpServletRequest request, HttpServletResponse response)
-					throws ServletException, IOException {
+  /**
+   * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+   */
+  @Override protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String requestInfo = request.getPathInfo();
+    try {
+      String[] pathParts = params(request);
+      if (CREATE.equals(pathParts[1])) {
+        createProcess(request, response);
+      } else if (EDIT.equals(pathParts[2])) {
+        int id = Integer.parseInt(pathParts[1]);
+        editProcess(request, response, id);
+      } else if (DELETE.equals(pathParts[2])) {
+        int id = Integer.parseInt(pathParts[1]);
+        deleteProcess(request, response, id);
+      }
+    } catch (ServletException | IOException | NumberFormatException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+    }
+  }
 
-		if (requestInfo == null) {
-			list(request, response, 1);
-		}
-		else {
+  private void list(HttpServletRequest request, HttpServletResponse response, int currentPage) throws ServletException, IOException {
+    try {
 
-			String[] pathParts = requestInfo.split("/");
+      int offset = (currentPage - 1) * RECORD_TO_FETCH;
+      int totalRecord = employeeService.fetchNoOfRecords();
+      int totalPage = (int) Math.ceil(totalRecord * 1.0 / RECORD_TO_FETCH);
+      List<Employee> employees = employeeService.fetch(offset, RECORD_TO_FETCH);
+      request.setAttribute("employees", employees);
+      request.setAttribute("currentPage", currentPage);
+      request.setAttribute("totalPage", totalPage);
+      request.getServletContext().getRequestDispatcher(LIST_PAGE).forward(request, response);
+    } catch (DataException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      showServerError(request, response, e);
+    }
+  }
 
-			if (CREATE.equals(pathParts[1])) {
-				create(request, response);
-			}
-			else if (EDIT.equals(pathParts[2])) {
-				int id = TypeCaster.toInt(pathParts[1]);
-				edit(request, response, id);
-			}
-		}
-	}
+  private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    request.getServletContext().getRequestDispatcher(CREATE_PAGE).forward(request, response);
+  }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	@Override
-	protected void doPost(
-					HttpServletRequest request, HttpServletResponse response)
-					throws ServletException, IOException {
+  private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String requestInfo = request.getPathInfo();
+    String userName = request.getParameter("userName");
+    String password = request.getParameter("password");
+    String fullName = request.getParameter("fullName");
+    String department = request.getParameter("department");
+    String address = request.getParameter("address");
+    Employee employee = new Employee(userName, password, fullName, department, address);
 
-		String[] pathParts = requestInfo.split("/");
+    try {
+      employeeService.create(employee);
+      response.sendRedirect(request.getContextPath() + EMPLOYEE_LIST);
+    } catch (DataException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      showServerError(request, response, e);
+    }
+  }
 
-		if (CREATE.equals(pathParts[1])) {
-			createProcess(request, response);
-		}
-		else if (EDIT.equals(pathParts[2])) {
-			int id = TypeCaster.toInt(pathParts[1]);
-			editProcess(request, response, id);
-		}
-		else if (DELETE.equals(pathParts[2])) {
-			int id = TypeCaster.toInt(pathParts[1]);
-			deleteProcess(request, response, id);
-		}
-	}
+  private void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
+    try {
+      Employee employee = employeeService.fetchById(id);
+      request.setAttribute("employee", employee);
+      request.getServletContext().getRequestDispatcher(EDIT_PAGE).forward(request, response);
+    } catch (DataException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      showServerError(request, response, e);
+    }
+  }
 
-	private void list(
-					HttpServletRequest request, HttpServletResponse response,
-					int page)
-					throws ServletException, IOException {
+  private void editProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
 
-		try {
-			List<Employee> employees = employeeService.fetch();
-			request.setAttribute("employees", employees);
-			request.getServletContext().getRequestDispatcher(
-							"/WEB-INF/views/employee/list.jsp").forward(
-							request, response);
-		}
-		catch (DataException e) {
+    String userName = request.getParameter("userName");
+    String password = request.getParameter("password");
+    String fullName = request.getParameter("fullName");
+    String department = request.getParameter("department");
+    String address = request.getParameter("address");
+    Employee employee = new Employee(userName, password, fullName, department, address);
 
-			logger.log(Level.SEVERE, e.getMessage());
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.setAttribute("message", e.getMessage());
-			request.getServletContext().getRequestDispatcher(
-							"/WEB-INF/views/error.jsp").forward(
-							request, response);
-		}
-	}
+    try {
+      employeeService.update(employee, id);
+      response.sendRedirect(request.getContextPath() + EMPLOYEE_LIST);
+    } catch (DataException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      showServerError(request, response, e);
+    }
+  }
 
-	private void create(
-					HttpServletRequest request, HttpServletResponse response)
-					throws ServletException, IOException {
-
-		request.getServletContext().getRequestDispatcher(
-						"/WEB-INF/views/employee/create.jsp").forward(
-						request, response);
-	}
-
-	private void createProcess(
-					HttpServletRequest request, HttpServletResponse response)
-					throws ServletException, IOException {
-
-		int id = TypeCaster.toInt(request.getParameter("id"));
-		String userName = request.getParameter("userName");
-		String password = request.getParameter("password");
-		String fullName = request.getParameter("fullName");
-		String department = request.getParameter("department");
-		String address = request.getParameter("address");
-		Employee employee = new Employee(
-						id, userName, password, fullName, department, address);
-
-		try {
-			employeeService.create(employee);
-			response.sendRedirect(request.getContextPath() + "/employees");
-		}
-		catch (DataException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.setAttribute("message", e.getMessage());
-			request.getServletContext().getRequestDispatcher(
-							"/WEB-INF/views/error.jsp").forward(
-							request, response);
-		}
-	}
-
-	private void edit(
-					HttpServletRequest request, HttpServletResponse response,
-					int id)
-					throws ServletException, IOException {
-
-		try {
-			Employee employee = employeeService.fetchById(id);
-			request.setAttribute("employee", employee);
-			request.getServletContext().getRequestDispatcher(
-							"/WEB-INF/views/employee/edit.jsp").forward(
-							request, response);
-		}
-		catch (DataException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.setAttribute("message", e.getMessage());
-			request.getServletContext().getRequestDispatcher(
-							"/WEB-INF/views/error.jsp").forward(
-							request, response);
-		}
-	}
-
-	private void editProcess(
-					HttpServletRequest request, HttpServletResponse response,
-					int id)
-					throws ServletException, IOException {
-
-		int empId = TypeCaster.toInt(request.getParameter("id"));
-		String userName = request.getParameter("userName");
-		String password = request.getParameter("password");
-		String fullName = request.getParameter("fullName");
-		String department = request.getParameter("department");
-		String address = request.getParameter("address");
-		Employee employee = new Employee(
-						empId, userName, password, fullName, department,
-						address);
-
-		try {
-			employeeService.update(employee);
-			response.sendRedirect("/employees");
-		}
-		catch (DataException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.setAttribute("message", e.getMessage());
-			request.getServletContext().getRequestDispatcher(
-							"/WEB-INF/views/error.jsp").forward(
-							request, response);
-		}
-	}
-
-	private void deleteProcess(
-					HttpServletRequest request, HttpServletResponse response,
-					int id)
-					throws ServletException, IOException {
-
-		try {
-			employeeService.delete(id);
-			response.sendRedirect(request.getContextPath() + "/employees");
-		}
-		catch (DataException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			request.setAttribute("message", e.getMessage());
-			request.getServletContext().getRequestDispatcher(
-							"/WEB-INF/views/error.jsp").forward(
-							request, response);
-		}
-	}
+  private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
+    try {
+      employeeService.delete(id);
+      response.sendRedirect(request.getContextPath() + EMPLOYEE_LIST);
+    } catch (DataException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      showServerError(request, response, e);
+    }
+  }
 }
