@@ -10,6 +10,7 @@ public class Url {
   public static final String DELETE = "delete";
   public static final String STUDENTS = "students";
 
-  private Url(){}
+  private Url(){
+  }
 
 }

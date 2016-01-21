@@ -11,6 +11,7 @@ public class Query {
   public static final String DELETE = "DELETE FROM tbl_userinfo WHERE id=?";
   public static final String COUNT_STUDENTS = "SELECT count(*) FROM tbl_userinfo";
 
-  private Query(){}
+  private Query(){
+  }
 
 }

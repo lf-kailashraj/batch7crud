@@ -13,6 +13,7 @@ public class Parameter {
 
   public static final String PAGE = "page";
 
-  private Parameter(){}
+  private Parameter(){
+  }
 
 }

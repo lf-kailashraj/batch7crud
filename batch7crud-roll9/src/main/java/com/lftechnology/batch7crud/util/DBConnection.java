@@ -39,39 +39,10 @@ public class DBConnection implements AutoCloseable{
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       throw new DataException();
     }
-
-  }
-  public static void closePreparedStatement(PreparedStatement... ps) {
-    for (PreparedStatement p : ps) {
-      try {
-        if(p != null)
-          p.close();
-      } catch (SQLException e) { // NOSONAR
-      }
-    }
   }
 
-  public static void closeResultSet(ResultSet... rs) {
-    for (ResultSet r : rs) {
-      try {
-        if(r != null)
-        r.close();
-      } catch (SQLException e) { // NOSONAR
-      }
-    }
-  }
-
-  public static void closeConnection(Connection conn) {
-    if (conn != null) {
-      try {
-        if(conn != null )
-        conn.close();
-      } catch (SQLException e) { // NOSONAR
-      }
-    }
-  }
-
-  public void close() throws IOException {
+  @Override
+  public void close() throws Exception {
 
   }
 }
