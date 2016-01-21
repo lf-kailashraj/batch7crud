@@ -150,9 +150,10 @@ public class EmployeesController extends HttpServlet{
 
   private void fetch(HttpServletRequest request, HttpServletResponse response, Integer pageNo) throws IOException {
     Integer pageLimit = 4;
+    Integer offset = (pageNo-1)*pageLimit;
     try {
       EmployeeServices employeeServices = new EmployeeServices();
-      List<Employee> employeeList = employeeServices.fetch(pageLimit, pageNo - 1);
+      List<Employee> employeeList = employeeServices.fetch(pageLimit, offset);
       Integer employeeCount = employeeServices.count();
       request.setAttribute("employeeList", employeeList);
       request.setAttribute("employeeCount", employeeCount);

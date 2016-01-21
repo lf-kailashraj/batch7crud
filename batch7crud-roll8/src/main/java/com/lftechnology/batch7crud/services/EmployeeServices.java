@@ -17,9 +17,9 @@ public class EmployeeServices {
     employeeDao.create(employee);
   }
 
-  public List<Employee> fetch(Integer pageLimit, Integer pageNo) throws DataException {
+  public List<Employee> fetch(Integer pageLimit, Integer offset) throws DataException {
     EmployeeDao employeeDao = new EmployeeDao();
-    return employeeDao.fetch(pageLimit, pageNo);
+    return employeeDao.fetch(pageLimit, offset);
   }
 
   public Employee fetchById(Integer id) throws DataException {
