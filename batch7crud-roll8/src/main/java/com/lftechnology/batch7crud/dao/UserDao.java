@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class UserDao {
   private static final Logger LOGGER = Logger.getLogger(User.class.getName());
-  
+
   public void create(User user) throws DataException {
     try {
       String sql = "INSERT INTO USERS (name, username, email, password) VALUES (?,?,?,?)";
