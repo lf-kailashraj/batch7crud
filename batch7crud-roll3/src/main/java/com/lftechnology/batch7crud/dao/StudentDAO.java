@@ -14,7 +14,7 @@ import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 
 public class StudentDAO {
-  private static final Logger LOGGER = Logger.getLogger("StudentDAO");
+  private static final Logger LOGGER = Logger.getLogger(StudentDAO.class.getName());
 
   public void insert(Student student) throws DataException {
     try (Connection conn = DBConnection.getConnection();

@@ -21,7 +21,7 @@ import static com.lftechnology.batch7crud.constant.CommonConstant.*;
  */
 public abstract class CustomHttpServlet extends HttpServlet {
 
-  private static final Logger LOGGER = Logger.getLogger("CustomHttpServletLog");
+  private static final Logger LOGGER = Logger.getLogger(CustomHttpServlet.class.getName());
 
   public void show404(HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_NOT_FOUND);

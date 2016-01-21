@@ -2,6 +2,8 @@ package com.lftechnology.batch7crud.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +19,7 @@ import com.lftechnology.batch7crud.service.StudentService;
 @WebServlet("/students/*")
 public class StudentController extends CustomHttpServlet {
   private static StudentService studentService = new StudentService();
+  private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -37,6 +40,8 @@ public class StudentController extends CustomHttpServlet {
 
     } catch (DataException | IOException | ServletException e) {
       show500(request, response, e);
+
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
   }
 
@@ -147,7 +152,7 @@ public class StudentController extends CustomHttpServlet {
       int id = parameterValueAsInt(request, 2);
       student.setId(id);
       student = constructStudentFromRequest(request);
-      
+
       studentService.edit(student);
 
       response.sendRedirect(request.getContextPath() + STUDENT_LIST_CONTROLLER);

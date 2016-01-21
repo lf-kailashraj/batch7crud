@@ -12,7 +12,7 @@ import com.lftechnology.batch7crud.exception.DataException;
 import java.sql.Connection;
 
 public class DBConnection {
-  private static final Logger LOGGER = Logger.getLogger("DBConnection");
+  private static final Logger LOGGER = Logger.getLogger(DBConnection.class.getName());
 
   private DBConnection() {
   }
