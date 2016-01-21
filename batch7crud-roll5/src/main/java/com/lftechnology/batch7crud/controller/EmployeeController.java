@@ -1,5 +1,8 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.lftechnology.batch7crud.constants.EmployeeDataConstants;
+import com.lftechnology.batch7crud.constants.NormalConstants;
+import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.services.EmployeeService;
 
@@ -17,23 +20,19 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/employees/*")
 public class EmployeeController extends CustomHttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final String EMPLOYEE_LIST_URL = "/batch7crud-roll5/employees";
-    private static final Logger LOGGER = Logger.getLogger("EmployeeControllerLog");
-
+    private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
     private static EmployeeService employeeService = new EmployeeService();
-    private static Employee emp = new Employee();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getPathInfo();
-
         if (path != null) {
             String[] pathParts = path.split("/");
 
-            if (pathParts.length == 2 && "create".equals(pathParts[1]))
+            if (pathParts.length == 2 && NormalConstants.CREATE.equals(pathParts[1]))
                 create(request, response);
 
-            else if (pathParts.length == 3 && "edit".equals(pathParts[2])) {
+            else if (pathParts.length == 3 && NormalConstants.EDIT.equals(pathParts[2])) {
                 edit(request, response);
             }
 
@@ -54,15 +53,15 @@ public class EmployeeController extends CustomHttpServlet {
         if (path != null) {
             String[] pathParts = path.split("/");
 
-            if ("createProcess".equals(pathParts[1])) {
+            if (NormalConstants.CREATE_PROCESS.equals(pathParts[1])) {
                 createProcess(request, response);
             }
 
-            else if ("editProcess".equals(pathParts[2])) {
+            else if (NormalConstants.EDIT_PROCESS.equals(pathParts[2])) {
                 editProcess(request, response);
             }
 
-            else if ("deleteProcess".equals(pathParts[2])) {
+            else if (NormalConstants.DELETE_PROCESS.equals(pathParts[2])) {
                 deleteProcess(request, response);
             }
 
@@ -77,7 +76,7 @@ public class EmployeeController extends CustomHttpServlet {
             int employeeId = parameterValueAsInt(request, 2);
             employeeService.deleteById(employeeId);
 
-            response.sendRedirect(EMPLOYEE_LIST_URL);
+            response.sendRedirect(UrlConstants.EMPLOYEE_LIST_URL);
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -89,9 +88,8 @@ public class EmployeeController extends CustomHttpServlet {
     private void edit(HttpServletRequest request, HttpServletResponse response) {
         try {
             int employeeId = parameterValueAsInt(request, 2);
-            request.setAttribute("employee", employeeService.fetchById(employeeId));
-            request.getRequestDispatcher("/WEB-INF/views/editEmployee.jsp").forward(request, response);
-
+            request.setAttribute(NormalConstants.EMPLOYEE, employeeService.fetchById(employeeId));
+            request.getRequestDispatcher(UrlConstants.EMPLOYEE_EDIT_URL).forward(request, response);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
@@ -99,16 +97,15 @@ public class EmployeeController extends CustomHttpServlet {
     }
 
     private void editProcess(HttpServletRequest request, HttpServletResponse response) {
+        Employee emp = new Employee();
         try {
-            emp.setFirstName(request.getParameter("firstName"));
-            emp.setLastName(request.getParameter("lastName"));
-            emp.setDepartment(request.getParameter("department"));
-            emp.setAddress(request.getParameter("address"));
-
             int employeeId = parameterValueAsInt(request, 2);
-            employeeService.edit(emp, employeeId);
+            emp = setDataAttribute(request);
+            emp.setId(employeeId);
 
-            response.sendRedirect(EMPLOYEE_LIST_URL);
+            employeeService.edit(emp);
+
+            response.sendRedirect(UrlConstants.EMPLOYEE_LIST_URL);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
@@ -118,7 +115,7 @@ public class EmployeeController extends CustomHttpServlet {
 
     private void create(HttpServletRequest request, HttpServletResponse response) {
         try {
-            request.getRequestDispatcher("/WEB-INF/views/createEmployee.jsp").forward(request, response);
+            request.getRequestDispatcher(UrlConstants.EMPLOYEE_CREATE_URL).forward(request, response);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
@@ -128,12 +125,9 @@ public class EmployeeController extends CustomHttpServlet {
 
     private void createProcess(HttpServletRequest request, HttpServletResponse response) {
         try {
-            emp.setFirstName(request.getParameter("firstName"));
-            emp.setLastName(request.getParameter("lastName"));
-            emp.setDepartment(request.getParameter("department"));
-            emp.setAddress(request.getParameter("address"));
+            employeeService.create(setDataAttribute(request));
 
-            response.sendRedirect(EMPLOYEE_LIST_URL);
+            response.sendRedirect(UrlConstants.EMPLOYEE_LIST_URL);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
@@ -143,24 +137,32 @@ public class EmployeeController extends CustomHttpServlet {
 
     private void fetchData(HttpServletRequest request, HttpServletResponse response) {
         List<Employee> employeeList = new ArrayList<Employee>();
-
         try {
             int employeeCount = employeeService.count();
             int pageNo = pageNumber(request);
+            employeeList = employeeService.fetch(10, (pageNo - 1) * 10);
 
-            employeeList = employeeService.fetch(pageNo - 1);
+            request.setAttribute(NormalConstants.EMPLOYEE_LIST, employeeList);
+            request.setAttribute(NormalConstants.PAGE_NO, pageNo);
+            request.setAttribute(NormalConstants.NO_OF_EMPLOYEES, employeeCount);
+            request.setAttribute(NormalConstants.NO_EMP_IN_PAGE, 10);
 
-            request.setAttribute("employeeList", employeeList);
-            request.setAttribute("pageNo", pageNo);
-            request.setAttribute("noOfEmployee", employeeCount);
-            request.setAttribute("noEmpInPage", 10);
-
-            request.getRequestDispatcher("/WEB-INF/views/employee.jsp").forward(request, response);
+            request.getRequestDispatcher(UrlConstants.EMPLOYEE_FETCH_URL).forward(request, response);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
 
+    }
+
+    private Employee setDataAttribute(HttpServletRequest request) {
+        Employee emp = new Employee();
+        emp.setFirstName(request.getParameter(EmployeeDataConstants.FIRST_NAME));
+        emp.setLastName(request.getParameter(EmployeeDataConstants.LAST_NAME));
+        emp.setDepartment(request.getParameter(EmployeeDataConstants.DEPARTMENT));
+        emp.setAddress(request.getParameter(EmployeeDataConstants.ADDRESS));
+
+        return emp;
     }
 
 }

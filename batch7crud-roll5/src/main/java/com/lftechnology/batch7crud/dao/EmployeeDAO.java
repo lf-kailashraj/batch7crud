@@ -9,61 +9,22 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.lftechnology.batch7crud.constants.SqlConstants;
 import com.lftechnology.batch7crud.db.DBConnection;
-import com.lftechnology.batch7crud.db.ReleaseResource;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 
-public class EmployeeDAO extends ReleaseResource {
-    private PreparedStatement ps = null;
-    private Connection conn = null;
-    private ResultSet rs = null;
+public class EmployeeDAO {
+    private static final Logger LOGGER = Logger.getLogger(EmployeeDAO.class.getName());
 
-    private static final Logger LOGGER = Logger.getLogger("EmployeeDAOLog");
-
-    public List<Employee> fetch(int pageNo) throws DataException {
+    public List<Employee> fetch(int limit, int offSet) throws DataException {
         List<Employee> empList = new ArrayList<Employee>();
         Employee emp = null;
 
-        try {
-            String sql = "SELECT * FROM employee LIMIT 10 OFFSET ?";
-            conn = DBConnection.getConnection();
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, pageNo * 10);
-
-            ResultSet result = ps.executeQuery();
-
-            while (result.next()) {
-                emp = new Employee();
-                emp.setId(result.getInt("id"));
-                emp.setFirstName(result.getString("first_name"));
-                emp.setLastName(result.getString("last_name"));
-                emp.setDepartment(result.getString("department"));
-                emp.setAddress(result.getString("address"));
-                empList.add(emp);
-            }
-
-            return empList;
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new DataException(e.getMessage());
-        } finally {
-            closeConnection(null, conn, ps);
-        }
-
-    }
-
-    public Employee fetchById(int id) throws DataException {
-        try {
-            Employee emp = null;
-            String sql = "SELECT * FROM employee where id = ?";
-
-            conn = DBConnection.getConnection();
-
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, id);
-
-            rs = ps.executeQuery();
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlConstants.READ_ALL_QUERY)) { // NOSONAR
+            ps.setInt(1, limit);
+            ps.setInt(2, offSet);
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 emp = new Employee();
@@ -72,96 +33,86 @@ public class EmployeeDAO extends ReleaseResource {
                 emp.setLastName(rs.getString("last_name"));
                 emp.setDepartment(rs.getString("department"));
                 emp.setAddress(rs.getString("address"));
+                empList.add(emp);
             }
 
+            return empList;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new DataException(e.getMessage());
+        }
+    }
+
+    public Employee fetchById(int id) throws DataException {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlConstants.READ_BY_ID_QUERY)) { // NOSONAR
+            Employee emp = null;
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    emp = new Employee();
+                    emp.setId(rs.getInt("id"));
+                    emp.setFirstName(rs.getString("first_name"));
+                    emp.setLastName(rs.getString("last_name"));
+                    emp.setDepartment(rs.getString("department"));
+                    emp.setAddress(rs.getString("address"));
+                }
+            }
             return emp;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
-        } finally {
-            closeConnection(rs, conn, ps);
         }
-
     }
 
     public void deleteById(int id) throws DataException {
-        try {
-            String sql = "DELETE FROM employee WHERE id = ?";
-
-            conn = DBConnection.getConnection();
-
-            ps = conn.prepareStatement(sql);
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlConstants.DELETE_QUERY)) { // NOSONAR
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
-        } finally {
-            closeConnection(null, conn, ps);
         }
-
     }
 
     public void create(Employee employee) throws DataException {
-        try {
-            String sql = "INSERT INTO employee (first_name, last_name, department, address) VALUES(?, ?, ?, ?)";
-            conn = DBConnection.getConnection();
-
-            ps = conn.prepareStatement(sql);
-
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlConstants.INSERT_QUERY)) { // NOSONAR
             ps.setString(1, employee.getFirstName());
             ps.setString(2, employee.getLastName());
             ps.setString(3, employee.getDepartment());
             ps.setString(4, employee.getAddress());
-
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
-        } finally {
-            closeConnection(null, conn, ps);
         }
-
     }
 
-    public void edit(Employee employee, int id) throws DataException {
-        try {
-            String sql = "UPDATE employee SET first_name = ?, last_name = ?, department = ?, address = ? WHERE id = ?";
-            conn = DBConnection.getConnection();
-            ps = conn.prepareStatement(sql);
-
+    public void edit(Employee employee) throws DataException {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlConstants.UPDATE_QUERY)) { // NOSONAR
             ps.setString(1, employee.getFirstName());
             ps.setString(2, employee.getLastName());
             ps.setString(3, employee.getDepartment());
             ps.setString(4, employee.getAddress());
-            ps.setInt(5, id);
-
+            ps.setInt(5, employee.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
-        } finally {
-            closeConnection(null, conn, ps);
         }
-
     }
 
     public int count() throws DataException {
-        try {
-            String sql = "SELECT COUNT(*) FROM employee";
-            conn = DBConnection.getConnection();
-            ps = conn.prepareStatement(sql);
-
-            rs = ps.executeQuery();
-            rs.next();
-
-            return rs.getInt(1);
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlConstants.COUNT_QUERY); // NOSONAR
+                ResultSet rs = ps.executeQuery()) {
+            if (rs.next())
+                return rs.getInt(1);
+            else
+                return 0;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
-        } finally {
-            closeConnection(rs, conn, ps);
         }
-
     }
 }

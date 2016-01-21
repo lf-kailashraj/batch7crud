@@ -8,8 +8,8 @@ import com.lftechnology.batch7crud.model.Employee;
 public class EmployeeService {
     EmployeeDAO employeeDAO = new EmployeeDAO();
 
-    public List<Employee> fetch(int pageNo) throws DataException {
-        return employeeDAO.fetch(pageNo);
+    public List<Employee> fetch(int limit, int offSet) throws DataException {
+        return employeeDAO.fetch(limit, offSet);
     }
 
     public Employee fetchById(int id) throws DataException {
@@ -20,8 +20,8 @@ public class EmployeeService {
         employeeDAO.create(employee);
     }
 
-    public void edit(Employee employee, int id) throws DataException {
-        employeeDAO.edit(employee, id);
+    public void edit(Employee employee) throws DataException {
+        employeeDAO.edit(employee);
     }
 
     public void deleteById(int id) throws DataException {

@@ -6,7 +6,7 @@
 <html>
 <head>
 <title>Employee Management</title>
-<base href="/batch7crud-roll5/" target="_blank"> 
+<base href="${pageContext.request.contextPath}/">
 </head>
 <body>
 

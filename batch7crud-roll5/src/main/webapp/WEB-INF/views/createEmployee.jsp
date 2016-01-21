@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<base href="/batch7crud-roll5/" target="_self">
+<base href="${pageContext.request.contextPath}/">
 <title>Create Employee</title>
 </head>
 <body>

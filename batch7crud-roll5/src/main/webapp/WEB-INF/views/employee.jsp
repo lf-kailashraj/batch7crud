@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<base href="/batch7crud-roll5/" target="_self">
+<base href="${pageContext.request.contextPath}/">
 <title>Employees</title>
 </head>
 <body>
@@ -49,13 +49,13 @@
 	</c:if>
 
 	<c:set var="counter" value="0" />
-	<c:forEach begin="0" end="${noOfEmployee/noEmpInPage}" step="1"
+	<c:forEach begin="0" end="${noOfEmployees/noEmpInPage}" step="1"
 		varStatus="loop">
 		<c:set var="counter" value="${counter + 1}" />
 		<a href="employees?page=${counter}">${counter}</a>
 	</c:forEach>
 
-	<c:if test="${pageNo*noEmpInPage < noOfEmployee}">
+	<c:if test="${pageNo*noEmpInPage < noOfEmployees}">
 		<a href="employees?page=${pageNo+1}">Next</a>
 	</c:if>
 
