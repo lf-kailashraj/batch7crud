@@ -78,7 +78,7 @@ public class EmployeeController extends CommonHttpServlet {
       int recordsPerPage = 10;
       List<Employee> empList = employeeService.fetch(10, (page - 1) * recordsPerPage);
       int totalNoOfRecords = employeeService.getTotalNoOfRecords();
-      int validNoOfPages = (int) Math.ceil(totalNoOfRecords * 1.0 / 10.0);
+      int validNoOfPages = (int) Math.ceil(totalNoOfRecords * 1.0 / 10);
       if (page != 1 && page > validNoOfPages) {
         displayPageNotFound(request, response);
         return;

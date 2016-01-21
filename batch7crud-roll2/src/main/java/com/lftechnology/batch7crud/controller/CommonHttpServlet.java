@@ -30,7 +30,7 @@ public abstract class CommonHttpServlet extends HttpServlet {
 
   protected String[] getPathParameters(HttpServletRequest request) {
     String urlPath = request.getRequestURI().substring(request.getContextPath().length());
-    return urlPath.split(File.separator);
+    return urlPath.split("/");
   }
 
   protected int parameterValueAsInt(HttpServletRequest request, int index) {
