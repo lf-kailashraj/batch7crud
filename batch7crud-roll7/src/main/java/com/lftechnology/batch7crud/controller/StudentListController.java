@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,18 +21,17 @@ import java.util.logging.Logger;
 @WebServlet(name = "StudentListController", urlPatterns = { "/students/*" })
 public class StudentListController extends CommonHttpServlet{
   private static final Logger LOGGER = Logger.getLogger(StudentListController.class.getName());
-  private static final String LIST_URL = "students";
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] urlPath = urlParts(request);
 
     try {
-      if (urlPath.length == 3 && "newEntry".equals(urlPath[2]))
+      if (urlPath.length == 3 && CommonConstants.NEW_ENTRY.equals(urlPath[2]))
         createProcess(request, response);
-      else if (urlPath.length == 4 && "edit".equals(urlPath[3]))
+      else if (urlPath.length == 4 && CommonConstants.EDIT.equals(urlPath[3]))
         editProcess(request, response, Integer.parseInt(urlPath[2]));
-      else if (urlPath.length == 4 && "delete".equals(urlPath[3]))
+      else if (urlPath.length == 4 && CommonConstants.DELETE.equals(urlPath[3]))
         deleteProcess(request, response, Integer.parseInt(urlPath[2]));
       else
         showErrorPage(request, response);
@@ -42,15 +42,15 @@ public class StudentListController extends CommonHttpServlet{
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String[] urlpath = urlParts(request);
+    String[] urlPath = urlParts(request);
     try {
-      if (urlpath.length == 2)
+      if (urlPath.length == 2)
         list(request, response);
-      else if (urlpath.length == 3 && "newEntry".equals(urlpath[2]))
+      else if (urlPath.length == 3 && CommonConstants.NEW_ENTRY.equals(urlPath[2]))
         create(request, response);
-      else if (urlpath.length == 4 && "edit".equals(urlpath[3]))
-        edit(request, response, Integer.parseInt(urlpath[2]));
-      else if (urlpath.length == 3)
+      else if (urlPath.length == 4 && CommonConstants.EDIT.equals(urlPath[3]))
+        edit(request, response, Integer.parseInt(urlPath[2]));
+      else if (urlPath.length == 3)
         show(request, response);
       else{
         showErrorPage(request, response);
@@ -62,7 +62,7 @@ public class StudentListController extends CommonHttpServlet{
 
   private void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
     StudentServices studentService = new StudentServices();
-    int pageSize = 3;
+    int pageSize = CommonConstants.PAGE_SIZE;
     int page = 1;
     try {
       page = getPageNumber(request);
@@ -81,12 +81,12 @@ public class StudentListController extends CommonHttpServlet{
     request.setAttribute("pageNum", page);
     request.setAttribute("numberOfPages",numberOfPages);
 
-    request.getServletContext().getRequestDispatcher("/WEB-INF/views/students.jsp").forward(request, response);
+    request.getServletContext().getRequestDispatcher(CommonConstants.STUDENTS_LIST_VIEW).forward(request, response);
 
   }
 
   private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    request.getServletContext().getRequestDispatcher("/WEB-INF/views/newEntry.jsp").forward(request, response);
+    request.getServletContext().getRequestDispatcher(CommonConstants.NEW_ENTRY_VIEW).forward(request, response);
   }
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
@@ -103,10 +103,10 @@ public class StudentListController extends CommonHttpServlet{
 
       StudentServices studentService = new StudentServices();
       studentService.addNew(student);
-      response.sendRedirect(request.getContextPath() + "/" + LIST_URL);
+      response.sendRedirect(request.getContextPath() + "/" + CommonConstants.LIST_URL);
     } catch (NumberFormatException e) {
       request.setAttribute("error", "invalid roll");
-      request.getServletContext().getRequestDispatcher("/WEB-INF/views/newEntry.jsp").forward(request, response);
+      request.getServletContext().getRequestDispatcher(CommonConstants.NEW_ENTRY_VIEW).forward(request, response);
     }
 
   }
@@ -115,7 +115,7 @@ public class StudentListController extends CommonHttpServlet{
     StudentServices studentService = new StudentServices();
 
     request.setAttribute("student", studentService.fetchById(id));
-    request.getRequestDispatcher("/WEB-INF/views/editEntry.jsp").forward(request, response);
+    request.getRequestDispatcher(CommonConstants.EDIT_ENTRY_VIEW).forward(request, response);
 
   }
 
@@ -132,7 +132,7 @@ public class StudentListController extends CommonHttpServlet{
 
     StudentServices studentService = new StudentServices();
     studentService.update(student);
-    response.sendRedirect(request.getContextPath() + "/" + LIST_URL);
+    response.sendRedirect(request.getContextPath() + File.separator + CommonConstants.LIST_URL);
 
   }
 
@@ -140,7 +140,7 @@ public class StudentListController extends CommonHttpServlet{
     throws ServletException, IOException, DataException {
     StudentServices studentService = new StudentServices();
     studentService.delete(id);
-    response.sendRedirect(request.getContextPath() + "/" + LIST_URL);
+    response.sendRedirect(request.getContextPath() + File.separator + CommonConstants.LIST_URL);
 
   }
 
@@ -153,7 +153,7 @@ public class StudentListController extends CommonHttpServlet{
         showErrorPage(request, response);
       else {
         request.setAttribute("student", student);
-        request.getRequestDispatcher("/WEB-INF/views/show.jsp").forward(request, response);
+        request.getRequestDispatcher(CommonConstants.SHOW_STUDENT_VIEW).forward(request, response);
       }
     } catch (NumberFormatException e) {
       showErrorPage(request, response);
