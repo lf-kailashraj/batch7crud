@@ -11,33 +11,33 @@ import com.lftechnology.batch7crud.model.User;
  */
 public class UserService {
 
-    UserDAOImpl userDAOImpl = new UserDAOImpl();
+  UserDAOImpl userDAOImpl = new UserDAOImpl();
 
-    public void addUser(User user) throws DataException {
+  public void addUser(User user) throws DataException {
 
-        userDAOImpl.add(user);
-    }
+    userDAOImpl.add(user);
+  }
 
-    public void deleteUser(int userID) throws DataException {
-        userDAOImpl.delete(userID);
-    }
+  public void deleteUser(int userID) throws DataException {
+    userDAOImpl.delete(userID);
+  }
 
-    public void update(User user) throws DataException {
-        userDAOImpl.update(user);
-    }
+  public void update(User user) throws DataException {
+    userDAOImpl.update(user);
+  }
 
-    public List<User> fetch(int page,int limit) throws DataException {
+  public List<User> fetch(int page, int limit) throws DataException {
 
-        return userDAOImpl.fetch(page,limit);
-    }
+    return userDAOImpl.fetch(page, limit);
+  }
 
-    public User fetchByID(int userID) throws DataException {
+  public User fetchByID(int userID) throws DataException {
 
-        return userDAOImpl.fetchByID(userID);
-    }
+    return userDAOImpl.fetchByID(userID);
+  }
 
-    public int totalUser() {
-        return userDAOImpl.totalUser();
-    }
+  public int totalUser() {
+    return userDAOImpl.totalUser();
+  }
 
 }
