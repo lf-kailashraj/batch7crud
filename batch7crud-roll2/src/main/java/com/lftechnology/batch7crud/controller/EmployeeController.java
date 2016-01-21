@@ -22,6 +22,11 @@ import java.util.logging.Logger;
 @WebServlet(name = "EmployeeController", urlPatterns = { "/employees/*" })
 public class EmployeeController extends CommonHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
+  private static EmployeeService employeeService;
+
+  public EmployeeController() {
+    employeeService = new EmployeeService();
+  }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -71,10 +76,9 @@ public class EmployeeController extends CommonHttpServlet {
     try {
       int page = getPageNo(request);
       int recordsPerPage = 10;
-      EmployeeService employeeService = new EmployeeService();
       List<Employee> empList = employeeService.fetch(10, (page - 1) * recordsPerPage);
       int totalNoOfRecords = employeeService.getTotalNoOfRecords();
-      double validNoOfPages = Math.ceil((float) totalNoOfRecords / 10.0);
+      int validNoOfPages = (int) Math.ceil(totalNoOfRecords * 1.0 / 10.0);
       if (page != 1 && page > validNoOfPages) {
         displayPageNotFound(request, response);
         return;
@@ -106,7 +110,6 @@ public class EmployeeController extends CommonHttpServlet {
       employee.setEmail(email);
       employee.setContact(contact);
 
-      EmployeeService employeeService = new EmployeeService();
       employeeService.insert(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     } catch (DataException e) {
@@ -118,7 +121,6 @@ public class EmployeeController extends CommonHttpServlet {
   private void view(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       int id = parameterValueAsInt(request, 2);
-      EmployeeService employeeService = new EmployeeService();
       Employee employee = employeeService.fetchById(id);
       if (employee == null) {
         displayPageNotFound(request, response);
@@ -138,7 +140,6 @@ public class EmployeeController extends CommonHttpServlet {
   private void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       int id = parameterValueAsInt(request, 2);
-      EmployeeService employeeService = new EmployeeService();
       Employee employee = employeeService.fetchById(id);
       if (employee == null) {
         displayPageNotFound(request, response);
@@ -170,7 +171,6 @@ public class EmployeeController extends CommonHttpServlet {
       employee.setEmail(email);
       employee.setContact(contact);
 
-      EmployeeService employeeService = new EmployeeService();
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     } catch (DataException e) {
@@ -185,7 +185,6 @@ public class EmployeeController extends CommonHttpServlet {
   private void deleteProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       int id = parameterValueAsInt(request, 2);
-      EmployeeService employeeService = new EmployeeService();
       employeeService.delete(id);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
