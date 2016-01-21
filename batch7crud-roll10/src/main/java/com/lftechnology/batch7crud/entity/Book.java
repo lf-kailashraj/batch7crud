@@ -2,6 +2,7 @@ package com.lftechnology.batch7crud.entity;
 
 /**
  * Book class holds the book information and getter & setter methods.
+ *
  * @Author Binod Shrestha <binodshrestha@lftechnology.com>
  * Created on 1/17/16
  */

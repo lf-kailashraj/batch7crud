@@ -8,10 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>error</title>
+  <base href="${pageContext.request.contextPath}/">
+  <title>error</title>
 </head>
 <body>
-  <div>error</div>
-  <p>${errorMessage}</p>
+<div>error</div>
+<p>${errorMessage}</p>
 </body>
 </html>

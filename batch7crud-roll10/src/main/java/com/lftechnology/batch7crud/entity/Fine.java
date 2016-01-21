@@ -5,6 +5,7 @@ import java.util.Date;
 
 /**
  * Fine class holds the information that are used to calculate the late fee.
+ *
  * @Author Binod Shrestha <binodshrestha@lftechnology.com>
  * Created on 1/17/16
  */

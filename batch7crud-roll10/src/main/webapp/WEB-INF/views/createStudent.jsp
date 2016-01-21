@@ -8,24 +8,24 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>create student</title>
+  <base href="${pageContext.request.contextPath}/">
+  <title>create student</title>
 </head>
 <body>
-  <div>
-    <form action="create" method="post">
-        <label>name</label><input type="text" name="name" value="${param.name}"><br>
-        <label>address</label><input type="text" name="address" value="${param.address}"><br>
-        <label>dob</label><input type="date" name="dob" value="${param.dob}"><br>
+<div>
+  <form action="students/create" method="post">
+    <label>name</label><input type="text" name="name" value="${param.name}"><br>
+    <label>address</label><input type="text" name="address" value="${param.address}"><br>
+    <label>dob</label><input type="date" name="dob" value="${param.dob}"><br>
+    <label>department</label><input type="text" name="department" value="${param.department}"><br>
+    <label>batch</label><input type="text" name="batch" value="${param.batch}"><br>
+    <label>roll</label><input type="number" name="roll" value="${param.roll}"><br>
 
-        <label>department</label><input type="text" name="department" value="${param.department}"><br>
-        <label>batch</label><input type="text" name="batch" value="${param.batch}"><br>
-        <label>roll</label><input type="number" name="roll" value="${param.roll}"><br>
+    <input type="submit">
+  </form>
 
-        <input type="submit">
-    </form>
+  <p>${errorMessage}</p>
 
-      <p>${errorMessage}</p>
-
-  </div>
+</div>
 </body>
 </html>

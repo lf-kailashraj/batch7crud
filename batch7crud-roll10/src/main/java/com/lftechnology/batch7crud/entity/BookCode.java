@@ -2,6 +2,7 @@ package com.lftechnology.batch7crud.entity;
 
 /**
  * BookCode is used to identify each and every book uniquely.
+ *
  * @Author Binod Shrestha <binodshrestha@lftechnology.com>
  * Created on 1/17/16
  */

@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 /**
  * This class is used to provide the Connection object.
+ *
  * @Author Binod Shrestha <binodshrestha@lftechnology.com>
  * Created on 1/18/16
  */
