@@ -25,7 +25,7 @@ public abstract class CustomHttpServlet extends HttpServlet {
 
   public void show404(HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-    request.setAttribute(MESSAGE, "Page Not Found");
+    request.setAttribute(MESSAGE, PAGE_NOT_FOUND);
 
     try {
       request.getRequestDispatcher(ERROR_PAGE).forward(request, response);

@@ -46,7 +46,6 @@ public class StudentDAO {
           studentList.add(student);
         }
       }
-
       return studentList;
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -83,9 +82,9 @@ public class StudentDAO {
 
         while (result.next()) {
           student = new Student();
-          student.setId(result.getInt("id"));
-          student.setRoll(result.getInt("roll"));
-          student.setName(result.getString("name"));
+          student.setId(result.getInt(1));
+          student.setRoll(result.getInt(2));
+          student.setName(result.getString(3));
         }
         return student;
       }
