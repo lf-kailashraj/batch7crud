@@ -38,7 +38,7 @@ public class EmployeeDao {
       Connection conn = DBConnection.getConnection();
       PreparedStatement statement = conn.prepareStatement(sql);
       statement.setInt(1, pageLimit);
-      statement.setInt(2, pageLimit*pageNo);
+      statement.setInt(2, pageLimit * pageNo);
       ResultSet result = statement.executeQuery();
       while (result.next()) {
         Employee employee = new Employee();
@@ -106,6 +106,22 @@ public class EmployeeDao {
     } catch (SQLException e) {
       throw new DataException();
     }
+  }
 
+  public Integer count() throws DataException {
+    try {
+      String sql = "select count(*) as total from employee";
+      Connection conn = DBConnection.getConnection();
+      PreparedStatement statement = conn.prepareStatement(sql);
+      ResultSet result = statement.executeQuery();
+      if (result.next()){
+        return result.getInt("total");
+      }
+      else {
+        return 0;
+      }
+    } catch (SQLException e) {
+      throw new DataException();
+    }
   }
 }

@@ -21,17 +21,13 @@ public class EmployeesController extends HttpServlet{
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String path = request.getPathInfo();
     if (path == null) {
-      Integer pageNo = 1;
+      int pageNo = getCurrentPage(request);
       fetch(request, response, pageNo);
     }
     else {
       String[] parts = path.split("/");
       if (parts[1].equals("create")) {
         create(request, response);
-      }
-      else if (parts[1].equals("page")) {
-        Integer pageNo = Integer.parseInt(parts[2]);
-        fetch(request, response, pageNo);
       }
       else if (parts[2].equals("edit")) {
         int id = Integer.parseInt(parts[1]);
@@ -42,7 +38,6 @@ public class EmployeesController extends HttpServlet{
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String path = request.getPathInfo();
-
     if (path == null) {
       request.getServletContext().getRequestDispatcher("/WEB-INF/views/employees/index.jsp").forward(request, response);
     }
@@ -145,15 +140,36 @@ public class EmployeesController extends HttpServlet{
   }
 
   private void fetch(HttpServletRequest request, HttpServletResponse response, Integer pageNo) throws IOException {
-    Integer pageLimit = 2;
-    pageNo --;
+    Integer pageLimit = 4;
     try {
       EmployeeServices employeeServices = new EmployeeServices();
-      List<Employee> employeeList = employeeServices.fetch(pageLimit, pageNo);
+      List<Employee> employeeList = employeeServices.fetch(pageLimit, pageNo-1);
+      Integer employeeCount = employeeServices.count();
       request.setAttribute("employeeList", employeeList);
+      request.setAttribute("employeeCount", employeeCount);
+      request.setAttribute("pageNo", pageNo);
+      if ((employeeCount%pageLimit) == 0) {
+        request.setAttribute("lastPageNo", employeeCount/pageLimit);
+      }
+      else {
+        request.setAttribute("lastPageNo", (employeeCount/pageLimit)+1);
+      }
+
       request.getServletContext().getRequestDispatcher("/WEB-INF/views/employees/index.jsp").forward(request, response);
     } catch (Exception e) {
       e.printStackTrace();
+    }
+  }
+
+  private int getCurrentPage(HttpServletRequest request) {
+    try {
+      if (request.getParameter("page") == null) {
+        return 1;
+      } else {
+        return Integer.parseInt(request.getParameter("page"));
+      }
+    } catch(NumberFormatException e){
+      return 1;
     }
   }
 }

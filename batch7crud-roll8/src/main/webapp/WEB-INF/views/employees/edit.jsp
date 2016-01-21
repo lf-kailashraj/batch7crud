@@ -8,13 +8,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+  <base href="${pageContext.request.contextPath}/">
   <title>Edit Details of Employee</title>
 </head>
 <body>
 <div>
   <h1>Edit Employee Form</h1>
   <div>
-    <form action="editProcess" method="POST">
+    <form action="employees/${employee.getId()}/editProcess" method="POST">
       <div>
         <label>Name:</label>
         <input name="name" type="text" value = ${employee.getName()}>

@@ -36,4 +36,9 @@ public class EmployeeServices {
     employeeDao.delete(id);
   }
 
+  public Integer count() throws DataException {
+    EmployeeDao employeeDao = new EmployeeDao();
+    return employeeDao.count();
+  }
+
 }

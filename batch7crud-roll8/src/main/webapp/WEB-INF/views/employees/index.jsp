@@ -9,6 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+  <base href="${pageContext.request.contextPath}/">
   <title>Employees</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
@@ -46,7 +47,24 @@
       </table>
     </div>
     <div>
-      Page Numbers
+      <c:if test = "${pageNo > 1}">
+        <a href="employees?page=${pageNo - 1}">Previous</a>
+      </c:if>
+      <c:forEach begin="1" end="${lastPageNo}" var="i">
+        <c:choose>
+          <c:when test="${pageNo eq i}">
+            <td>${i}</td>
+          </c:when>
+          <c:otherwise>
+            <td><a href="employees?page=${i}">${i}</a></td>
+          </c:otherwise>
+        </c:choose>
+      </c:forEach>
+
+      <c:if test = "${pageNo < lastPageNo}">
+        <a href="employees?page=${pageNo + 1}">Next</a>
+      </c:if>
+
     </div>
   </div>
 </div>

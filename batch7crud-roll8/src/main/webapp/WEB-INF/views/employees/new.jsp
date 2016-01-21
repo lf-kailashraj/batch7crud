@@ -8,13 +8,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+  <base href="${pageContext.request.contextPath}/">
   <title>Create New Employee</title>
 </head>
 <body>
 <div>
   Create New Employee
   <div>
-    <form action="createProcess" method="POST">
+    <form action="employees/createProcess" method="POST">
       <div>
         <label>Name:</label>
         <input name="name" type="text"/>
