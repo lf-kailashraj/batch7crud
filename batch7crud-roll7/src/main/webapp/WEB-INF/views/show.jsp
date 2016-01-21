@@ -18,7 +18,7 @@ Name : ${student.getName()}<br>
 Address : ${student.getAddress()}<br>
 Roll : ${student.getRoll()}<br>
 
-<a href="Students">View All</a>
+<a href="students">View All</a>
 
 </body>
 </html>

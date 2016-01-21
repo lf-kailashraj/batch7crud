@@ -17,17 +17,17 @@ import java.util.logging.Logger;
 /**
  * Created by leapfrog on 1/18/16.
  */
-@WebServlet(name = "StudentListController", urlPatterns = { "/Students/*" })
+@WebServlet(name = "StudentListController", urlPatterns = { "/students/*" })
 public class StudentListController extends HttpServlet {
   private static final Logger LOGGER = Logger.getLogger(StudentListController.class.getName());
-  private static final String LISTURL = "Students";
+  private static final String LISTURL = "students";
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] urlPath = urlParts(request);
 
     try {
-      if (urlPath.length == 3 && "NewEntry".equals(urlPath[2]))
+      if (urlPath.length == 3 && "newEntry".equals(urlPath[2]))
         createProcess(request, response);
       else if (urlPath.length == 4 && "edit".equals(urlPath[3]))
         editProcess(request, response, Integer.parseInt(urlPath[2]));
@@ -46,7 +46,7 @@ public class StudentListController extends HttpServlet {
     try {
       if (urlpath.length == 2)
         list(request, response);
-      else if (urlpath.length == 3 && "NewEntry".equals(urlpath[2]))
+      else if (urlpath.length == 3 && "newEntry".equals(urlpath[2]))
         create(request, response);
       else if (urlpath.length == 4 && "edit".equals(urlpath[3]))
         edit(request, response, Integer.parseInt(urlpath[2]));

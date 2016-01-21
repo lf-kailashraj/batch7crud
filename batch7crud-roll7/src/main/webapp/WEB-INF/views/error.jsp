@@ -13,7 +13,7 @@
 </head>
 <body>
 OoPs something went wrong !!!
-<a href="Students">View All</a>
+<a href="students">View All</a>
 
 </body>
 </html>

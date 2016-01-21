@@ -15,7 +15,7 @@
   <title>New Entry</title>
 </head>
 <body>
-<form action="Students/NewEntry" method="post">
+<form action="students/newEntry" method="post">
   <input type="text" name="name" placeholder="Name" value="${param.name}"/>
   <input type="text" name="address" placeholder="Address"/>
   <input type="text" name="roll" placeholder="Roll"/>
@@ -25,6 +25,6 @@ ${error}
 <c:if test="${error != null}">
   <p>you have error</p>
 </c:if>
-<div><a href="Students">View All</a></div>
+<div><a href="students">View All</a></div>
 </body>
 </html>

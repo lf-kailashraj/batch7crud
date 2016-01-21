@@ -15,7 +15,7 @@
   <title>Students</title>
 </head>
 <body>
-<div><a href="Students/NewEntry">New Entry</a></div>
+<div><a href="students/newEntry">New Entry</a></div>
 
 
 <table border="1">
@@ -34,18 +34,18 @@
       <td><c:out value="${student.name}"/></td>
       <td><c:out value="${student.address}"/></td>
       <td><c:out value="${student.roll}"/></td>
-      <td><a href="Students/${student.id}">View</a></td>
-      <td><a href="Students/${student.id}/edit">Edit</a></td>
-      <td><a href="Students/${student.roll}/delete" class="delete">Delete</a></td>
+      <td><a href="students/${student.id}">View</a></td>
+      <td><a href="students/${student.id}/edit">Edit</a></td>
+      <td><a href="students/${student.roll}/delete" class="delete">Delete</a></td>
     </tr>
   </c:forEach>
 </table>
 <c:if test="${pageNum > 1}">
-  <a href="Students?page=${pageNum - 1}">Previous</a>
+  <a href="students?page=${pageNum - 1}">Previous</a>
 </c:if>
 ${pageNum}
 <c:if test="${(pageNum * pageSize) < totalStudents}">
-  <a href="Students?page=${pageNum + 1}">Next</a>
+  <a href="students?page=${pageNum + 1}">Next</a>
 </c:if>
 
 <script>
