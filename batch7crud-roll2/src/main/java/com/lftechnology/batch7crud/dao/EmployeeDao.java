@@ -5,10 +5,7 @@ import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.util.DBConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,12 +25,17 @@ public class EmployeeDao {
 
   public void insert(Employee employee) throws DataException {
     try (Connection con = DBConnection.getSqlConnection();
-            PreparedStatement preStmt = con.prepareStatement(EMPLOYEE_INSERT)) {
+            PreparedStatement preStmt = con.prepareStatement(EMPLOYEE_INSERT, Statement.RETURN_GENERATED_KEYS)) {
       preStmt.setString(1, employee.getName());
       preStmt.setString(2, employee.getAddress());
       preStmt.setString(3, employee.getEmail());
       preStmt.setString(4, employee.getContact());
       preStmt.execute();
+
+      ResultSet rs = preStmt.getGeneratedKeys();
+      if (rs.next()) {
+        employee.setId(rs.getInt(1));
+      }
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
