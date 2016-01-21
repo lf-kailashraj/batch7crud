@@ -86,7 +86,7 @@ public class EmployeeDao {
     }
   }
 
-  public void edit(Employee employee, Integer id) throws DataException {
+  public void edit(Employee employee) throws DataException {
     String sql = "update employee set name = ?, address = ?, designation = ?, phone = ? where id = ?";
 
     try (Connection conn = DBConnection.getConnection();
@@ -96,7 +96,7 @@ public class EmployeeDao {
       statement.setString(2, employee.getAddress());
       statement.setString(3, employee.getDesignation());
       statement.setString(4, employee.getPhone());
-      statement.setInt(5, id);
+      statement.setInt(5, employee.getId());
       statement.executeUpdate();
     }
     catch (SQLException e) {

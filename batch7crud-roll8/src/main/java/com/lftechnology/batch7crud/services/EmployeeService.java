@@ -24,8 +24,8 @@ public class EmployeeService {
     return employeeDao.fetchById(id);
   }
 
-  public void edit(Employee employee, Integer id) throws DataException {
-    employeeDao.edit(employee, id);
+  public void edit(Employee employee) throws DataException {
+    employeeDao.edit(employee);
   }
 
   public void delete(Integer id) throws DataException {
