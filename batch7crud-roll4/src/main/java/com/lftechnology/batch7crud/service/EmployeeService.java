@@ -13,7 +13,7 @@ public class EmployeeService {
 
   private EmployeeDao employeeDao;
 
-  public EmployeeService() throws DataException {
+  public EmployeeService() {
     employeeDao = new EmployeeDao();
   }
 

@@ -35,6 +35,7 @@ public class DbConnection {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
+
   }
 
 

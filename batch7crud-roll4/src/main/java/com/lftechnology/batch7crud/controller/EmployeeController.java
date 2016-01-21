@@ -28,7 +28,7 @@ public class EmployeeController extends CustomHttpServlet {
 
   private static EmployeeService employeeService;
 
-  public EmployeeController() throws DataException {
+  public EmployeeController() {
     employeeService = new EmployeeService();
   }
 
