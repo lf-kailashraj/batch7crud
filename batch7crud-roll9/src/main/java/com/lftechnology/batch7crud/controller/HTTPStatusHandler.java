@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,7 +50,7 @@ public abstract class HTTPStatusHandler extends HttpServlet {
 
   public String[] parameterValues(HttpServletRequest request) {
     String urlPath = request.getRequestURI().substring(request.getContextPath().length());
-    return urlPath.split(Url.PATH_SEPERATOR);
+    return urlPath.split(File.separator);
   }
 
   public int parameterValueAsInt(HttpServletRequest request, int index) {

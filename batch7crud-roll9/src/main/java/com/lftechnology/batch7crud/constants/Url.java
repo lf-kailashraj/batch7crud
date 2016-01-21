@@ -9,9 +9,7 @@ public class Url {
   public static final String EDIT = "edit";
   public static final String DELETE = "delete";
   public static final String STUDENTS = "students";
-  public static final String PATH_SEPERATOR = "/";
 
   private Url(){
   }
-
 }
