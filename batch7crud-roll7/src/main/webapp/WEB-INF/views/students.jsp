@@ -36,14 +36,19 @@
       <td><c:out value="${student.roll}"/></td>
       <td><a href="students/${student.id}">View</a></td>
       <td><a href="students/${student.id}/edit">Edit</a></td>
-      <td><a href="students/${student.roll}/delete" class="delete">Delete</a></td>
+      <td><a href="students/${student.id}/delete" class="delete">Delete</a></td>
     </tr>
   </c:forEach>
 </table>
+
 <c:if test="${pageNum > 1}">
   <a href="students?page=${pageNum - 1}">Previous</a>
 </c:if>
-${pageNum}
+
+<c:forEach var="i" begin="1" end="${numberOfPages}">
+  <a href="students?page=${i}">${i}</a>
+</c:forEach>
+
 <c:if test="${(pageNum * pageSize) < totalStudents}">
   <a href="students?page=${pageNum + 1}">Next</a>
 </c:if>

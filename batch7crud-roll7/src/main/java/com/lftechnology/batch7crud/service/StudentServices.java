@@ -12,12 +12,12 @@ import java.util.List;
 public class StudentServices {
   private StudentDataAccess studentDao = new StudentDataAccess();
 
-  public void addNew(Student s) throws DataException {
-    studentDao.addNew(s);
+  public void addNew(Student student) throws DataException {
+    studentDao.addNew(student);
   }
 
-  public List<Student> fetch(int page, int pageSize) throws DataException {
-    return studentDao.fetch(page, pageSize);
+  public List<Student> fetch(int limit, int offset) throws DataException {
+    return studentDao.fetch(limit,offset);
   }
 
   public int fetchTotal() throws DataException {
@@ -28,11 +28,11 @@ public class StudentServices {
     return studentDao.fetchById(id);
   }
 
-  public void update(Student s, int id) throws DataException {
-    studentDao.update(s, id);
+  public void update(Student student) throws DataException {
+    studentDao.update(student);
   }
 
-  public void delete(int roll) throws DataException {
-    studentDao.delete(roll);
+  public void delete(int id) throws DataException {
+    studentDao.delete(id);
   }
 }

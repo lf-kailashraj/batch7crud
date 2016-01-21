@@ -21,7 +21,7 @@ public class DbUtilities {
 
   }
 
-  public static Connection getConncetion() throws DataException {
+  public static Connection getConnection() throws DataException {
     try {
       Context initCtx = new InitialContext();
       Context envCtx = (Context) initCtx.lookup("java:comp/env");

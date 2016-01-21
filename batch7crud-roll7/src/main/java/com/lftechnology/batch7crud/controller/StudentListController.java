@@ -18,9 +18,9 @@ import java.util.logging.Logger;
  * Created by leapfrog on 1/18/16.
  */
 @WebServlet(name = "StudentListController", urlPatterns = { "/students/*" })
-public class StudentListController extends HttpServlet {
+public class StudentListController extends CommonHttpServlet{
   private static final Logger LOGGER = Logger.getLogger(StudentListController.class.getName());
-  private static final String LISTURL = "students";
+  private static final String LIST_URL = "students";
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -52,15 +52,16 @@ public class StudentListController extends HttpServlet {
         edit(request, response, Integer.parseInt(urlpath[2]));
       else if (urlpath.length == 3)
         show(request, response);
-      else
+      else{
         showErrorPage(request, response);
+      }
     } catch (DataException | ServletException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
   }
 
   private void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
-    StudentServices stdservice = new StudentServices();
+    StudentServices studentService = new StudentServices();
     int pageSize = 3;
     int page = 1;
     try {
@@ -68,15 +69,17 @@ public class StudentListController extends HttpServlet {
     } catch (NumberFormatException e) {
       showErrorPage(request, response);
     }
-    int totalStudents = stdservice.fetchTotal();
+    int totalStudents = studentService.fetchTotal();
+    int numberOfPages = (int) Math.ceil(totalStudents / (float) pageSize);
 
-    if (page != 1 && page > Math.ceil(totalStudents / (float) pageSize)) {
+    if (page != 1 && page > numberOfPages ) {
       showErrorPage(request, response);
     }
-    request.setAttribute("students", stdservice.fetch(page, pageSize));
+    request.setAttribute("students", studentService.fetch(pageSize, (page - 1) * pageSize));
     request.setAttribute("pageSize", pageSize);
     request.setAttribute("totalStudents", totalStudents);
     request.setAttribute("pageNum", page);
+    request.setAttribute("numberOfPages",numberOfPages);
 
     request.getServletContext().getRequestDispatcher("/WEB-INF/views/students.jsp").forward(request, response);
 
@@ -93,14 +96,14 @@ public class StudentListController extends HttpServlet {
     try {
 
       int rollNum = Integer.parseInt(roll);
-      Student s = new Student();
-      s.setName(name);
-      s.setAddress(address);
-      s.setRoll(rollNum);
+      Student student = new Student();
+      student.setName(name);
+      student.setAddress(address);
+      student.setRoll(rollNum);
 
-      StudentServices stdServices = new StudentServices();
-      stdServices.addNew(s);
-      response.sendRedirect(request.getContextPath() + "/" + LISTURL);
+      StudentServices studentService = new StudentServices();
+      studentService.addNew(student);
+      response.sendRedirect(request.getContextPath() + "/" + LIST_URL);
     } catch (NumberFormatException e) {
       request.setAttribute("error", "invalid roll");
       request.getServletContext().getRequestDispatcher("/WEB-INF/views/newEntry.jsp").forward(request, response);
@@ -109,9 +112,9 @@ public class StudentListController extends HttpServlet {
   }
 
   private void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException, DataException {
-    StudentServices stdservice = new StudentServices();
+    StudentServices studentService = new StudentServices();
 
-    request.setAttribute("student", stdservice.fetchById(id));
+    request.setAttribute("student", studentService.fetchById(id));
     request.getRequestDispatcher("/WEB-INF/views/editEntry.jsp").forward(request, response);
 
   }
@@ -121,31 +124,31 @@ public class StudentListController extends HttpServlet {
     String name = request.getParameter("name");
     String address = request.getParameter("address");
     int roll = Integer.parseInt(request.getParameter("roll"));
-    Student s = new Student();
-    s.setName(name);
-    s.setAddress(address);
-    s.setRoll(roll);
-    s.setId(id);
+    Student student = new Student();
+    student.setName(name);
+    student.setAddress(address);
+    student.setRoll(roll);
+    student.setId(id);
 
-    StudentServices stdServices = new StudentServices();
-    stdServices.update(s, id);
-    response.sendRedirect(request.getContextPath() + "/" + LISTURL);
+    StudentServices studentService = new StudentServices();
+    studentService.update(student);
+    response.sendRedirect(request.getContextPath() + "/" + LIST_URL);
 
   }
 
-  private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int roll)
+  private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id)
     throws ServletException, IOException, DataException {
-    StudentServices stdServices = new StudentServices();
-    stdServices.delete(roll);
-    response.sendRedirect(request.getContextPath() + "/" + LISTURL);
+    StudentServices studentService = new StudentServices();
+    studentService.delete(id);
+    response.sendRedirect(request.getContextPath() + "/" + LIST_URL);
 
   }
 
   private void show(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
     try {
       int id = urlInteger(request, 2);
-      StudentServices stdService = new StudentServices();
-      Student student = stdService.fetchById(id);
+      StudentServices studentService = new StudentServices();
+      Student student = studentService.fetchById(id);
       if (student == null)
         showErrorPage(request, response);
       else {
@@ -157,32 +160,14 @@ public class StudentListController extends HttpServlet {
     }
   }
 
-  public void showErrorPage(HttpServletRequest request, HttpServletResponse response) {
-    RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
-    try {
-      view.forward(request, response);
-    } catch (ServletException e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
-    } catch (IOException e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
-    }
-  }
-
-  public String[] urlParts(HttpServletRequest request) {
-    String urlPath = request.getRequestURI().substring(request.getContextPath().length());
-    return urlPath.split("/");
-  }
-
-  public int urlInteger(HttpServletRequest request, int index) {
-    String[] paths = urlParts(request);
-    return Integer.parseInt(paths[index]);
-  }
-
-  public int getPageNumber(HttpServletRequest request) {
-    if (request.getParameter("page") != null) {
-      return Integer.parseInt(request.getParameter("page"));
-    } else {
-      return 1;
-    }
-  }
+//  public void showErrorPage(HttpServletRequest request, HttpServletResponse response) {
+//    RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+//    try {
+//      view.forward(request, response);
+//    } catch (ServletException e) {
+//      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+//    } catch (IOException e) {
+//      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+//    }
+//  }
 }

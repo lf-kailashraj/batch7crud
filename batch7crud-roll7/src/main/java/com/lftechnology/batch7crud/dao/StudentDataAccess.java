@@ -18,37 +18,35 @@ import java.util.logging.Logger;
  */
 public class StudentDataAccess {
   private static final Logger LOGGER = Logger.getLogger(StudentDataAccess.class.getName());
-  PreparedStatement ps = null;
+  private static final String INSERT = "insert into students (name,address,roll) values (?,?,?);";
+  private static final String FETCH_ALL = "select * from students limit ? offset ?";
+  private static final String COUNT = "select count(*) as total from students";
+  private static final String FETCH_BY_ID = "select * from students where id = ?";
+  private static final String UPDATE = "update students set name = ?, address = ?, roll = ? where id = ?";
+  private static final String DELETE = "delete from students where id = ?";
 
-  public void addNew(Student s) throws DataException {
-    try (Connection conn = DbUtilities.getConncetion()) {
-      String query = "insert into students (name,address,roll) values (?,?,?);";
-      ps = conn.prepareStatement(query);
-      ps.setString(1, s.getName());
-      ps.setString(2, s.getAddress());
-      ps.setInt(3, s.getRoll());
+  public void addNew(Student student) throws DataException {
+    try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(INSERT)) {
+      ps.setString(1, student.getName());
+      ps.setString(2, student.getAddress());
+      ps.setInt(3, student.getRoll());
       ps.executeUpdate();
-      ps.close();
     } catch (SQLException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
     }
   }
 
-  public List<Student> fetch(int page, int pageSize) throws DataException {
-    try (Connection conn = DbUtilities.getConncetion()) {
+  public List<Student> fetch(int limit, int offset) throws DataException {
+    try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(FETCH_ALL)) {
       List<Student> studentList = new ArrayList<Student>();
-      String query = "select * from students limit ? offset ?";
-      ps = conn.prepareStatement(query);
-      ps.setInt(1, pageSize);
-      ps.setInt(2, (page - 1) * pageSize);
+      ps.setInt(1, limit);
+      ps.setInt(2, offset);
+
       ResultSet rs = ps.executeQuery();
       while (rs.next()) {
-        Student s = new Student(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
-        studentList.add(s);
+        Student student = new Student(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+        studentList.add(student);
       }
-      rs.close();
-      ps.close();
-      conn.close();
       return studentList;
 
     } catch (SQLException ex) {
@@ -58,11 +56,8 @@ public class StudentDataAccess {
   }
 
   public int fetchTotal() throws DataException {
-    try (Connection conn = DbUtilities.getConncetion()) {
-      String query = "SELECT COUNT(*) AS total FROM students";
+    try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(COUNT)) {
       int totalSize = 0;
-      ps = conn.prepareStatement(query);
-
       ResultSet rs = ps.executeQuery();
 
       while (rs.next()) {
@@ -71,30 +66,24 @@ public class StudentDataAccess {
       return totalSize;
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
       throw new DataException(e.getMessage());
     }
   }
 
   public Student fetchById(int id) throws DataException {
-    try (Connection conn = DbUtilities.getConncetion()) {
-      String query = "select * from students where id = ?";
-      ps = conn.prepareStatement(query);
+    try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(FETCH_BY_ID)) {
       ps.setInt(1, id);
       ResultSet rs = ps.executeQuery();
 
-      Student s = null;
+      Student student = null;
       while (rs.next()) {
-        s = new Student();
-        s.setId(rs.getInt("id"));
-        s.setName(rs.getString("name"));
-        s.setAddress(rs.getString("address"));
-        s.setRoll(rs.getInt("roll"));
+        student = new Student();
+        student.setId(rs.getInt("id"));
+        student.setName(rs.getString("name"));
+        student.setAddress(rs.getString("address"));
+        student.setRoll(rs.getInt("roll"));
       }
-      rs.close();
-      ps.close();
-      conn.close();
-      return s;
+      return student;
 
     } catch (SQLException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
@@ -102,31 +91,23 @@ public class StudentDataAccess {
     }
   }
 
-  public void update(Student s, int id) throws DataException {
-    try (Connection conn = DbUtilities.getConncetion()) {
-      String query = "update students set name = ?, address = ?, roll = ? where id = ?";
-      ps = conn.prepareStatement(query);
-      ps.setString(1, s.getName());
-      ps.setString(2, s.getAddress());
-      ps.setInt(3, s.getRoll());
-      ps.setInt(4, id);
+  public void update(Student student) throws DataException {
+    try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(UPDATE)) {
+      ps.setString(1, student.getName());
+      ps.setString(2, student.getAddress());
+      ps.setInt(3, student.getRoll());
+      ps.setInt(4, student.getId());
       ps.executeUpdate();
-      ps.close();
-      conn.close();
     } catch (SQLException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+      throw new DataException();
     }
   }
 
-  public void delete(int roll) throws DataException {
-    try (Connection conn = DbUtilities.getConncetion()) {
-      String query = "delete from students where roll = ?";
-      ps = conn.prepareStatement(query);
-      ps.setInt(1, roll);
+  public void delete(int id) throws DataException {
+    try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(DELETE)) {
+      ps.setInt(1, id);
       ps.executeUpdate();
-      ps.close();
-      conn.close();
-
     } catch (SQLException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       throw new DataException();
