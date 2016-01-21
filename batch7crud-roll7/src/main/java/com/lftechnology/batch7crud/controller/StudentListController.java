@@ -160,14 +160,4 @@ public class StudentListController extends CommonHttpServlet{
     }
   }
 
-//  public void showErrorPage(HttpServletRequest request, HttpServletResponse response) {
-//    RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
-//    try {
-//      view.forward(request, response);
-//    } catch (ServletException e) {
-//      LOGGER.log(Level.SEVERE, e.getMessage(), e);
-//    } catch (IOException e) {
-//      LOGGER.log(Level.SEVERE, e.getMessage(), e);
-//    }
-//  }
 }

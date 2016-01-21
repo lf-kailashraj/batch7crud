@@ -4,10 +4,7 @@ import com.lftechnology.batch7crud.db.DbUtilities;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Student;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,11 +23,15 @@ public class StudentDataAccess {
   private static final String DELETE = "delete from students where id = ?";
 
   public void addNew(Student student) throws DataException {
-    try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(INSERT)) {
+    try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
       ps.setString(1, student.getName());
       ps.setString(2, student.getAddress());
       ps.setInt(3, student.getRoll());
       ps.executeUpdate();
+      ResultSet rs = ps.getGeneratedKeys();
+      if(rs.next()) {
+        student.setId(rs.getInt(1));
+      }
     } catch (SQLException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
     }
