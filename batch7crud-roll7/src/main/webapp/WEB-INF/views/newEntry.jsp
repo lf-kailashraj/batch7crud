@@ -9,22 +9,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <base href = "${pageContext.request.contextPath}/">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <base href="${pageContext.request.contextPath}/">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <title>New Entry</title>
+  <title>New Entry</title>
 </head>
 <body>
 <form action="/Students/NewEntry" method="post">
-    <input type="text" name="name" placeholder="Name" value="${param.name}"/>
-    <input type="text" name="address" placeholder="Address"/>
-    <input type="text" name="roll" placeholder="Roll"/>
-    <input type="submit"/>
+  <input type="text" name="name" placeholder="Name" value="${param.name}"/>
+  <input type="text" name="address" placeholder="Address"/>
+  <input type="text" name="roll" placeholder="Roll"/>
+  <input type="submit"/>
 </form>
-${2+3}
 ${error}
 <c:if test="${error != null}">
-    <p>you have error</p>
+  <p>you have error</p>
 </c:if>
 <div><a href="/Students">View All</a></div>
 </body>

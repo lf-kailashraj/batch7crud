@@ -10,29 +10,29 @@ import java.util.List;
  * Created by leapfrog on 1/18/16.
  */
 public class StudentServices {
-    private StudentDataAccess studentDao = new StudentDataAccess();
+  private StudentDataAccess studentDao = new StudentDataAccess();
 
-    public void addNew(Student s) throws DataException {
-        studentDao.addNew(s);
-    }
+  public void addNew(Student s) throws DataException {
+    studentDao.addNew(s);
+  }
 
-    public List<Student> fetch(int page,int pageSize) throws DataException {
-        return studentDao.fetch(page,pageSize);
-    }
+  public List<Student> fetch(int page, int pageSize) throws DataException {
+    return studentDao.fetch(page, pageSize);
+  }
 
-    public int fetchTotal() throws DataException{
-        return studentDao.fetchTotal();
-    }
+  public int fetchTotal() throws DataException {
+    return studentDao.fetchTotal();
+  }
 
-    public Student fetchById(int id) throws DataException {
-        return studentDao.fetchById(id);
-    }
+  public Student fetchById(int id) throws DataException {
+    return studentDao.fetchById(id);
+  }
 
-    public void update(Student s,int id) throws DataException {
-        studentDao.update(s,id);
-    }
+  public void update(Student s, int id) throws DataException {
+    studentDao.update(s, id);
+  }
 
-    public void delete(int roll) throws DataException {
-        studentDao.delete(roll);
-    }
+  public void delete(int roll) throws DataException {
+    studentDao.delete(roll);
+  }
 }

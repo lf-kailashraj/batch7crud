@@ -8,11 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+  <title></title>
 </head>
 <body>
 OoPs something went wrong !!!
-<a href="Students">View All</a>
+<a href="/Students">View All</a>
 
 </body>
 </html>

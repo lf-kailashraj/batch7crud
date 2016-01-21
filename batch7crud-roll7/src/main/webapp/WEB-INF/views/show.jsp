@@ -8,15 +8,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <base href = "${pageContext.request.contextPath}/">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title></title>
+  <base href="${pageContext.request.contextPath}/">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title></title>
 </head>
 <body>
 Id : ${student.getId()}<br>
 Name : ${student.getName()}<br>
 Address : ${student.getAddress()}<br>
 Roll : ${student.getRoll()}<br>
-<a href="Students">View All</a>
+
+<a href="/Students">View All</a>
+
 </body>
 </html>
