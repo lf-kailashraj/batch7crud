@@ -20,11 +20,12 @@ import java.util.logging.Logger;
 @WebServlet(name = "StudentListController", urlPatterns = { "/Students/*" })
 public class StudentListController extends HttpServlet {
   private static final Logger LOGGER = Logger.getLogger(StudentListController.class.getName());
-  private static final String LISTURL = "/Students";
+  private static final String LISTURL = "Students";
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] urlPath = urlParts(request);
+
     try {
       if (urlPath.length == 3 && "NewEntry".equals(urlPath[2]))
         createProcess(request, response);
@@ -99,7 +100,7 @@ public class StudentListController extends HttpServlet {
 
       StudentServices stdServices = new StudentServices();
       stdServices.addNew(s);
-      response.sendRedirect(LISTURL);
+      response.sendRedirect(request.getContextPath() + "/" + LISTURL);
     } catch (NumberFormatException e) {
       request.setAttribute("error", "invalid roll");
       request.getServletContext().getRequestDispatcher("/WEB-INF/views/newEntry.jsp").forward(request, response);
@@ -128,7 +129,7 @@ public class StudentListController extends HttpServlet {
 
     StudentServices stdServices = new StudentServices();
     stdServices.update(s, id);
-    response.sendRedirect(LISTURL);
+    response.sendRedirect(request.getContextPath() + "/" + LISTURL);
 
   }
 
@@ -136,7 +137,7 @@ public class StudentListController extends HttpServlet {
     throws ServletException, IOException, DataException {
     StudentServices stdServices = new StudentServices();
     stdServices.delete(roll);
-    response.sendRedirect(LISTURL);
+    response.sendRedirect(request.getContextPath() + "/" + LISTURL);
 
   }
 
