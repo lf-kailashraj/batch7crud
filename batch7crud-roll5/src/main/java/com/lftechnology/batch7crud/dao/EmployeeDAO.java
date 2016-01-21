@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.lftechnology.batch7crud.constants.SqlConstants;
+import com.lftechnology.batch7crud.constants.SqlQueryConstants;
 import com.lftechnology.batch7crud.db.DBConnection;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
@@ -21,7 +21,7 @@ public class EmployeeDAO {
         List<Employee> empList = new ArrayList<Employee>();
         Employee emp = null;
 
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlConstants.READ_ALL_QUERY)) { // NOSONAR
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.READ_ALL_QUERY)) { // NOSONAR
             ps.setInt(1, limit);
             ps.setInt(2, offSet);
             ResultSet rs = ps.executeQuery();
@@ -44,7 +44,7 @@ public class EmployeeDAO {
     }
 
     public Employee fetchById(int id) throws DataException {
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlConstants.READ_BY_ID_QUERY)) { // NOSONAR
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.READ_BY_ID_QUERY)) { // NOSONAR
             Employee emp = null;
 
             ps.setInt(1, id);
@@ -67,7 +67,7 @@ public class EmployeeDAO {
     }
 
     public void deleteById(int id) throws DataException {
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlConstants.DELETE_QUERY)) { // NOSONAR
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.DELETE_QUERY)) { // NOSONAR
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -77,7 +77,7 @@ public class EmployeeDAO {
     }
 
     public void create(Employee employee) throws DataException {
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlConstants.INSERT_QUERY)) { // NOSONAR
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.INSERT_QUERY)) { // NOSONAR
             ps.setString(1, employee.getFirstName());
             ps.setString(2, employee.getLastName());
             ps.setString(3, employee.getDepartment());
@@ -90,7 +90,7 @@ public class EmployeeDAO {
     }
 
     public void edit(Employee employee) throws DataException {
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlConstants.UPDATE_QUERY)) { // NOSONAR
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.UPDATE_QUERY)) { // NOSONAR
             ps.setString(1, employee.getFirstName());
             ps.setString(2, employee.getLastName());
             ps.setString(3, employee.getDepartment());
@@ -104,7 +104,7 @@ public class EmployeeDAO {
     }
 
     public int count() throws DataException {
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlConstants.COUNT_QUERY); // NOSONAR
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.COUNT_QUERY); // NOSONAR
                 ResultSet rs = ps.executeQuery()) {
             if (rs.next())
                 return rs.getInt(1);

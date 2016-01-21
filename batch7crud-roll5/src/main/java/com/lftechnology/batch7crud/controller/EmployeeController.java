@@ -1,6 +1,6 @@
 package com.lftechnology.batch7crud.controller;
 
-import com.lftechnology.batch7crud.constants.EmployeeDataConstants;
+import com.lftechnology.batch7crud.constants.EmployeeAttributeConstants;
 import com.lftechnology.batch7crud.constants.NormalConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.model.Employee;
@@ -157,10 +157,10 @@ public class EmployeeController extends CustomHttpServlet {
 
     private Employee setDataAttribute(HttpServletRequest request) {
         Employee emp = new Employee();
-        emp.setFirstName(request.getParameter(EmployeeDataConstants.FIRST_NAME));
-        emp.setLastName(request.getParameter(EmployeeDataConstants.LAST_NAME));
-        emp.setDepartment(request.getParameter(EmployeeDataConstants.DEPARTMENT));
-        emp.setAddress(request.getParameter(EmployeeDataConstants.ADDRESS));
+        emp.setFirstName(request.getParameter(EmployeeAttributeConstants.FIRST_NAME));
+        emp.setLastName(request.getParameter(EmployeeAttributeConstants.LAST_NAME));
+        emp.setDepartment(request.getParameter(EmployeeAttributeConstants.DEPARTMENT));
+        emp.setAddress(request.getParameter(EmployeeAttributeConstants.ADDRESS));
 
         return emp;
     }
