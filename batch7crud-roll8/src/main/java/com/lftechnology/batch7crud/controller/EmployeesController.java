@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 @WebServlet({ "/employees/*" })
 public class EmployeesController extends CommonHttpServlet {
-  private static final Logger LOGGER = Logger.getLogger("employeeLogger");
+  private static final Logger LOGGER = Logger.getLogger(Employee.class.getName());
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
