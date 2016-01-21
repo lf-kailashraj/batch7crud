@@ -1,7 +1,7 @@
 package com.lftechnology.batch7crud.model;
 
 /**
- * Created by pratishshr on 1/14/16.
+ * Created by Pratish Shrestha <pratishshrestha@lftechnology.com> on 1/14/16.
  */
 public class Employee {
   private int id;

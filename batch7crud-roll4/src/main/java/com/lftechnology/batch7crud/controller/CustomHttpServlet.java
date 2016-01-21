@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by pratishshr on 1/19/16.
+ * Created by Pratish Shrestha <pratishshrestha@lftechnology.com> on 1/19/16.
  */
 public abstract class CustomHttpServlet extends HttpServlet {
 

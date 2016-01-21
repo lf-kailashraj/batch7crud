@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by pratishshr on 1/14/16.
+ * Created by Pratish Shrestha <pratishshrestha@lftechnology.com> on 1/14/16.
  */
 
 @WebServlet(name = "EmployeeController", urlPatterns = { "/employees/*" })
@@ -27,7 +27,6 @@ public class EmployeeController extends CustomHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
 
   private static EmployeeService employeeService;
-  public static final int RECORD_LIMIT = 20;
 
   public EmployeeController() {
     employeeService = new EmployeeService();
@@ -77,7 +76,7 @@ public class EmployeeController extends CustomHttpServlet {
         return;
       }
 
-      request.setAttribute(ATTRIB_EMPLOYEES, employeeService.fetch(page, RECORD_LIMIT));
+      request.setAttribute(ATTRIB_EMPLOYEES, employeeService.fetch(page, ATTRIB_RECORD_LIMIT));
       request.setAttribute(ATTRIB_CURRENT_PAGE, page);
       request.setAttribute(ATTRIB_NO_OF_PAGES, noOfPages);
 

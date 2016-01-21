@@ -1,7 +1,7 @@
 package com.lftechnology.batch7crud.constant;
 
 /**
- * Created by pratishshr on 1/21/16.
+ * Created by Pratish Shrestha <pratishshrestha@lftechnology.com> on 1/21/16.
  */
 public final class QueryConstants {
   public static final String QUERY_SELECT_FROM_EMPLOYEES_LIMIT_OFFSET = "SELECT * FROM employees LIMIT ? OFFSET ?";

@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by pratishshr on 1/14/16.
+ * Created by Pratish Shrestha <pratishshrestha@lftechnology.com> on 1/14/16.
  */
 public class EmployeeDao {
   private static final Logger LOGGER = Logger.getLogger(EmployeeDao.class.getName());

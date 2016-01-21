@@ -3,7 +3,7 @@ package com.lftechnology.batch7crud.constant;
 import java.io.File;
 
 /**
- * Created by pratishshr on 1/21/16.
+ * Created by Pratish Shrestha <pratishshrestha@lftechnology.com> on 1/21/16.
  */
 public class UrlConstants {
   public static final String SEPARATOR = File.separator;
