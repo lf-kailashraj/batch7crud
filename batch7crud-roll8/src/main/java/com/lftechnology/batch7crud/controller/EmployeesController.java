@@ -1,5 +1,7 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.lftechnology.batch7crud.constants.AppConstants;
+import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.services.EmployeeService;
@@ -32,13 +34,13 @@ public class EmployeesController extends CommonHttpServlet {
       if (parts.length == 0) {
         fetch(request, response);
       }
-      else if (parts.length == 2 && "create".equals(parts[1])) {
+      else if (parts.length == 2 && AppConstants.CREATE.equals(parts[1])) {
         create(request, response);
       }
       else if (parts.length == 2) {
         view(request, response);
       }
-      else if (parts.length == 3 && "edit".equals(parts[2])) {
+      else if (parts.length == 3 && AppConstants.EDIT.equals(parts[2])) {
         edit(request, response);
       }
       else {
@@ -51,26 +53,24 @@ public class EmployeesController extends CommonHttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String path = request.getPathInfo();
     if (path == null) {
-      request.getServletContext().getRequestDispatcher("/WEB-INF/views/employees/index.jsp").forward(request, response);
+      request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_LIST_PAGE).forward(request, response);
     }
     else {
       String[] parts = path.split("/");
-      if ("create".equals(parts[1])) {
+      if (AppConstants.CREATE.equals(parts[1])) {
         createProcess(request, response);
       }
-      else if ("edit".equals(parts[2])) {
-        int id = Integer.parseInt(parts[1]);
-        editProcess(request, response, id);
+      else if (AppConstants.EDIT.equals(parts[2])) {
+        editProcess(request, response);
       }
-      else if ("delete".equals(parts[2])) {
-        int id = Integer.parseInt(parts[1]);
-        deleteProcess(request, response, id);
+      else if (AppConstants.DELETE.equals(parts[2])) {
+        deleteProcess(request, response);
       }
     }
   }
 
   private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    request.getServletContext().getRequestDispatcher("/WEB-INF/views/employees/new.jsp").forward(request, response);
+    request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request, response);
   }
 
   private void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -79,7 +79,7 @@ public class EmployeesController extends CommonHttpServlet {
       EmployeeService employeeService = new EmployeeService();
       Employee employee = employeeService.fetchById(id);
       request.setAttribute("employee", employee);
-      RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/employees/edit.jsp");
+      RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_EDIT_PAGE);
       dispatcher.forward(request, response);
     }
     catch (DataException e) {
@@ -104,40 +104,41 @@ public class EmployeesController extends CommonHttpServlet {
       employee.setPhone(phone);
 
       employeeService.create(employee);
-      response.sendRedirect("/employees");
+      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       errorPage(request, response, e.getMessage());
     }
   }
 
-  private void editProcess(HttpServletRequest request, HttpServletResponse response, Integer id) throws IOException, ServletException {
+  private void editProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     try{
-
+      int id = parameterValueAsInt(request, 2);
       String name = request.getParameter("name");
       String address = request.getParameter("address");
       String designation = request.getParameter("designation");
       String phone = request.getParameter("phone");
 
       Employee employee = new Employee();
+      employee.setId(id);
       employee.setName(name);
       employee.setAddress(address);
       employee.setDesignation(designation);
       employee.setPhone(phone);
 
       EmployeeService employeeService = new EmployeeService();
-      employeeService.edit(employee, id);
+      employeeService.edit(employee);
       response.sendRedirect("/employees");
     }
     catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       errorPage(request, response, e.getMessage());
     }
-
   }
 
-  private void deleteProcess(HttpServletRequest request, HttpServletResponse response, Integer id) throws IOException, ServletException {
+  private void deleteProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     try {
+      int id = parameterValueAsInt(request, 2);
       EmployeeService employeeService = new EmployeeService();
       employeeService.delete(id);
       response.sendRedirect("/employees");
@@ -165,7 +166,7 @@ public class EmployeesController extends CommonHttpServlet {
       else {
         request.setAttribute("lastPageNo", (employeeCount / pageLimit) + 1);
       }
-      request.getServletContext().getRequestDispatcher("/WEB-INF/views/employees/index.jsp").forward(request, response);
+      request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_LIST_PAGE).forward(request, response);
     }
     catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -180,7 +181,7 @@ public class EmployeesController extends CommonHttpServlet {
       Employee employee = employeeService.fetchById(id);
       if (employee != null) {
         request.setAttribute("employee", employee);
-        request.getRequestDispatcher("/WEB-INF/views/employees/view.jsp").forward(request, response);
+        request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
       }
       else {
         pageNotFound(request, response);
