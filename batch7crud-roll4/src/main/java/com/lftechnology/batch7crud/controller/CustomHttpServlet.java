@@ -1,10 +1,16 @@
 package com.lftechnology.batch7crud.controller;
 
+import static com.lftechnology.batch7crud.constant.MessageConstant.*;
+import static com.lftechnology.batch7crud.constant.AttribConstants.*;
+import static com.lftechnology.batch7crud.constant.UrlConstants.*;
+import static com.lftechnology.batch7crud.constant.ParamConstants.*;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -12,28 +18,25 @@ import java.io.IOException;
  */
 public abstract class CustomHttpServlet extends HttpServlet {
 
-  private static final String ERROR_PAGE = "/WEB-INF/views/error.jsp";
-  private static final String MESSAGE = "message";
-
   protected void show404(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-    request.setAttribute(MESSAGE, "Page Not Found");
+    request.setAttribute(ATTRIB_MESSAGE, MESSAGE_PAGE_NOT_FOUND);
 
-    RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
+    RequestDispatcher view = request.getRequestDispatcher(URL_ERROR_PAGE);
     view.forward(request, response);
   }
 
   protected void show500(HttpServletRequest request, HttpServletResponse response, Throwable e) throws ServletException, IOException {
     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-    request.setAttribute(MESSAGE, e.getMessage());
+    request.setAttribute(ATTRIB_MESSAGE, e.getMessage());
 
-    RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
+    RequestDispatcher view = request.getRequestDispatcher(URL_ERROR_PAGE);
     view.forward(request, response);
   }
 
   public int pageNumber(HttpServletRequest request) {
-    if (request.getParameter("page") != null) {
-      return Integer.parseInt(request.getParameter("page"));
+    if (request.getParameter(PARAM_PAGE) != null) {
+      return Integer.parseInt(request.getParameter(PARAM_PAGE));
     } else {
       return 1;
     }
@@ -41,7 +44,7 @@ public abstract class CustomHttpServlet extends HttpServlet {
 
   public String[] parameterValues(HttpServletRequest request) {
     String urlPath = request.getRequestURI().substring(request.getContextPath().length());
-    return urlPath.split("/");
+    return urlPath.split(File.separator);
   }
 
   public int parameterValueAsInt(HttpServletRequest request, int index) {

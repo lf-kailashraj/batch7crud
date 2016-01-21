@@ -1,5 +1,8 @@
 package com.lftechnology.batch7crud.dao;
 
+import static com.lftechnology.batch7crud.constant.QueryConstants.*;
+import static com.lftechnology.batch7crud.constant.EntityConstants.*;
+
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.util.DbConnection;
@@ -14,31 +17,25 @@ import java.util.logging.Logger;
  * Created by pratishshr on 1/14/16.
  */
 public class EmployeeDao {
-  private static final Logger LOGGER = Logger.getLogger("EmployeeDaoLog");
+  private static final Logger LOGGER = Logger.getLogger(EmployeeDao.class.getName());
 
   public List<Employee> fetch(int page, int recordLimit) throws DataException {
-    Connection connection = null;
-    PreparedStatement stmt = null;
-    ResultSet rs = null;
-
-    try {
-      connection = DbConnection.getConnection();
+    try (Connection connection = DbConnection.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(QUERY_SELECT_FROM_EMPLOYEES_LIMIT_OFFSET)) {
       List<Employee> employeeList = new ArrayList<Employee>();
       int offset = (page - 1) * recordLimit;
-      String sql = "SELECT * FROM employees LIMIT ? OFFSET ?";
 
-      stmt = connection.prepareStatement(sql);
       stmt.setInt(1, recordLimit);
       stmt.setInt(2, offset);
 
-      rs = stmt.executeQuery();
+      ResultSet rs = stmt.executeQuery();
 
       while (rs.next()) {
         Employee e = new Employee();
-        e.setId(rs.getInt("id"));
-        e.setFirstName(rs.getString("first_name"));
-        e.setLastName(rs.getString("last_name"));
-        e.setStation(rs.getString("station"));
+        e.setId(rs.getInt(ENTITY_EMPLOYEE_ID));
+        e.setFirstName(rs.getString(ENTITY_EMPLOYEE_FIRST_NAME));
+        e.setLastName(rs.getString(ENTITY_EMPLOYEE_LAST_NAME));
+        e.setStation(rs.getString(ENTITY_EMPLOYEE_STATION));
         employeeList.add(e);
       }
       return employeeList;
@@ -47,32 +44,23 @@ public class EmployeeDao {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
 
-    } finally {
-      DbConnection.closeResultSet(rs);
-      DbConnection.closePreparedStatement(stmt);
-      DbConnection.closeConnection(connection);
     }
   }
 
   public Employee fetchById(int id) throws DataException {
-    Connection connection = null;
-    PreparedStatement stmt = null;
-    ResultSet rs = null;
-
-    try {
-      connection = DbConnection.getConnection();
+    try (Connection connection = DbConnection.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(QUERY_SELECT_FROM_EMPLOYEES_WHERE_ID)) {
       Employee e = null;
-      String sql = "SELECT * FROM employees WHERE id=?";
-      stmt = connection.prepareStatement(sql);
+
       stmt.setInt(1, id);
-      rs = stmt.executeQuery();
+      ResultSet rs = stmt.executeQuery();
 
       while (rs.next()) {
         e = new Employee();
-        e.setId(rs.getInt("id"));
-        e.setFirstName(rs.getString("first_name"));
-        e.setLastName(rs.getString("last_name"));
-        e.setStation(rs.getString("station"));
+        e.setId(rs.getInt(ENTITY_EMPLOYEE_ID));
+        e.setFirstName(rs.getString(ENTITY_EMPLOYEE_FIRST_NAME));
+        e.setLastName(rs.getString(ENTITY_EMPLOYEE_LAST_NAME));
+        e.setStation(rs.getString(ENTITY_EMPLOYEE_STATION));
       }
       return e;
 
@@ -80,21 +68,13 @@ public class EmployeeDao {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
 
-    } finally {
-      DbConnection.closeResultSet(rs);
-      DbConnection.closePreparedStatement(stmt);
-      DbConnection.closeConnection(connection);
     }
   }
 
   public void insert(Employee employee) throws DataException {
-    Connection connection = null;
-    PreparedStatement stmt = null;
+    try (Connection connection = DbConnection.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(QUERY_INSERT_INTO_EMPLOYEES)) {
 
-    try {
-      connection = DbConnection.getConnection();
-      String sql = "INSERT INTO employees(first_name, last_name, station) VALUES(?,?,?)";
-      stmt = connection.prepareStatement(sql);
       stmt.setString(1, employee.getFirstName());
       stmt.setString(2, employee.getLastName());
       stmt.setString(3, employee.getStation());
@@ -104,20 +84,13 @@ public class EmployeeDao {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
 
-    } finally {
-      DbConnection.closePreparedStatement(stmt);
-      DbConnection.closeConnection(connection);
     }
   }
 
   public void update(Employee employee) throws DataException {
-    Connection connection = null;
-    PreparedStatement stmt = null;
+    try (Connection connection = DbConnection.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(QUERY_UPDATE_SET_EMPLOYEES)) {
 
-    try {
-      connection = DbConnection.getConnection();
-      String sql = "UPDATE employees SET first_name=?, last_name=?, station=? WHERE id=?";
-      stmt = connection.prepareStatement(sql);
       stmt.setString(1, employee.getFirstName());
       stmt.setString(2, employee.getLastName());
       stmt.setString(3, employee.getStation());
@@ -127,23 +100,12 @@ public class EmployeeDao {
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
-
-    } finally {
-      DbConnection.closePreparedStatement(stmt);
-      DbConnection.closeConnection(connection);
     }
   }
 
   public void deleteEmployee(int id) throws DataException {
-    Connection connection = null;
-    PreparedStatement stmt = null;
-    ResultSet rs = null;
-
-    try {
-      connection = DbConnection.getConnection();
-      String sql = "DELETE FROM employees WHERE id=?";
-
-      stmt = connection.prepareStatement(sql);
+    try (Connection connection = DbConnection.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(QUERY_DELETE_FROM_EMPLOYEES_WHERE_ID)) {
       stmt.setInt(1, id);
       stmt.executeUpdate();
 
@@ -151,24 +113,14 @@ public class EmployeeDao {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
 
-    } finally {
-      DbConnection.closeResultSet(rs);
-      DbConnection.closePreparedStatement(stmt);
-      DbConnection.closeConnection(connection);
     }
   }
 
   public int fetchNoOfRecords() throws DataException {
-    Connection connection = null;
-    PreparedStatement stmt = null;
-    ResultSet rs = null;
-
-    try {
-      connection = DbConnection.getConnection();
+    try (Connection connection = DbConnection.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(QUERY_COUNT_RECORDS_FROM_EMPLOYEES)) {
       int noOfRecords = 0;
-      String sql = "SELECT COUNT(*) FROM employees";
-      stmt = connection.prepareStatement(sql);
-      rs = stmt.executeQuery();
+      ResultSet rs = stmt.executeQuery();
 
       while (rs.next()) {
         noOfRecords = rs.getInt(1);
@@ -178,11 +130,6 @@ public class EmployeeDao {
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
-
-    } finally {
-      DbConnection.closeResultSet(rs);
-      DbConnection.closePreparedStatement(stmt);
-      DbConnection.closeConnection(connection);
     }
   }
 

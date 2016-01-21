@@ -1,5 +1,10 @@
 package com.lftechnology.batch7crud.controller;
 
+import static com.lftechnology.batch7crud.constant.AttribConstants.*;
+import static com.lftechnology.batch7crud.constant.RouteConstants.*;
+import static com.lftechnology.batch7crud.constant.UrlConstants.*;
+import static com.lftechnology.batch7crud.constant.ParamConstants.*;
+
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
@@ -16,10 +21,10 @@ import java.util.logging.Logger;
 /**
  * Created by pratishshr on 1/14/16.
  */
+
 @WebServlet(name = "EmployeeController", urlPatterns = { "/employees/*" })
 public class EmployeeController extends CustomHttpServlet {
-  private static final String EMPLOYEE_LISTING_PAGE = "/employees";
-  private static final Logger LOGGER = Logger.getLogger("EmployeeControllerLog");
+  private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
 
   private static EmployeeService employeeService;
 
@@ -31,13 +36,13 @@ public class EmployeeController extends CustomHttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] parameters = parameterValues(request);
 
-    if (parameters.length == 2 && "employees".equals(parameters[1])) {
+    if (parameters.length == 2) {
       list(request, response);
-    } else if (parameters.length == 3 && "create".equals(parameters[2])) {
+    } else if (parameters.length == 3 && ROUTE_CREATE.equals(parameters[2])) {
       create(request, response);
     } else if (parameters.length == 3) {
       viewProfile(request, response);
-    } else if (parameters.length == 4 && "edit".equals(parameters[3])) {
+    } else if (parameters.length == 4 && ROUTE_EDIT.equals(parameters[3])) {
       edit(request, response);
     } else {
       show404(request, response);
@@ -49,11 +54,11 @@ public class EmployeeController extends CustomHttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] parameters = parameterValues(request);
 
-    if (parameters.length == 3 && "create".equals(parameters[2])) {
+    if (parameters.length == 3 && ROUTE_CREATE.equals(parameters[2])) {
       createProcess(request, response);
-    } else if (parameters.length == 4 && "edit".equals(parameters[3])) {
+    } else if (parameters.length == 4 && ROUTE_EDIT.equals(parameters[3])) {
       editProcess(request, response);
-    } else if (parameters.length == 4 && "delete".equals(parameters[3])) {
+    } else if (parameters.length == 4 && ROUTE_DELETE.equals(parameters[3])) {
       deleteProcess(request, response);
     } else {
       show404(request, response);
@@ -62,8 +67,6 @@ public class EmployeeController extends CustomHttpServlet {
 
   private void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
-      String forward = "/WEB-INF/views/employees.jsp";
-
       int page = pageNumber(request);
       int noOfRecords = employeeService.fetchNoOfRecords();
       int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / 20);
@@ -74,11 +77,11 @@ public class EmployeeController extends CustomHttpServlet {
         return;
       }
 
-      request.setAttribute("employees", employeeService.fetch(page, recordLimit));
-      request.setAttribute("currentPage", page);
-      request.setAttribute("noOfPages", noOfPages);
+      request.setAttribute(ATTRIB_EMPLOYEES, employeeService.fetch(page, recordLimit));
+      request.setAttribute(ATTRIB_CURRENT_PAGE, page);
+      request.setAttribute(ATTRIB_NO_OF_PAGES, noOfPages);
 
-      RequestDispatcher view = request.getRequestDispatcher(forward);
+      RequestDispatcher view = request.getRequestDispatcher(URL_EMPLOYEE_LISTING_PAGE);
       view.forward(request, response);
 
     } catch (DataException e) {
@@ -90,16 +93,14 @@ public class EmployeeController extends CustomHttpServlet {
   }
 
   private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String forward = "/WEB-INF/views/create.jsp";
-
-    RequestDispatcher view = request.getRequestDispatcher(forward);
+    RequestDispatcher view = request.getRequestDispatcher(URL_EMPLOYEE_CREATE_PAGE);
     view.forward(request, response);
   }
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String firstName = request.getParameter("firstName");
-    String lastName = request.getParameter("lastName");
-    String station = request.getParameter("station");
+    String firstName = request.getParameter(PARAM_FIRST_NAME);
+    String lastName = request.getParameter(PARAM_LAST_NAME);
+    String station = request.getParameter(PARAM_STATION);
 
     Employee employee = new Employee();
     employee.setFirstName(firstName);
@@ -108,7 +109,7 @@ public class EmployeeController extends CustomHttpServlet {
 
     try {
       employeeService.save(employee);
-      response.sendRedirect(request.getContextPath() + EMPLOYEE_LISTING_PAGE);
+      response.sendRedirect(request.getContextPath() + ROUTE_EMPLOYEES);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
@@ -118,10 +119,9 @@ public class EmployeeController extends CustomHttpServlet {
   private void viewProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       int employeeId = parameterValueAsInt(request, 2);
-      String forward = "/WEB-INF/views/profile.jsp";
-      request.setAttribute("employee", employeeService.fetchById(employeeId));
 
-      RequestDispatcher view = request.getRequestDispatcher(forward);
+      request.setAttribute(ATTRIB_EMPLOYEE, employeeService.fetchById(employeeId));
+      RequestDispatcher view = request.getRequestDispatcher(URL_EMPLOYEE_PROFILE_PAGE);
       view.forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -134,10 +134,9 @@ public class EmployeeController extends CustomHttpServlet {
   private void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       int employeeId = parameterValueAsInt(request, 2);
-      String forward = "/WEB-INF/views/edit.jsp";
-      request.setAttribute("employee", employeeService.fetchById(employeeId));
 
-      RequestDispatcher view = request.getRequestDispatcher(forward);
+      request.setAttribute(ATTRIB_EMPLOYEE, employeeService.fetchById(employeeId));
+      RequestDispatcher view = request.getRequestDispatcher(URL_EMPLOYEE_EDIT_PAGE);
       view.forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -151,9 +150,10 @@ public class EmployeeController extends CustomHttpServlet {
   private void editProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       int employeeId = parameterValueAsInt(request, 2);
-      String firstName = request.getParameter("firstName");
-      String lastName = request.getParameter("lastName");
-      String station = request.getParameter("station");
+
+      String firstName = request.getParameter(PARAM_FIRST_NAME);
+      String lastName = request.getParameter(PARAM_LAST_NAME);
+      String station = request.getParameter(PARAM_STATION);
 
       Employee employee = new Employee();
       employee.setId(employeeId);
@@ -162,7 +162,7 @@ public class EmployeeController extends CustomHttpServlet {
       employee.setStation(station);
 
       employeeService.update(employee);
-      response.sendRedirect(request.getContextPath() + EMPLOYEE_LISTING_PAGE);
+      response.sendRedirect(request.getContextPath() + ROUTE_EMPLOYEES);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
@@ -176,7 +176,7 @@ public class EmployeeController extends CustomHttpServlet {
     try {
       int employeeId = parameterValueAsInt(request, 2);
       employeeService.deleteEmployee(employeeId);
-      response.sendRedirect(request.getContextPath() + EMPLOYEE_LISTING_PAGE);
+      response.sendRedirect(request.getContextPath() + ROUTE_EMPLOYEES);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
