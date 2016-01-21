@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.lftechnology.batch7crud.constant.CommonConstant;
-import com.lftechnology.batch7crud.constant.PageConstant;
 
 /**
  * This is an abstract class which is extended by servlets. It contains commonly
@@ -59,8 +58,8 @@ public abstract class CustomHttpServlet extends HttpServlet {
   }
 
   public int getPageNumber(HttpServletRequest request) {
-    if (request.getParameter(PageConstant.PAGE_NUMBER) != null) {
-      return Integer.parseInt(request.getParameter(PageConstant.PAGE_NUMBER));
+    if (request.getParameter(CommonConstant.PAGE_NUMBER) != null) {
+      return Integer.parseInt(request.getParameter(CommonConstant.PAGE_NUMBER));
     } else {
       return 1;
     }

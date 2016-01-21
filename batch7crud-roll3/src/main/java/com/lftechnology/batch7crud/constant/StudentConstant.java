@@ -14,6 +14,8 @@ public class StudentConstant {
   public static final String LIST_PAGE = "/WEB-INF/views/student/list.jsp";
 
   public static final String INVALID_ROLL_MESSAGE = "Invalid Roll Number";
+  
+ 
 
   private StudentConstant() {
   }

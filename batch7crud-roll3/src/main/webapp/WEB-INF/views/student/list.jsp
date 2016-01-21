@@ -36,8 +36,61 @@
 	<c:if test="${page > 1}">
 		<a href="students?page=${page - 1}">Previous</a>
 	</c:if>
-	${page}
-	<c:if test="${(page * pageSize) < count}">
+
+	<c:if test="${numberOfPages <= 6}">
+		<c:forEach var="i" begin="1" end="${numberOfPages}">
+			<c:if test="${page != i}">
+				<a href="students?page=${i}">${i}</a>
+			</c:if>
+			<c:if test="${page == i}">
+				${i}
+			</c:if>
+		</c:forEach>
+	</c:if>
+	<c:if
+		test="${numberOfPages > 6 && (page == 1 || page == 2 || page == 3)}">
+		<c:forEach var="i" begin="1" end="3">
+			<c:if test="${page != i}">
+				<a href="students?page=${i}">${i}</a>
+			</c:if>
+			<c:if test="${page == i}">
+				${i}
+			</c:if>
+		</c:forEach>
+		..
+		<a href="students?page=${numberOfPages-1}">${numberOfPages-1}</a>
+		<a href="students?page=${numberOfPages}">${numberOfPages}</a>
+	</c:if>
+	<c:if
+		test="${numberOfPages > 6 && (page == numberOfPages-2 || page == numberOfPages-1 || page == numberOfPages)}">
+		<a href="students?page=1">1</a>
+		<a href="students?page=2">2</a>
+		..
+		<c:forEach var="i" begin="${numberOfPages-2}" end="${numberOfPages}">
+			<c:if test="${page != i}">
+				<a href="students?page=${i}">${i}</a>
+			</c:if>
+			<c:if test="${page == i}">
+				${i}
+			</c:if>
+		</c:forEach>
+
+	</c:if>
+	<c:if
+		test="${numberOfPages > 6 && page != numberOfPages-2 && page != numberOfPages-1 && page != numberOfPages && page != 3 && page != 2 && page != 1}">
+		<a href="students?page=1">1</a>
+		<a href="students?page=2">2</a>
+		..
+		${page}
+		<a href="students?page=${page + 1}">${page + 1}</a>
+		<c:if test="${page != (numberOfPages - 3)}">
+		..
+		</c:if>
+		<a href="students?page=${numberOfPages-1}">${numberOfPages-1}</a>
+		<a href="students?page=${numberOfPages}">${numberOfPages}</a>
+	</c:if>
+
+	<c:if test="${numberOfPages > page}">
 		<a href="students?page=${page + 1}">Next</a>
 	</c:if>
 </body>

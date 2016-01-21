@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.lftechnology.batch7crud.constant.CommonConstant;
-import com.lftechnology.batch7crud.constant.PageConstant;
 import com.lftechnology.batch7crud.constant.StudentConstant;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
@@ -74,15 +73,14 @@ public class StudentController extends CustomHttpServlet {
 
     List<Student> studentList = studentService.fetch(page, pageSize);
     int count = studentService.fetchTotal();
-
-    if (page != 1 && page > Math.ceil(count / (float) pageSize)) {
+    int numberOfPages = (int) Math.ceil(count / (float) pageSize);
+    if (page != 1 && page > numberOfPages) {
       show404(request, response);
       return;
     }
     request.setAttribute(StudentConstant.STUDENT_LIST, studentList);
-    request.setAttribute(PageConstant.RECORDS_PER_PAGE, pageSize);
-    request.setAttribute(PageConstant.TOTAL_RECORDS, count);
-    request.setAttribute(PageConstant.PAGE_NUMBER, page);
+    request.setAttribute(CommonConstant.NUMBER_OF_PAGES, numberOfPages);
+    request.setAttribute(CommonConstant.PAGE_NUMBER, page);
     request.getRequestDispatcher(StudentConstant.LIST_PAGE).forward(request, response);
   }
 

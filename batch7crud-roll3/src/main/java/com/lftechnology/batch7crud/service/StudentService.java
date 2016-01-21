@@ -7,29 +7,29 @@ import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 
 public class StudentService {
-  private StudentDAO stdDAO = new StudentDAO();
+  private StudentDAO studentDAO = new StudentDAO();
 
   public void insert(Student student) throws DataException {
-    stdDAO.insert(student);
+    studentDAO.insert(student);
   }
 
   public List<Student> fetch(int page, int pageSize) throws DataException {
-    return stdDAO.fetch(page, pageSize);
+    return studentDAO.fetch(page, pageSize);
   }
 
   public Student fetchStudentById(int id) throws DataException {
-    return stdDAO.fetchStudentById(id);
+    return studentDAO.fetchStudentById(id);
   }
 
   public int fetchTotal() throws DataException {
-    return stdDAO.fetchTotal();
+    return studentDAO.fetchTotal();
   }
 
   public void edit(Student student, int id) throws DataException {
-    stdDAO.edit(student, id);
+    studentDAO.edit(student, id);
   }
 
   public void delete(int id) throws DataException {
-    stdDAO.delete(id);
+    studentDAO.delete(id);
   }
 }
