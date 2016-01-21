@@ -24,33 +24,43 @@ public class StudentControllerServlet extends HTTPStatusHandler {
   private static StudentService studentService = new StudentService();
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) {
     String[] parameters = parameterValues(request);
-
-    if (parameters.length == 3 && Url.CREATE.equals(parameters[2])) {
-      createProcess(request, response);
-    } else if (parameters.length == 4 && Url.EDIT.equals(parameters[3])) {
-      editProcess(request, response);
-    } else if (parameters.length == 4 && Url.DELETE.equals(parameters[3])) {
-      deleteProcess(request, response);
-    } else {
-      show404(request, response);
+    try {
+      if (parameters.length == 3 && Url.CREATE.equals(parameters[2])) {
+        createProcess(request, response);
+      } else if (parameters.length == 4 && Url.EDIT.equals(parameters[3])) {
+        editProcess(request, response);
+      } else if (parameters.length == 4 && Url.DELETE.equals(parameters[3])) {
+        deleteProcess(request, response);
+      } else {
+        show404(request, response);
+      }
+    } catch(ServletException | IOException ex){
+      LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+      show500(request, response, ex);
     }
   }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] parameters = parameterValues(request);
-    if (parameters.length == 2 && Url.STUDENTS.equals(parameters[1])) {
-      list(request, response);
-    } else if (parameters.length == 3 && Url.CREATE.equals(parameters[2])) {
-      create(request, response);
-    } else if (parameters.length == 4 && Url.EDIT.equals(parameters[3])) {
-      edit(request, response);
-    } else if (parameters.length == 4 && Url.VIEW.equals(parameters[3])) {
-      view(request, response);
-    } else {
-      show404(request, response);
+    try{
+      if (parameters.length == 2 && Url.STUDENTS.equals(parameters[1])) {
+        list(request, response);
+      } else if (parameters.length == 3 && Url.CREATE.equals(parameters[2])) {
+        create(request, response);
+      } else if (parameters.length == 4 && Url.EDIT.equals(parameters[3])) {
+        edit(request, response);
+      } else if (parameters.length == 4 && Url.VIEW.equals(parameters[3])) {
+        view(request, response);
+      } else {
+        show404(request, response);
+      }
+    }
+    catch(ServletException | IOException ex){
+      LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+      show500(request, response, ex);
     }
   }
 
