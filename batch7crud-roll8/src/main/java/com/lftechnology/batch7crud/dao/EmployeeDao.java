@@ -30,6 +30,10 @@ public class EmployeeDao {
       statement.setString(3, employee.getDesignation());
       statement.setString(4, employee.getPhone());
       statement.executeUpdate();
+      ResultSet resultSet = statement.getGeneratedKeys();
+      if (resultSet.next()) {
+        employee.setId(resultSet.getInt(1));
+      }
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
