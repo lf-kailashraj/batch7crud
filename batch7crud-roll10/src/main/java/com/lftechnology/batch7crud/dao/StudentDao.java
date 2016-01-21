@@ -63,17 +63,17 @@ public class StudentDao {
     }
   }
 
-  public void insert(Student stud) throws DataException {
+  public void insert(Student student) throws DataException {
     try (Connection conn = DbUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(QueryConstant.INSERT_INTO_STUDENT)
     ) {
 
-      ps.setString(1, stud.getName());
-      ps.setString(2, stud.getAddress());
-      ps.setDate(3, new java.sql.Date(stud.getDob().getTime()));
-      ps.setString(4, stud.getDepartment());
-      ps.setString(5, stud.getBatch());
-      ps.setInt(6, stud.getRoll());
+      ps.setString(1, student.getName());
+      ps.setString(2, student.getAddress());
+      ps.setDate(3, new java.sql.Date(student.getDob().getTime()));
+      ps.setString(4, student.getDepartment());
+      ps.setString(5, student.getBatch());
+      ps.setInt(6, student.getRoll());
       ps.executeUpdate();
 
     } catch (SQLException e) {
