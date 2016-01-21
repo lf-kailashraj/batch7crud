@@ -1,4 +1,11 @@
-package com.lftechnology.batch7crud.model;
+package com.lftechnology.batch7crud.entity;
+
+/**
+ * Employee Entity holds basic properties of Employee
+ *
+ * @Author Kiran Pariyar <kiranpariyar@lftechnology.com>
+ * Created on 1/18/16
+ */
 
 public class Employee {
   private int id;
@@ -9,6 +16,7 @@ public class Employee {
   private String address;
 
   public Employee() {
+    //empty constructor
   }
 
   public Employee(String userName, String password, String fullName, String department, String address) {

@@ -2,9 +2,17 @@ package com.lftechnology.batch7crud.service;
 
 import com.lftechnology.batch7crud.dao.EmployeeDAO;
 import com.lftechnology.batch7crud.exception.DataException;
-import com.lftechnology.batch7crud.model.Employee;
+import com.lftechnology.batch7crud.entity.Employee;
 
 import java.util.List;
+
+/**
+ * EmployeeSevice provides Create, Delete, Edit services for employee
+ * It invokes EmployeeDAO for CRUD operation
+ *
+ * @Author Kiran Pariyar <kiranpariyar@lftechnology.com>
+ * Created on 1/18/16
+ */
 
 public class EmployeeService {
 
@@ -26,8 +34,8 @@ public class EmployeeService {
     return employeeDAO.fetchNoOfRecords();
   }
 
-  public void update(Employee employee, int id) throws DataException {
-    employeeDAO.update(employee, id);
+  public void update(Employee employee) throws DataException {
+    employeeDAO.update(employee);
   }
 
   public void delete(int id) throws DataException {

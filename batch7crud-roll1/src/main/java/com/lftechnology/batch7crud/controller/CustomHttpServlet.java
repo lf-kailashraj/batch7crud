@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Custom HttpServlet that handles the common operations of all servlets
+ *
  * @Author Kiran Pariyar <kiranpariyar@lftechnology.com>
- * Created on 1/19/16
+ * Created on 1/18/16
  */
 
 public abstract class CustomHttpServlet extends HttpServlet {

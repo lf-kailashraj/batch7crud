@@ -2,7 +2,7 @@ package com.lftechnology.batch7crud.dao;
 
 import com.lftechnology.batch7crud.utils.DbUtils;
 import com.lftechnology.batch7crud.exception.DataException;
-import com.lftechnology.batch7crud.model.Employee;
+import com.lftechnology.batch7crud.entity.Employee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+/**
+ * EmployeeDAO perfoms CRUD operation in employee table
+ *
+ * @Author Kiran Pariyar <kiranpariyar@lftechnology.com>
+ * Created on 1/18/16
+ */
 
 public class EmployeeDAO {
 
@@ -88,7 +95,7 @@ public class EmployeeDAO {
     }
   }
 
-  public void update(Employee employee, int id) throws DataException {
+  public void update(Employee employee) throws DataException {
 
     String sqlQuery = "UPDATE employee SET userName=?, password=?,fullName=?,department=?,address=? WHERE id=?"; //NOSONAR
     try (Connection connection = DbUtils.getConnection();
@@ -98,7 +105,7 @@ public class EmployeeDAO {
       ps.setString(3, employee.getFullName());
       ps.setString(4, employee.getDepartment());
       ps.setString(5, employee.getAddress());
-      ps.setInt(6, id);
+      ps.setInt(6, employee.getId());
       ps.executeUpdate();
 
     } catch (SQLException e) {
