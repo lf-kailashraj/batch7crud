@@ -31,7 +31,7 @@ public class EmployeeDao {
       statement.executeUpdate();
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      throw new DataException();
+      throw new DataException(e.getMessage());
     }
   }
 
@@ -56,7 +56,7 @@ public class EmployeeDao {
       return employeeList;
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      throw new DataException();
+      throw new DataException(e.getMessage());
     }
   }
 
@@ -80,7 +80,7 @@ public class EmployeeDao {
     }
     catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      throw new DataException();
+      throw new DataException(e.getMessage());
     }
   }
 
@@ -99,7 +99,7 @@ public class EmployeeDao {
     }
     catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      throw new DataException();
+      throw new DataException(e.getMessage());
     }
   }
 
@@ -112,7 +112,7 @@ public class EmployeeDao {
       statement.executeUpdate();
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      throw new DataException();
+      throw new DataException(e.getMessage());
     }
   }
 
@@ -130,7 +130,7 @@ public class EmployeeDao {
       }
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      throw new DataException();
+      throw new DataException(e.getMessage());
     }
   }
 }
