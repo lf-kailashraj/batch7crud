@@ -1,7 +1,6 @@
 package com.lftechnology.batch7crud.dao;
 
 import com.lftechnology.batch7crud.constant.EntityConstant;
-import com.lftechnology.batch7crud.constant.QueryConstant;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.utils.DbUtils;
@@ -21,13 +20,19 @@ import java.util.logging.Logger;
  */
 public class StudentDao {
   private static final Logger LOGGER = Logger.getLogger(StudentDao.class.getName());
+  private static final String FETCH_STUDENT_LIMIT_OFFSET = "SELECT * FROM student LIMIT ? OFFSET ?";
+  private static final String FETCH_STUDENT_BY_ID = "SELECT * FROM student WHERE id=?";
+  private static final String INSERT_INTO_STUDENT = "INSERT INTO student (name,address,dob,department,batch,roll) VALUES(?,?,?,?,?,?)";
+  private static final String DELETE_FROM_STUDENT = "DELETE FROM student WHERE id=?";
+  private static final String UPDATE_STUDENT = "UPDATE student SET name=?, address=?, dob=?, department=?, batch=?, roll=? WHERE id=?";
+  private static final String FETCH_TOTAL_STUDENT_COUNT = "SELECT count(*) AS total FROM student";
 
   public List<Student> fetch(Integer offset, Integer limit) throws DataException {
     List<Student> studentList = new ArrayList<>();
     ResultSet studentResult;
 
     try (Connection conn = DbUtils.getConnection();
-            PreparedStatement ps = conn.prepareStatement(QueryConstant.FETCH_STUDENT_LIMIT_OFFSET)
+            PreparedStatement ps = conn.prepareStatement(FETCH_STUDENT_LIMIT_OFFSET)
     ) {
 
       ps.setInt(1, limit);
@@ -65,7 +70,7 @@ public class StudentDao {
 
   public void insert(Student student) throws DataException {
     try (Connection conn = DbUtils.getConnection();
-            PreparedStatement ps = conn.prepareStatement(QueryConstant.INSERT_INTO_STUDENT)
+            PreparedStatement ps = conn.prepareStatement(INSERT_INTO_STUDENT)
     ) {
 
       ps.setString(1, student.getName());
@@ -84,7 +89,7 @@ public class StudentDao {
 
   public void delete(Integer studentId) throws DataException {
     try (Connection conn = DbUtils.getConnection();
-            PreparedStatement ps = conn.prepareStatement(QueryConstant.DELETE_FROM_STUDENT)
+            PreparedStatement ps = conn.prepareStatement(DELETE_FROM_STUDENT)
     ) {
 
       ps.setInt(1, studentId);
@@ -98,7 +103,7 @@ public class StudentDao {
 
   public void update(Student student) throws DataException {
     try (Connection conn = DbUtils.getConnection();
-            PreparedStatement ps = conn.prepareStatement(QueryConstant.UPDATE_STUDENT)
+            PreparedStatement ps = conn.prepareStatement(UPDATE_STUDENT)
     ) {
       ps.setString(1, student.getName());
       ps.setString(2, student.getAddress());
@@ -118,7 +123,7 @@ public class StudentDao {
   public Student fetchById(Integer id) throws DataException {
     ResultSet studentResult;
     try (Connection conn = DbUtils.getConnection();
-            PreparedStatement ps = conn.prepareStatement(QueryConstant.FETCH_STUDENT_BY_ID)
+            PreparedStatement ps = conn.prepareStatement(FETCH_STUDENT_BY_ID)
     ) {
       ps.setInt(1, id);
       studentResult = ps.executeQuery();
@@ -147,7 +152,7 @@ public class StudentDao {
   public Integer fetchTotalRecordNumber() throws DataException {
     ResultSet rs;
     try (Connection conn = DbUtils.getConnection();
-            PreparedStatement ps = conn.prepareStatement(QueryConstant.FETCH_TOTAL_STUDENT_COUNT)
+            PreparedStatement ps = conn.prepareStatement(FETCH_TOTAL_STUDENT_COUNT)
     ) {
       rs = ps.executeQuery();
 
