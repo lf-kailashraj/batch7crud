@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,7 +22,8 @@ public class EmployeeDAO {
         List<Employee> empList = new ArrayList<Employee>();
         Employee emp = null;
 
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.READ_ALL_QUERY)) { // NOSONAR
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.READ_ALL_QUERY)) { // NOSONAR
             ps.setInt(1, limit);
             ps.setInt(2, offSet);
             ResultSet rs = ps.executeQuery();
@@ -44,7 +46,8 @@ public class EmployeeDAO {
     }
 
     public Employee fetchById(int id) throws DataException {
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.READ_BY_ID_QUERY)) { // NOSONAR
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.READ_BY_ID_QUERY)) { // NOSONAR
             Employee emp = null;
 
             ps.setInt(1, id);
@@ -77,12 +80,19 @@ public class EmployeeDAO {
     }
 
     public void create(Employee employee) throws DataException {
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.INSERT_QUERY)) { // NOSONAR
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) { // NOSONAR
             ps.setString(1, employee.getFirstName());
             ps.setString(2, employee.getLastName());
             ps.setString(3, employee.getDepartment());
             ps.setString(4, employee.getAddress());
             ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+
+            if (rs.next())
+                employee.setId(rs.getInt(1));
+
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
