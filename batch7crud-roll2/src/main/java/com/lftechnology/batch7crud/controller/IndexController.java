@@ -1,5 +1,7 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.lftechnology.batch7crud.constants.UrlConstants;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -8,13 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.lftechnology.batch7crud.util.TypeCaster;
+/**
+ * Created by Romit Amgai <romitamgai@lftechnology.com> on 1/19/16.
+ */
 
 @WebServlet({ "/" })
 public class IndexController extends HttpServlet {
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer i = TypeCaster.toInt("123");
-        System.out.println("value of i: " + i);
-        req.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
-    };
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    req.getServletContext().getRequestDispatcher(UrlConstants.INDEX_PAGE).forward(req, resp);
+  }
 }

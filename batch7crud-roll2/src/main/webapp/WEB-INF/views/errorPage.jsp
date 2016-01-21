@@ -1,5 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
@@ -8,15 +6,15 @@
   Time: 12:06 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <base href="${pageContext.request.contextPath}/">
-    <title>Information Management</title>
+    <title>Error Page</title>
 </head>
 <body>
-<h1>Information Management System</h1>
-<a href="employees">Employee Detail</a>
+<h1>Internal Server Error</h1>
+${message}
+<a href="employees">Go Back</a>
 </body>
 </html>

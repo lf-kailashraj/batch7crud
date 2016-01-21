@@ -21,7 +21,7 @@
 		<module>batch7crud-roll12</module>
 		<module>batch7crud-util</module>
 	</modules>
-	
+
 	<repositories>
 		<repository>
 			<id>apache-m2-snapshot</id>
