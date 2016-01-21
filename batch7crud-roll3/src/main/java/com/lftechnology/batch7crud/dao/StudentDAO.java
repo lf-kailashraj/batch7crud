@@ -95,12 +95,12 @@ public class StudentDAO {
     }
   }
 
-  public void edit(Student student, int id) throws DataException {
+  public void edit(Student student) throws DataException {
     try (Connection conn = DBConnection.getConnection();
         PreparedStatement stmnt = conn.prepareStatement("Update Students set roll=?, name=? where id=?")) {
       stmnt.setInt(1, student.getRoll());
       stmnt.setString(2, student.getName());
-      stmnt.setInt(3, id);
+      stmnt.setInt(3, student.getId());
       stmnt.executeUpdate();
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);

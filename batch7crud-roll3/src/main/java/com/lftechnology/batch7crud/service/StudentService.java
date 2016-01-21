@@ -25,8 +25,8 @@ public class StudentService {
     return studentDAO.fetchTotal();
   }
 
-  public void edit(Student student, int id) throws DataException {
-    studentDAO.edit(student, id);
+  public void edit(Student student) throws DataException {
+    studentDAO.edit(student);
   }
 
   public void delete(int id) throws DataException {

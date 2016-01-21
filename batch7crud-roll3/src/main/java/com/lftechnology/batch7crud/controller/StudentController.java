@@ -145,7 +145,8 @@ public class StudentController extends CustomHttpServlet {
     try {
       int id = parameterValueAsInt(request, 2);
       Student student = constructStudentFromRequest(request);
-      studentService.edit(student, id);
+      student.setId(id);
+      studentService.edit(student);
 
       response.sendRedirect(request.getContextPath() + STUDENT_LIST_CONTROLLER);
     } catch (NumberFormatException e) {
