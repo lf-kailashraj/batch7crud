@@ -3,6 +3,7 @@ package com.lftechnology.batch7crud.controller;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.services.EmployeeServices;
+import com.lftechnology.batch7crud.util.TypeCaster;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,6 +29,10 @@ public class EmployeesController extends HttpServlet{
       String[] parts = path.split("/");
       if (parts[1].equals("create")) {
         create(request, response);
+      }
+      else if (parts.length == 2) {
+        Integer id = TypeCaster.toInt(parts[1]);
+        view(request, response, id);
       }
       else if (parts[2].equals("edit")) {
         int id = Integer.parseInt(parts[1]);
@@ -143,13 +148,13 @@ public class EmployeesController extends HttpServlet{
     Integer pageLimit = 4;
     try {
       EmployeeServices employeeServices = new EmployeeServices();
-      List<Employee> employeeList = employeeServices.fetch(pageLimit, pageNo-1);
+      List<Employee> employeeList = employeeServices.fetch(pageLimit, pageNo - 1);
       Integer employeeCount = employeeServices.count();
       request.setAttribute("employeeList", employeeList);
       request.setAttribute("employeeCount", employeeCount);
       request.setAttribute("pageNo", pageNo);
       if ((employeeCount%pageLimit) == 0) {
-        request.setAttribute("lastPageNo", employeeCount/pageLimit);
+        request.setAttribute("lastPageNo", employeeCount / pageLimit);
       }
       else {
         request.setAttribute("lastPageNo", (employeeCount/pageLimit)+1);
@@ -157,6 +162,30 @@ public class EmployeesController extends HttpServlet{
 
       request.getServletContext().getRequestDispatcher("/WEB-INF/views/employees/index.jsp").forward(request, response);
     } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void view(HttpServletRequest request, HttpServletResponse response, Integer id) {
+    try {
+      EmployeeServices employeeService = new EmployeeServices();
+      Employee employee = employeeService.fetchById(id);
+      if (employee != null) {
+        request.setAttribute("employee", employee);
+        request.getRequestDispatcher("/WEB-INF/views/employees/view.jsp").forward(request, response);
+      }
+      else {
+        System.out.println("User not found");
+        // needs to be redirected
+      }
+
+    } catch (NumberFormatException e) {
+        e.printStackTrace();
+    } catch (ServletException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (DataException e) {
       e.printStackTrace();
     }
   }

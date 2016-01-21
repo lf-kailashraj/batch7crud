@@ -28,6 +28,7 @@
           <th>Address</th>
           <th>Designation</th>
           <th>Phone</th>
+          <th>View</th>
           <th>Edit</th>
           <th>Delete</th>
         </tr>
@@ -39,6 +40,7 @@
             <td>${employee.getAddress()}</td>
             <td>${employee.getDesignation()}</td>
             <td>${employee.getPhone()}</td>
+            <td><a href="employees/${employee.getId()}">View</a></td>
             <td><a href="employees/${employee.getId()}/edit">Edit</a></td>
             <td><a class="delete" href= "employees/${employee.getId()}/deleteProcess">Delete</a></td>
           </tr>
