@@ -10,4 +10,8 @@ public final class QueryConstants {
   public static final String QUERY_UPDATE_SET_EMPLOYEES = "UPDATE employees SET first_name=?, last_name=?, station=? WHERE id=?";
   public static final String QUERY_DELETE_FROM_EMPLOYEES_WHERE_ID = "DELETE FROM employees WHERE id=?";
   public static final String QUERY_COUNT_RECORDS_FROM_EMPLOYEES = "SELECT COUNT(*) FROM employees";
+
+  private QueryConstants() {
+
+  }
 }

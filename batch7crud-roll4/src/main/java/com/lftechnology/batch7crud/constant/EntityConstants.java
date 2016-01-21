@@ -9,4 +9,7 @@ public final class EntityConstants {
   public static final String ENTITY_EMPLOYEE_LAST_NAME = "last_name";
   public static final String ENTITY_EMPLOYEE_STATION = "station";
 
+  private EntityConstants() {
+
+  }
 }

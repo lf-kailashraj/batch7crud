@@ -10,4 +10,8 @@ public class UrlConstants {
   public static final String URL_EMPLOYEE_EDIT_PAGE = "/WEB-INF/views/edit.jsp";
 
   public static final String URL_ERROR_PAGE = "/WEB-INF/views/error.jsp";
+
+  private UrlConstants() {
+
+  }
 }

@@ -8,4 +8,8 @@ public final class ParamConstants {
   public static final String PARAM_LAST_NAME = "lastName";
   public static final String PARAM_STATION = "station";
   public static final String PARAM_PAGE = "page";
+
+  private ParamConstants() {
+
+  }
 }

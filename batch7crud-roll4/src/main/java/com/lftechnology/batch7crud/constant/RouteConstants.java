@@ -8,4 +8,8 @@ public final class RouteConstants {
   public static final String ROUTE_EDIT = "edit";
   public static final String ROUTE_DELETE = "delete";
   public static final String ROUTE_EMPLOYEES = "/employees";
+
+  private RouteConstants() {
+
+  }
 }
