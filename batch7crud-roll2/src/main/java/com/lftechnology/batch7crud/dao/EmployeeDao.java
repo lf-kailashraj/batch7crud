@@ -1,7 +1,6 @@
 package com.lftechnology.batch7crud.dao;
 
 import com.lftechnology.batch7crud.constants.EntityConstants;
-import com.lftechnology.batch7crud.constants.QueryConstants;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.util.DBConnection;
@@ -20,10 +19,16 @@ import java.util.logging.Logger;
  */
 public class EmployeeDao {
   private static final Logger LOGGER = Logger.getLogger(EmployeeDao.class.getName());
+  private static final String EMPLOYEE_INSERT = "INSERT INTO employee (username,address,email,contact) VALUES (?,?,?,?)";
+  private static final String EMPLOYEE_SELECT_LIMIT_OFFSET = "SELECT * FROM employee ORDER BY id LIMIT ? OFFSET ?";
+  private static final String EMPLOYEE_SELECT_BY_ID = "SELECT * FROM employee WHERE id=?";
+  private static final String EMPLOYEE_UPDATE_BY_ID = "UPDATE employee SET username=?, address=?, email=?, contact=? WHERE id=?";
+  private static final String EMPLOYEE_DELETE_BY_ID = "DELETE FROM employee where id=?";
+  private static final String EMPLOYEE_SELECT_COUNT = "SELECT COUNT(*) AS total FROM employee";
 
   public void insert(Employee employee) throws DataException {
     try (Connection con = DBConnection.getSqlConnection();
-            PreparedStatement preStmt = con.prepareStatement(QueryConstants.EMPLOYEE_INSERT)) {
+            PreparedStatement preStmt = con.prepareStatement(EMPLOYEE_INSERT)) {
       preStmt.setString(1, employee.getName());
       preStmt.setString(2, employee.getAddress());
       preStmt.setString(3, employee.getEmail());
@@ -37,7 +42,7 @@ public class EmployeeDao {
 
   public List<Employee> fetch(int noOfRecordsPerPage, int page) throws DataException {
     try (Connection con = DBConnection.getSqlConnection();
-            PreparedStatement preStmt = con.prepareStatement(QueryConstants.EMPLOYEE_SELECT_LIMIT_OFFSET)) {
+            PreparedStatement preStmt = con.prepareStatement(EMPLOYEE_SELECT_LIMIT_OFFSET)) {
       List<Employee> empList = new ArrayList<Employee>();
       preStmt.setInt(1, noOfRecordsPerPage);
       preStmt.setInt(2, page);
@@ -60,7 +65,7 @@ public class EmployeeDao {
 
   public Employee fetchById(int id) throws DataException {
     try (Connection con = DBConnection.getSqlConnection();
-            PreparedStatement preStmt = con.prepareStatement(QueryConstants.EMPLOYEE_SELECT_BY_ID)) {
+            PreparedStatement preStmt = con.prepareStatement(EMPLOYEE_SELECT_BY_ID)) {
       Employee employee = null;
       preStmt.setInt(1, id);
       ResultSet resultSet = preStmt.executeQuery();
@@ -81,7 +86,7 @@ public class EmployeeDao {
 
   public void update(Employee employee) throws DataException {
     try (Connection con = DBConnection.getSqlConnection();
-            PreparedStatement preStmt = con.prepareStatement(QueryConstants.EMPLOYEE_UPDATE_BY_ID)) {
+            PreparedStatement preStmt = con.prepareStatement(EMPLOYEE_UPDATE_BY_ID)) {
       preStmt.setString(1, employee.getName());
       preStmt.setString(2, employee.getAddress());
       preStmt.setString(3, employee.getEmail());
@@ -96,7 +101,7 @@ public class EmployeeDao {
 
   public void delete(int empId) throws DataException {
     try (Connection con = DBConnection.getSqlConnection();
-            PreparedStatement preStmt = con.prepareStatement(QueryConstants.EMPLOYEE_DELETE_BY_ID)) {
+            PreparedStatement preStmt = con.prepareStatement(EMPLOYEE_DELETE_BY_ID)) {
       preStmt.setInt(1, empId);
       preStmt.executeUpdate();
     } catch (SQLException e) {
@@ -107,7 +112,7 @@ public class EmployeeDao {
 
   public int getTotalNoOfRecords() throws DataException {
     try (Connection con = DBConnection.getSqlConnection();
-            PreparedStatement preStmt = con.prepareStatement(QueryConstants.EMPLOYEE_SELECT_COUNT)) {
+            PreparedStatement preStmt = con.prepareStatement(EMPLOYEE_SELECT_COUNT)) {
       ResultSet resultSet = preStmt.executeQuery();
       int total = 0;
       while (resultSet.next()) {
