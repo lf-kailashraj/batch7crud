@@ -8,8 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.lftechnology.batch7crud.constant.CommonConstant;
-import com.lftechnology.batch7crud.constant.StudentConstant;
+import static com.lftechnology.batch7crud.constant.CommonConstant.*;
+import static com.lftechnology.batch7crud.constant.StudentConstant.*;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.service.StudentService;
@@ -25,9 +25,9 @@ public class StudentController extends CustomHttpServlet {
 
       if (parameters.length == 2) {
         list(request, response);
-      } else if (parameters.length == 3 && (CommonConstant.CREATE).equals(parameters[2])) {
+      } else if (parameters.length == 3 && (CREATE).equals(parameters[2])) {
         create(request, response);
-      } else if (parameters.length == 4 && (CommonConstant.EDIT).equals(parameters[3])) {
+      } else if (parameters.length == 4 && (EDIT).equals(parameters[3])) {
         edit(request, response);
       } else if (parameters.length == 3) {
         show(request, response);
@@ -45,11 +45,11 @@ public class StudentController extends CustomHttpServlet {
     try {
       String[] parameters = parameterValues(request);
 
-      if (parameters.length == 3 && (CommonConstant.CREATE).equals(parameters[2])) {
+      if (parameters.length == 3 && (CREATE).equals(parameters[2])) {
         createProcess(request, response);
-      } else if (parameters.length == 4 && (CommonConstant.EDIT).equals(parameters[3])) {
+      } else if (parameters.length == 4 && (EDIT).equals(parameters[3])) {
         editProcess(request, response);
-      } else if (parameters.length == 4 && (CommonConstant.DELETE).equals(parameters[3])) {
+      } else if (parameters.length == 4 && (DELETE).equals(parameters[3])) {
         deleteProcess(request, response);
       } else {
         show404(request, response);
@@ -78,10 +78,10 @@ public class StudentController extends CustomHttpServlet {
       show404(request, response);
       return;
     }
-    request.setAttribute(StudentConstant.STUDENT_LIST, studentList);
-    request.setAttribute(CommonConstant.NUMBER_OF_PAGES, numberOfPages);
-    request.setAttribute(CommonConstant.PAGE_NUMBER, page);
-    request.getRequestDispatcher(StudentConstant.LIST_PAGE).forward(request, response);
+    request.setAttribute(STUDENT_LIST, studentList);
+    request.setAttribute(NUMBER_OF_PAGES, numberOfPages);
+    request.setAttribute(PAGE_NUMBER, page);
+    request.getRequestDispatcher(LIST_PAGE).forward(request, response);
   }
 
   private void show(HttpServletRequest request, HttpServletResponse response)
@@ -90,15 +90,15 @@ public class StudentController extends CustomHttpServlet {
       int id = parameterValueAsInt(request, 2);
       Student student = studentService.fetchStudentById(id);
 
-      request.setAttribute(StudentConstant.STUDENT, student);
-      request.getRequestDispatcher(StudentConstant.EDIT_PAGE).forward(request, response);
+      request.setAttribute(STUDENT, student);
+      request.getRequestDispatcher(EDIT_PAGE).forward(request, response);
     } catch (NumberFormatException e) {
       show404(request, response);
     }
   }
 
   private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    request.getRequestDispatcher(StudentConstant.CREATE_PAGE).forward(request, response);
+    request.getRequestDispatcher(CREATE_PAGE).forward(request, response);
   }
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response)
@@ -107,19 +107,19 @@ public class StudentController extends CustomHttpServlet {
       Student student = constructStudentFromRequest(request);
       studentService.insert(student);
 
-      response.sendRedirect(request.getContextPath() + StudentConstant.STUDENT_LIST_CONTROLLER);
+      response.sendRedirect(request.getContextPath() + STUDENT_LIST_CONTROLLER);
     } catch (NumberFormatException e) {
-      request.setAttribute(StudentConstant.ROLL, request.getParameter(StudentConstant.ROLL));
-      request.setAttribute(StudentConstant.NAME, request.getParameter(StudentConstant.NAME));
-      request.setAttribute(CommonConstant.MESSAGE, StudentConstant.INVALID_ROLL_MESSAGE);
+      request.setAttribute(ROLL, request.getParameter(ROLL));
+      request.setAttribute(NAME, request.getParameter(NAME));
+      request.setAttribute(MESSAGE, INVALID_ROLL_MESSAGE);
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      request.getRequestDispatcher(StudentConstant.CREATE_PAGE).forward(request, response);
+      request.getRequestDispatcher(CREATE_PAGE).forward(request, response);
     }
   }
 
   private Student constructStudentFromRequest(HttpServletRequest request) {
-    String roll = request.getParameter(StudentConstant.ROLL);
-    String name = request.getParameter(StudentConstant.NAME);
+    String roll = request.getParameter(ROLL);
+    String name = request.getParameter(NAME);
 
     Student student = new Student();
     student.setRoll(Integer.parseInt(roll));
@@ -133,8 +133,8 @@ public class StudentController extends CustomHttpServlet {
       int id = parameterValueAsInt(request, 2);
       Student student = studentService.fetchStudentById(id);
 
-      request.setAttribute(StudentConstant.STUDENT, student);
-      request.getRequestDispatcher(StudentConstant.EDIT_PAGE).forward(request, response);
+      request.setAttribute(STUDENT, student);
+      request.getRequestDispatcher(EDIT_PAGE).forward(request, response);
     } catch (NumberFormatException e) {
       show404(request, response);
     }
@@ -147,12 +147,12 @@ public class StudentController extends CustomHttpServlet {
       Student student = constructStudentFromRequest(request);
       studentService.edit(student, id);
 
-      response.sendRedirect(request.getContextPath() + StudentConstant.STUDENT_LIST_CONTROLLER);
+      response.sendRedirect(request.getContextPath() + STUDENT_LIST_CONTROLLER);
     } catch (NumberFormatException e) {
-      request.setAttribute(StudentConstant.ROLL, request.getParameter(StudentConstant.ROLL));
-      request.setAttribute(StudentConstant.NAME, request.getParameter(StudentConstant.NAME));
-      request.setAttribute(CommonConstant.MESSAGE, StudentConstant.INVALID_ROLL_MESSAGE);
-      request.getRequestDispatcher(StudentConstant.EDIT_PAGE).forward(request, response);
+      request.setAttribute(ROLL, request.getParameter(ROLL));
+      request.setAttribute(NAME, request.getParameter(NAME));
+      request.setAttribute(MESSAGE, INVALID_ROLL_MESSAGE);
+      request.getRequestDispatcher(EDIT_PAGE).forward(request, response);
     }
   }
 
@@ -161,6 +161,6 @@ public class StudentController extends CustomHttpServlet {
     int id = parameterValueAsInt(request, 2);
     studentService.delete(id);
 
-    response.sendRedirect(request.getContextPath() + StudentConstant.STUDENT_LIST_CONTROLLER);
+    response.sendRedirect(request.getContextPath() + STUDENT_LIST_CONTROLLER);
   }
 }

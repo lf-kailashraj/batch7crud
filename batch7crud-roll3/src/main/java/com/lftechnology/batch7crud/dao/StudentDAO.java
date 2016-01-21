@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.lftechnology.batch7crud.constant.Query;
 import com.lftechnology.batch7crud.db.DBConnection;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
@@ -19,7 +18,7 @@ public class StudentDAO {
 
   public void insert(Student student) throws DataException {
     try (Connection conn = DBConnection.getConnection();
-        PreparedStatement stmnt = conn.prepareStatement(Query.STUDENT_INSERT)) {
+        PreparedStatement stmnt = conn.prepareStatement("insert into Students(roll, name) values (?,?)")) {
       stmnt.setInt(1, student.getRoll());
       stmnt.setString(2, student.getName());
       stmnt.execute();
@@ -34,16 +33,16 @@ public class StudentDAO {
     List<Student> studentList = new ArrayList<Student>();
 
     try (Connection conn = DBConnection.getConnection();
-        PreparedStatement stmnt = conn.prepareStatement(Query.STUDENT_LIST);) {
+        PreparedStatement stmnt = conn.prepareStatement("select * from Students LIMIT ? OFFSET ?")) {
       stmnt.setInt(1, pageSize);
       stmnt.setInt(2, (page - 1) * pageSize);
 
       try (ResultSet result = stmnt.executeQuery();) {
         while (result.next()) {
           Student student = new Student();
-          student.setId(result.getInt("id"));
-          student.setRoll(result.getInt("roll"));
-          student.setName(result.getString("name"));
+          student.setId(result.getInt(1));
+          student.setRoll(result.getInt(2));
+          student.setName(result.getString(3));
           studentList.add(student);
         }
       }
@@ -60,7 +59,7 @@ public class StudentDAO {
     int totalSize = 0;
 
     try (Connection conn = DBConnection.getConnection();
-        PreparedStatement stmnt = conn.prepareStatement(Query.STUDENT_FETCH_TOTAL);
+        PreparedStatement stmnt = conn.prepareStatement("SELECT COUNT(*) AS total FROM Students");
         ResultSet result = stmnt.executeQuery();) {
       while (result.next()) {
         totalSize = result.getInt("total");
@@ -77,7 +76,7 @@ public class StudentDAO {
     Student student = null;
 
     try (Connection conn = DBConnection.getConnection();
-        PreparedStatement stmnt = conn.prepareStatement(Query.STUDENT_FETCH_BY_ID);) {
+        PreparedStatement stmnt = conn.prepareStatement("Select * from Students where id=?")) {
       stmnt.setInt(1, id);
 
       try (ResultSet result = stmnt.executeQuery();) {
@@ -99,7 +98,7 @@ public class StudentDAO {
 
   public void edit(Student student, int id) throws DataException {
     try (Connection conn = DBConnection.getConnection();
-        PreparedStatement stmnt = conn.prepareStatement(Query.STUDENT_EDIT);) {
+        PreparedStatement stmnt = conn.prepareStatement("Update Students set roll=?, name=? where id=?")) {
       stmnt.setInt(1, student.getRoll());
       stmnt.setString(2, student.getName());
       stmnt.setInt(3, id);
@@ -113,7 +112,7 @@ public class StudentDAO {
 
   public void delete(int id) throws DataException {
     try (Connection conn = DBConnection.getConnection();
-        PreparedStatement stmnt = conn.prepareStatement(Query.STUDENT_DELETE);) {
+        PreparedStatement stmnt = conn.prepareStatement("Delete from Students where id=?")) {
       stmnt.setInt(1, id);
       stmnt.executeUpdate();
     } catch (SQLException e) {

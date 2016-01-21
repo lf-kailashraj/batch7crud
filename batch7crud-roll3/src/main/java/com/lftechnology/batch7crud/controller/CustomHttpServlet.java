@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.lftechnology.batch7crud.constant.CommonConstant;
+import static com.lftechnology.batch7crud.constant.CommonConstant.*;
 
 /**
  * This is an abstract class which is extended by servlets. It contains commonly
@@ -25,10 +25,10 @@ public abstract class CustomHttpServlet extends HttpServlet {
 
   public void show404(HttpServletRequest request, HttpServletResponse response) {
     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-    request.setAttribute(CommonConstant.MESSAGE, "Page Not Found");
+    request.setAttribute(MESSAGE, "Page Not Found");
 
     try {
-      request.getRequestDispatcher(CommonConstant.ERROR_PAGE).forward(request, response);
+      request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
     } catch (ServletException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
     } catch (IOException e) {
@@ -38,8 +38,8 @@ public abstract class CustomHttpServlet extends HttpServlet {
 
   public void show500(HttpServletRequest request, HttpServletResponse response, Throwable e) {
     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-    request.setAttribute(CommonConstant.MESSAGE, e.getMessage());
-    RequestDispatcher view = request.getRequestDispatcher(CommonConstant.ERROR_PAGE);
+    request.setAttribute(MESSAGE, e.getMessage());
+    RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
     try {
       view.forward(request, response);
     } catch (ServletException | IOException e1) {
@@ -58,8 +58,8 @@ public abstract class CustomHttpServlet extends HttpServlet {
   }
 
   public int getPageNumber(HttpServletRequest request) {
-    if (request.getParameter(CommonConstant.PAGE_NUMBER) != null) {
-      return Integer.parseInt(request.getParameter(CommonConstant.PAGE_NUMBER));
+    if (request.getParameter(PAGE_NUMBER) != null) {
+      return Integer.parseInt(request.getParameter(PAGE_NUMBER));
     } else {
       return 1;
     }
