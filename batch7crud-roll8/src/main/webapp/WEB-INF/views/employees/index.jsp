@@ -71,15 +71,14 @@
   </div>
 </div>
 <script>
-  $(".delete").click(function (event) {
+  $("a.delete").click(function (event) {
     event.preventDefault();
-    var href = this.getAttribute('href');
+    var href = $(this).attr("href");
     if(confirm("Are you sure you want to delete this?")) {
-      var form = document.createElement("form");
-      form.action = href;
-      form.method = "POST";
-      $("body").append(form);
-      form.submit();
+      var $form = $("<form method='POST'></form>");
+      $form.attr("action", href);
+      $("body").append($form);
+      $form.submit();
     }
   });
 </script>
