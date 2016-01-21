@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 public class UsersController extends HttpServlet {
   private static final Logger LOGGER = Logger.getLogger(User.class.getName());
 
+  @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String path = request.getPathInfo();
 
@@ -37,6 +38,8 @@ public class UsersController extends HttpServlet {
       }
     }
   }
+
+  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String path = request.getPathInfo();
 
@@ -55,7 +58,7 @@ public class UsersController extends HttpServlet {
     }
   }
 
-  private void fetch(HttpServletRequest request, HttpServletResponse response) throws
+  private void fetch(HttpServletResponse response) throws
     ServletException,
     IOException {
     response.sendRedirect("/users");
@@ -76,7 +79,7 @@ public class UsersController extends HttpServlet {
       user.setPassword(password);
 
       userService.create(user);
-      fetch(request, response);
+      fetch(response);
     }
     catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
