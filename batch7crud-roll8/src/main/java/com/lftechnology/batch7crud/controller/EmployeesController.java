@@ -22,6 +22,8 @@ import java.util.logging.Logger;
 @WebServlet({ "/employees/*" })
 public class EmployeesController extends HttpServlet{
   private static final Logger LOGGER = Logger.getLogger("employeeLogger");
+
+  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String path = request.getPathInfo();
     if (path == null) {
@@ -30,20 +32,21 @@ public class EmployeesController extends HttpServlet{
     }
     else {
       String[] parts = path.split("/");
-      if (parts[1].equals("create")) {
+      if ("create".equals(parts[1])) {
         create(request, response);
       }
       else if (parts.length == 2) {
         Integer id = TypeCaster.toInt(parts[1]);
         view(request, response, id);
       }
-      else if (parts[2].equals("edit")) {
+      else if ("edit".equals(parts[2])) {
         int id = Integer.parseInt(parts[1]);
         edit(request, response, id);
       }
     }
   }
 
+  @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String path = request.getPathInfo();
     if (path == null) {
@@ -51,14 +54,14 @@ public class EmployeesController extends HttpServlet{
     }
     else {
       String[] parts = path.split("/");
-      if (parts[1].equals("createProcess")) {
+      if ("create".equals(parts[1])) {
         createProcess(request, response);
       }
-      else if (parts[2].equals("editProcess")) {
+      else if ("edit".equals(parts[2])) {
         int id = Integer.parseInt(parts[1]);
         editProcess(request, response, id);
       }
-      else if (parts[2].equals("deleteProcess")) {
+      else if ("delete".equals(parts[2])) {
         int id = Integer.parseInt(parts[1]);
         deleteProcess(request, response, id);
       }
@@ -181,7 +184,6 @@ public class EmployeesController extends HttpServlet{
         request.getRequestDispatcher("/WEB-INF/views/employees/view.jsp").forward(request, response);
       }
       else {
-        System.out.println("User not found");
         // needs to be redirected
       }
 

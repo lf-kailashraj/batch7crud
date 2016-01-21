@@ -42,7 +42,7 @@
             <td>${employee.getPhone()}</td>
             <td><a href="employees/${employee.getId()}">View</a></td>
             <td><a href="employees/${employee.getId()}/edit">Edit</a></td>
-            <td><a class="delete" href= "employees/${employee.getId()}/deleteProcess">Delete</a></td>
+            <td><a class="delete" href= "employees/${employee.getId()}/delete">Delete</a></td>
           </tr>
         </c:forEach>
         </tbody>

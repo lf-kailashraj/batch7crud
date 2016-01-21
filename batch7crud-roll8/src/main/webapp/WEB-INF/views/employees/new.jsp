@@ -15,7 +15,7 @@
 <div>
   Create New Employee
   <div>
-    <form action="employees/createProcess" method="POST">
+    <form action="employees/create" method="POST">
       <div>
         <label>Name:</label>
         <input name="name" type="text"/>
@@ -35,8 +35,6 @@
       <div>
         <input type="submit"/>
       </div>
-
-
     </form>
   </div>
 </div>
