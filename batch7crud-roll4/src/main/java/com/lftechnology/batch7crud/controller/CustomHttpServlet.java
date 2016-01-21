@@ -44,7 +44,7 @@ public abstract class CustomHttpServlet extends HttpServlet {
 
   public String[] parameterValues(HttpServletRequest request) {
     String urlPath = request.getRequestURI().substring(request.getContextPath().length());
-    return urlPath.split(File.separator);
+    return urlPath.split("/");
   }
 
   public int parameterValueAsInt(HttpServletRequest request, int index) {
