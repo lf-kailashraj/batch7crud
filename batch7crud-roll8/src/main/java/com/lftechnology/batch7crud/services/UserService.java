@@ -7,7 +7,7 @@ import com.lftechnology.batch7crud.model.User;
 /**
  * Created by Grishma Shrestha grishmashrestha@lftechnology.com on 1/18/16.
  */
-public class UserServices {
+public class UserService {
   UserDao userDao = new UserDao();
   public void create(User user) throws DataException {
     userDao.create(user);

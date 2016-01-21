@@ -2,7 +2,7 @@ package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.User;
-import com.lftechnology.batch7crud.services.UserServices;
+import com.lftechnology.batch7crud.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -63,7 +63,7 @@ public class UsersController extends HttpServlet {
       String username = request.getParameter("username");
       String email = request.getParameter("email");
       String password = request.getParameter("password");
-      UserServices userServices = new UserServices();
+      UserService userService = new UserService();
 
       User user = new User();
       user.setName(name);
@@ -71,7 +71,7 @@ public class UsersController extends HttpServlet {
       user.setEmail(email);
       user.setPassword(password);
 
-      userServices.create(user);
+      userService.create(user);
       fetch(request, response);
     } catch (DataException e) {
       e.printStackTrace();

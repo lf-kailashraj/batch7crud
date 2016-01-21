@@ -2,7 +2,7 @@ package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
-import com.lftechnology.batch7crud.services.EmployeeServices;
+import com.lftechnology.batch7crud.services.EmployeeService;
 import com.lftechnology.batch7crud.util.TypeCaster;
 
 import javax.servlet.RequestDispatcher;
@@ -71,8 +71,8 @@ public class EmployeesController extends HttpServlet{
 
   private void edit(HttpServletRequest request, HttpServletResponse response, Integer id) throws ServletException, IOException {
     try{
-      EmployeeServices employeeServices = new EmployeeServices();
-      Employee employee = employeeServices.fetchById(id);
+      EmployeeService employeeService = new EmployeeService();
+      Employee employee = employeeService.fetchById(id);
       request.setAttribute("employee", employee);
       RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/employees/edit.jsp");
       dispatcher.forward(request, response);
@@ -90,7 +90,7 @@ public class EmployeesController extends HttpServlet{
       String address = request.getParameter("address");
       String designation = request.getParameter("designation");
       String phone = request.getParameter("phone");
-      EmployeeServices employeeServices = new EmployeeServices();
+      EmployeeService employeeService = new EmployeeService();
 
       Employee employee = new Employee();
       employee.setName(name);
@@ -98,7 +98,7 @@ public class EmployeesController extends HttpServlet{
       employee.setDesignation(designation);
       employee.setPhone(phone);
 
-      employeeServices.create(employee);
+      employeeService.create(employee);
       response.sendRedirect("/employees");
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -121,8 +121,8 @@ public class EmployeesController extends HttpServlet{
       employee.setDesignation(designation);
       employee.setPhone(phone);
 
-      EmployeeServices employeeServices = new EmployeeServices();
-      employeeServices.edit(employee, id);
+      EmployeeService employeeService = new EmployeeService();
+      employeeService.edit(employee, id);
       response.sendRedirect("/employees");
     }
     catch (DataException e) {
@@ -136,8 +136,8 @@ public class EmployeesController extends HttpServlet{
 
   private void deleteProcess(HttpServletRequest request, HttpServletResponse response, Integer id) {
     try {
-      EmployeeServices employeeServices = new EmployeeServices();
-      employeeServices.delete(id);
+      EmployeeService employeeService = new EmployeeService();
+      employeeService.delete(id);
       response.sendRedirect("/employees");
     }
     catch (IOException e) {
@@ -152,9 +152,9 @@ public class EmployeesController extends HttpServlet{
     Integer pageLimit = 4;
     Integer offset = (pageNo-1)*pageLimit;
     try {
-      EmployeeServices employeeServices = new EmployeeServices();
-      List<Employee> employeeList = employeeServices.fetch(pageLimit, offset);
-      Integer employeeCount = employeeServices.count();
+      EmployeeService employeeService = new EmployeeService();
+      List<Employee> employeeList = employeeService.fetch(pageLimit, offset);
+      Integer employeeCount = employeeService.count();
       request.setAttribute("employeeList", employeeList);
       request.setAttribute("employeeCount", employeeCount);
       request.setAttribute("pageNo", pageNo);
@@ -174,7 +174,7 @@ public class EmployeesController extends HttpServlet{
 
   private void view(HttpServletRequest request, HttpServletResponse response, Integer id) {
     try {
-      EmployeeServices employeeService = new EmployeeServices();
+      EmployeeService employeeService = new EmployeeService();
       Employee employee = employeeService.fetchById(id);
       if (employee != null) {
         request.setAttribute("employee", employee);

@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Grishma Shrestha grishmashrestha@lftechnology.com on 1/19/16.
  */
 
-public class EmployeeServices {
+public class EmployeeService {
   EmployeeDao employeeDao = new EmployeeDao();
   public void create(Employee employee) throws DataException {
     employeeDao.create(employee);
