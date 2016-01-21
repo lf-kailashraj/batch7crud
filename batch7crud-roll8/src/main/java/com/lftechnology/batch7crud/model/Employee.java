@@ -1,8 +1,9 @@
 package com.lftechnology.batch7crud.model;
 
 /**
- * Created by grishma on 1/19/16.
+ * Created by Grishma Shrestha grishmashrestha@lftechnology.com on 1/19/16.
  */
+
 public class Employee {
   private Integer id;
   private String name, address, designation, phone;

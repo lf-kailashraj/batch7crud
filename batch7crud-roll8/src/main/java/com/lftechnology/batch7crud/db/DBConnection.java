@@ -10,8 +10,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Created by grishma on 1/18/16.
+ * Created by Grishma Shrestha grishmashrestha@lftechnology.com on 1/18/16.
  */
+
 public class DBConnection {
   public static Connection getConnection() throws DataException {
     try {

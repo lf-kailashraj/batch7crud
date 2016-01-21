@@ -1,8 +1,9 @@
 package com.lftechnology.batch7crud.model;
 
 /**
- * Created by grishma on 1/18/16.
+ * Created by Grishma Shrestha grishmashrestha@lftechnology.com on 1/18/16.
  */
+
 public class User {
   private Integer id;
   private String name, username, email, password;

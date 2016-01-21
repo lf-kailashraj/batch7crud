@@ -10,8 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * Created by grishma on 1/18/16.
+ * Created by Grishma Shrestha grishmashrestha@lftechnology.com on 1/18/16.
  */
+
 public class UserDao {
   public void create(User user) throws DataException {
     Statement stmt = null;
