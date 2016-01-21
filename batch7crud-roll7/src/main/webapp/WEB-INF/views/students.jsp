@@ -15,7 +15,7 @@
   <title>Students</title>
 </head>
 <body>
-<div><a href="/Students/NewEntry">New Entry</a></div>
+<div><a href="Students/NewEntry">New Entry</a></div>
 
 
 <table border="1">
@@ -35,8 +35,8 @@
       <td><c:out value="${student.address}"/></td>
       <td><c:out value="${student.roll}"/></td>
       <td><a href="Students/${student.id}">View</a></td>
-      <td><a href="/Students/${student.id}/edit">Edit</a></td>
-      <td><a href="/Students/${student.roll}/delete" class="delete">Delete</a></td>
+      <td><a href="Students/${student.id}/edit">Edit</a></td>
+      <td><a href="Students/${student.roll}/delete" class="delete">Delete</a></td>
     </tr>
   </c:forEach>
 </table>
