@@ -18,12 +18,13 @@ import java.util.logging.Logger;
  */
 
 public class EmployeeDao {
-  private static final Logger LOGGER = Logger.getLogger("employeeLogger");
+  private static final Logger LOGGER = Logger.getLogger(Employee.class.getName());
+
   public void create(Employee employee) throws DataException {
-    try {
-      String sql = "INSERT INTO employee (name, address, designation, phone) VALUES (?,?,?,?)";
-      Connection conn = DBConnection.getConnection();
-      PreparedStatement statement = conn.prepareStatement(sql);
+    String sql = "INSERT INTO employee (name, address, designation, phone) VALUES (?,?,?,?)";
+    try(Connection conn = DBConnection.getConnection();
+      PreparedStatement statement = conn.prepareStatement(sql)
+    ){
       statement.setString(1, employee.getName());
       statement.setString(2, employee.getAddress());
       statement.setString(3, employee.getDesignation());
@@ -36,11 +37,12 @@ public class EmployeeDao {
   }
 
   public List<Employee> fetch(Integer pageLimit, Integer offset) throws DataException {
-    try {
-      List<Employee> employeeList = new ArrayList<Employee>();
-      String sql = "SELECT * FROM employee order by id limit ? offset ?";
-      Connection conn = DBConnection.getConnection();
-      PreparedStatement statement = conn.prepareStatement(sql);
+    List<Employee> employeeList = new ArrayList<>();
+    String sql = "SELECT * FROM employee order by id limit ? offset ?";
+
+    try (Connection conn = DBConnection.getConnection();
+        PreparedStatement statement = conn.prepareStatement(sql)
+    ){
       statement.setInt(1, pageLimit);
       statement.setInt(2, offset);
       ResultSet result = statement.executeQuery();
@@ -61,11 +63,11 @@ public class EmployeeDao {
   }
 
   public Employee fetchById(Integer id) throws DataException {
-    try {
-      Employee employee = null;
-      String sql = "SELECT * FROM employee where id = ?";
-      Connection conn = DBConnection.getConnection();
-      PreparedStatement statement = conn.prepareStatement(sql);
+    Employee employee = null;
+    String sql = "SELECT * FROM employee where id = ?";
+    try (Connection conn = DBConnection.getConnection();
+      PreparedStatement statement = conn.prepareStatement(sql)
+    ){
       statement.setInt(1, id);
       ResultSet result = statement.executeQuery();
       while (result.next()) {
@@ -85,11 +87,11 @@ public class EmployeeDao {
   }
 
   public void edit(Employee employee, Integer id) throws DataException {
-    try {
-      String sql = "update employee set name = ?, address = ?, designation = ?, phone = ? where id = ?";
+    String sql = "update employee set name = ?, address = ?, designation = ?, phone = ? where id = ?";
 
-      Connection conn = DBConnection.getConnection();
-      PreparedStatement statement = conn.prepareStatement(sql);
+    try (Connection conn = DBConnection.getConnection();
+      PreparedStatement statement = conn.prepareStatement(sql)
+    ){
       statement.setString(1, employee.getName());
       statement.setString(2, employee.getAddress());
       statement.setString(3, employee.getDesignation());
@@ -104,10 +106,10 @@ public class EmployeeDao {
   }
 
   public void delete(Integer id) throws DataException {
-    try {
-      String sql = "delete from employee where id = ?";
-      Connection conn = DBConnection.getConnection();
-      PreparedStatement statement = conn.prepareStatement(sql);
+    String sql = "delete from employee where id = ?";
+    try (Connection conn = DBConnection.getConnection();
+      PreparedStatement statement = conn.prepareStatement(sql)
+    ) {
       statement.setInt(1, id);
       statement.executeUpdate();
     } catch (SQLException e) {
@@ -117,10 +119,10 @@ public class EmployeeDao {
   }
 
   public Integer count() throws DataException {
-    try {
-      String sql = "select count(*) as total from employee";
-      Connection conn = DBConnection.getConnection();
-      PreparedStatement statement = conn.prepareStatement(sql);
+    String sql = "select count(*) as total from employee";
+    try(Connection conn = DBConnection.getConnection();
+        PreparedStatement statement = conn.prepareStatement(sql)
+    ){
       ResultSet result = statement.executeQuery();
       if (result.next()){
         return result.getInt("total");
