@@ -20,7 +20,7 @@ public abstract class HTTPStatusHandler extends HttpServlet {
 
   protected void show404(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-    request.setAttribute(Message.MESSAGE, Message.PAGE_NOT_FOUND);
+    request.setAttribute(Attribute.MESSAGE, Message.PAGE_NOT_FOUND);
 
     RequestDispatcher view = request.getRequestDispatcher(Page.ERROR_PAGE);
     view.forward(request, response);
@@ -28,7 +28,7 @@ public abstract class HTTPStatusHandler extends HttpServlet {
 
   protected void show500(HttpServletRequest request, HttpServletResponse response, Throwable e) {
     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-    request.setAttribute(Message.MESSAGE, e.getMessage());
+    request.setAttribute(Attribute.MESSAGE, e.getMessage());
     try {
       RequestDispatcher view = request.getRequestDispatcher(Page.ERROR_PAGE);
       view.forward(request, response);
@@ -56,5 +56,4 @@ public abstract class HTTPStatusHandler extends HttpServlet {
     String[] paths = parameterValues(request);
     return Integer.parseInt(paths[index]);
   }
-
 }

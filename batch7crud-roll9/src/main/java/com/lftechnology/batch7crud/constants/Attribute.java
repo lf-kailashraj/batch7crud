@@ -13,6 +13,7 @@ public class Attribute {
   public static final String TOTAL_STUDENT = "totalStudent";
   public static final String CURRENT_STUDENT = "currentStudent";
 
+  public static final String MESSAGE = "message";
 
   private Attribute() {
   }
