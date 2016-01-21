@@ -1,8 +1,8 @@
 package com.lftechnology.batch7crud.controller;
 
-import com.lftechnology.batch7crud.contants.AppConstants;
-import com.lftechnology.batch7crud.contants.AttributeConstants;
-import com.lftechnology.batch7crud.contants.UrlConstants;
+import com.lftechnology.batch7crud.constants.AppConstants;
+import com.lftechnology.batch7crud.constants.AttributeConstants;
+import com.lftechnology.batch7crud.constants.UrlConstants;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
