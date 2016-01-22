@@ -18,19 +18,20 @@
     <form action="employees/${employee.getId()}/edit" method="POST">
       <div>
         <label>Name:</label>
-        <input name="name" type="text" value = ${employee.getName()}>
+        <input name="name" type="text" value = "${employee.getName()}">
       </div>
       <div>
         <label>Address:</label>
-        <input name="address" type="text" value = ${employee.getAddress()}>
+        <input name="address" type="text" value = "${employee.getAddress()}">
       </div>
       <div>
         <label>Designation:</label>
-        <input name="designation" type="text" value = ${employee.getDesignation()}>
+        <input name="designation" type="text" value = "${employee.getDesignation()}">
       </div>
       <div>
+
         <label>Phone:</label>
-        <input name="phone" type="text" value = ${employee.getPhone()}>
+        <input name="phone" type="text" value = "${employee.getPhone()}">
       </div>
       <div>
         <input type="submit"/>
