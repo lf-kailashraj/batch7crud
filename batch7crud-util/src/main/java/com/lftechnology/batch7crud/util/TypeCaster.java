@@ -2,7 +2,7 @@ package com.lftechnology.batch7crud.util;
 
 import java.math.BigDecimal;
 
-public class TypeCaster {
+public class TypeCaster{
     public static Integer toInt(String value) {
         try {
             return Integer.valueOf(value);
