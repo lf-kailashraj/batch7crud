@@ -17,11 +17,11 @@ import java.util.logging.Logger;
 public class UserDao {
   private static final Logger LOGGER = Logger.getLogger(User.class.getName());
 
+  private static final String USER_INSERT = "INSERT INTO USERS (name, username, email, password) VALUES (?,?,?,?)";
   public void create(User user) throws DataException {
-    try {
-      String sql = "INSERT INTO USERS (name, username, email, password) VALUES (?,?,?,?)";
-      Connection conn = DBConnection.getConnection();
-      PreparedStatement statement = conn.prepareStatement(sql);
+    try (Connection conn = DBConnection.getConnection();
+      PreparedStatement statement = conn.prepareStatement(USER_INSERT)
+    ){
       statement.setString(1, user.getName());
       statement.setString(2, user.getUsername());
       statement.setString(3, user.getName());

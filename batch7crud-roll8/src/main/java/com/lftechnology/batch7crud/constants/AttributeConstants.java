@@ -15,6 +15,9 @@ public class AttributeConstants {
   public static final String EMPLOYEE = "employee";
   public static final String EMPLOYEE_COUNT = "employeeCount";
   public static final String ERROR_MESSAGE = "message";
+  public static final String EMAIL = "email";
+  public static final String USERNAME = "username";
+  public static final String PASSWORD = "password";
 
   private AttributeConstants() {
 

@@ -1,5 +1,8 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.lftechnology.batch7crud.constants.AppConstants;
+import com.lftechnology.batch7crud.constants.AttributeConstants;
+import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.User;
 import com.lftechnology.batch7crud.services.UserService;
@@ -26,15 +29,15 @@ public class UsersController extends HttpServlet {
     String path = request.getPathInfo();
 
     if (path == null) {
-      request.getServletContext().getRequestDispatcher("/WEB-INF/views/users/signup.jsp").forward(request, response);
+      request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.USER_SIGN_UP).forward(request, response);
     }
     else {
       String[] parts = path.split("/");
-      if ("create".equals(parts[1])) {
+      if (AppConstants.CREATE.equals(parts[1])) {
         create(request, response);
       }
-      else if ("update".equals(parts[1])) {
-        request.getServletContext().getRequestDispatcher("/WEB-INF/views/users/index.jsp").forward(request, response);
+      else if (AppConstants.EDIT.equals(parts[1])) {
+        request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.USER_HOME_PAGE).forward(request, response);
       }
     }
   }
@@ -44,32 +47,31 @@ public class UsersController extends HttpServlet {
     String path = request.getPathInfo();
 
     if (path == null) {
-      request.getServletContext().getRequestDispatcher("/WEB-INF/views/users/index.jsp").forward(request,
-        response);
+      request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.USER_HOME_PAGE).forward(request, response);
     }
     else {
       String[] parts = path.split("/");
-      if ("signup".equals(parts[1])) {
-        request.getServletContext().getRequestDispatcher("/WEB-INF/views/users/signup.jsp").forward(request, response);
+      if (AppConstants.SIGN_UP.equals(parts[1])) {
+        request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.USER_SIGN_UP).forward(request, response);
       }
-      else if ("signin".equals(parts[1])) {
-        request.getServletContext().getRequestDispatcher("/WEB-INF/views/users/signin.jsp").forward(request, response);
+      else if (AppConstants.SIGN_IN.equals(parts[1])) {
+        request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.USER_SIGN_IN).forward(request, response);
       }
     }
   }
 
-  private void fetch(HttpServletResponse response) throws
+  private void fetch(HttpServletRequest request, HttpServletResponse response) throws
     ServletException,
     IOException {
-    response.sendRedirect("/users");
+    response.sendRedirect(request.getContextPath() + UrlConstants.USER_ROUTE);
   }
 
   private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
-      String name = request.getParameter("name");
-      String username = request.getParameter("username");
-      String email = request.getParameter("email");
-      String password = request.getParameter("password");
+      String name = request.getParameter(AttributeConstants.NAME);
+      String username = request.getParameter(AttributeConstants.USERNAME);
+      String email = request.getParameter(AttributeConstants.EMAIL);
+      String password = request.getParameter(AttributeConstants.PASSWORD);
       UserService userService = new UserService();
 
       User user = new User();
@@ -79,7 +81,7 @@ public class UsersController extends HttpServlet {
       user.setPassword(password);
 
       userService.create(user);
-      fetch(response);
+      fetch(request, response);
     }
     catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);

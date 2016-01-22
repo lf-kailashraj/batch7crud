@@ -7,8 +7,9 @@ public class AppConstants {
   public static final String CREATE = "create";
   public static final String EDIT = "edit";
   public static final String DELETE = "delete";
-  public static final String EMPLOYEES = "employees";
   public static final String PAGE_NOT_FOUND_MESSAGE = "Page Not Found";
+  public static final String SIGN_UP = "signup";
+  public static final String SIGN_IN = "signin";
 
   private AppConstants() {
 
