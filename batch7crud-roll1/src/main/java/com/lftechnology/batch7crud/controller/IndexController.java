@@ -8,13 +8,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.lftechnology.batch7crud.constant.URLConstant.*;
+
 @WebServlet({ "/" })
 public class IndexController extends HttpServlet {
 
-  private static final long serialVersionUID = 1L;
-
-  @Override protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    RequestDispatcher requestDispatcher = request.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp");
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    RequestDispatcher requestDispatcher = request.getServletContext().getRequestDispatcher(INDEX_PAGE);
     requestDispatcher.forward(request, response); //NOSONAR
   }
 }

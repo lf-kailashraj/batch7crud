@@ -16,17 +16,17 @@
 </head>
 <body>
 
-<form action="employees/<c:out value="${employee.id}"/>/edit" method="post">
+<form action="employees/${employee.id}/edit" method="post">
     <label>Name :</label>
-    <input type="text" name="userName" value="<c:out value="${employee.userName}"/>">
+    <input type="text" name="userName" value="${employee.userName}">
     <label>Password :</label>
-    <input type="password" name="password" value="<c:out value="${employee.password}"/>">
+    <input type="password" name="password" value="${employee.password}">
     <label>Full Name :</label>
-    <input type="text" name="fullName" value="<c:out value="${employee.fullName}"/>">
+    <input type="text" name="fullName" value="${employee.fullName}">
     <label>Department :</label>
-    <input type="text" name="department" value="<c:out value="${employee.department}"/>">
+    <input type="text" name="department" value="${employee.department}">
     <label>Address</label>
-    <input type="text" name="address" value="<c:out value="${employee.address}"/>">
+    <input type="text" name="address" value="${employee.address}">
     <input type="submit" value="update">
 </form>
 

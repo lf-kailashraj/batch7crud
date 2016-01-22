@@ -12,6 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * This Class Connects to database
+ *
  * @Author Kiran Pariyar <kiranpariyar@lftechnology.com>
  * Created on 1/18/16
  */

@@ -4,10 +4,9 @@ import com.lftechnology.batch7crud.utils.DbUtils;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.entity.Employee;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import static com.lftechnology.batch7crud.constant.EntityConstant.*;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,15 +27,18 @@ public class EmployeeDAO {
 
     String sqlQuery = "INSERT INTO employee(username,password,fullname,department,address) VALUES(?,?,?,?,?)";
     try (Connection connection = DbUtils.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sqlQuery)
+            PreparedStatement ps = connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS)
     ) {
-
       ps.setString(1, employee.getUserName());
       ps.setString(2, employee.getPassword());
       ps.setString(3, employee.getFullName());
       ps.setString(4, employee.getDepartment());
       ps.setString(5, employee.getAddress());
       ps.executeUpdate();
+      ResultSet resultSet = ps.getGeneratedKeys();
+      if (resultSet.next()) {
+        employee.setId(resultSet.getInt(1));
+      }
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
@@ -57,12 +59,12 @@ public class EmployeeDAO {
 
       while (result.next()) {
         Employee employee = new Employee();
-        employee.setId(result.getInt("id"));
-        employee.setUserName(result.getString("userName"));
-        employee.setPassword(result.getString("password"));
-        employee.setFullName(result.getString("fullName"));
-        employee.setAddress(result.getString("address"));
-        employee.setDepartment(result.getString("department"));
+        employee.setId(result.getInt(ID));
+        employee.setUserName(result.getString(USER_NAME));
+        employee.setPassword(result.getString(PASSWORD));
+        employee.setFullName(result.getString(FULL_NAME));
+        employee.setAddress(result.getString(ADDRESS));
+        employee.setDepartment(result.getString(DEPARTMENT));
         employees.add(employee);
       }
       return employees;
@@ -81,12 +83,12 @@ public class EmployeeDAO {
       ResultSet result = ps.executeQuery();
       Employee employee = new Employee();
       while (result.next()) {
-        employee.setId(result.getInt("id"));
-        employee.setUserName(result.getString("userName"));
-        employee.setPassword(result.getString("password"));
-        employee.setFullName(result.getString("fullName"));
-        employee.setAddress(result.getString("address"));
-        employee.setDepartment(result.getString("department"));
+        employee.setId(result.getInt(ID));
+        employee.setUserName(result.getString(USER_NAME));
+        employee.setPassword(result.getString(PASSWORD));
+        employee.setFullName(result.getString(FULL_NAME));
+        employee.setAddress(result.getString(ADDRESS));
+        employee.setDepartment(result.getString(DEPARTMENT));
       }
       return employee;
     } catch (SQLException e) {

@@ -1,11 +1,14 @@
 package com.lftechnology.batch7crud.constant;
 
 /**
- * provide access to entity related constant
- * Created by kiran on 1/21/16.
+ * provide access to entity related constants
+ *
+ * @Author Kiran Pariyar <kiranpariyar@lftechnology.com>
+ * Created on 1/21/16.
  */
 public class EntityConstant {
 
+  public static final String ID = "id";
   public static final String USER_NAME = "userName";
   public static final String FULL_NAME = "fullName";
   public static final String PASSWORD = "password"; //NOSONAR
