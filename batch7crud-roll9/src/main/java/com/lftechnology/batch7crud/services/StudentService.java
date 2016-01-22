@@ -8,11 +8,12 @@ import java.util.List;
 /**
  * Created by sanjay on 1/14/16.
  */
+
 public class StudentService {
   private StudentDAO stdDAO = new StudentDAO();
 
-  public void save(Student s) throws DataException {
-    stdDAO.insert(s);
+  public Student save(Student student) throws DataException {
+    return stdDAO.insert(student);
   }
 
   public List<Student> fetch(int page, int limit) throws DataException {
@@ -27,8 +28,8 @@ public class StudentService {
     return stdDAO.fetchById(id);
   }
 
-  public void edit(Student s) throws DataException {
-    stdDAO.edit(s);
+  public Student edit(Student student) throws DataException {
+    return stdDAO.edit(student);
   }
 
   public int studentCount() throws DataException {

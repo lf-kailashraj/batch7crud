@@ -21,28 +21,24 @@ public abstract class HTTPStatusHandler extends HttpServlet {
 
   protected void show404(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-    request.setAttribute(Attribute.MESSAGE, Message.PAGE_NOT_FOUND);
-
-    RequestDispatcher view = request.getRequestDispatcher(Page.ERROR_PAGE);
+    RequestDispatcher view = request.getRequestDispatcher(PageConstant.ERROR_PAGE);
     view.forward(request, response);
   }
 
   protected void show500(HttpServletRequest request, HttpServletResponse response, Throwable e) {
     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-    request.setAttribute(Attribute.MESSAGE, e.getMessage());
     try {
-      RequestDispatcher view = request.getRequestDispatcher(Page.ERROR_PAGE);
+      RequestDispatcher view = request.getRequestDispatcher(PageConstant.ERROR_PAGE);
       view.forward(request, response);
     }
-    catch(IOException | ServletException ex)
-    {
+    catch(IOException | ServletException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
     }
   }
 
   public int pageNumber(HttpServletRequest request) {
-    if (request.getParameter(Parameter.PAGE) != null) {
-      return Integer.parseInt(request.getParameter(Parameter.PAGE));
+    if (request.getParameter(ParameterConstant.PAGE) != null) {
+      return Integer.parseInt(request.getParameter(ParameterConstant.PAGE));
     } else {
       return 1;
     }

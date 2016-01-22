@@ -3,7 +3,7 @@ package com.lftechnology.batch7crud.constants;
 /**
  * Created by sanjay on 1/21/16.
  */
-public class Parameter {
+public class ParameterConstant {
 
   public static final String FIRST_NAME = "fname";
   public static final String MIDDLE_NAME = "mname";
@@ -13,7 +13,7 @@ public class Parameter {
 
   public static final String PAGE = "page";
 
-  private Parameter(){
+  private ParameterConstant(){
   }
 
 }

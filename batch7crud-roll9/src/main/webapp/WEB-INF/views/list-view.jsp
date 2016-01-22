@@ -8,68 +8,64 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Display Page</title>
-    <base href="${pageContext.request.contextPath}/" />
+    <base href="${pageContext.request.contextPath}/"/>
+    <style>
+        table td {
+            border: 1px solid;
+            padding: 10px;
+        }
 
+        table {
+            border: 1px solid;
+        }
+
+        table th {
+            border: 2px solid;
+        }
+    </style>
 </head>
-<style>
-    table td {
-        border: 1px solid;
-        padding: 10px;
-    }
-
-    table {
-        border: 1px solid;
-    }
-
-    table th {
-        border: 2px solid;
-
-    }
-
-
-</style>
+<style rel="stylesheet" href="style.css"></style>
 <body>
 <table>
-
-    <tr>
-        <th>S.N.</th>
-        <th>First Name</th>
-        <th>Middle Name</th>
-        <th>Last Name</th>
-
-        <th>Address</th>
-        <th>Grade</th>
-    </tr>
-    <c:forEach items="${studentList}" var="studentList" varStatus="counter">
+    <thead>
         <tr>
-            <td><a href="students/${studentList.getId()}/view" class="view">${counter.count+(page-1)*20}</a></td>
-            <td>${studentList.getFirstName()}</td>
-            <td>${studentList.getMiddleName()}</td>
-            <td>${studentList.getLastName()}</td>
-            <td>${studentList.getAddress()}</td>
-            <td>${studentList.getGrade()}</td>
-            <td><a href="students/${studentList.getId()}/edit" class="edit">Edit This</a></td>
-
-            <td><a href="students/${studentList.getId()}/delete" class="delete">Delete This</a></td>
+            <th>S.N.</th>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Grade</th>
         </tr>
-    </c:forEach>
+    </thead>
+    <tbody>
+        <c:forEach items="${studentList}" var="studentList" varStatus="counter">
+            <tr>
+                <td><a href="students/${studentList.getId()}/view" class="view">${counter.count+(page-1)*20}</a></td>
+                <td>${studentList.getFirstName()}</td>
+                <td>${studentList.getMiddleName()}</td>
+                <td>${studentList.getLastName()}</td>
+                <td>${studentList.getAddress()}</td>
+                <td>${studentList.getGrade()}</td>
+                <td><a href="students/${studentList.getId()}/edit" class="edit">Edit This</a></td>
+                <td><a href="students/${studentList.getId()}/delete" class="delete">Delete This</a></td>
+            </tr>
+        </c:forEach>
+    </tbody>
 </table>
 
 <c:if test="${page>1}"><span><a href="students?page=${page-1}">Previous</a></span> </c:if>
     <span>
         <c:forEach begin="1" end="${totalPages}" var="counter">
-            <c:if test="${page == counter}"><span> ${counter} </span>
-            </c:if>
-            <c:if test="${page != counter}"><span><a href="students?page=${counter}"> ${counter} </a></span>
-            </c:if>
-
+            <c:if test="${page == counter}"><span> ${counter} </span></c:if>
+            <c:if test="${page != counter}"><span><a href="students?page=${counter}"> ${counter} </a></span></c:if>
         </c:forEach>
     </span>
 <c:if test="${page<totalPages}"><span><a href="students?page=${page+1}">Next</a></span> </c:if>
-
+<script src="js/custom.js"></script>
 <script>
     var deleteElement = document.getElementsByClassName("delete");
     for (var i = 0; i < deleteElement.length; i++) {
@@ -109,8 +105,7 @@
             form.setAttribute("action", destinationLink);
             form.submit();
         };
-    }
-    ;
+    };
 </script>
 </body>
 </html>

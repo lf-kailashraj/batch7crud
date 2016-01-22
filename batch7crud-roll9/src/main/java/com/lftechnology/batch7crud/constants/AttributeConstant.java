@@ -3,7 +3,7 @@ package com.lftechnology.batch7crud.constants;
 /**
  * Created by sanjay on 1/21/16.
  */
-public class Attribute {
+public class AttributeConstant {
   public static final String STUDENT = "student";
   public static final String STUDENT_LIST = "studentList";
 
@@ -13,8 +13,6 @@ public class Attribute {
   public static final String TOTAL_STUDENT = "totalStudent";
   public static final String CURRENT_STUDENT = "currentStudent";
 
-  public static final String MESSAGE = "message";
-
-  private Attribute() {
+  private AttributeConstant() {
   }
 }
