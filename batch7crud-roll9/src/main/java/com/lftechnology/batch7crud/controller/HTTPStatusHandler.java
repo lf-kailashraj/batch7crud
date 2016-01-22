@@ -9,15 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by sanjay on 1/19/16.
  */
 public abstract class HTTPStatusHandler extends HttpServlet {
-  private static final Logger LOGGER = Logger.getLogger(HTTPStatusHandler.class.getName());
-
 
   protected void show404(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -25,15 +21,10 @@ public abstract class HTTPStatusHandler extends HttpServlet {
     view.forward(request, response);
   }
 
-  protected void show500(HttpServletRequest request, HttpServletResponse response, Throwable e) {
+  protected void show500(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-    try {
-      RequestDispatcher view = request.getRequestDispatcher(PageConstant.ERROR_PAGE);
-      view.forward(request, response);
-    }
-    catch(IOException | ServletException ex) {
-      LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
-    }
+    RequestDispatcher view = request.getRequestDispatcher(PageConstant.ERROR_PAGE);
+    view.forward(request, response);
   }
 
   public int pageNumber(HttpServletRequest request) {

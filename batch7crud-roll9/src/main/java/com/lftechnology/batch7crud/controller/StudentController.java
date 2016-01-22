@@ -25,7 +25,7 @@ public class StudentController extends HTTPStatusHandler {
   private static StudentService studentService = new StudentService();
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] parameters = parameterValues(request);
     try {
       if (parameters.length == 3 && UrlConstant.CREATE.equals(parameters[2])) {
@@ -37,16 +37,16 @@ public class StudentController extends HTTPStatusHandler {
       } else {
         show404(request, response);
       }
-    } catch(ServletException | IOException e){
+    } catch (ServletException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      show500(request, response, e);
+      show500(request, response);
     }
   }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] parameters = parameterValues(request);
-    try{
+    try {
       if (parameters.length == 2 && UrlConstant.STUDENTS.equals(parameters[1])) {
         list(request, response);
       } else if (parameters.length == 3 && UrlConstant.CREATE.equals(parameters[2])) {
@@ -58,10 +58,9 @@ public class StudentController extends HTTPStatusHandler {
       } else {
         show404(request, response);
       }
-    }
-    catch(ServletException | IOException e){
+    } catch (ServletException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      show500(request, response, e);
+      show500(request, response);
     }
   }
 
@@ -76,8 +75,8 @@ public class StudentController extends HTTPStatusHandler {
       request.getServletContext().getRequestDispatcher(PageConstant.DETAIL_VIEW).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      show500(request, response, e);
-    } catch(NumberFormatException e){
+      show500(request, response);
+    } catch (NumberFormatException e) {
       show404(request, response);
     }
   }
@@ -112,8 +111,8 @@ public class StudentController extends HTTPStatusHandler {
       view.forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      show500(request, response, e);
-    } catch(NumberFormatException e){
+      show500(request, response);
+    } catch (NumberFormatException e) {
       show404(request, response);
     }
   }
@@ -131,7 +130,7 @@ public class StudentController extends HTTPStatusHandler {
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show404(request, response);
-    } catch(NumberFormatException e){
+    } catch (NumberFormatException e) {
       show404(request, response);
     }
   }
@@ -151,7 +150,7 @@ public class StudentController extends HTTPStatusHandler {
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show404(request, response);
-    } catch(NumberFormatException e){
+    } catch (NumberFormatException e) {
       show404(request, response);
     }
   }
@@ -163,8 +162,8 @@ public class StudentController extends HTTPStatusHandler {
       response.sendRedirect(request.getContextPath() + File.separator + UrlConstant.STUDENTS);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      show500(request, response, e);
-    } catch(NumberFormatException e){
+      show500(request, response);
+    } catch (NumberFormatException e) {
       show404(request, response);
     }
   }
