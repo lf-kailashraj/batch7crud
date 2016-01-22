@@ -6,19 +6,19 @@
 <head>
 <base href="${pageContext.request.contextPath}/">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Edit</title>
 </head>
 <body>
 	${message}
 	<form action="students/${student.getId()}/edit" method="post">
 		<c:if test="${student.getRoll() != 0}">
-			<c:set var="roll" value="${student.getRoll()}" />
+			<c:set var="param.roll" value="${student.getRoll()}" />
 		</c:if>
 		<c:if test="${student.getName() != null}">
-			<c:set var="name" value="${student.getName()}" />
+			<c:set var="param.name" value="${student.getName()}" />
 		</c:if>
-		Roll:<input type="number" name="roll" value="${roll}"><br />
-		Name:<input type="text" name="name" value="${name}"><br /> <input
+		Roll:<input type="number" name="roll" value="${param.roll}"><br />
+		Name:<input type="text" name="name" value="${param.name}"><br /> <input
 			type="submit" value="submit" />
 	</form>
 </body>

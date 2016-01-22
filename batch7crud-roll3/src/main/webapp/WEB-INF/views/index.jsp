@@ -6,7 +6,7 @@
 <html>
 <head>
 <base href="${pageContext.request.contextPath}/">
-<title>Hello</title>
+<title>Student Management System</title>
 </head>
 <body>
 	<div><h1>School Management System</h1></div>

@@ -119,7 +119,7 @@ public class StudentController extends CustomHttpServlet {
         return;
       }
       request.setAttribute(STUDENT, student);
-      request.getRequestDispatcher(EDIT_PAGE).forward(request, response);
+      request.getRequestDispatcher(SHOW_PAGE).forward(request, response);
     } catch (NumberFormatException e) {
       show404(request, response);
     }
@@ -137,8 +137,6 @@ public class StudentController extends CustomHttpServlet {
 
       response.sendRedirect(request.getContextPath() + STUDENT_LIST_CONTROLLER);
     } catch (NumberFormatException e) {
-      request.setAttribute(ROLL, request.getParameter(ROLL));
-      request.setAttribute(NAME, request.getParameter(NAME));
       request.setAttribute(MESSAGE, INVALID_ROLL_MESSAGE);
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       request.getRequestDispatcher(CREATE_PAGE).forward(request, response);
@@ -185,8 +183,6 @@ public class StudentController extends CustomHttpServlet {
       response.sendRedirect(request.getContextPath() + STUDENT_LIST_CONTROLLER);
     } catch (NumberFormatException e) {
       request.setAttribute(STUDENT, student);
-      request.setAttribute(ROLL, request.getParameter(ROLL));
-      request.setAttribute(NAME, request.getParameter(NAME));
       request.setAttribute(MESSAGE, INVALID_ROLL_MESSAGE);
       request.getRequestDispatcher(EDIT_PAGE).forward(request, response);
     }
