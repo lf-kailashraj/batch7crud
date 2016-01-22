@@ -1,6 +1,7 @@
 package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.constants.AppConstants;
+import com.lftechnology.batch7crud.constants.ModelConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
@@ -91,10 +92,10 @@ public class EmployeesController extends CommonHttpServlet {
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     try {
-      String name = request.getParameter("name");
-      String address = request.getParameter("address");
-      String designation = request.getParameter("designation");
-      String phone = request.getParameter("phone");
+      String name = request.getParameter(ModelConstants.NAME);
+      String address = request.getParameter(ModelConstants.ADDRESS);
+      String designation = request.getParameter(ModelConstants.DESIGNATION);
+      String phone = request.getParameter(ModelConstants.PHONE);
       EmployeeService employeeService = new EmployeeService();
 
       Employee employee = new Employee();
@@ -114,10 +115,10 @@ public class EmployeesController extends CommonHttpServlet {
   private void editProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     try{
       int id = parameterValueAsInt(request, 2);
-      String name = request.getParameter("name");
-      String address = request.getParameter("address");
-      String designation = request.getParameter("designation");
-      String phone = request.getParameter("phone");
+      String name = request.getParameter(ModelConstants.NAME);
+      String address = request.getParameter(ModelConstants.ADDRESS);
+      String designation = request.getParameter(ModelConstants.DESIGNATION);
+      String phone = request.getParameter(ModelConstants.PHONE);
 
       Employee employee = new Employee();
       employee.setId(id);
@@ -128,7 +129,7 @@ public class EmployeesController extends CommonHttpServlet {
 
       EmployeeService employeeService = new EmployeeService();
       employeeService.edit(employee);
-      response.sendRedirect("/employees");
+      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     }
     catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -141,7 +142,7 @@ public class EmployeesController extends CommonHttpServlet {
       int id = parameterValueAsInt(request, 2);
       EmployeeService employeeService = new EmployeeService();
       employeeService.delete(id);
-      response.sendRedirect("/employees");
+      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     }
     catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
