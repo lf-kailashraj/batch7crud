@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 public class EmployeeController extends CustomHttpServlet {
   private EmployeeService employeeService = new EmployeeService();  //NOSONAR
   private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
-  private static final int RECORD_TO_FETCH = 2;
+  private static final int RECORD_TO_FETCH = 5;
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
