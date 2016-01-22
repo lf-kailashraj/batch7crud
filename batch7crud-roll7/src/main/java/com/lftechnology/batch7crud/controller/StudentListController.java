@@ -8,13 +8,12 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by leapfrog on 1/18/16.
+ * Created by Prajjwal Raj Kandel <prajjwalkandel@lftechnology.com> on 1/18/16.
  */
 @WebServlet(name = "StudentListController", urlPatterns = { "/students/*" })
 public class StudentListController extends CommonHttpServlet{
@@ -100,7 +99,7 @@ public class StudentListController extends CommonHttpServlet{
       student.setRoll(rollNum);
 
       studentService.addNew(student);
-      response.sendRedirect(request.getContextPath() + File.separator + CommonConstants.LIST_URL);
+      response.sendRedirect(request.getContextPath() + "/" + CommonConstants.LIST_URL);
     } catch (NumberFormatException e) {
       request.setAttribute("error", "invalid roll");
       request.getServletContext().getRequestDispatcher(CommonConstants.NEW_ENTRY_VIEW).forward(request, response);
@@ -127,7 +126,7 @@ public class StudentListController extends CommonHttpServlet{
       student.setId(id);
 
       studentService.update(student);
-      response.sendRedirect(request.getContextPath() + File.separator + CommonConstants.LIST_URL);
+      response.sendRedirect(request.getContextPath() + "/" + CommonConstants.LIST_URL);
     } catch (NumberFormatException e) {
       request.setAttribute("error", "invalid roll");
       request.setAttribute("student", studentService.fetchById(id));
@@ -139,7 +138,7 @@ public class StudentListController extends CommonHttpServlet{
   private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id)
     throws ServletException, IOException, DataException {
     studentService.delete(id);
-    response.sendRedirect(request.getContextPath() + File.separator + CommonConstants.LIST_URL);
+    response.sendRedirect(request.getContextPath() + "/" + CommonConstants.LIST_URL);
 
   }
 

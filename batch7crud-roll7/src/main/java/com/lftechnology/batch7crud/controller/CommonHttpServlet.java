@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by leapfrog on 1/21/16.
+ * Created by Prajjwal Raj Kandel <prajjwalkandel@lftechnology.com> on 1/21/16.
  */
 public abstract class CommonHttpServlet extends HttpServlet {
   private static final String INTERNAL_ERROR = "Internal Error";

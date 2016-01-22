@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by leapfrog on 1/18/16.
+ * Created by Prajjwal Raj Kandel <prajjwalkandel@lftechnology.com> on 1/18/16.
  */
 public class StudentDataAccess {
   private static final Logger LOGGER = Logger.getLogger(StudentDataAccess.class.getName());
@@ -29,7 +29,7 @@ public class StudentDataAccess {
       ps.setInt(3, student.getRoll());
       ps.executeUpdate();
       ResultSet rs = ps.getGeneratedKeys();
-      if(rs.next()) {
+      if (rs.next()) {
         student.setId(rs.getInt(1));
       }
     } catch (SQLException ex) {
