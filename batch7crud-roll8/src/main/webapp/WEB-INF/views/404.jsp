@@ -6,11 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
-  <title></title>
+  <title>404</title>
 </head>
 <body>
-OOPS! The page was not found!
+  404 OOPS! The page was not found!
 </body>
 </html>
