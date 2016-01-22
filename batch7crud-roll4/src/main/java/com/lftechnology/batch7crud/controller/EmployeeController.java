@@ -36,7 +36,7 @@ public class EmployeeController extends CustomHttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] parameters = parameterValues(request);
 
-    if (parameters.length == 2) {
+    if (parameters.length == 2) { // for /employees , listing page
       list(request, response);
     } else if (parameters.length == 3 && ROUTE_CREATE.equals(parameters[2])) {
       create(request, response);

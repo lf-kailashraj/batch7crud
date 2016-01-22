@@ -96,7 +96,6 @@ public class EmployeeDao {
   public void update(Employee employee) throws DataException {
     try (Connection connection = DbConnection.getConnection();
             PreparedStatement stmt = connection.prepareStatement(QUERY_UPDATE_SET_EMPLOYEES)) {
-
       stmt.setString(1, employee.getFirstName());
       stmt.setString(2, employee.getLastName());
       stmt.setString(3, employee.getStation());

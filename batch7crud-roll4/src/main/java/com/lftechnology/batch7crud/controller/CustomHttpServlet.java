@@ -15,6 +15,10 @@ import java.io.IOException;
 /**
  * Created by Pratish Shrestha <pratishshrestha@lftechnology.com> on 1/19/16.
  */
+
+/*
+  Custom abstract Servlet that contains common methods that will be used by all the controllers
+ */
 public abstract class CustomHttpServlet extends HttpServlet {
 
   protected void show404(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
