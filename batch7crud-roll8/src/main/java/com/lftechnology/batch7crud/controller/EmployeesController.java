@@ -54,7 +54,8 @@ public class EmployeesController extends CommonHttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String path = request.getPathInfo();
     if (path == null) {
-      request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_LIST_PAGE).forward(request, response);
+      request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_LIST_PAGE).forward(request,
+        response);
     }
     else {
       String[] parts = path.split("/");
@@ -87,23 +88,25 @@ public class EmployeesController extends CommonHttpServlet {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       errorPage(request, response, e.getMessage());
     }
+  }
 
+  private Employee setEmployeeAttributes (HttpServletRequest request) {
+    String name = request.getParameter(ModelConstants.NAME);
+    String address = request.getParameter(ModelConstants.ADDRESS);
+    String designation = request.getParameter(ModelConstants.DESIGNATION);
+    String phone = request.getParameter(ModelConstants.PHONE);
+    Employee employee = new Employee();
+    employee.setName(name);
+    employee.setAddress(address);
+    employee.setDesignation(designation);
+    employee.setPhone(phone);
+    return employee;
   }
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     try {
-      String name = request.getParameter(ModelConstants.NAME);
-      String address = request.getParameter(ModelConstants.ADDRESS);
-      String designation = request.getParameter(ModelConstants.DESIGNATION);
-      String phone = request.getParameter(ModelConstants.PHONE);
+      Employee employee = setEmployeeAttributes(request);
       EmployeeService employeeService = new EmployeeService();
-
-      Employee employee = new Employee();
-      employee.setName(name);
-      employee.setAddress(address);
-      employee.setDesignation(designation);
-      employee.setPhone(phone);
-
       employeeService.create(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     } catch (DataException e) {
@@ -115,17 +118,8 @@ public class EmployeesController extends CommonHttpServlet {
   private void editProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     try{
       int id = parameterValueAsInt(request, 2);
-      String name = request.getParameter(ModelConstants.NAME);
-      String address = request.getParameter(ModelConstants.ADDRESS);
-      String designation = request.getParameter(ModelConstants.DESIGNATION);
-      String phone = request.getParameter(ModelConstants.PHONE);
-
-      Employee employee = new Employee();
+      Employee employee = setEmployeeAttributes(request);
       employee.setId(id);
-      employee.setName(name);
-      employee.setAddress(address);
-      employee.setDesignation(designation);
-      employee.setPhone(phone);
 
       EmployeeService employeeService = new EmployeeService();
       employeeService.edit(employee);
