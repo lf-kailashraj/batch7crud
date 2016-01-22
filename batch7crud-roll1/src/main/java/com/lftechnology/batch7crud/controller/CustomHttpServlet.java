@@ -1,5 +1,8 @@
 package com.lftechnology.batch7crud.controller;
 
+import static com.lftechnology.batch7crud.constant.URLConstant.*;
+import static com.lftechnology.batch7crud.constant.AttributeConstant.*;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,8 +17,6 @@ import java.io.IOException;
  */
 
 public abstract class CustomHttpServlet extends HttpServlet {
-  private static final String ERROR_MESSAGE = "errorMessage";
-  private static final String ERROR_PAGE = "/WEB-INF/views/error.jsp";
 
   protected void showPageNotFound(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     req.setAttribute(ERROR_MESSAGE, "page not found");
@@ -28,12 +29,13 @@ public abstract class CustomHttpServlet extends HttpServlet {
     req.getServletContext().getRequestDispatcher(ERROR_PAGE).forward(req, resp);
   }
 
-  public String[] params(HttpServletRequest req) {
-    String servletPath = req.getPathInfo();
-    if (servletPath == null) {
-      return new String[] {};
-    } else {
-      return servletPath.split("/");
-    }
+  protected String[] getPathParameters(HttpServletRequest req) {
+    String urlPath = req.getRequestURI().substring(req.getContextPath().length());
+    return urlPath.split("/");
+  }
+
+  protected int parameterValueAsInt(HttpServletRequest request, int index) {
+    String[] paths = getPathParameters(request);
+    return Integer.parseInt(paths[index]);
   }
 }
