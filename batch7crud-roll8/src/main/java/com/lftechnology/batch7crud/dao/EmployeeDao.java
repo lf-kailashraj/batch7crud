@@ -1,5 +1,6 @@
 package com.lftechnology.batch7crud.dao;
 
+import com.lftechnology.batch7crud.constants.ModelConstants;
 import com.lftechnology.batch7crud.db.DBConnection;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
@@ -20,10 +21,16 @@ import java.util.logging.Logger;
 public class EmployeeDao {
   private static final Logger LOGGER = Logger.getLogger(Employee.class.getName());
 
+  private static final String EMPLOYEE_INSERT = "INSERT INTO employee (name, address, designation, phone) VALUES (?,?,?,?)";
+  private static final String EMPLOYEE_SELECT_ALL = "SELECT * FROM employee order by id limit ? offset ?";
+  private static final String EMPLOYEE_SELECT_BY_ID = "SELECT * FROM employee where id = ?";
+  private static final String EMPLOYEE_UPDATE_BY_ID = "update employee set name = ?, address = ?, designation = ?, phone = ? where id = ?";
+  private static final String EMPLOYEE_DELETE_BY_ID = "delete from employee where id = ?";
+  private static final String EMPLOYEE_GET_COUNT = "select count(*) as total from employee";
+
   public void create(Employee employee) throws DataException {
-    String sql = "INSERT INTO employee (name, address, designation, phone) VALUES (?,?,?,?)";
     try(Connection conn = DBConnection.getConnection();
-      PreparedStatement statement = conn.prepareStatement(sql)
+      PreparedStatement statement = conn.prepareStatement(EMPLOYEE_INSERT)
     ){
       statement.setString(1, employee.getName());
       statement.setString(2, employee.getAddress());
@@ -42,21 +49,20 @@ public class EmployeeDao {
 
   public List<Employee> fetch(Integer pageLimit, Integer offset) throws DataException {
     List<Employee> employeeList = new ArrayList<>();
-    String sql = "SELECT * FROM employee order by id limit ? offset ?";
 
     try (Connection conn = DBConnection.getConnection();
-        PreparedStatement statement = conn.prepareStatement(sql)
+        PreparedStatement statement = conn.prepareStatement(EMPLOYEE_SELECT_ALL)
     ){
       statement.setInt(1, pageLimit);
       statement.setInt(2, offset);
       ResultSet result = statement.executeQuery();
       while (result.next()) {
         Employee employee = new Employee();
-        employee.setId(result.getInt("id"));
-        employee.setName(result.getString("name"));
-        employee.setAddress(result.getString("address"));
-        employee.setDesignation(result.getString("designation"));
-        employee.setPhone(result.getString("phone"));
+        employee.setId(result.getInt(ModelConstants.ID));
+        employee.setName(result.getString(ModelConstants.NAME));
+        employee.setAddress(result.getString(ModelConstants.ADDRESS));
+        employee.setDesignation(result.getString(ModelConstants.DESIGNATION));
+        employee.setPhone(result.getString(ModelConstants.PHONE));
         employeeList.add(employee);
       }
       return employeeList;
@@ -68,19 +74,18 @@ public class EmployeeDao {
 
   public Employee fetchById(Integer id) throws DataException {
     Employee employee = null;
-    String sql = "SELECT * FROM employee where id = ?";
     try (Connection conn = DBConnection.getConnection();
-      PreparedStatement statement = conn.prepareStatement(sql)
+      PreparedStatement statement = conn.prepareStatement(EMPLOYEE_SELECT_BY_ID)
     ){
       statement.setInt(1, id);
       ResultSet result = statement.executeQuery();
-      while (result.next()) {
+      if (result.next()) {
         employee = new Employee();
-        employee.setId(result.getInt("id"));
-        employee.setName(result.getString("name"));
-        employee.setAddress(result.getString("address"));
-        employee.setDesignation(result.getString("designation"));
-        employee.setPhone(result.getString("phone"));
+        employee.setId(result.getInt(ModelConstants.ID));
+        employee.setName(result.getString(ModelConstants.NAME));
+        employee.setAddress(result.getString(ModelConstants.ADDRESS));
+        employee.setDesignation(result.getString(ModelConstants.DESIGNATION));
+        employee.setPhone(result.getString(ModelConstants.PHONE));
       }
       return employee;
     }
@@ -91,10 +96,8 @@ public class EmployeeDao {
   }
 
   public void edit(Employee employee) throws DataException {
-    String sql = "update employee set name = ?, address = ?, designation = ?, phone = ? where id = ?";
-
     try (Connection conn = DBConnection.getConnection();
-      PreparedStatement statement = conn.prepareStatement(sql)
+      PreparedStatement statement = conn.prepareStatement(EMPLOYEE_UPDATE_BY_ID)
     ){
       statement.setString(1, employee.getName());
       statement.setString(2, employee.getAddress());
@@ -110,9 +113,8 @@ public class EmployeeDao {
   }
 
   public void delete(Integer id) throws DataException {
-    String sql = "delete from employee where id = ?";
     try (Connection conn = DBConnection.getConnection();
-      PreparedStatement statement = conn.prepareStatement(sql)
+      PreparedStatement statement = conn.prepareStatement(EMPLOYEE_DELETE_BY_ID)
     ) {
       statement.setInt(1, id);
       statement.executeUpdate();
@@ -123,13 +125,12 @@ public class EmployeeDao {
   }
 
   public Integer count() throws DataException {
-    String sql = "select count(*) as total from employee";
     try(Connection conn = DBConnection.getConnection();
-        PreparedStatement statement = conn.prepareStatement(sql)
+        PreparedStatement statement = conn.prepareStatement(EMPLOYEE_GET_COUNT)
     ){
       ResultSet result = statement.executeQuery();
       if (result.next()){
-        return result.getInt("total");
+        return result.getInt(ModelConstants.TOTAL);
       }
       else {
         return 0;

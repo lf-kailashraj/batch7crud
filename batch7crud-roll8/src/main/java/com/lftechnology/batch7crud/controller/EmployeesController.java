@@ -1,9 +1,8 @@
 package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.constants.AppConstants;
-import com.lftechnology.batch7crud.constants.ModelConstants;
+import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
-import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.services.EmployeeService;
 
@@ -23,6 +22,7 @@ import java.util.logging.Logger;
 @WebServlet({ "/employees/*" })
 public class EmployeesController extends CommonHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(Employee.class.getName());
+  private EmployeeService employeeService = new EmployeeService(); // NOSONAR
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -71,30 +71,35 @@ public class EmployeesController extends CommonHttpServlet {
     }
   }
 
-  private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request, response);
+  private void create(HttpServletRequest request, HttpServletResponse response) {
+    try {
+      request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request, response);
+    } catch (Exception e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      errorPage(request, response, e.getMessage());
+    }
   }
 
-  private void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  private void edit(HttpServletRequest request, HttpServletResponse response) {
     try {
       int id = parameterValueAsInt(request, 2);
-      EmployeeService employeeService = new EmployeeService();
       Employee employee = employeeService.fetchById(id);
-      request.setAttribute("employee", employee);
+      request.setAttribute(AttributeConstants.EMPLOYEE, employee);
       RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_EDIT_PAGE);
       dispatcher.forward(request, response);
     }
-    catch (DataException e) {
+    catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       errorPage(request, response, e.getMessage());
     }
   }
 
   private Employee setEmployeeAttributes (HttpServletRequest request) {
-    String name = request.getParameter(ModelConstants.NAME);
-    String address = request.getParameter(ModelConstants.ADDRESS);
-    String designation = request.getParameter(ModelConstants.DESIGNATION);
-    String phone = request.getParameter(ModelConstants.PHONE);
+    String name = request.getParameter(AttributeConstants.NAME);
+    String address = request.getParameter(AttributeConstants.ADDRESS);
+    String designation = request.getParameter(AttributeConstants.DESIGNATION);
+    String phone = request.getParameter(AttributeConstants.PHONE);
+
     Employee employee = new Employee();
     employee.setName(name);
     employee.setAddress(address);
@@ -103,79 +108,74 @@ public class EmployeesController extends CommonHttpServlet {
     return employee;
   }
 
-  private void createProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+  private void createProcess(HttpServletRequest request, HttpServletResponse response) {
     try {
       Employee employee = setEmployeeAttributes(request);
-      EmployeeService employeeService = new EmployeeService();
       employeeService.create(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
-    } catch (DataException e) {
+    } catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       errorPage(request, response, e.getMessage());
     }
   }
 
-  private void editProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+  private void editProcess(HttpServletRequest request, HttpServletResponse response) {
     try{
       int id = parameterValueAsInt(request, 2);
       Employee employee = setEmployeeAttributes(request);
       employee.setId(id);
-
-      EmployeeService employeeService = new EmployeeService();
       employeeService.edit(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     }
-    catch (DataException e) {
+    catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       errorPage(request, response, e.getMessage());
     }
   }
 
-  private void deleteProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+  private void deleteProcess(HttpServletRequest request, HttpServletResponse response) {
     try {
       int id = parameterValueAsInt(request, 2);
-      EmployeeService employeeService = new EmployeeService();
       employeeService.delete(id);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     }
-    catch (DataException e) {
+    catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       errorPage(request, response, e.getMessage());
     }
   }
 
-  private void fetch(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+  private void fetch(HttpServletRequest request, HttpServletResponse response) {
     try {
       Integer pageLimit = 4;
       Integer pageNo = getCurrentPage(request);
       Integer offset = (pageNo-1)*pageLimit;
-      EmployeeService employeeService = new EmployeeService();
+
       List<Employee> employeeList = employeeService.fetch(pageLimit, offset);
       Integer employeeCount = employeeService.count();
-      request.setAttribute("employeeList", employeeList);
-      request.setAttribute("employeeCount", employeeCount);
-      request.setAttribute("pageNo", pageNo);
+      request.setAttribute(AttributeConstants.EMPLOYEE_LIST, employeeList);
+      request.setAttribute(AttributeConstants.EMPLOYEE_COUNT, employeeCount);
+      request.setAttribute(AttributeConstants.PAGE_NO, pageNo);
       if ((employeeCount%pageLimit) == 0) {
-        request.setAttribute("lastPageNo", employeeCount / pageLimit);
+        request.setAttribute(AttributeConstants.LAST_PAGE_NO, employeeCount / pageLimit);
       }
       else {
-        request.setAttribute("lastPageNo", (employeeCount / pageLimit) + 1);
+        request.setAttribute(AttributeConstants.LAST_PAGE_NO, (employeeCount / pageLimit) + 1);
       }
       request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_LIST_PAGE).forward(request, response);
     }
-    catch (DataException e) {
+    catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       errorPage(request, response, e.getMessage());
     }
   }
 
-  private void view(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  private void view(HttpServletRequest request, HttpServletResponse response) {
     try {
       int id = parameterValueAsInt(request, 2);
-      EmployeeService employeeService = new EmployeeService();
       Employee employee = employeeService.fetchById(id);
       if (employee != null) {
-        request.setAttribute("employee", employee);
+        request.setAttribute(AttributeConstants.EMPLOYEE, employee);
         request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
       }
       else {
@@ -186,7 +186,7 @@ public class EmployeesController extends CommonHttpServlet {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       pageNotFound(request, response);
     }
-    catch (DataException e) {
+    catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       errorPage(request, response, e.getMessage());
     }
@@ -194,10 +194,10 @@ public class EmployeesController extends CommonHttpServlet {
 
   private int getCurrentPage(HttpServletRequest request) {
     try {
-      if (request.getParameter("page") == null) {
+      if (request.getParameter(AttributeConstants.PAGE) == null) {
         return 1;
       } else {
-        return Integer.parseInt(request.getParameter("page"));
+        return Integer.parseInt(request.getParameter(AttributeConstants.PAGE));
       }
     } catch(NumberFormatException e){
       return 1;

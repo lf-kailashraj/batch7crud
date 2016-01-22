@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 public class EmployeeService {
-  EmployeeDao employeeDao = new EmployeeDao();
+  private EmployeeDao employeeDao = new EmployeeDao();
   public void create(Employee employee) throws DataException {
     employeeDao.create(employee);
   }
