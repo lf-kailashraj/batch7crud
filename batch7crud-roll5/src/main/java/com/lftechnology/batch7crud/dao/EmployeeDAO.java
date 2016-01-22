@@ -1,5 +1,8 @@
 package com.lftechnology.batch7crud.dao;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.lftechnology.batch7crud.exception.DataException;
@@ -17,5 +20,9 @@ public interface EmployeeDAO {
     void edit(Employee employee) throws DataException;
     
     int count() throws DataException;
+    
+    Employee setEmployeeAttribute(ResultSet rs)throws SQLException;
+
+    PreparedStatement setQueryAttribute(PreparedStatement ps, Employee employee) throws SQLException ;
 
 }

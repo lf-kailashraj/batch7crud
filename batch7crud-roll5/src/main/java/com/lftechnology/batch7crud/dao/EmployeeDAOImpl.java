@@ -20,7 +20,6 @@ public class EmployeeDAOImpl {
 
     public List<Employee> fetch(int limit, int offSet) throws DataException {
         List<Employee> empList = new ArrayList<Employee>();
-        Employee emp = null;
 
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.READ_ALL_QUERY)) { // NOSONAR
@@ -29,15 +28,8 @@ public class EmployeeDAOImpl {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                emp = new Employee();
-                emp.setId(rs.getInt("id"));
-                emp.setFirstName(rs.getString("first_name"));
-                emp.setLastName(rs.getString("last_name"));
-                emp.setDepartment(rs.getString("department"));
-                emp.setAddress(rs.getString("address"));
-                empList.add(emp);
+                empList.add(setObjectAttribute(rs));
             }
-
             return empList;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -49,17 +41,11 @@ public class EmployeeDAOImpl {
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.READ_BY_ID_QUERY)) { // NOSONAR
             Employee emp = null;
-
             ps.setInt(1, id);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    emp = new Employee();
-                    emp.setId(rs.getInt("id"));
-                    emp.setFirstName(rs.getString("first_name"));
-                    emp.setLastName(rs.getString("last_name"));
-                    emp.setDepartment(rs.getString("department"));
-                    emp.setAddress(rs.getString("address"));
+                    emp = setObjectAttribute(rs);
                 }
             }
             return emp;
@@ -82,12 +68,7 @@ public class EmployeeDAOImpl {
     public void create(Employee employee) throws DataException {
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) { // NOSONAR
-            ps.setString(1, employee.getFirstName());
-            ps.setString(2, employee.getLastName());
-            ps.setString(3, employee.getDepartment());
-            ps.setString(4, employee.getAddress());
-            ps.executeUpdate();
-
+            setQueryAttribute(ps,employee).executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
 
             if (rs.next())
@@ -100,12 +81,8 @@ public class EmployeeDAOImpl {
     }
 
     public void edit(Employee employee) throws DataException {
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.UPDATE_QUERY)) { // NOSONAR
-            ps.setString(1, employee.getFirstName());
-            ps.setString(2, employee.getLastName());
-            ps.setString(3, employee.getDepartment());
-            ps.setString(4, employee.getAddress());
-            ps.setInt(5, employee.getId());
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(SqlQueryConstants.UPDATE_QUERY)) { // NOSONAR         
+            setQueryAttribute(ps, employee).setInt(5, employee.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -124,5 +101,23 @@ public class EmployeeDAOImpl {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
         }
+    }
+
+    public Employee setObjectAttribute(ResultSet rs) throws SQLException {
+        Employee emp = new Employee();
+        emp.setId(rs.getInt("id"));
+        emp.setFirstName(rs.getString("first_name"));
+        emp.setLastName(rs.getString("last_name"));
+        emp.setDepartment(rs.getString("department"));
+        emp.setAddress(rs.getString("address"));
+        return emp;
+    }
+    
+    private PreparedStatement setQueryAttribute(PreparedStatement ps, Employee employee) throws SQLException {
+        ps.setString(1, employee.getFirstName());
+        ps.setString(2, employee.getLastName());
+        ps.setString(3, employee.getDepartment());
+        ps.setString(4, employee.getAddress());
+        return ps;
     }
 }

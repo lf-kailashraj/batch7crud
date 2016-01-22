@@ -13,7 +13,7 @@ public class NormalConstants {
     public static final String EMPLOYEE_LIST = "employeeList";
     public static final String PAGE_NO = "pageNo";
     public static final String NO_OF_EMPLOYEES = "noOfEmployees";
-    public static final String NO_EMP_IN_PAGE = "noEmpInPage";
+    public static final String NO_RECORDS_IN_PAGE = "noRecordsInPage";
     public static final String DATABASE = "jdbc/EmployeeManagement";
     public static final String SQL_ERROR_MESSAGE = "Sql error"; 
     
