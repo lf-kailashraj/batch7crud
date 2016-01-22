@@ -7,8 +7,11 @@ import java.io.File;
  */
 public class UrlConstants {
   public static final String SEPARATOR = File.separator;
+
   public static final String VIEW = SEPARATOR + "WEB-INF" + SEPARATOR + "views" + SEPARATOR;
   public static final String EMPLOYEE_VIEW = VIEW + "employee" + SEPARATOR;
+
+  public static final String URL_INDEX_PAGE = "/WEB-INF/views/index.jsp";
 
   public static final String URL_EMPLOYEE_LISTING_PAGE = EMPLOYEE_VIEW + "employees.jsp";
   public static final String URL_EMPLOYEE_CREATE_PAGE = EMPLOYEE_VIEW + "create.jsp";

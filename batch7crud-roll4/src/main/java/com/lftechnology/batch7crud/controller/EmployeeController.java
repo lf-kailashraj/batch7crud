@@ -69,7 +69,7 @@ public class EmployeeController extends CustomHttpServlet {
     try {
       int page = pageNumber(request);
       int noOfRecords = employeeService.fetchNoOfRecords();
-      int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / 20.0);
+      int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / ATTRIB_RECORD_LIMIT);
 
       if (page != 1 && page > noOfPages) {
         show404(request, response);
