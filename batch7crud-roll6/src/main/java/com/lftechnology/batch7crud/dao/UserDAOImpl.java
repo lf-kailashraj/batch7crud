@@ -14,6 +14,7 @@ import com.lftechnology.batch7crud.controller.UserController;
 import com.lftechnology.batch7crud.db.DbConnector;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.User;
+import com.mysql.jdbc.Statement;
 
 public class UserDAOImpl implements UserDAO {
 
@@ -31,9 +32,9 @@ public class UserDAOImpl implements UserDAO {
 
   @Override
   public void add(User user) throws DataException {
-    String str = "insert into user (firstname,surname,username,password) values (?,?,?,?)";
+    String query = "insert into user (firstname,surname,username,password) values (?,?,?,?)";
 
-    try (PreparedStatement preparedStatement = connection.prepareStatement(str);) {
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);) {
 
       preparedStatement.setString(1, user.getFirstName());
       preparedStatement.setString(2, user.getSurName());
@@ -41,6 +42,11 @@ public class UserDAOImpl implements UserDAO {
       preparedStatement.setString(4, user.getPassword());
 
       preparedStatement.executeUpdate();
+
+      ResultSet rs = preparedStatement.getGeneratedKeys();
+      if(rs.next()){
+        user.setId(rs.getInt(1));
+      }
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException();
@@ -62,10 +68,9 @@ public class UserDAOImpl implements UserDAO {
   }
 
   @Override
-  public List<User> fetch(int page, int limit) throws DataException {
+  public List<User> fetch(int offset, int limit) throws DataException {
     String query = "select * from user order by id  limit ? offset ?";
     List<User> userList = new ArrayList<>();
-    int offset = (page - 1) * limit;
     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
       preparedStatement.setInt(1, limit);
       preparedStatement.setInt(2, offset);

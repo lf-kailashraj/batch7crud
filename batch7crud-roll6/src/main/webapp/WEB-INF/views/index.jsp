@@ -7,10 +7,11 @@
 <head>
 <title>Hello</title>
 </head>
+<base href="${pageContext.request.contextPath}/" />
 <body>
+
 	<h1>Welcome!!!!!</h1>
-	<br>
-	<a href="/batch7crud-roll6/users">List User</a><br>
-	<a href="/batch7crud-roll6/users/add">Add User</a>
+	<a href="users">List User</a><br>
+	<a href="users/add">Add User</a>
 </body>
 </html>

@@ -60,7 +60,7 @@ public class UserController extends CustomHttpServlet {
       }
     } catch (ServletException | HTTPException | IOException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-    }
+    } 
   }
 
   @Override
@@ -88,7 +88,7 @@ public class UserController extends CustomHttpServlet {
           deleteProcess(request, response, userID);
 
         }
-        
+
       }
     } catch (ServletException | HTTPException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -101,15 +101,20 @@ public class UserController extends CustomHttpServlet {
       int totalUser = userService.totalUser();
       int noOfPages = (int) Math.ceil(totalUser * 1.0 / LIMIT);
       if (page < 1 || page > noOfPages) {
-        showPageNotFound(request, response);
+        response.sendRedirect(ApplicationConstant.USER_LIST);
       }
-      request.setAttribute(CommonConstant.USERS, userService.fetch(page, LIMIT));
+      int offset = (page - 1) * LIMIT;
+      request.setAttribute(CommonConstant.USERS, userService.fetch(offset, LIMIT));
       request.setAttribute(CommonConstant.CURRENT_PAGE, page);
       request.setAttribute(CommonConstant.NO_OF_PAGES, noOfPages);
+      request.setAttribute(CommonConstant.LIMIT, LIMIT);
       request.getRequestDispatcher(URLConstants.LIST_USER).forward(request, response);
 
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
+    } catch (IllegalStateException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
     }
   }
 
