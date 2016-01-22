@@ -8,6 +8,9 @@
 <title>Hello</title>
 </head>
 <body>
-	<div>Hello world!!</div>
+	<h1>Welcome!!!!!</h1>
+	<br>
+	<a href="/batch7crud-roll6/users">List User</a><br>
+	<a href="/batch7crud-roll6/users/add">Add User</a>
 </body>
 </html>
