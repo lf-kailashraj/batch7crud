@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: leapfrog
@@ -11,7 +12,7 @@
   <base href="${pageContext.request.contextPath}/">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-  <title></title>
+  <title>Edit</title>
 </head>
 <body>
 <form action="students/${student.id}/edit" method="post">
@@ -20,6 +21,11 @@
   Roll: <input type="text" name="roll" value="${student.roll}"/>
   <input type="submit"/>
 </form>
+${error}
+<c:if test="${error != null}">
+  <p>Error in entered roll</p>
+</c:if>
+
 <div><a href="students">View All</a></div>
 
 </body>

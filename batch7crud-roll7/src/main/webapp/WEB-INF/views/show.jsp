@@ -10,7 +10,7 @@
 <head>
   <base href="${pageContext.request.contextPath}/">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title></title>
+  <title>Student</title>
 </head>
 <body>
 Id : ${student.getId()}<br>

@@ -8,10 +8,10 @@
   <base href="${pageContext.request.contextPath}/">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-  <title>Hello</title>
+  <title>SMS</title>
 </head>
 <body>
-<div>Hello world!!</div>
+<div>SMS</div>
 <div><a href="students/newEntry">New Entry</a></div>
 <div><a href="students">View All</a></div>
 </body>

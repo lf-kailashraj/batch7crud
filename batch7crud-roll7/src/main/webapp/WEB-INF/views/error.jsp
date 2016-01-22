@@ -9,10 +9,11 @@
 <html>
 <head>
   <base href="${pageContext.request.contextPath}/">
-  <title></title>
+  <title>Error</title>
 </head>
 <body>
-OoPs something went wrong !!!
+<p>OoPs something went wrong !!!</p>
+<p>${errorMessage}</p>
 <a href="students">View All</a>
 
 </body>

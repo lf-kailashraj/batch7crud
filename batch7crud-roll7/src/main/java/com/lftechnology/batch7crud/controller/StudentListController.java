@@ -3,6 +3,7 @@ package com.lftechnology.batch7crud.controller;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Student;
 import com.lftechnology.batch7crud.service.StudentServices;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,8 @@ import java.util.logging.Logger;
 public class StudentListController extends CommonHttpServlet{
   private static final Logger LOGGER = Logger.getLogger(StudentListController.class.getName());
 
+  private static StudentServices studentService = new StudentServices();
+
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] urlPath = urlParts(request);
@@ -34,6 +37,7 @@ public class StudentListController extends CommonHttpServlet{
         showErrorPage(request, response);
     } catch (DataException | ServletException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      showInternalErrorPage(request, response);
     }
   }
 
@@ -41,7 +45,7 @@ public class StudentListController extends CommonHttpServlet{
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String[] urlPath = urlParts(request);
     try {
-      if (urlPath.length == 2)
+      if (urlPath.length == 2 && CommonConstants.LIST_URL.equals(urlPath[1]))
         list(request, response);
       else if (urlPath.length == 3 && CommonConstants.NEW_ENTRY.equals(urlPath[2]))
         create(request, response);
@@ -54,11 +58,11 @@ public class StudentListController extends CommonHttpServlet{
       }
     } catch (DataException | ServletException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      showInternalErrorPage(request, response);
     }
   }
 
   private void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
-    StudentServices studentService = new StudentServices();
     int pageSize = CommonConstants.PAGE_SIZE;
     int page = 1;
     try {
@@ -70,16 +74,14 @@ public class StudentListController extends CommonHttpServlet{
     int numberOfPages = (int) Math.ceil(totalStudents / (float) pageSize);
 
     if (page != 1 && page > numberOfPages ) {
-      showErrorPage(request, response);
+      page = 1;
     }
     request.setAttribute("students", studentService.fetch(pageSize, (page - 1) * pageSize));
     request.setAttribute("pageSize", pageSize);
     request.setAttribute("totalStudents", totalStudents);
     request.setAttribute("pageNum", page);
     request.setAttribute("numberOfPages",numberOfPages);
-
     request.getServletContext().getRequestDispatcher(CommonConstants.STUDENTS_LIST_VIEW).forward(request, response);
-
   }
 
   private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -91,16 +93,14 @@ public class StudentListController extends CommonHttpServlet{
     String address = request.getParameter("address");
     String roll = request.getParameter("roll");
     try {
-
       int rollNum = Integer.parseInt(roll);
       Student student = new Student();
       student.setName(name);
       student.setAddress(address);
       student.setRoll(rollNum);
 
-      StudentServices studentService = new StudentServices();
       studentService.addNew(student);
-      response.sendRedirect(request.getContextPath() + "/" + CommonConstants.LIST_URL);
+      response.sendRedirect(request.getContextPath() + File.separator + CommonConstants.LIST_URL);
     } catch (NumberFormatException e) {
       request.setAttribute("error", "invalid roll");
       request.getServletContext().getRequestDispatcher(CommonConstants.NEW_ENTRY_VIEW).forward(request, response);
@@ -109,8 +109,6 @@ public class StudentListController extends CommonHttpServlet{
   }
 
   private void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException, DataException {
-    StudentServices studentService = new StudentServices();
-
     request.setAttribute("student", studentService.fetchById(id));
     request.getRequestDispatcher(CommonConstants.EDIT_ENTRY_VIEW).forward(request, response);
 
@@ -120,22 +118,26 @@ public class StudentListController extends CommonHttpServlet{
     throws ServletException, IOException, DataException {
     String name = request.getParameter("name");
     String address = request.getParameter("address");
-    int roll = Integer.parseInt(request.getParameter("roll"));
     Student student = new Student();
-    student.setName(name);
-    student.setAddress(address);
-    student.setRoll(roll);
-    student.setId(id);
+    try {
+      int roll = Integer.parseInt(request.getParameter("roll"));
+      student.setName(name);
+      student.setAddress(address);
+      student.setRoll(roll);
+      student.setId(id);
 
-    StudentServices studentService = new StudentServices();
-    studentService.update(student);
-    response.sendRedirect(request.getContextPath() + File.separator + CommonConstants.LIST_URL);
+      studentService.update(student);
+      response.sendRedirect(request.getContextPath() + File.separator + CommonConstants.LIST_URL);
+    } catch (NumberFormatException e) {
+      request.setAttribute("error", "invalid roll");
+      request.setAttribute("student", studentService.fetchById(id));
+      request.getServletContext().getRequestDispatcher(CommonConstants.EDIT_ENTRY_VIEW).forward(request, response);
+    }
 
   }
 
   private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id)
     throws ServletException, IOException, DataException {
-    StudentServices studentService = new StudentServices();
     studentService.delete(id);
     response.sendRedirect(request.getContextPath() + File.separator + CommonConstants.LIST_URL);
 
@@ -144,7 +146,6 @@ public class StudentListController extends CommonHttpServlet{
   private void show(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
     try {
       int id = urlInteger(request, 2);
-      StudentServices studentService = new StudentServices();
       Student student = studentService.fetchById(id);
       if (student == null)
         showErrorPage(request, response);
