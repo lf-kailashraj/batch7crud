@@ -17,7 +17,7 @@ public abstract class CommonHttpServlet extends HttpServlet {
   private static final String PAGE_NOT_FOUND = "Page Not Found";
   private static final Logger LOGGER = Logger.getLogger(CommonHttpServlet.class.getName());
 
-  protected void showErrorPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void showNotFoundErrorPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     request.setAttribute(ERROR_MESSAGE, PAGE_NOT_FOUND);
     RequestDispatcher view = request.getRequestDispatcher(CommonConstants.ERROR_VIEW);

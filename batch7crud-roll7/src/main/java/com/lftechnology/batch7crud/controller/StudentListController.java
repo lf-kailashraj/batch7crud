@@ -33,7 +33,7 @@ public class StudentListController extends CommonHttpServlet{
       else if (urlPath.length == 4 && CommonConstants.DELETE.equals(urlPath[3]))
         deleteProcess(request, response, Integer.parseInt(urlPath[2]));
       else
-        showErrorPage(request, response);
+        showNotFoundErrorPage(request, response);
     } catch (DataException | ServletException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       showInternalErrorPage(request, response);
@@ -53,12 +53,15 @@ public class StudentListController extends CommonHttpServlet{
       else if (urlPath.length == 3)
         show(request, response);
       else{
-        showErrorPage(request, response);
+        showNotFoundErrorPage(request, response);
       }
     } catch (DataException | ServletException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       showInternalErrorPage(request, response);
+    } catch (NumberFormatException e){
+      showNotFoundErrorPage(request, response);
     }
+
   }
 
   private void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
@@ -67,7 +70,7 @@ public class StudentListController extends CommonHttpServlet{
     try {
       page = getPageNumber(request);
     } catch (NumberFormatException e) {
-      showErrorPage(request, response);
+      showNotFoundErrorPage(request, response);
     }
     int totalStudents = studentService.fetchTotal();
     int numberOfPages = (int) Math.ceil(totalStudents / (float) pageSize);
@@ -108,6 +111,10 @@ public class StudentListController extends CommonHttpServlet{
   }
 
   private void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException, DataException {
+    if(studentService.fetchById(id) == null) {
+      showNotFoundErrorPage(request, response);
+      return;
+    }
     request.setAttribute("student", studentService.fetchById(id));
     request.getRequestDispatcher(CommonConstants.EDIT_ENTRY_VIEW).forward(request, response);
 
@@ -147,13 +154,13 @@ public class StudentListController extends CommonHttpServlet{
       int id = urlInteger(request, 2);
       Student student = studentService.fetchById(id);
       if (student == null)
-        showErrorPage(request, response);
+        showNotFoundErrorPage(request, response);
       else {
         request.setAttribute("student", student);
         request.getRequestDispatcher(CommonConstants.SHOW_STUDENT_VIEW).forward(request, response);
       }
     } catch (NumberFormatException e) {
-      showErrorPage(request, response);
+      showNotFoundErrorPage(request, response);
     }
   }
 

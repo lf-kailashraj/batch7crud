@@ -15,6 +15,7 @@ public class CommonConstants {
   public static final String EDIT_ENTRY_VIEW = File.separator + "WEB-INF" + File.separator + "views" + File.separator + "editEntry.jsp";
   public static final String SHOW_STUDENT_VIEW = File.separator + "WEB-INF" + File.separator + "views" + File.separator + "show.jsp";
   public static final String ERROR_VIEW = File.separator + "WEB-INF" + File.separator + "views" + File.separator + "error.jsp";
+  public static final String INDEX_VIEW = File.separator + "WEB-INF" + File.separator + "views" + File.separator + "index.jsp";
   public static final int PAGE_SIZE = 3;
 
   private CommonConstants(){

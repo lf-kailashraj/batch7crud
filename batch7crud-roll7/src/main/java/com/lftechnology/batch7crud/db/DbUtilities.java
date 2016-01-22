@@ -27,10 +27,7 @@ public class DbUtilities {
       Context envCtx = (Context) initCtx.lookup("java:comp/env");
       DataSource ds = (DataSource) envCtx.lookup("jdbc/lfform");
       return ds.getConnection();
-    } catch (SQLException ex) {
-      LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
-      throw new DataException();
-    } catch (NamingException ex) {
+    } catch (SQLException | NamingException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       throw new DataException();
     }

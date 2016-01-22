@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet({ "/" })
 public class IndexController extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    req.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
+    req.getServletContext().getRequestDispatcher(CommonConstants.INDEX_VIEW).forward(req, resp);
   }
 
   ;
