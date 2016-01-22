@@ -1,6 +1,4 @@
 package com.lftechnology.batch7crud.controller;
-
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,14 +20,14 @@ public abstract class CommonHttpServlet extends HttpServlet {
   protected void showErrorPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     request.setAttribute(ERROR_MESSAGE, PAGE_NOT_FOUND);
-    RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+    RequestDispatcher view = request.getRequestDispatcher(CommonConstants.ERROR_VIEW);
     view.forward(request, response);
   }
 
   protected void showInternalErrorPage(HttpServletRequest request, HttpServletResponse response) {
       response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       request.setAttribute(ERROR_MESSAGE, INTERNAL_ERROR);
-      RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+      RequestDispatcher view = request.getRequestDispatcher(CommonConstants.ERROR_VIEW);
     try{
       view.forward(request, response);
     } catch(ServletException | IOException e){

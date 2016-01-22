@@ -12,6 +12,7 @@ public class CommonConstants {
   public static final String NEW_ENTRY_VIEW = "/WEB-INF/views/newEntry.jsp";
   public static final String EDIT_ENTRY_VIEW = "/WEB-INF/views/editEntry.jsp";
   public static final String SHOW_STUDENT_VIEW = "/WEB-INF/views/show.jsp";
+  public static final String ERROR_VIEW = "/WEB-INF/views/error.jsp";
   public static final int PAGE_SIZE = 3;
 
   private CommonConstants(){
