@@ -13,8 +13,8 @@
   <title>Sign In</title>
 </head>
 <body>
-Hello From Signin
-<form action="create" method="POST">
+Sign In Form
+<form action="users/create" method="POST">
   <div>
     <label>Username:</label>
     <input name="username" type="text"/>
