@@ -4,7 +4,7 @@ import com.lftechnology.batch7crud.constants.EmployeeAttributeConstants;
 import com.lftechnology.batch7crud.constants.NormalConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.model.Employee;
-import com.lftechnology.batch7crud.services.EmployeeService;
+import com.lftechnology.batch7crud.services.EmployeeServiceImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 public class EmployeeController extends CustomHttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
-    private static EmployeeService employeeService = new EmployeeService();
+    private static EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
