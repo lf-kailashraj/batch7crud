@@ -78,7 +78,11 @@ public class EmployeeController extends CustomHttpServlet {
       if (pageText != null) {
         currentPage = Integer.parseInt(pageText);
       }
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 668d50460abe5abf6529438c1255bd2a2e003566
       int offset = (currentPage - 1) * RECORD_TO_FETCH;
       int totalRecord = employeeService.fetchNoOfRecords();
       int totalPage = (int) Math.ceil(totalRecord * 1.0 / RECORD_TO_FETCH);
