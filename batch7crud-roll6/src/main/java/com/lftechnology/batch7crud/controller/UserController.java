@@ -2,6 +2,7 @@ package com.lftechnology.batch7crud.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -60,7 +61,7 @@ public class UserController extends CustomHttpServlet {
       }
     } catch (ServletException | HTTPException | IOException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-    } 
+    }
   }
 
   @Override
@@ -74,7 +75,6 @@ public class UserController extends CustomHttpServlet {
       } else {
         String[] pathArgs = urlString.split(File.separator);
         if (CommonConstant.EMPTY_STRING.equals(pathArgs[0]) && CommonConstant.ADD.equals(pathArgs[1])) {
-
           createProcess(request, response);
 
         } else if (CommonConstant.EMPTY_STRING.equals(pathArgs[0]) && CommonConstant.EDIT.equals(pathArgs[2])) {
@@ -125,7 +125,10 @@ public class UserController extends CustomHttpServlet {
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     User user = new User();
-
+    Validator validator = new Validator();
+    
+    Map<String, String> errors = validator.validate(request);
+    
     String firstName = request.getParameter(UserConstants.FIRST_NAME);
     String surName = request.getParameter(UserConstants.SUR_NAME);
     String username = request.getParameter(UserConstants.USERNAME);
@@ -136,12 +139,21 @@ public class UserController extends CustomHttpServlet {
     user.setUserName(username);
     user.setPassword(password);
 
-    try {
-      userService.addUser(user);
-      response.sendRedirect(ApplicationConstant.USER_LIST);
-    } catch (DataException e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+    if (errors.isEmpty()) {
+      try {
+        userService.addUser(user);
+        response.sendRedirect(ApplicationConstant.USER_LIST);
+      } catch (DataException e) {
+        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      }
+      request.setAttribute("msz", null);
+    } else {
+      request.setAttribute("user", user);
+      request.setAttribute("errors", errors);
+      request.getRequestDispatcher(URLConstants.ADD_USER).forward(request, response);
+
     }
+
   }
 
   private void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
@@ -186,5 +198,7 @@ public class UserController extends CustomHttpServlet {
     }
 
   }
+
+
 
 }
