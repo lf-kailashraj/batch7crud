@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -73,6 +74,15 @@ public class EmployeeController extends CommonHttpServlet {
     } catch (NumberFormatException e) {
       return 1;
     }
+  }
+
+  private Map<String, String> mapParameters(HttpServletRequest request) {
+    Map<String, String> inputs = new HashMap<>();
+    inputs.put(AttributeConstants.NAME, request.getParameter(AttributeConstants.NAME));
+    inputs.put(AttributeConstants.ADDRESS, request.getParameter(AttributeConstants.ADDRESS));
+    inputs.put(AttributeConstants.EMAIL, request.getParameter(AttributeConstants.EMAIL));
+    inputs.put(AttributeConstants.CONTACT, request.getParameter(AttributeConstants.CONTACT));
+    return inputs;
   }
 
   private void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
