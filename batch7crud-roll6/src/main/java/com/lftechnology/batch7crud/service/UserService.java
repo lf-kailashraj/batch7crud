@@ -26,9 +26,9 @@ public class UserService {
     userDAOImpl.update(user);
   }
 
-  public List<User> fetch(int page, int limit) throws DataException {
+  public List<User> fetch(int offset, int limit) throws DataException {
 
-    return userDAOImpl.fetch(page, limit);
+    return userDAOImpl.fetch(offset, limit);
   }
 
   public User fetchByID(int userID) throws DataException {
