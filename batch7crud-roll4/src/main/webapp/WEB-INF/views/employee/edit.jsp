@@ -14,11 +14,11 @@
 <body>
 <h1>Edit User</h1>
 <form action="employees/${employee.getId()}/edit" method="post">
-  First Name: <input type="text" name="firstName" value="${employee.getFirstName()}">  ${errors.firstName}
+  First Name: <input type="text" name="firstName" value="${employee.firstName}">  ${errors.firstName}
   <br/>
-  Last Name: <input type="text" name="lastName" value="${employee.getLastName()}">  ${errors.lastName}
+  Last Name: <input type="text" name="lastName" value="${employee.lastName}">  ${errors.lastName}
   <br/>
-  Station: <input type="text" name="station" value="${employee.getStation()}">  ${errors.station}
+  Station: <input type="text" name="station" value="${employee.station}">  ${errors.station}
   <br/>
   <input type="submit" name="submit" value="Save">
 </form>

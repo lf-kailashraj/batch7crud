@@ -100,11 +100,7 @@ public class EmployeeController extends CustomHttpServlet {
   }
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    Map<String, String> inputs = new HashMap<String, String>();
-
-    inputs.put(PARAM_FIRST_NAME, request.getParameter(PARAM_FIRST_NAME));
-    inputs.put(PARAM_LAST_NAME, request.getParameter(PARAM_LAST_NAME));
-    inputs.put(PARAM_STATION, request.getParameter(PARAM_STATION));
+    Map<String, String> inputs = mapParameters(request);
 
     EmployeeValidator validator = new EmployeeValidator();
     Employee employee = null;
@@ -156,13 +152,9 @@ public class EmployeeController extends CustomHttpServlet {
   }
 
   private void editProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    Map<String, String> inputs = new HashMap<String, String>();
+    Map<String, String> inputs = mapParameters(request);
 
     int employeeId = parameterValueAsInt(request, 2);
-
-    inputs.put(PARAM_FIRST_NAME, request.getParameter(PARAM_FIRST_NAME));
-    inputs.put(PARAM_LAST_NAME, request.getParameter(PARAM_LAST_NAME));
-    inputs.put(PARAM_STATION, request.getParameter(PARAM_STATION));
 
     EmployeeValidator validator = new EmployeeValidator();
     Employee employee = null;
@@ -196,4 +188,15 @@ public class EmployeeController extends CustomHttpServlet {
       show500(request, response, e);
     }
   }
+
+  private Map<String, String> mapParameters(HttpServletRequest request) {
+    Map<String, String> inputs = new HashMap<String, String>();
+
+    inputs.put(PARAM_FIRST_NAME, request.getParameter(PARAM_FIRST_NAME));
+    inputs.put(PARAM_LAST_NAME, request.getParameter(PARAM_LAST_NAME));
+    inputs.put(PARAM_STATION, request.getParameter(PARAM_STATION));
+
+    return inputs;
+  }
+
 }

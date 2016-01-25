@@ -31,12 +31,12 @@
     <c:forEach var="employee" items="${employees}">
         <tr>
             <td>${count}</td>
-            <td><a href="employees/${employee.getId()}">${employee.getFirstName()}</a></td>
-            <td>${employee.getLastName()}</td>
-            <td>${employee.getStation()}</td>
+            <td><a href="employees/${employee.id}">${employee.firstName}</a></td>
+            <td>${employee.lastName}</td>
+            <td>${employee.station}</td>
             <td>
-                <a href="employees/${employee.getId()}/edit">Edit</a>
-                <a class="deleteBtn" href="employees/${employee.getId()}/delete">Delete</a>
+                <a href="employees/${employee.id}/edit">Edit</a>
+                <a class="deleteBtn" href="employees/${employee.id}/delete">Delete</a>
             </td>
         </tr>
         <c:set var="count" value="${count + 1}" scope="page"/>

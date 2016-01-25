@@ -34,23 +34,23 @@ public class EmployeeValidator implements Validator<Employee> {
     String lastName = e.getLastName().trim();
     String station = e.getStation().trim();
 
-    if (isEmpty(firstName) || !isString(firstName)) {
+    if (isNullOrEmpty(firstName) || !isString(firstName)) {
       errors.put(PARAM_FIRST_NAME, "Check first name");
     }
 
-    if (isEmpty(lastName) || !isString(lastName)) {
+    if (isNullOrEmpty(lastName) || !isString(lastName)) {
       errors.put(PARAM_LAST_NAME, "Check Last Name");
     }
 
-    if (isEmpty(station)) {
+    if (isNullOrEmpty(station)) {
       errors.put(PARAM_STATION, "Check Station");
     }
 
     return errors;
   }
 
-  private boolean isEmpty(String argument) {
-    return "".equals(argument) || " ".equals(argument);
+  private boolean isNullOrEmpty(String argument) {
+    return "".equals(argument);
   }
 
   private boolean isString(String argument) {
