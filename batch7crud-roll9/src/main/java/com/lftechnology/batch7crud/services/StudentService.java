@@ -7,6 +7,7 @@ import com.lftechnology.batch7crud.util.StudentValidator;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sanjay on 1/14/16.
@@ -15,9 +16,9 @@ import java.util.List;
 public class StudentService {
   private StudentDAO stdDAO = new StudentDAO();
 
-  public HashMap save(Student student) throws DataException {
+  public Map save(Student student) throws DataException {
     StudentValidator studentValidator = new StudentValidator();
-    HashMap error = studentValidator.validate(student);
+    Map error = studentValidator.validate(student);
     if(error.size()<=0){
       stdDAO.insert(student);
     }
@@ -36,9 +37,9 @@ public class StudentService {
     return stdDAO.fetchById(id);
   }
 
-  public HashMap edit(Student student) throws DataException {
+  public Map edit(Student student) throws DataException {
     StudentValidator studentValidator = new StudentValidator();
-    HashMap error = studentValidator.validate(student);
+    Map<String, String> error = studentValidator.validate(student);
     if(error.size()<0){
       stdDAO.edit(student);
     }

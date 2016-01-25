@@ -5,7 +5,9 @@ package com.lftechnology.batch7crud.constants;
  */
 public class AppConstant {
   public static final boolean TRUE = true;
-  public static final boolean FALSE= false;
 
   public static final int GRADE_LIMIT = 10;
+
+  private AppConstant(){
+  }
 }

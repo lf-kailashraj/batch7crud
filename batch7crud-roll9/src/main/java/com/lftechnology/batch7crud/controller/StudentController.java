@@ -121,16 +121,16 @@ public class StudentController extends HTTPStatusHandler {
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
-      HashMap input = getParam(request);
-      HashMap error = new HashMap();
+      Map<String, String> input = getParam(request);
+      Map<String, String> error = new HashMap();
       Student student = studentValidator.createObject(error, input);
       if (error.size() > 0) {
-        setError(request, response, error);
+        setError(request, error);
         create(request, response);
       } else {
         error = studentService.save(student);
         if (error.size() > 0) {
-          setError(request, response, error);
+          setError(request, error);
           create(request, response);
         } else {
           response.sendRedirect(request.getContextPath());
@@ -150,17 +150,17 @@ public class StudentController extends HTTPStatusHandler {
   private void editProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       int studentId = parameterValueAsInt(request, 2);
-      HashMap input = getParam(request);
-      HashMap error = new HashMap();
+      Map<String, String> input = getParam(request);
+      Map<String, String> error = new HashMap<>();
       Student student = studentValidator.createObject(error, input);
       student.setId(studentId);
       if (error.size() > 0) {
-        setError(request, response, error);
+        setError(request, error);
         edit(request, response);
       } else {
         error = studentService.edit(student);
         if (error.size() > 0) {
-          setError(request, response, error);
+          setError(request, error);
           create(request, response);
         } else {
           response.sendRedirect(request.getContextPath());
@@ -174,7 +174,6 @@ public class StudentController extends HTTPStatusHandler {
     } catch (IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
-
   }
 
   private void deleteProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -190,8 +189,8 @@ public class StudentController extends HTTPStatusHandler {
     }
   }
 
-  private HashMap getParam(HttpServletRequest request) {
-    HashMap input = new HashMap();
+  private Map getParam(HttpServletRequest request) {
+    Map<String, String> input = new HashMap();
     input.put(ParameterConstant.FIRST_NAME, request.getParameter(ParameterConstant.FIRST_NAME));
     input.put(ParameterConstant.MIDDLE_NAME, request.getParameter(ParameterConstant.MIDDLE_NAME));
     input.put(ParameterConstant.LAST_NAME, request.getParameter(ParameterConstant.LAST_NAME));
@@ -201,7 +200,7 @@ public class StudentController extends HTTPStatusHandler {
   }
 
 
-  private void setError(HttpServletRequest request, HttpServletResponse response, HashMap hm) {
+  private void setError(HttpServletRequest request, Map<String, String> hm) {
     Set set = hm.entrySet();
     Iterator iterator = set.iterator();
     while (iterator.hasNext()) {

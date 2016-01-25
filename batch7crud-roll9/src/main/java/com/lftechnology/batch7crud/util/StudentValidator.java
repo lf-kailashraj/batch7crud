@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * Created by sanjay on 1/22/16.
  */
 public class StudentValidator {
-  public Student createObject(HashMap error, HashMap input) {
+  public Student createObject(Map error, Map input) {
     Student student = new Student();
     Set set = input.entrySet();
     Iterator iterator = set.iterator();
@@ -43,8 +43,8 @@ public class StudentValidator {
     return student;
   }
 
-  public HashMap validate(Student student) {
-    HashMap hm = new HashMap();
+  public Map<String, String> validate(Student student) {
+    Map<String, String> hm = new HashMap();
     if (!isValid(student.getFirstName())) {
       hm.put(AttributeConstant.ERROR_FNAME, MessageConstant.ERROR_FNAME);
     }
@@ -67,7 +67,7 @@ public class StudentValidator {
     String pattern = "^[A-z]+$";
     Pattern r = Pattern.compile(pattern);
     Matcher m = r.matcher(input);
-    return (m.find()) ? true : false;
+    return m.find()? true : false;
   }
 
   public boolean isValid(int input) {
