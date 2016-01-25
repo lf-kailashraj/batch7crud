@@ -21,7 +21,7 @@ public class StudentService {
   }
 
   public void insert(Student student) throws DataException {
-    studentDao.insert(student);
+      studentDao.insert(student);
   }
 
   public void delete(Integer studentId) throws DataException {

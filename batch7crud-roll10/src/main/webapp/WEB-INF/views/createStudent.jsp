@@ -14,12 +14,17 @@
 <body>
 <div>
   <form action="students/create" method="post">
-    <label>name</label><input type="text" name="name" value="${param.name}"><br>
-    <label>address</label><input type="text" name="address" value="${param.address}"><br>
-    <label>dob</label><input type="date" name="dob" value="${param.dob}"><br>
-    <label>department</label><input type="text" name="department" value="${param.department}"><br>
-    <label>batch</label><input type="text" name="batch" value="${param.batch}"><br>
-    <label>roll</label><input type="number" name="roll" value="${param.roll}"><br>
+    <label>name</label><input type="text" name="name" value="${param.name}"><span>${nameError}</span><br>
+
+    <label>address</label><input type="text" name="address" value="${param.address}"><span>${addressError}</span><br>
+
+    <label>dob</label><input type="date" name="dob" value="${param.dob}"><span>${dobError}</span><br>
+
+    <label>department</label><input type="text" name="department" value="${param.department}"><span>${departmentError}</span><br>
+
+    <label>batch</label><input type="text" name="batch" value="${param.batch}"><span>${batchError}</span><br>
+
+    <label>roll</label><input type="number" name="roll" value="${param.roll}"><span>${rollError}</span><br>
 
     <input type="submit">
   </form>

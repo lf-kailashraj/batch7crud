@@ -7,6 +7,8 @@ import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.service.StudentService;
 import com.lftechnology.batch7crud.util.TypeCaster;
 import com.lftechnology.batch7crud.utils.DateUtils;
+import com.lftechnology.batch7crud.validator.StudentValidator;
+import javafx.util.Pair;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,8 +33,11 @@ import static java.lang.Math.ceil;
 @WebServlet("/students/*")
 public class StudentController extends CustomHttpServlet {
   private static StudentService studentService = new StudentService();
+  private static StudentValidator studentValidator = new StudentValidator();
   private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
   private static final String STUDENT_LIST = "studentList";
+  private static final String DOB_ERROR = "dobError";
+  private static final String ROLL_ERROR = "rollError";
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -111,13 +116,23 @@ public class StudentController extends CustomHttpServlet {
   private void createProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     try {
       Student student = constructStudentFromRequest(req);
-      studentService.insert(student);
-      resp.sendRedirect(req.getContextPath() + PageConstant.STUDENT_LIST_URL);
+      List<Pair> errors = studentValidator.validate(student);
+      if (errors.isEmpty()) {
+        studentService.insert(student);
+        resp.sendRedirect(req.getContextPath() + PageConstant.STUDENT_LIST_URL);
+      } else {
+        for (Pair p : errors) {
+          req.setAttribute((String) p.getKey(), p.getValue());
+        }
+
+        create(req, resp);
+      }
+
     } catch (ParseException e) {
-      req.setAttribute(PageConstant.ERROR_MESSAGE, "error while parsing date");
+      req.setAttribute(DOB_ERROR, "error while parsing date");
       create(req, resp);
     } catch (NumberFormatException e) {
-      req.setAttribute(PageConstant.ERROR_MESSAGE, "number format error in 'roll'");
+      req.setAttribute(ROLL_ERROR, "invalid roll number");
       create(req, resp);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -139,14 +154,23 @@ public class StudentController extends CustomHttpServlet {
   private void editProcess(HttpServletRequest req, HttpServletResponse resp, Integer id) throws ServletException, IOException {
     try {
       Student student = constructStudentFromRequest(req);
-      student.setId(id);
-      studentService.update(student);
-      resp.sendRedirect(req.getContextPath() + PageConstant.STUDENT_LIST_URL);
+      List<Pair> errors = studentValidator.validate(student);
+      if (errors.isEmpty()) {
+        student.setId(id);
+        studentService.update(student);
+        resp.sendRedirect(req.getContextPath() + PageConstant.STUDENT_LIST_URL);
+      } else {
+        for (Pair p : errors) {
+          req.setAttribute((String) p.getKey(), p.getValue());
+        }
+        edit(req, resp, id);
+      }
+
     } catch (ParseException e) {
-      req.setAttribute(PageConstant.ERROR_MESSAGE, "error while parsing date");
+      req.setAttribute(DOB_ERROR, "error while parsing date");
       edit(req, resp, id);
     } catch (NumberFormatException e) {
-      req.setAttribute(PageConstant.ERROR_MESSAGE, "number format error in 'roll'");
+      req.setAttribute(ROLL_ERROR, "invalid roll number");
       edit(req, resp, id);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -164,7 +188,9 @@ public class StudentController extends CustomHttpServlet {
     }
   }
 
-  private Student constructStudentFromRequest(HttpServletRequest req) throws ParseException {
+  private Student constructStudentFromRequest(HttpServletRequest req) throws ParseException{
+    Student student = new Student();
+
     String name = req.getParameter(EntityConstant.NAME);
     String address = req.getParameter(EntityConstant.ADDRESS);
     String dob = req.getParameter(EntityConstant.DOB);
@@ -172,17 +198,16 @@ public class StudentController extends CustomHttpServlet {
     String batch = req.getParameter(EntityConstant.BATCH);
     String rollText = req.getParameter(EntityConstant.ROLL);
 
-    Date date = DateUtils.parse(dob);
+    Date  date = DateUtils.parse(dob);
     Integer roll = Integer.parseInt(rollText);
 
-    Student student = new Student();
     student.setBatch(batch);
     student.setDepartment(department);
-    student.setRoll(roll);
+
     student.setName(name);
     student.setAddress(address);
     student.setDob(date);
-
+    student.setRoll(roll);
     return student;
   }
 }
