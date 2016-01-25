@@ -19,7 +19,7 @@ public class EmployeeService {
     employeeDao = new EmployeeDao();
   }
 
-  public void insert(Employee employee) throws DataException, ValidationException {
+  public void insert(Employee employee) throws DataException, ValidationException { //NOSONAR
     EmployeeValidator employeeValidator = new EmployeeValidator();
     Map<String, String> errors = employeeValidator.validate(employee);
 
@@ -38,7 +38,7 @@ public class EmployeeService {
     return employeeDao.fetchById(id);
   }
 
-  public void update(Employee employee) throws DataException, ValidationException {
+  public void update(Employee employee) throws DataException, ValidationException { //NOSONAR
     EmployeeValidator employeeValidator = new EmployeeValidator();
     Map<String, String> errors = employeeValidator.validate(employee);
 

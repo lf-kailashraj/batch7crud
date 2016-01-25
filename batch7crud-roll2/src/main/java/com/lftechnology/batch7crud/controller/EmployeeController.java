@@ -102,6 +102,7 @@ public class EmployeeController extends CommonHttpServlet {
   }
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    Employee employee = null;
     try {
       Map<String, String> employeeInfo = new HashMap<>();
       employeeInfo.put(AttributeConstants.NAME, request.getParameter(AttributeConstants.NAME));
@@ -110,7 +111,7 @@ public class EmployeeController extends CommonHttpServlet {
       employeeInfo.put(AttributeConstants.CONTACT, request.getParameter(AttributeConstants.CONTACT));
 
       EmployeeValidator employeeValidator = new EmployeeValidator();
-      Employee employee = employeeValidator.createObject(employeeInfo);
+      employee = employeeValidator.createObject(employeeInfo);
 
       employeeService.insert(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
@@ -119,6 +120,7 @@ public class EmployeeController extends CommonHttpServlet {
       displayErrorPage(request, response, e.getMessage());
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute(AttributeConstants.EMPLOYEE, employee);
       request.setAttribute(AttributeConstants.VALIDATION_MESSAGE, e.getErrors());
       request.getRequestDispatcher(UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request, response);
     }
