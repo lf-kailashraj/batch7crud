@@ -4,17 +4,17 @@ import com.lftechnology.batch7crud.constants.AppConstants;
 import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.exception.DataException;
+import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
-import com.lftechnology.batch7crud.util.EmployeeValidator;
+import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.xml.bind.ValidationException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -103,28 +103,24 @@ public class EmployeeController extends CommonHttpServlet {
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
-      String name = request.getParameter(AttributeConstants.NAME);
-      String address = request.getParameter(AttributeConstants.ADDRESS);
-      String email = request.getParameter(AttributeConstants.EMAIL);
-      String contact = request.getParameter(AttributeConstants.CONTACT);
+      Map<String, String> employeeInfo = new HashMap<>();
+      employeeInfo.put(AttributeConstants.NAME, request.getParameter(AttributeConstants.NAME));
+      employeeInfo.put(AttributeConstants.ADDRESS, request.getParameter(AttributeConstants.ADDRESS));
+      employeeInfo.put(AttributeConstants.EMAIL, request.getParameter(AttributeConstants.EMAIL));
+      employeeInfo.put(AttributeConstants.CONTACT, request.getParameter(AttributeConstants.CONTACT));
 
-      Employee employee = new Employee();
-      employee.setName(name);
-      employee.setAddress(address);
-      employee.setEmail(email);
-      employee.setContact(contact);
       EmployeeValidator employeeValidator = new EmployeeValidator();
-      Map<String, String> error = employeeValidator.validate(employee);
-      if (error.isEmpty()) {
-        employeeService.insert(employee);
-        response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
-      } else {
-        request.setAttribute("validationMessage", error);
-        request.getRequestDispatcher(UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request, response);
-      }
+      Employee employee = employeeValidator.createObject(employeeInfo);
+
+      employeeService.insert(employee);
+      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
+    } catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute("validationError", e.getErrors());
+      request.getRequestDispatcher(UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request, response);
     }
   }
 

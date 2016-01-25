@@ -20,19 +20,19 @@
     <table>
         <tbody>
         <td>Name:</td>
-        <td><input type="text" name="name">${validationMessage.name}</td>
+        <td><input type="text" name="name">${validationError.name}</td>
         </tr>
         <tr>
             <td>Address:</td>
-            <td><input type="text" name="address">${validationMessage.address}</td>
+            <td><input type="text" name="address">${validationError.address}</td>
         </tr>
         <tr>
             <td>Email:</td>
-            <td><input type="text" name="email">${validationMessage.email}</td>
+            <td><input type="text" name="email">${validationError.email}</td>
         </tr>
         <tr>
             <td>Contact Number:</td>
-            <td><input type="number" name="contact">${validationMessage.contact}</td>
+            <td><input type="number" name="contact">${validationError.contact}</td>
         </tr>
         </tbody>
     </table>
