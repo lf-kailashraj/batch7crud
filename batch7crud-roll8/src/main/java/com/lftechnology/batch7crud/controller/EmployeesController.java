@@ -5,11 +5,13 @@ import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.services.EmployeeService;
+import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +23,8 @@ import java.util.logging.Logger;
 public class EmployeesController extends CommonHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(EmployeesController.class.getName());
   private EmployeeService employeeService = new EmployeeService(); // NOSONAR
+  private EmployeeValidator employeeValidator = new EmployeeValidator();
+  HashMap<String, String> employeeErrors = new HashMap<>();
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -70,7 +74,8 @@ public class EmployeesController extends CommonHttpServlet {
 
   private void create(HttpServletRequest request, HttpServletResponse response) {
     try {
-      request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request, response);
+      request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request,
+        response);
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
@@ -110,8 +115,15 @@ public class EmployeesController extends CommonHttpServlet {
   private void createProcess(HttpServletRequest request, HttpServletResponse response) {
     try {
       Employee employee = setEmployeeAttributes(request);
-      employeeService.create(employee);
-      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
+      employeeErrors = employeeValidator.validate(employee);
+      if (employeeErrors.isEmpty()) {
+        employeeService.create(employee);
+        response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
+      }
+      else {
+        System.out.println(employeeErrors.get("name"));
+      }
+
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
