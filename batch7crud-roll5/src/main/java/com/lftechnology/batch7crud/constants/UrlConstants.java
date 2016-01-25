@@ -3,7 +3,7 @@ package com.lftechnology.batch7crud.constants;
 import java.io.File;
 
 public class UrlConstants {
-    public static final String SEPERATOR = File.pathSeparator;
+    public static final String SEPERATOR = File.separator;
     private static final String WEB_INF = "WEB-INF";
     private static final String VIEWS = "views";
     public static final String EMPLOYEE_LIST_URL = SEPERATOR + "batch7crud-roll5" + SEPERATOR + "employees";
