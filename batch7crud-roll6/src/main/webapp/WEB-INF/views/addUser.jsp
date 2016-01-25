@@ -21,13 +21,13 @@
 	<h1>Hello fill up this form</h1>
 	<form action="add" method="post">
 		
-			<span>First Name:</span> <input name="firstname" value="${user.firstName}" type="text">
+			<label>First Name:</label> <input name="firstname" value="${user.firstName}" type="text">
 			<span class="error"><c:out value="${errors['firstname']}"></c:out></span>
-			<span>Surname :</span> <input name="surname" value="${user.surName}" type="text">
+			<label>Surname :</label> <input name="surname" value="${user.surName}" type="text">
 			<span class="error"><c:out value="${errors['surname']}"></c:out></span>
-			<span>Username:</span> <input name="username" value="${user.userName }" type="text">
+			<label>Username:</label> <input name="username" value="${user.userName }" type="text">
 			<span class="error"><c:out value="${errors['username']}"></c:out></span>
-			<span>Password:</span> <input name="password" value="${user.password }" type="password">
+			<label>Password:</label> <input name="password" value="${user.password }" type="password">
 			<span class="error"><c:out value="${errors['password']}"></c:out></span>
 			<input type="submit" value="submit">
 	

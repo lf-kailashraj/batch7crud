@@ -19,7 +19,9 @@ import com.lftechnology.batch7crud.constant.UserConstants;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.User;
 import com.lftechnology.batch7crud.service.UserService;
+import com.lftechnology.batch7crud.util.CreateObjects;
 import com.lftechnology.batch7crud.util.TypeCaster;
+import com.lftechnology.batch7crud.validator.UserValidator;
 
 /**
  * 
@@ -124,20 +126,13 @@ public class UserController extends CustomHttpServlet {
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-    User user = new User();
-    Validator validator = new Validator();
     
-    Map<String, String> errors = validator.validate(request);
+    UserValidator userValidator = new UserValidator();
+    CreateObjects createObjects = new CreateObjects();
+    User user = createObjects.createUserObect(request);
+    Map<String, String> errors = userValidator.validate(user);
     
-    String firstName = request.getParameter(UserConstants.FIRST_NAME);
-    String surName = request.getParameter(UserConstants.SUR_NAME);
-    String username = request.getParameter(UserConstants.USERNAME);
-    String password = request.getParameter(UserConstants.PASSWORD);
 
-    user.setFirstName(firstName);
-    user.setSurName(surName);
-    user.setUserName(username);
-    user.setPassword(password);
 
     if (errors.isEmpty()) {
       try {
@@ -146,7 +141,6 @@ public class UserController extends CustomHttpServlet {
       } catch (DataException e) {
         LOGGER.log(Level.SEVERE, e.getMessage(), e);
       }
-      request.setAttribute("msz", null);
     } else {
       request.setAttribute("user", user);
       request.setAttribute("errors", errors);
