@@ -8,11 +8,10 @@
 <title>Create</title>
 </head>
 <body>
-	${message}
 	<br />
 	<form action="students/create" method="post">
-		Roll:<input type="number" name="roll" value="${param.roll}"><br />
-		Name:<input type="text" name="name" value="${param.name}"><br /> 
+		Roll:<input type="number" name="roll" value="${param.roll}">${message.roll}	<br />
+		Name:<input type="text" name="name" value="${param.name}">${message.name}<br /> 
 		<input type="submit" value="submit" />
 	</form>
 </body>

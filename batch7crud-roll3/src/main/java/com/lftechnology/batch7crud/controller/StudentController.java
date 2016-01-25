@@ -1,7 +1,9 @@
 package com.lftechnology.batch7crud.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,12 +11,15 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ValidationException;
 
 import static com.lftechnology.batch7crud.constant.CommonConstant.*;
 import static com.lftechnology.batch7crud.constant.StudentConstant.*;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
+import com.lftechnology.batch7crud.exception.ValidationExceptions;
 import com.lftechnology.batch7crud.service.StudentService;
+import com.lftechnology.batch7crud.validator.StudentValidator;
 
 /**
  * This controller handles CRUD operations. It accepts URLs: students/, students
@@ -132,25 +137,31 @@ public class StudentController extends CustomHttpServlet {
   private void createProcess(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException, DataException {
     try {
-      Student student = constructStudentFromRequest(request);
+      Map<String, String> inputs = constructHashMapFromRequest(request);
+
+      StudentValidator studentValidator = new StudentValidator();
+      Student student = studentValidator.createObject(inputs);
+
       studentService.insert(student);
 
       response.sendRedirect(request.getContextPath() + STUDENT_LIST_CONTROLLER);
-    } catch (NumberFormatException e) {
-      request.setAttribute(MESSAGE, INVALID_ROLL_MESSAGE);
-      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    } catch (ValidationExceptions e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+      request.setAttribute(MESSAGE, e.getErrors());
       request.getRequestDispatcher(CREATE_PAGE).forward(request, response);
     }
   }
 
-  private Student constructStudentFromRequest(HttpServletRequest request) {
+  private Map<String, String> constructHashMapFromRequest(HttpServletRequest request) {
+    Map inputs = new HashMap<String, String>();
     String roll = request.getParameter(ROLL);
     String name = request.getParameter(NAME);
 
-    Student student = new Student();
-    student.setRoll(Integer.parseInt(roll));
-    student.setName(name);
-    return student;
+    inputs.put("roll", roll);
+    inputs.put("name", name);
+
+    return inputs;
   }
 
   private void edit(HttpServletRequest request, HttpServletResponse response)
@@ -175,15 +186,20 @@ public class StudentController extends CustomHttpServlet {
     Student student = new Student();
     try {
       int id = parameterValueAsInt(request, 2);
-      student.setId(id);
-      student = constructStudentFromRequest(request);
 
+      Map<String, String> inputs = constructHashMapFromRequest(request);
+
+      StudentValidator studentValidator = new StudentValidator();
+      student = studentValidator.createObject(inputs);
+      student.setId(id);
       studentService.edit(student);
 
       response.sendRedirect(request.getContextPath() + STUDENT_LIST_CONTROLLER);
-    } catch (NumberFormatException e) {
+    } catch (ValidationExceptions e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
       request.setAttribute(STUDENT, student);
-      request.setAttribute(MESSAGE, INVALID_ROLL_MESSAGE);
+      request.setAttribute(MESSAGE, e.getErrors());
       request.getRequestDispatcher(EDIT_PAGE).forward(request, response);
     }
   }
