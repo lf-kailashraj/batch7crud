@@ -80,8 +80,6 @@
             }
         };
     }
-    ;
-
     var editElement = document.getElementsByClassName("edit");
     for (var i = 0; i < deleteElement.length; i++) {
         editElement[i].onclick = function (e) {
@@ -93,8 +91,6 @@
             form.submit();
         };
     }
-    ;
-
     var viewElement = document.getElementsByClassName("view");
     for (var i = 0; i < viewElement.length; i++) {
         viewElement[i].onclick = function (e) {
@@ -105,7 +101,7 @@
             form.setAttribute("action", destinationLink);
             form.submit();
         };
-    };
+    }
 </script>
 </body>
 </html>

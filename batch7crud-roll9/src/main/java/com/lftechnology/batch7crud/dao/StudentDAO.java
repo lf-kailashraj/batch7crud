@@ -39,7 +39,7 @@ public class StudentDAO {
       if (resultSet.next()) {
         student.setId(resultSet.getInt(1));
       }
-    } catch (SQLException e) {
+    } catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException();
     }

@@ -3,6 +3,9 @@ package com.lftechnology.batch7crud.services;
 import com.lftechnology.batch7crud.dao.StudentDAO;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
+import com.lftechnology.batch7crud.util.StudentValidator;
+
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -12,8 +15,13 @@ import java.util.List;
 public class StudentService {
   private StudentDAO stdDAO = new StudentDAO();
 
-  public Student save(Student student) throws DataException {
-    return stdDAO.insert(student);
+  public HashMap save(Student student) throws DataException {
+    StudentValidator studentValidator = new StudentValidator();
+    HashMap error = studentValidator.validate(student);
+    if(error.size()<=0){
+      stdDAO.insert(student);
+    }
+    return error;
   }
 
   public List<Student> fetch(int page, int limit) throws DataException {
@@ -28,8 +36,13 @@ public class StudentService {
     return stdDAO.fetchById(id);
   }
 
-  public Student edit(Student student) throws DataException {
-    return stdDAO.edit(student);
+  public HashMap edit(Student student) throws DataException {
+    StudentValidator studentValidator = new StudentValidator();
+    HashMap error = studentValidator.validate(student);
+    if(error.size()<0){
+      stdDAO.edit(student);
+    }
+    return error;
   }
 
   public int studentCount() throws DataException {

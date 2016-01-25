@@ -16,5 +16,5 @@ public class IndexController extends HttpServlet {
         Integer i = TypeCaster.toInt("123");
         System.out.println("value of i: " + i);
         req.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
-    };
+    }
 }

@@ -14,28 +14,37 @@
 </head>
 <body>
 <form action="${pageContext.request.contextPath}/students/create" method="POST">
-    <label for="fname">First Name: </label>
 
-    <div><input type="text" required="required" placeholder="First Name" name="fname" id="fname"/></div>
-    <label for="mname">Middle Name: </label>
+    <div>
+        <label for="fname">First Name: </label>
+        <input type="text" placeholder="First Name" name="fname" id="fname" value="${fname}"/><span>${errorFname}</span>
+    </div>
+    <div>
+        <label for="mname">Middle Name: </label>
+        <input type="text" placeholder="Middle Name" name="mname" id="mname" value="${mname}"/><span>${errorMname}</span>
+    </div>
 
-    <div><input type="text" required="required" placeholder="Middle Name" name="mname" id="mname"/></div>
-    <label for="lname">Last Name: </label>
-
-    <div><input type="text" required="required" placeholder="Last Name" name="lname" id="lname"/></div>
-    <label for="address">Address: </label>
-
-    <div><input type="text" required="required" placeholder="Address" name="address" id="address"/></div>
-    <label for="grade">Grade: </label>
-
-    <div><select name="grade" id="grade">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-    </select></div>
-    <input type="submit"/>
+    <div>
+        <label for="lname">Last Name: </label>
+        <input type="text" placeholder="Last Name" name="lname" id="lname" value="${lname}"/><span>${errorLname}</span>
+    </div>
+    <div>
+        <label for="address">Address: </label>
+        <input type="text" placeholder="Address" name="address" id="address" value="${address}"/><span>${errorAddress}</span>
+    </div>
+    <div>
+        <label for="grade">Grade: </label>
+        <select name="grade" id="grade" value="${grade}">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><span>${errorGrade}</span>
+    </div>
+    <div>
+        <input type="submit"/>
+    </div>
 </form>
 </body>
 </html>

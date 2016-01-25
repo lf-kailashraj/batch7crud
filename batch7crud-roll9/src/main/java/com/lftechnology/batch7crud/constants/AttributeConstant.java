@@ -13,6 +13,16 @@ public class AttributeConstant {
   public static final String TOTAL_STUDENT = "totalStudent";
   public static final String CURRENT_STUDENT = "currentStudent";
 
+  public static final String ERROR_MESSAGE = "errorMessage";
+  public static final String ERROR_GRADE  = "errorGrade";
+  public static final String ERROR_FNAME = "errorFname";
+  public static final String ERROR_MNAME = "errorMname";
+  public static final String ERROR_LNAME = "errorLname";
+  public static final String ERROR_ADDRESS = "errorAddress";
+
+
+
+
   private AttributeConstant() {
   }
 }
