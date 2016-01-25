@@ -33,9 +33,9 @@ public class StudentValidator implements Validator<Student> {
     public Map<String,String> validate(Student student){
       Map<String,String> errors = new HashMap<>();
 
-      if(student.getName() == null || "".equals(student.getName()))
+      if(student.getName() == null || "".equals(student.getName().trim()))
         errors.put("name","Invalid Name");
-      if(student.getAddress() == null || "".equals(student.getAddress()))
+      if(student.getAddress() == null || "".equals(student.getAddress().trim()))
         errors.put("address","Invalid Address");
       return errors;
     }
