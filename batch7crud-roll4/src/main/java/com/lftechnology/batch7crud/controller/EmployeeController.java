@@ -1,13 +1,10 @@
 package com.lftechnology.batch7crud.controller;
 
-import static com.lftechnology.batch7crud.constant.AttribConstants.*;
-import static com.lftechnology.batch7crud.constant.RouteConstants.*;
-import static com.lftechnology.batch7crud.constant.UrlConstants.*;
-import static com.lftechnology.batch7crud.constant.ParamConstants.*;
-
 import com.lftechnology.batch7crud.exception.DataException;
+import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
+import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,8 +12,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static com.lftechnology.batch7crud.constant.AttribConstants.*;
+import static com.lftechnology.batch7crud.constant.ParamConstants.*;
+import static com.lftechnology.batch7crud.constant.RouteConstants.*;
+import static com.lftechnology.batch7crud.constant.UrlConstants.*;
 
 /**
  * Created by Pratish Shrestha <pratishshrestha@lftechnology.com> on 1/14/16.
@@ -96,14 +100,14 @@ public class EmployeeController extends CustomHttpServlet {
   }
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String firstName = request.getParameter(PARAM_FIRST_NAME);
-    String lastName = request.getParameter(PARAM_LAST_NAME);
-    String station = request.getParameter(PARAM_STATION);
+    Map<String, String> inputs = new HashMap<String, String>();
 
-    Employee employee = new Employee();
-    employee.setFirstName(firstName);
-    employee.setLastName(lastName);
-    employee.setStation(station);
+    inputs.put(PARAM_FIRST_NAME, request.getParameter(PARAM_FIRST_NAME));
+    inputs.put(PARAM_LAST_NAME, request.getParameter(PARAM_LAST_NAME));
+    inputs.put(PARAM_STATION, request.getParameter(PARAM_STATION));
+
+    EmployeeValidator validator = new EmployeeValidator();
+    Employee employee = validator.createObject(inputs);
 
     try {
       employeeService.save(employee);
@@ -111,7 +115,15 @@ public class EmployeeController extends CustomHttpServlet {
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
+    } catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute(ATTRIB_ERRORS, e.getErrors());
+      request.setAttribute(ATTRIB_EMPLOYEE, employee);
+
+      RequestDispatcher view = request.getRequestDispatcher(URL_EMPLOYEE_CREATE_PAGE);
+      view.forward(request, response);
     }
+
   }
 
   private void viewProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -143,26 +155,32 @@ public class EmployeeController extends CustomHttpServlet {
   }
 
   private void editProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    Map<String, String> inputs = new HashMap<String, String>();
+
+    int employeeId = parameterValueAsInt(request, 2);
+
+    inputs.put(PARAM_FIRST_NAME, request.getParameter(PARAM_FIRST_NAME));
+    inputs.put(PARAM_LAST_NAME, request.getParameter(PARAM_LAST_NAME));
+    inputs.put(PARAM_STATION, request.getParameter(PARAM_STATION));
+
+    EmployeeValidator validator = new EmployeeValidator();
+    Employee employee = validator.createObject(inputs);
+    employee.setId(employeeId);
+
     try {
-      int employeeId = parameterValueAsInt(request, 2);
-
-      String firstName = request.getParameter(PARAM_FIRST_NAME);
-      String lastName = request.getParameter(PARAM_LAST_NAME);
-      String station = request.getParameter(PARAM_STATION);
-
-      Employee employee = new Employee();
-      employee.setId(employeeId);
-      employee.setFirstName(firstName);
-      employee.setLastName(lastName);
-      employee.setStation(station);
-
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + ROUTE_EMPLOYEES);
-    } catch (DataException | NumberFormatException e) {
+    } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
-    }
+    } catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute(ATTRIB_ERRORS, e.getErrors());
+      request.setAttribute(ATTRIB_EMPLOYEE, employee);
 
+      RequestDispatcher view = request.getRequestDispatcher(URL_EMPLOYEE_EDIT_PAGE);
+      view.forward(request, response);
+    }
   }
 
   private void deleteProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

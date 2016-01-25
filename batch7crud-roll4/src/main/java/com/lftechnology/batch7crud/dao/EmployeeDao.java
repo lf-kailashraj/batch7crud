@@ -1,8 +1,5 @@
 package com.lftechnology.batch7crud.dao;
 
-import static com.lftechnology.batch7crud.constant.QueryConstants.*;
-import static com.lftechnology.batch7crud.constant.EntityConstants.*;
-
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.util.DbConnection;
@@ -12,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static com.lftechnology.batch7crud.constant.EntityConstants.*;
+import static com.lftechnology.batch7crud.constant.QueryConstants.*;
 
 /**
  * Created by Pratish Shrestha <pratishshrestha@lftechnology.com> on 1/14/16.
@@ -83,7 +83,7 @@ public class EmployeeDao {
 
       ResultSet rs = stmt.getGeneratedKeys();
 
-      if(rs.next()) {
+      if (rs.next()) {
         employee.setId(rs.getInt(1));
       }
     } catch (SQLException e) {
