@@ -19,21 +19,20 @@
 <form name="jspForm" method="POST" action="employees/create">
     <table>
         <tbody>
-        <tr>
-            <td>Name:</td>
-            <td><input type="text" name="name"></td>
+        <td>Name:</td>
+        <td><input type="text" name="name">${validationMessage.name}</td>
         </tr>
         <tr>
             <td>Address:</td>
-            <td><input type="text" name="address"></td>
+            <td><input type="text" name="address">${validationMessage.address}</td>
         </tr>
         <tr>
             <td>Email:</td>
-            <td><input type="text" name="email"></td>
+            <td><input type="text" name="email">${validationMessage.email}</td>
         </tr>
         <tr>
             <td>Contact Number:</td>
-            <td><input type="number" name="contact"></td>
+            <td><input type="number" name="contact">${validationMessage.contact}</td>
         </tr>
         </tbody>
     </table>

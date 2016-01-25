@@ -9,7 +9,7 @@ public class UrlConstants {
   public static final String FILE_SEPARATOR = File.separator;
   public static final String VIEWS = FILE_SEPARATOR + "WEB-INF" + FILE_SEPARATOR + "views" + FILE_SEPARATOR;
 
-  public static final String EMPLOYEE_ROUTE = FILE_SEPARATOR + "employees";
+  public static final String EMPLOYEE_ROUTE = "/employees";
   public static final String EMPLOYEE_LIST_PAGE = VIEWS + "employeesList.jsp";
   public static final String EMPLOYEE_CREATE_PAGE = VIEWS + "employeeCreate.jsp";
   public static final String EMPLOYEE_VIEW_PAGE = VIEWS + "employeeView.jsp";

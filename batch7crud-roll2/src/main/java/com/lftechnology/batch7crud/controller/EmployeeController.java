@@ -6,13 +6,17 @@ import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
+import com.lftechnology.batch7crud.util.EmployeeValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.xml.bind.ValidationException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -109,9 +113,15 @@ public class EmployeeController extends CommonHttpServlet {
       employee.setAddress(address);
       employee.setEmail(email);
       employee.setContact(contact);
-
-      employeeService.insert(employee);
-      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
+      EmployeeValidator employeeValidator = new EmployeeValidator();
+      Map<String, String> error = employeeValidator.validate(employee);
+      if (error.isEmpty()) {
+        employeeService.insert(employee);
+        response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
+      } else {
+        request.setAttribute("validationMessage", error);
+        request.getRequestDispatcher(UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request, response);
+      }
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayErrorPage(request, response, e.getMessage());
