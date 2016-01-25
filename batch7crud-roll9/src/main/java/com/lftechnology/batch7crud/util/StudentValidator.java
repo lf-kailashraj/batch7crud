@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * Created by sanjay on 1/22/16.
  */
 public class StudentValidator {
-  public Student createObject(Map error, Map input) {
+  public Student createObject(Map<String, String> error, Map<String, String> input) {
     Student student = new Student();
     Set set = input.entrySet();
     Iterator iterator = set.iterator();
@@ -36,7 +36,7 @@ public class StudentValidator {
         try{
           student.setGrade(Integer.parseInt((String) mapEntry.getValue()));
         } catch(NumberFormatException e){
-          error.put(AttributeConstant.ERROR_GRADE,AppConstant.TRUE);
+          error.put(AttributeConstant.ERROR_GRADE,MessageConstant.ERROR_GRADE);
         }
       }
     }
@@ -44,7 +44,7 @@ public class StudentValidator {
   }
 
   public Map<String, String> validate(Student student) {
-    Map<String, String> hm = new HashMap();
+    Map<String, String> hm = new HashMap<>();
     if (!isValid(student.getFirstName())) {
       hm.put(AttributeConstant.ERROR_FNAME, MessageConstant.ERROR_FNAME);
     }
