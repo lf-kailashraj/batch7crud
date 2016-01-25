@@ -5,10 +5,7 @@ import com.lftechnology.batch7crud.db.DBConnection;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,15 +26,16 @@ public class EmployeeDao {
   private static final String EMPLOYEE_GET_COUNT = "select count(*) as total from employee";
 
   public void create(Employee employee) throws DataException {
+    ResultSet resultSet = null;
     try(Connection conn = DBConnection.getConnection();
-      PreparedStatement statement = conn.prepareStatement(EMPLOYEE_INSERT)
+      PreparedStatement statement = conn.prepareStatement(EMPLOYEE_INSERT, Statement.RETURN_GENERATED_KEYS)
     ){
       statement.setString(1, employee.getName());
       statement.setString(2, employee.getAddress());
       statement.setString(3, employee.getDesignation());
       statement.setString(4, employee.getPhone());
       statement.executeUpdate();
-      ResultSet resultSet = statement.getGeneratedKeys();
+      resultSet = statement.getGeneratedKeys();
       if (resultSet.next()) {
         employee.setId(resultSet.getInt(1));
       }
@@ -45,24 +43,34 @@ public class EmployeeDao {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
+    finally {
+      try {
+        if (resultSet != null)
+          resultSet.close();
+      } catch (Exception e) {
+        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        throw new DataException(e.getMessage());
+      }
+    }
   }
 
   public List<Employee> fetch(Integer pageLimit, Integer offset) throws DataException {
     List<Employee> employeeList = new ArrayList<>();
+    ResultSet resultSet = null;
 
     try (Connection conn = DBConnection.getConnection();
         PreparedStatement statement = conn.prepareStatement(EMPLOYEE_SELECT_ALL)
     ){
       statement.setInt(1, pageLimit);
       statement.setInt(2, offset);
-      ResultSet result = statement.executeQuery();
-      while (result.next()) {
+      resultSet = statement.executeQuery();
+      while (resultSet.next()) {
         Employee employee = new Employee();
-        employee.setId(result.getInt(ModelConstants.ID));
-        employee.setName(result.getString(ModelConstants.NAME));
-        employee.setAddress(result.getString(ModelConstants.ADDRESS));
-        employee.setDesignation(result.getString(ModelConstants.DESIGNATION));
-        employee.setPhone(result.getString(ModelConstants.PHONE));
+        employee.setId(resultSet.getInt(ModelConstants.ID));
+        employee.setName(resultSet.getString(ModelConstants.NAME));
+        employee.setAddress(resultSet.getString(ModelConstants.ADDRESS));
+        employee.setDesignation(resultSet.getString(ModelConstants.DESIGNATION));
+        employee.setPhone(resultSet.getString(ModelConstants.PHONE));
         employeeList.add(employee);
       }
       return employeeList;
@@ -70,22 +78,33 @@ public class EmployeeDao {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
+    finally {
+      try {
+        if (resultSet != null)
+          resultSet.close();
+      } catch (Exception e) {
+        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        throw new DataException(e.getMessage());
+      }
+    }
   }
 
   public Employee fetchById(Integer id) throws DataException {
     Employee employee = null;
+    ResultSet resultSet = null;
+
     try (Connection conn = DBConnection.getConnection();
       PreparedStatement statement = conn.prepareStatement(EMPLOYEE_SELECT_BY_ID)
     ){
       statement.setInt(1, id);
-      ResultSet result = statement.executeQuery();
-      if (result.next()) {
+      resultSet = statement.executeQuery();
+      if (resultSet.next()) {
         employee = new Employee();
-        employee.setId(result.getInt(ModelConstants.ID));
-        employee.setName(result.getString(ModelConstants.NAME));
-        employee.setAddress(result.getString(ModelConstants.ADDRESS));
-        employee.setDesignation(result.getString(ModelConstants.DESIGNATION));
-        employee.setPhone(result.getString(ModelConstants.PHONE));
+        employee.setId(resultSet.getInt(ModelConstants.ID));
+        employee.setName(resultSet.getString(ModelConstants.NAME));
+        employee.setAddress(resultSet.getString(ModelConstants.ADDRESS));
+        employee.setDesignation(resultSet.getString(ModelConstants.DESIGNATION));
+        employee.setPhone(resultSet.getString(ModelConstants.PHONE));
       }
       return employee;
     }
@@ -93,6 +112,16 @@ public class EmployeeDao {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
+    finally {
+      try {
+        if (resultSet != null)
+          resultSet.close();
+      } catch (Exception e) {
+        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        throw new DataException(e.getMessage());
+      }
+    }
+
   }
 
   public void edit(Employee employee) throws DataException {
@@ -125,12 +154,13 @@ public class EmployeeDao {
   }
 
   public Integer count() throws DataException {
+    ResultSet resultSet = null;
     try(Connection conn = DBConnection.getConnection();
         PreparedStatement statement = conn.prepareStatement(EMPLOYEE_GET_COUNT)
     ){
-      ResultSet result = statement.executeQuery();
-      if (result.next()){
-        return result.getInt(ModelConstants.TOTAL);
+      resultSet = statement.executeQuery();
+      if (resultSet.next()){
+        return resultSet.getInt(ModelConstants.TOTAL);
       }
       else {
         return 0;
@@ -138,6 +168,15 @@ public class EmployeeDao {
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
+    }
+    finally {
+      try {
+        if (resultSet != null)
+          resultSet.close();
+      } catch (Exception e) {
+        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        throw new DataException(e.getMessage());
+      }
     }
   }
 }
