@@ -1,7 +1,7 @@
 package com.lftechnology.batch7crud.model;
 
 /**
- * Created by leapfrog on 1/18/16.
+ * Created by Prajjwal Raj Kandel <prajjwalkandel@lftechnology.com> on 1/18/16.
  */
 public class Student {
   private int id;
