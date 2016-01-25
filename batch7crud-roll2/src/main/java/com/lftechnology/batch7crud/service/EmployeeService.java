@@ -22,6 +22,7 @@ public class EmployeeService {
   public void insert(Employee employee) throws DataException, ValidationException {
     EmployeeValidator employeeValidator = new EmployeeValidator();
     Map<String, String> errors = employeeValidator.validate(employee);
+
     if (errors.isEmpty())
       employeeDao.insert(employee);
     else {
@@ -37,8 +38,15 @@ public class EmployeeService {
     return employeeDao.fetchById(id);
   }
 
-  public void update(Employee employee) throws DataException {
-    employeeDao.update(employee);
+  public void update(Employee employee) throws DataException, ValidationException {
+    EmployeeValidator employeeValidator = new EmployeeValidator();
+    Map<String, String> errors = employeeValidator.validate(employee);
+
+    if (errors.isEmpty())
+      employeeDao.update(employee);
+    else {
+      throw new ValidationException(errors);
+    }
   }
 
   public int getTotalNoOfRecords() throws DataException {

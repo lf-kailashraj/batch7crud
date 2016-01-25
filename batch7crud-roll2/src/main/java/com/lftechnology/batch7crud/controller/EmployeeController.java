@@ -119,7 +119,7 @@ public class EmployeeController extends CommonHttpServlet {
       displayErrorPage(request, response, e.getMessage());
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute("validationError", e.getErrors());
+      request.setAttribute(AttributeConstants.VALIDATION_MESSAGE, e.getErrors());
       request.getRequestDispatcher(UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request, response);
     }
   }
@@ -163,20 +163,18 @@ public class EmployeeController extends CommonHttpServlet {
   }
 
   private void editProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    int id = parameterValueAsInt(request, 2);
+    Employee employee = null;
     try {
-      int id = parameterValueAsInt(request, 2);
-      String name = request.getParameter(AttributeConstants.NAME);
-      String address = request.getParameter(AttributeConstants.ADDRESS);
-      String email = request.getParameter(AttributeConstants.EMAIL);
-      String contact = request.getParameter(AttributeConstants.CONTACT);
+      Map<String, String> employeeInfo = new HashMap<>();
+      employeeInfo.put(AttributeConstants.NAME, request.getParameter(AttributeConstants.NAME));
+      employeeInfo.put(AttributeConstants.ADDRESS, request.getParameter(AttributeConstants.ADDRESS));
+      employeeInfo.put(AttributeConstants.EMAIL, request.getParameter(AttributeConstants.EMAIL));
+      employeeInfo.put(AttributeConstants.CONTACT, request.getParameter(AttributeConstants.CONTACT));
+      EmployeeValidator employeeValidator = new EmployeeValidator();
+      employee = employeeValidator.createObject(employeeInfo);
 
-      Employee employee = new Employee();
       employee.setId(id);
-      employee.setName(name);
-      employee.setAddress(address);
-      employee.setEmail(email);
-      employee.setContact(contact);
-
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     } catch (DataException e) {
@@ -185,6 +183,11 @@ public class EmployeeController extends CommonHttpServlet {
     } catch (NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       displayPageNotFound(request, response);
+    } catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute(AttributeConstants.EMPLOYEE, employee);
+      request.setAttribute(AttributeConstants.VALIDATION_MESSAGE, e.getErrors());
+      request.getRequestDispatcher(UrlConstants.EMPLOYEE_EDIT_PAGE).forward(request, response);
     }
   }
 
