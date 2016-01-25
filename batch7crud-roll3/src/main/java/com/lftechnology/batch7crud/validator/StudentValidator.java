@@ -5,13 +5,13 @@ import java.util.Map;
 
 import static com.lftechnology.batch7crud.constant.StudentConstant.*;
 import com.lftechnology.batch7crud.entity.Student;
-import com.lftechnology.batch7crud.exception.ValidationExceptions;
+import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.utils.ValidatorUtil;
 
 public class StudentValidator extends ValidatorUtil implements Validator<Student> {
 
   @Override
-  public Student createObject(Map inputs) throws ValidationExceptions {
+  public Student createObject(Map inputs) throws ValidationException {
     Student student = new Student();
     Map<String, String> errors = new HashMap<>();
     String roll = (String) inputs.get(ROLL);
@@ -19,7 +19,7 @@ public class StudentValidator extends ValidatorUtil implements Validator<Student
     if (!isInteger(roll))
       errors.put(ROLL, INVALID_ROLL_MESSAGE);
     if (!errors.isEmpty()) {
-      ValidationExceptions exception = new ValidationExceptions();
+      ValidationException exception = new ValidationException();
       exception.setErrors(errors);
       throw exception;
     }
@@ -31,7 +31,7 @@ public class StudentValidator extends ValidatorUtil implements Validator<Student
   }
 
   @Override
-  public boolean isValid(Student student) throws ValidationExceptions {
+  public boolean isValid(Student student) throws ValidationException {
     Map<String, String> errors = new HashMap<>();
 
     if (!isString(student.getName()) || isEmpty(student.getName()))
@@ -40,7 +40,7 @@ public class StudentValidator extends ValidatorUtil implements Validator<Student
       errors.put(ROLL, ROLL_TOO_LARGE_MESSAGE);
 
     if (!errors.isEmpty()) {
-      ValidationExceptions exception = new ValidationExceptions();
+      ValidationException exception = new ValidationException();
       exception.setErrors(errors);
       throw exception;
     }

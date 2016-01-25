@@ -2,14 +2,14 @@ package com.lftechnology.batch7crud.exception;
 
 import java.util.Map;
 
-public class ValidationExceptions extends Exception {
-  Map<String, String> errors;
+public class ValidationException extends Exception {
+  private Map<String, String> errors; //NOSONAR
 
-  public ValidationExceptions() {
+  public ValidationException() {
     super("Validation error");
   }
 
-  public ValidationExceptions(String message) {
+  public ValidationException(String message) {
     super(message);
   }
 
