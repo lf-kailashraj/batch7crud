@@ -27,9 +27,10 @@ public class UrlConstants {
   public static final String USER_SIGN_IN = VIEWS + USER_ROUTE + FILE_SEPARATOR + "signin.jsp";
 
   public static final String INDEX_PAGE = VIEWS + INDEX;
-  public static final String PAGE_NOT_FOUND = VIEWS + "404.jsp";
-  public static final String ERROR_PAGE = VIEWS + "error.jsp";
 
+  public static final String ERROR_ROUTE = FILE_SEPARATOR + "errors";
+  public static final String PAGE_NOT_FOUND = VIEWS + ERROR_ROUTE + FILE_SEPARATOR + "404.jsp";
+  public static final String ERROR_PAGE = VIEWS + ERROR_ROUTE + FILE_SEPARATOR + "500.jsp";
 
   private UrlConstants() {
 

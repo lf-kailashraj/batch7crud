@@ -20,18 +20,17 @@ public abstract class CommonHttpServlet extends HttpServlet {
 
   protected void pageNotFound(HttpServletRequest request, HttpServletResponse response) {
     try {
-      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
-      request.getRequestDispatcher(UrlConstants.PAGE_NOT_FOUND).forward(request, response);
-    } catch (ServletException | IOException e) {
+      response.sendError(HttpServletResponse.SC_NOT_FOUND);
+    } catch (IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
   }
 
   protected void errorPage(HttpServletRequest request, HttpServletResponse response, String message) {
     try {
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, message);
+      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       request.getRequestDispatcher(UrlConstants.ERROR_PAGE).forward(request, response);
     } catch (ServletException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -40,7 +39,7 @@ public abstract class CommonHttpServlet extends HttpServlet {
 
   protected String[] getPathParams(HttpServletRequest request) {
     String urlPath = request.getRequestURI().substring(request.getContextPath().length());
-    return urlPath.split("/");
+    return urlPath.split(UrlConstants.PATH_SEPARATOR);
   }
 
   protected int parameterValueAsInt(HttpServletRequest request, int index) {
