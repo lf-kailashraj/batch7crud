@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 @WebServlet({ "/employees/*" })
 public class EmployeesController extends CommonHttpServlet {
-  private static final Logger LOGGER = Logger.getLogger(Employee.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(EmployeesController.class.getName());
   private EmployeeService employeeService = new EmployeeService(); // NOSONAR
 
   @Override
@@ -31,7 +31,7 @@ public class EmployeesController extends CommonHttpServlet {
       fetch(request, response);
     }
     else {
-      String[] parts = path.split("/");
+      String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
       if (parts.length == 0) {
         fetch(request, response);
       }
@@ -58,7 +58,7 @@ public class EmployeesController extends CommonHttpServlet {
         response);
     }
     else {
-      String[] parts = path.split("/");
+      String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
       if (AppConstants.CREATE.equals(parts[1])) {
         createProcess(request, response);
       }

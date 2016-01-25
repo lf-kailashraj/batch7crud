@@ -7,6 +7,7 @@ import java.io.File;
  */
 public class UrlConstants {
   public static final String FILE_SEPARATOR = File.separator;
+  public static final String PATH_SEPARATOR = "/";
   public static final String VIEWS = FILE_SEPARATOR + "WEB-INF" + FILE_SEPARATOR + "views" + FILE_SEPARATOR;
 
   private static final String INDEX = "index.jsp";

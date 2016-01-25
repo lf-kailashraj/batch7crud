@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 
 public class EmployeeDao {
-  private static final Logger LOGGER = Logger.getLogger(Employee.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(EmployeeDao.class.getName());
 
   private static final String EMPLOYEE_INSERT = "INSERT INTO employee (name, address, designation, phone) VALUES (?,?,?,?)";
   private static final String EMPLOYEE_SELECT_ALL = "SELECT * FROM employee order by id limit ? offset ?";
