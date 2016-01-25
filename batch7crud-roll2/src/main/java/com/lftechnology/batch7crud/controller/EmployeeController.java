@@ -14,7 +14,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -104,14 +103,9 @@ public class EmployeeController extends CommonHttpServlet {
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     Employee employee = null;
     try {
-      Map<String, String> employeeInfo = new HashMap<>();
-      employeeInfo.put(AttributeConstants.NAME, request.getParameter(AttributeConstants.NAME));
-      employeeInfo.put(AttributeConstants.ADDRESS, request.getParameter(AttributeConstants.ADDRESS));
-      employeeInfo.put(AttributeConstants.EMAIL, request.getParameter(AttributeConstants.EMAIL));
-      employeeInfo.put(AttributeConstants.CONTACT, request.getParameter(AttributeConstants.CONTACT));
-
+      Map<String, String> inputs = mapParameters(request);
       EmployeeValidator employeeValidator = new EmployeeValidator();
-      employee = employeeValidator.createObject(employeeInfo);
+      employee = employeeValidator.createObject(inputs);
 
       employeeService.insert(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
@@ -168,13 +162,9 @@ public class EmployeeController extends CommonHttpServlet {
     int id = parameterValueAsInt(request, 2);
     Employee employee = null;
     try {
-      Map<String, String> employeeInfo = new HashMap<>();
-      employeeInfo.put(AttributeConstants.NAME, request.getParameter(AttributeConstants.NAME));
-      employeeInfo.put(AttributeConstants.ADDRESS, request.getParameter(AttributeConstants.ADDRESS));
-      employeeInfo.put(AttributeConstants.EMAIL, request.getParameter(AttributeConstants.EMAIL));
-      employeeInfo.put(AttributeConstants.CONTACT, request.getParameter(AttributeConstants.CONTACT));
+      Map<String, String> inputs = mapParameters(request);
       EmployeeValidator employeeValidator = new EmployeeValidator();
-      employee = employeeValidator.createObject(employeeInfo);
+      employee = employeeValidator.createObject(inputs);
 
       employee.setId(id);
       employeeService.update(employee);

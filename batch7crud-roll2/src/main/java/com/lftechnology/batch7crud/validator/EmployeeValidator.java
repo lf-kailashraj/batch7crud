@@ -31,28 +31,25 @@ public class EmployeeValidator implements GenericValidator<Employee> {
   @Override
   public Map<String, String> validate(Employee entity) {
     Map<String, String> errors = new HashMap<>();
-    String name = entity.getName().trim();
-    String address = entity.getAddress().trim();
     String email = entity.getEmail().trim();
-    String contact = entity.getContact().trim();
 
-    if (isEmpty(name)) {
+    if (isNullOrEmpty(entity.getName().trim())) {
       errors.put(AttributeConstants.NAME, "Set Name");
     }
-    if (isEmpty(address)) {
+    if (isNullOrEmpty(entity.getAddress().trim())) {
       errors.put(AttributeConstants.ADDRESS, "Set Address");
     }
-    if (isEmpty(email) || !isValidEmail(email)) {
+    if (isNullOrEmpty(email) || !isValidEmail(email)) {
       errors.put(AttributeConstants.EMAIL, "Email not correct");
     }
-    if (isEmpty(contact)) {
+    if (isNullOrEmpty(entity.getContact().trim())) {
       errors.put(AttributeConstants.CONTACT, "Set Contact");
     }
     return errors;
   }
 
-  private boolean isEmpty(String employeeInfo) {
-    return "".equals(employeeInfo) || " ".equals(employeeInfo);
+  private boolean isNullOrEmpty(String value) {
+    return value == null || value.isEmpty();
   }
 
   private boolean isValidEmail(String email) {
