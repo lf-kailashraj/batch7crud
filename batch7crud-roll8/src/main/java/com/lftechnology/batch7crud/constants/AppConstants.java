@@ -10,6 +10,7 @@ public class AppConstants {
   public static final String PAGE_NOT_FOUND_MESSAGE = "Page Not Found";
   public static final String SIGN_UP = "signup";
   public static final String SIGN_IN = "signin";
+  public static final int PAGE_LIMIT = 4;
 
   private AppConstants() {
 

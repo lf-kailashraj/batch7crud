@@ -147,7 +147,7 @@ public class EmployeesController extends CommonHttpServlet {
 
   private void fetch(HttpServletRequest request, HttpServletResponse response) {
     try {
-      Integer pageLimit = 4;
+      Integer pageLimit = AppConstants.PAGE_LIMIT;
       Integer pageNo = getCurrentPage(request);
       Integer offset = (pageNo-1)*pageLimit;
 
