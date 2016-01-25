@@ -16,15 +16,11 @@
 </head>
 <body>
 <form action="students/${student.id}/edit" method="post">
-  Name: <input type="text" name="name" value="${student.name}"/>
-  Address: <input type="text" name="address" value="${student.address}"/>
-  Roll: <input type="text" name="roll" value="${student.roll}"/>
+  Name: <input type="text" name="name" value="${student.name}"/><span>${error.name}</span><br>
+  Address: <input type="text" name="address" value="${student.address}"/><span>${error.address}</span><br>
+  Roll: <input type="text" name="roll" value="${student.roll}"/><span>${error.roll}</span><br>
   <input type="submit"/>
 </form>
-${error}
-<c:if test="${error != null}">
-  <p>Error in entered roll</p>
-</c:if>
 
 <div><a href="students">View All</a></div>
 

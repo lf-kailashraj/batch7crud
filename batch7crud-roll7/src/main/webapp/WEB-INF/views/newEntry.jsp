@@ -14,17 +14,15 @@
 
   <title>New Entry</title>
 </head>
-<body>
 <form action="students/newEntry" method="post">
-  <input type="text" name="name" placeholder="Name" value="${param.name}"/>
-  <input type="text" name="address" placeholder="Address" value="${param.address}"/>
-  <input type="text" name="roll" placeholder="Roll"/>
+  <input type="text" name="name" placeholder="Name" value="${param.name}"/><span>${error.name}</span><br>
+  <input type="text" name="address" placeholder="Address" value="${param.address}"/><span>${error.address}</span><br>
+  <input type="text" name="roll" placeholder="Roll" value = "${param.roll}"/><span>${error.roll}</span><br>
   <input type="submit"/>
 </form>
-${error}
-<c:if test="${error != null}">
-  <p>Error in entered roll</p>
-</c:if>
+<%--<c:if test="${error != null}">--%>
+  <%--<p>Error in entered roll</p>--%>
+<%--</c:if>--%>
 <div><a href="students">View All</a></div>
 </body>
 </html>

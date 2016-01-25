@@ -1,23 +1,27 @@
 package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.exception.DataException;
+import com.lftechnology.batch7crud.exception.ValidatorException;
 import com.lftechnology.batch7crud.model.Student;
 import com.lftechnology.batch7crud.service.StudentServices;
+import com.lftechnology.batch7crud.validator.StudentValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Created by Prajjwal Raj Kandel <prajjwalkandel@lftechnology.com> on 1/18/16.
  */
-@WebServlet(name = "StudentListController", urlPatterns = { "/students/*" })
-public class StudentListController extends CommonHttpServlet{
-  private static final Logger LOGGER = Logger.getLogger(StudentListController.class.getName());
+@WebServlet(name = "StudentController", urlPatterns = { "/students/*" })
+public class StudentController extends CommonHttpServlet{
+  private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
 
   private static StudentServices studentService = new StudentServices();
 
@@ -38,6 +42,7 @@ public class StudentListController extends CommonHttpServlet{
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       showInternalErrorPage(request, response);
     }
+
   }
 
   @Override
@@ -94,17 +99,19 @@ public class StudentListController extends CommonHttpServlet{
     String name = request.getParameter("name");
     String address = request.getParameter("address");
     String roll = request.getParameter("roll");
-    try {
-      int rollNum = Integer.parseInt(roll);
-      Student student = new Student();
-      student.setName(name);
-      student.setAddress(address);
-      student.setRoll(rollNum);
+    Map<String,String > studentMap = new HashMap<>();
+    studentMap.put("name",name);
+    studentMap.put("roll",roll);
+    studentMap.put("address",address);
 
+    try {
+      StudentValidator studentValidator = new StudentValidator();
+      Student student = studentValidator.createObject(studentMap);
       studentService.addNew(student);
       response.sendRedirect(request.getContextPath() + "/" + CommonConstants.LIST_URL);
-    } catch (NumberFormatException e) {
-      request.setAttribute("error", "invalid roll");
+    } catch (ValidatorException e) {
+      LOGGER.log(Level.SEVERE,e.getMessage(),e);
+      request.setAttribute("error",e.getErrors());
       request.getServletContext().getRequestDispatcher(CommonConstants.NEW_ENTRY_VIEW).forward(request, response);
     }
 
@@ -124,18 +131,21 @@ public class StudentListController extends CommonHttpServlet{
     throws ServletException, IOException, DataException {
     String name = request.getParameter("name");
     String address = request.getParameter("address");
-    Student student = new Student();
+    String roll = request.getParameter("roll");
+    Map<String,String > studentMap = new HashMap<>();
+    studentMap.put("name",name);
+    studentMap.put("roll",roll);
+    studentMap.put("address",address);
     try {
-      int roll = Integer.parseInt(request.getParameter("roll"));
-      student.setName(name);
-      student.setAddress(address);
-      student.setRoll(roll);
+      StudentValidator studentValidator = new StudentValidator();
+      Student student = studentValidator.createObject(studentMap);
       student.setId(id);
 
       studentService.update(student);
       response.sendRedirect(request.getContextPath() + "/" + CommonConstants.LIST_URL);
-    } catch (NumberFormatException e) {
-      request.setAttribute("error", "invalid roll");
+    } catch (ValidatorException e) {
+      LOGGER.log(Level.SEVERE,e.getMessage(),e);
+      request.setAttribute("error", e.getErrors());
       request.setAttribute("student", studentService.fetchById(id));
       request.getServletContext().getRequestDispatcher(CommonConstants.EDIT_ENTRY_VIEW).forward(request, response);
     }
