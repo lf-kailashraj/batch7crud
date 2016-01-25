@@ -3,7 +3,7 @@ package com.lftechnology.batch7crud.exception;
 import java.util.Map;
 
 public class ValidationException extends Exception {
-  private Map<String, String> errors; //NOSONAR
+  private Map<String, String> errors; // NOSONAR
 
   public ValidationException() {
     super("Validation error");

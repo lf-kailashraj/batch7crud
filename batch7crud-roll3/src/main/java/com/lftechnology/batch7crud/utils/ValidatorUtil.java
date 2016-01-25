@@ -9,7 +9,7 @@ public abstract class ValidatorUtil {
   }
 
   protected boolean isString(String value) {
-    String onlyString = "[a-zA-Z]*";
+    String onlyString = "[a-zA-Z ]*";
 
     if (value.matches(onlyString)) {
       return true;

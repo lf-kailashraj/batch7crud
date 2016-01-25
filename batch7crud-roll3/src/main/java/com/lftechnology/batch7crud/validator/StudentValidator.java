@@ -34,7 +34,7 @@ public class StudentValidator extends ValidatorUtil implements Validator<Student
   public boolean isValid(Student student) throws ValidationException {
     Map<String, String> errors = new HashMap<>();
 
-    if (!isString(student.getName()) || isEmpty(student.getName()))
+    if (!isString(student.getName().trim()) || isEmpty(student.getName()))
       errors.put(NAME, INVALID_NAME_MESSAGE);
     if (student.getRoll() > 200)
       errors.put(ROLL, ROLL_TOO_LARGE_MESSAGE);
