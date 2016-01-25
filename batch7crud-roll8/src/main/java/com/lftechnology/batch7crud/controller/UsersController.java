@@ -22,7 +22,8 @@ import java.util.logging.Logger;
 
 @WebServlet({ "/users/*" })
 public class UsersController extends HttpServlet {
-  private static final Logger LOGGER = Logger.getLogger(User.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(UsersController.class.getName());
+  UserService userService = new UserService(); // NOSONAR
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,7 +33,7 @@ public class UsersController extends HttpServlet {
       request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.USER_SIGN_UP).forward(request, response);
     }
     else {
-      String[] parts = path.split("/");
+      String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
       if (AppConstants.CREATE.equals(parts[1])) {
         create(request, response);
       }
@@ -50,7 +51,7 @@ public class UsersController extends HttpServlet {
       request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.USER_HOME_PAGE).forward(request, response);
     }
     else {
-      String[] parts = path.split("/");
+      String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
       if (AppConstants.SIGN_UP.equals(parts[1])) {
         request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.USER_SIGN_UP).forward(request, response);
       }
@@ -68,24 +69,28 @@ public class UsersController extends HttpServlet {
 
   private void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
-      String name = request.getParameter(AttributeConstants.NAME);
-      String username = request.getParameter(AttributeConstants.USERNAME);
-      String email = request.getParameter(AttributeConstants.EMAIL);
-      String password = request.getParameter(AttributeConstants.PASSWORD);
-      UserService userService = new UserService();
-
-      User user = new User();
-      user.setName(name);
-      user.setUsername(username);
-      user.setEmail(email);
-      user.setPassword(password);
-
+      User user = setUserAttributes(request);
       userService.create(user);
       fetch(request, response);
     }
     catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
+  }
+
+  private User setUserAttributes (HttpServletRequest request) {
+    String name = request.getParameter(AttributeConstants.NAME);
+    String username = request.getParameter(AttributeConstants.USERNAME);
+    String email = request.getParameter(AttributeConstants.EMAIL);
+    String password = request.getParameter(AttributeConstants.PASSWORD);
+
+    User user = new User();
+    user.setName(name);
+    user.setUsername(username);
+    user.setEmail(email);
+    user.setPassword(password);
+
+    return user;
   }
 }
 
