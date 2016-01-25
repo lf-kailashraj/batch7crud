@@ -17,7 +17,6 @@ public class UserDao {
   private static final String USER_INSERT = "INSERT INTO USERS (name, username, email, password) VALUES (?,?,?,?)";
 
   public User create(User user) throws DataException {
-    ResultSet resultSet = null;
     try (Connection conn = DBConnection.getConnection();
       PreparedStatement statement = conn.prepareStatement(USER_INSERT, Statement.RETURN_GENERATED_KEYS)
     ){
@@ -26,7 +25,7 @@ public class UserDao {
       statement.setString(3, user.getName());
       statement.setString(4, user.getPassword());
       statement.executeUpdate();
-      resultSet = statement.getGeneratedKeys();
+      ResultSet resultSet = statement.getGeneratedKeys();
       if (resultSet.next()) {
         user.setId(resultSet.getInt(1));
       }
@@ -34,15 +33,6 @@ public class UserDao {
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
-    }
-    finally {
-      try {
-        if (resultSet != null)
-          resultSet.close();
-      } catch (Exception e) {
-        LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        throw new DataException(e.getMessage());
-      }
     }
   }
 
