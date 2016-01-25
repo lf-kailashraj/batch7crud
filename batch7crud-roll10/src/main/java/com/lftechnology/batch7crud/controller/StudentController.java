@@ -4,20 +4,19 @@ import com.lftechnology.batch7crud.constant.EntityConstant;
 import com.lftechnology.batch7crud.constant.PageConstant;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
+import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.service.StudentService;
 import com.lftechnology.batch7crud.util.TypeCaster;
-import com.lftechnology.batch7crud.utils.DateUtils;
 import com.lftechnology.batch7crud.validator.StudentValidator;
-import javafx.util.Pair;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,8 +35,8 @@ public class StudentController extends CustomHttpServlet {
   private static StudentValidator studentValidator = new StudentValidator();
   private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
   private static final String STUDENT_LIST = "studentList";
-  private static final String DOB_ERROR = "dobError";
-  private static final String ROLL_ERROR = "rollError";
+  private static final String ERROR = "error";
+
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -115,28 +114,27 @@ public class StudentController extends CustomHttpServlet {
 
   private void createProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     try {
-      Student student = constructStudentFromRequest(req);
-      List<Pair> errors = studentValidator.validate(student);
+      Map<String, String> errors = new HashMap<>();
+      Map<String, String> paramMap = buildParamMap(req);
+      Student student = studentValidator.createObject(paramMap, errors);
+
       if (errors.isEmpty()) {
         studentService.insert(student);
         resp.sendRedirect(req.getContextPath() + PageConstant.STUDENT_LIST_URL);
       } else {
-        for (Pair p : errors) {
-          req.setAttribute((String) p.getKey(), p.getValue());
-        }
-
+        req.setAttribute(ERROR, errors);
         create(req, resp);
       }
 
-    } catch (ParseException e) {
-      req.setAttribute(DOB_ERROR, "error while parsing date");
-      create(req, resp);
-    } catch (NumberFormatException e) {
-      req.setAttribute(ROLL_ERROR, "invalid roll number");
-      create(req, resp);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       showServerError(req, resp, e);
+
+    } catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      req.setAttribute(ERROR, e.getErrors());
+      create(req, resp);
+
     }
   }
 
@@ -153,28 +151,29 @@ public class StudentController extends CustomHttpServlet {
 
   private void editProcess(HttpServletRequest req, HttpServletResponse resp, Integer id) throws ServletException, IOException {
     try {
-      Student student = constructStudentFromRequest(req);
-      List<Pair> errors = studentValidator.validate(student);
+
+      Map<String, String> errors = new HashMap<>();
+      Map<String, String> paramMap = buildParamMap(req);
+      Student student = studentValidator.createObject(paramMap, errors);
+
       if (errors.isEmpty()) {
         student.setId(id);
         studentService.update(student);
         resp.sendRedirect(req.getContextPath() + PageConstant.STUDENT_LIST_URL);
       } else {
-        for (Pair p : errors) {
-          req.setAttribute((String) p.getKey(), p.getValue());
-        }
+        req.setAttribute(ERROR, errors);
         edit(req, resp, id);
       }
 
-    } catch (ParseException e) {
-      req.setAttribute(DOB_ERROR, "error while parsing date");
-      edit(req, resp, id);
-    } catch (NumberFormatException e) {
-      req.setAttribute(ROLL_ERROR, "invalid roll number");
-      edit(req, resp, id);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       showServerError(req, resp, e);
+
+    } catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      req.setAttribute(ERROR, e.getErrors());
+      edit(req, resp, id);
+
     }
   }
 
@@ -188,9 +187,8 @@ public class StudentController extends CustomHttpServlet {
     }
   }
 
-  private Student constructStudentFromRequest(HttpServletRequest req) throws ParseException{
-    Student student = new Student();
 
+  private Map<String, String> buildParamMap(HttpServletRequest req){
     String name = req.getParameter(EntityConstant.NAME);
     String address = req.getParameter(EntityConstant.ADDRESS);
     String dob = req.getParameter(EntityConstant.DOB);
@@ -198,16 +196,14 @@ public class StudentController extends CustomHttpServlet {
     String batch = req.getParameter(EntityConstant.BATCH);
     String rollText = req.getParameter(EntityConstant.ROLL);
 
-    Date  date = DateUtils.parse(dob);
-    Integer roll = Integer.parseInt(rollText);
+    Map<String, String> paramMap = new HashMap<>();
+    paramMap.put(EntityConstant.NAME, name);
+    paramMap.put(EntityConstant.ADDRESS, address);
+    paramMap.put(EntityConstant.DOB, dob);
+    paramMap.put(EntityConstant.DEPARTMENT, department);
+    paramMap.put(EntityConstant.BATCH, batch);
+    paramMap.put(EntityConstant.ROLL, rollText);
 
-    student.setBatch(batch);
-    student.setDepartment(department);
-
-    student.setName(name);
-    student.setAddress(address);
-    student.setDob(date);
-    student.setRoll(roll);
-    return student;
+    return paramMap;
   }
 }
