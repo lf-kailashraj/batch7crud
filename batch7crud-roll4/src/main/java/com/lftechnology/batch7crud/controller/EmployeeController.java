@@ -107,9 +107,10 @@ public class EmployeeController extends CustomHttpServlet {
     inputs.put(PARAM_STATION, request.getParameter(PARAM_STATION));
 
     EmployeeValidator validator = new EmployeeValidator();
-    Employee employee = validator.createObject(inputs);
+    Employee employee = null;
 
     try {
+      employee = validator.createObject(inputs);
       employeeService.save(employee);
       response.sendRedirect(request.getContextPath() + ROUTE_EMPLOYEES);
     } catch (DataException e) {
@@ -164,10 +165,12 @@ public class EmployeeController extends CustomHttpServlet {
     inputs.put(PARAM_STATION, request.getParameter(PARAM_STATION));
 
     EmployeeValidator validator = new EmployeeValidator();
-    Employee employee = validator.createObject(inputs);
-    employee.setId(employeeId);
+    Employee employee = null;
 
     try {
+      employee = validator.createObject(inputs);
+      employee.setId(employeeId);
+
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + ROUTE_EMPLOYEES);
     } catch (DataException e) {

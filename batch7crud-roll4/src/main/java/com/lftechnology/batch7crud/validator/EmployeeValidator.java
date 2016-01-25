@@ -34,15 +34,15 @@ public class EmployeeValidator implements Validator<Employee> {
     String lastName = e.getLastName().trim();
     String station = e.getStation().trim();
 
-    if (isEmpty(firstName) || isInteger(firstName)) {
+    if (isEmpty(firstName) || !isString(firstName)) {
       errors.put(PARAM_FIRST_NAME, "Check first name");
     }
 
-    if (isEmpty(lastName) || isInteger(lastName)) {
+    if (isEmpty(lastName) || !isString(lastName)) {
       errors.put(PARAM_LAST_NAME, "Check Last Name");
     }
 
-    if (isEmpty(station) || isInteger(station)) {
+    if (isEmpty(station)) {
       errors.put(PARAM_STATION, "Check Station");
     }
 
@@ -53,8 +53,8 @@ public class EmployeeValidator implements Validator<Employee> {
     return "".equals(argument) || " ".equals(argument);
   }
 
-  private boolean isInteger(String argument) {
-    return argument.matches(".*\\d+.*");
+  private boolean isString(String argument) {
+    return argument.matches("[A-Za-z]*");
   }
 
 }

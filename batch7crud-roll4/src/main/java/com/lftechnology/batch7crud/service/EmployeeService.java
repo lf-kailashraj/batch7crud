@@ -30,7 +30,7 @@ public class EmployeeService {
     return employeeDao.fetchById(id);
   }
 
-  public void save(Employee employee) throws DataException, ValidationException {
+  public void save(Employee employee) throws DataException, ValidationException { //NOSONAR
     Map<String, String> errors= validator.validate(employee);
 
     if (errors.isEmpty()) {
@@ -40,7 +40,7 @@ public class EmployeeService {
     }
   }
 
-  public void update(Employee employee) throws DataException, ValidationException {
+  public void update(Employee employee) throws ValidationException, DataException { //NOSONAR
     Map<String, String> errors= validator.validate(employee);
 
     if (errors.isEmpty()) {

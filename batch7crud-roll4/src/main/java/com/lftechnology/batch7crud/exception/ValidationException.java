@@ -6,7 +6,7 @@ import java.util.Map;
  * Created by pratishshr on 1/25/16.
  */
 public class ValidationException extends Exception {
-  private Map<String, String> errors;
+  private Map<String, String> errors; //NOSONAR
 
   public ValidationException(Map<String, String> errors) {
     this.errors = errors;
