@@ -16,7 +16,7 @@ public class UserDao {
   private static final Logger LOGGER = Logger.getLogger(UserDao.class.getName());
   private static final String USER_INSERT = "INSERT INTO USERS (name, username, email, password) VALUES (?,?,?,?)";
 
-  public void create(User user) throws DataException {
+  public User create(User user) throws DataException {
     ResultSet resultSet = null;
     try (Connection conn = DBConnection.getConnection();
       PreparedStatement statement = conn.prepareStatement(USER_INSERT, Statement.RETURN_GENERATED_KEYS)
@@ -30,6 +30,7 @@ public class UserDao {
       if (resultSet.next()) {
         user.setId(resultSet.getInt(1));
       }
+      return user;
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());

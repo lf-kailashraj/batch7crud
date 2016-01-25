@@ -25,7 +25,7 @@ public class EmployeeDao {
   private static final String EMPLOYEE_DELETE_BY_ID = "delete from employee where id = ?";
   private static final String EMPLOYEE_GET_COUNT = "select count(*) as total from employee";
 
-  public void create(Employee employee) throws DataException {
+  public Employee create(Employee employee) throws DataException {
     ResultSet resultSet = null;
     try(Connection conn = DBConnection.getConnection();
       PreparedStatement statement = conn.prepareStatement(EMPLOYEE_INSERT, Statement.RETURN_GENERATED_KEYS)
@@ -39,6 +39,7 @@ public class EmployeeDao {
       if (resultSet.next()) {
         employee.setId(resultSet.getInt(1));
       }
+      return employee;
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
@@ -121,10 +122,9 @@ public class EmployeeDao {
         throw new DataException(e.getMessage());
       }
     }
-
   }
 
-  public void edit(Employee employee) throws DataException {
+  public Employee edit(Employee employee) throws DataException {
     try (Connection conn = DBConnection.getConnection();
       PreparedStatement statement = conn.prepareStatement(EMPLOYEE_UPDATE_BY_ID)
     ){
@@ -134,6 +134,7 @@ public class EmployeeDao {
       statement.setString(4, employee.getPhone());
       statement.setInt(5, employee.getId());
       statement.executeUpdate();
+      return employee;
     }
     catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);

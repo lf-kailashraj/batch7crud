@@ -13,8 +13,8 @@ import java.util.List;
 public class EmployeeService {
   private EmployeeDao employeeDao = new EmployeeDao();
 
-  public void create(Employee employee) throws DataException {
-    employeeDao.create(employee);
+  public Employee create(Employee employee) throws DataException {
+    return employeeDao.create(employee);
   }
 
   public List<Employee> fetch(Integer pageLimit, Integer offset) throws DataException {
@@ -25,8 +25,8 @@ public class EmployeeService {
     return employeeDao.fetchById(id);
   }
 
-  public void edit(Employee employee) throws DataException {
-    employeeDao.edit(employee);
+  public Employee edit(Employee employee) throws DataException {
+    return employeeDao.edit(employee);
   }
 
   public void delete(Integer id) throws DataException {
