@@ -156,7 +156,7 @@ public class EmployeesController extends CommonHttpServlet {
       request.setAttribute(AttributeConstants.EMPLOYEE_LIST, employeeList);
       request.setAttribute(AttributeConstants.EMPLOYEE_COUNT, employeeCount);
       request.setAttribute(AttributeConstants.PAGE_NO, pageNo);
-      if ((employeeCount%pageLimit) == 0) {
+      if ((employeeCount % pageLimit) == 0) {
         request.setAttribute(AttributeConstants.LAST_PAGE_NO, employeeCount / pageLimit);
       }
       else {
