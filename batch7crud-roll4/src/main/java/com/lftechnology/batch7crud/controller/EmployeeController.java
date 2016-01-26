@@ -2,6 +2,7 @@ package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationException;
+import com.lftechnology.batch7crud.factory.EmployeeFactory;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
 import com.lftechnology.batch7crud.validator.EmployeeValidator;
@@ -30,9 +31,11 @@ import static com.lftechnology.batch7crud.constant.UrlConstants.*;
 public class EmployeeController extends CustomHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
 
-  private static EmployeeService employeeService;
+  private EmployeeService employeeService;
+  private EmployeeFactory employeeFactory;
 
   public EmployeeController() {
+    employeeFactory = new EmployeeFactory();
     employeeService = new EmployeeService();
   }
 
@@ -102,11 +105,11 @@ public class EmployeeController extends CustomHttpServlet {
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     Map<String, String> inputs = mapParameters(request);
 
-    EmployeeValidator validator = new EmployeeValidator();
     Employee employee = null;
 
     try {
-      employee = validator.createObject(inputs);
+      employee = employeeFactory.createObject(inputs);
+
       employeeService.save(employee);
       response.sendRedirect(request.getContextPath() + ROUTE_EMPLOYEES);
     } catch (DataException e) {
@@ -156,11 +159,10 @@ public class EmployeeController extends CustomHttpServlet {
 
     int employeeId = parameterValueAsInt(request, 2);
 
-    EmployeeValidator validator = new EmployeeValidator();
     Employee employee = null;
 
     try {
-      employee = validator.createObject(inputs);
+      employee = employeeFactory.createObject(inputs);
       employee.setId(employeeId);
 
       employeeService.update(employee);

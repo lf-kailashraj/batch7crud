@@ -30,24 +30,14 @@ public class EmployeeService {
     return employeeDao.fetchById(id);
   }
 
-  public void save(Employee employee) throws DataException, ValidationException { //NOSONAR
-    Map<String, String> errors= validator.validate(employee);
-
-    if (errors.isEmpty()) {
-      employeeDao.insert(employee);
-    } else {
-      throw new ValidationException(errors);
-    }
+  public void save(Employee employee) throws DataException, ValidationException {  // NOSONAR
+    validator.validate(employee);
+    employeeDao.insert(employee);
   }
 
   public void update(Employee employee) throws ValidationException, DataException { //NOSONAR
-    Map<String, String> errors= validator.validate(employee);
-
-    if (errors.isEmpty()) {
-      employeeDao.update(employee);
-    } else {
-      throw new ValidationException(errors);
-    }
+    validator.validate(employee);
+    employeeDao.update(employee);
   }
 
   public void deleteEmployee(int id) throws DataException {
