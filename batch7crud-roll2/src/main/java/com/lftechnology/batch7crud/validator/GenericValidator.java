@@ -7,7 +7,5 @@ import java.util.Map;
  */
 public interface GenericValidator<T> {
 
-  T createObject(Map<String, String> input);
-
   Map<String, String> validate(T entity);
 }

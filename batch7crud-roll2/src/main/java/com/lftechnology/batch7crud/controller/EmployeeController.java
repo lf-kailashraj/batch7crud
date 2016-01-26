@@ -5,6 +5,7 @@ import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationException;
+import com.lftechnology.batch7crud.factory.EmployeeFactory;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
 import com.lftechnology.batch7crud.validator.EmployeeValidator;
@@ -114,8 +115,8 @@ public class EmployeeController extends CommonHttpServlet {
     Employee employee = null;
     try {
       Map<String, String> inputs = mapParameters(request);
-      EmployeeValidator employeeValidator = new EmployeeValidator();
-      employee = employeeValidator.createObject(inputs);
+      EmployeeFactory employeeFactory = new EmployeeFactory();
+      employee = employeeFactory.createObject(inputs);
 
       employeeService.insert(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
@@ -173,8 +174,8 @@ public class EmployeeController extends CommonHttpServlet {
     Employee employee = null;
     try {
       Map<String, String> inputs = mapParameters(request);
-      EmployeeValidator employeeValidator = new EmployeeValidator();
-      employee = employeeValidator.createObject(inputs);
+      EmployeeFactory employeeFactory = new EmployeeFactory();
+      employee = employeeFactory.createObject(inputs);
       employee.setId(id);
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);

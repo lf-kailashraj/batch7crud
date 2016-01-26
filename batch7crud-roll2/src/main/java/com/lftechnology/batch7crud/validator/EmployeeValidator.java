@@ -13,22 +13,6 @@ import java.util.Map;
 public class EmployeeValidator implements GenericValidator<Employee> {
 
   @Override
-  public Employee createObject(Map<String, String> input) {
-    Employee employee = new Employee();
-    String name = input.get(AttributeConstants.NAME);
-    String address = input.get(AttributeConstants.ADDRESS);
-    String email = input.get(AttributeConstants.EMAIL);
-    String contact = input.get(AttributeConstants.CONTACT);
-
-    employee.setName(name);
-    employee.setAddress(address);
-    employee.setEmail(email);
-    employee.setContact(contact);
-
-    return employee;
-  }
-
-  @Override
   public Map<String, String> validate(Employee entity) {
     Map<String, String> errors = new HashMap<>();
     String email = entity.getEmail().trim();
