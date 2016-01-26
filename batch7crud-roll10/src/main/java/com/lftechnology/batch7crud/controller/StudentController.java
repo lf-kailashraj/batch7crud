@@ -5,6 +5,7 @@ import com.lftechnology.batch7crud.constant.PageConstant;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationException;
+import com.lftechnology.batch7crud.factory.StudentFactory;
 import com.lftechnology.batch7crud.service.StudentService;
 import com.lftechnology.batch7crud.util.TypeCaster;
 import com.lftechnology.batch7crud.validator.StudentValidator;
@@ -116,7 +117,7 @@ public class StudentController extends CustomHttpServlet {
     try {
       Map<String, String> errors = new HashMap<>();
       Map<String, String> paramMap = buildParamMap(req);
-      Student student = studentValidator.createObject(paramMap, errors);
+      Student student = StudentFactory.getStudent(paramMap, errors);
 
       if (errors.isEmpty()) {
         studentService.insert(student);
@@ -154,8 +155,8 @@ public class StudentController extends CustomHttpServlet {
 
       Map<String, String> errors = new HashMap<>();
       Map<String, String> paramMap = buildParamMap(req);
-      Student student = studentValidator.createObject(paramMap, errors);
 
+      Student student = StudentFactory.getStudent(paramMap, errors);
       if (errors.isEmpty()) {
         student.setId(id);
         studentService.update(student);
