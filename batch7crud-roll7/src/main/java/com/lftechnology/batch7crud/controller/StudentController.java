@@ -96,13 +96,8 @@ public class StudentController extends CommonHttpServlet{
   }
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
-    String name = request.getParameter("name");
-    String address = request.getParameter("address");
-    String roll = request.getParameter("roll");
-    Map<String,String > studentMap = new HashMap<>();
-    studentMap.put("name",name);
-    studentMap.put("roll",roll);
-    studentMap.put("address",address);
+
+    Map<String,String> studentMap = createHashMapFromInputs(request);
 
     try {
       StudentValidator studentValidator = new StudentValidator();
@@ -129,13 +124,9 @@ public class StudentController extends CommonHttpServlet{
 
   private void editProcess(HttpServletRequest request, HttpServletResponse response, int id)
     throws ServletException, IOException, DataException {
-    String name = request.getParameter("name");
-    String address = request.getParameter("address");
-    String roll = request.getParameter("roll");
-    Map<String,String > studentMap = new HashMap<>();
-    studentMap.put("name",name);
-    studentMap.put("roll",roll);
-    studentMap.put("address",address);
+
+    Map<String,String> studentMap = createHashMapFromInputs(request);
+
     try {
       StudentValidator studentValidator = new StudentValidator();
       Student student = studentValidator.createObject(studentMap);
@@ -172,6 +163,18 @@ public class StudentController extends CommonHttpServlet{
     } catch (NumberFormatException e) {
       showNotFoundErrorPage(request, response);
     }
+
+  }
+
+  private Map<String,String> createHashMapFromInputs(HttpServletRequest request){
+    String name = request.getParameter("name");
+    String address = request.getParameter("address");
+    String roll = request.getParameter("roll");
+    Map<String,String > studentMap = new HashMap<>();
+    studentMap.put("name",name);
+    studentMap.put("roll",roll);
+    studentMap.put("address",address);
+    return studentMap;
   }
 
 }
