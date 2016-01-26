@@ -2,11 +2,12 @@ package com.lftechnology.batch7crud.model;
 
 public class Employee {
 
-    int id;
-    String firstName;
-    String lastName;
-    String department;
-    String address;
+    private int id;
+    private String firstName;
+    private String lastName;
+    private String department;
+    private String address;
+    private String password;
 
     public int getId() {
         return id;
@@ -46,6 +47,15 @@ public class Employee {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+
     }
 
 }

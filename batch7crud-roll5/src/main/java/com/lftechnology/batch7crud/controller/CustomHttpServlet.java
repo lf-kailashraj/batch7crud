@@ -60,5 +60,4 @@ public abstract class CustomHttpServlet extends HttpServlet {
         String[] paths = parameterValues(request);
         return Integer.parseInt(paths[index]);
     }
-
 }
