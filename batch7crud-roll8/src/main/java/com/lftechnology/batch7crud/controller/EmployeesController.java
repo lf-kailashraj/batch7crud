@@ -7,11 +7,9 @@ import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.services.EmployeeService;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +23,7 @@ public class EmployeesController extends CommonHttpServlet {
   private EmployeeService employeeService = new EmployeeService(); // NOSONAR
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) {
     String path = request.getPathInfo();
     if (path == null) {
       fetch(request, response);
@@ -52,23 +50,21 @@ public class EmployeesController extends CommonHttpServlet {
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) {
     String path = request.getPathInfo();
-    if (path == null) {
-      request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_LIST_PAGE).forward(request,
-        response);
+    String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
+    if (AppConstants.CREATE.equals(parts[1])) {
+      createProcess(request, response);
+    }
+    else if (AppConstants.EDIT.equals(parts[2])) {
+      editProcess(request, response);
+    }
+    else if (AppConstants.DELETE.equals(parts[2])) {
+      deleteProcess(request, response);
     }
     else {
-      String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
-      if (AppConstants.CREATE.equals(parts[1])) {
-        createProcess(request, response);
-      }
-      else if (AppConstants.EDIT.equals(parts[2])) {
-        editProcess(request, response);
-      }
-      else if (AppConstants.DELETE.equals(parts[2])) {
-        deleteProcess(request, response);
-      }
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.INTERNAL_SERVER_ERROR);
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
