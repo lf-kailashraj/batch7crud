@@ -16,24 +16,25 @@ import java.io.IOException;
  */
 @WebServlet(name = "LoginServlet", urlPatterns = { "/login" })
 public class LoginServlet extends HttpServlet {
-  private static final long serialVersionUID = 1L;
-  private final String userID = "admin";
+  private final String userId = "admin";
   private final String password = "password";
 
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    req.getServletContext().getRequestDispatcher(UrlConstants.LOGIN_PAGE).forward(req, resp);
+    if (req.getSession().getAttribute(AttributeConstants.USER) == null)
+      req.getServletContext().getRequestDispatcher(UrlConstants.LOGIN_PAGE).forward(req, resp);
+    else
+      resp.sendRedirect(req.getContextPath() + UrlConstants.INDEX_ROUTE);
   }
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    // get request parameters for userID and password
     String user = request.getParameter(AttributeConstants.USERNAME);
     String pwd = request.getParameter(AttributeConstants.PASSWORD);
-    if (userID.equals(user) && password.equals(pwd)) {
+    if (userId.equals(user) && password.equals(pwd)) {
       HttpSession session = request.getSession();
-      session.setAttribute("user", "Romit");
+      session.setAttribute(AttributeConstants.USER, userId);
       response.sendRedirect(request.getContextPath() + UrlConstants.INDEX_ROUTE);
     } else {
-      request.setAttribute("loginError", "Username/Password Incorrect");
+      request.setAttribute(AttributeConstants.LOGIN_ERROR, "Username/Password Incorrect");
       request.getRequestDispatcher(UrlConstants.LOGIN_PAGE).forward(request, response);
     }
   }

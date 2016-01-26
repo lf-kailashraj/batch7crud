@@ -1,5 +1,7 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.lftechnology.batch7crud.constants.UrlConstants;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +24,7 @@ public class LogoutServlet extends HttpServlet {
     if (session != null) {
       session.invalidate();
     }
-    response.sendRedirect(request.getContextPath() + "/");
+    response.sendRedirect(request.getContextPath() + UrlConstants.LOGIN_ROUTE);
   }
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

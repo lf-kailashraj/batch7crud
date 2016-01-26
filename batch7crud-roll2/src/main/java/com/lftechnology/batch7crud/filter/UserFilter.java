@@ -1,5 +1,6 @@
 package com.lftechnology.batch7crud.filter;
 
+import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
 
 import javax.servlet.*;
@@ -26,8 +27,8 @@ public class UserFilter implements Filter {
     HttpServletRequest req = (HttpServletRequest) servletRequest;
     HttpServletResponse res = (HttpServletResponse) servletResponse;
     HttpSession session = req.getSession();
-    String user = (String) session.getAttribute("user");
-    if (user == null && !LOGIN_ACTION_URI.equals(req.getRequestURI())) {
+    String userSession = (String) session.getAttribute(AttributeConstants.USER);
+    if (userSession == null && !LOGIN_ACTION_URI.equals(req.getRequestURI())) {
       res.sendRedirect(req.getContextPath() + UrlConstants.LOGIN_ROUTE);
     } else {
       filterChain.doFilter(servletRequest, servletResponse);
