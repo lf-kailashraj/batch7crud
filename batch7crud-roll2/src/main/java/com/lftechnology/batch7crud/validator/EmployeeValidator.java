@@ -14,7 +14,7 @@ import java.util.Map;
 public class EmployeeValidator implements GenericValidator<Employee> {
 
   @Override
-  public void isValid(Employee entity) throws ValidationException {
+  public void validate(Employee entity) throws ValidationException {
     Map<String, String> errors = new HashMap<>();
     String email = entity.getEmail().trim();
 

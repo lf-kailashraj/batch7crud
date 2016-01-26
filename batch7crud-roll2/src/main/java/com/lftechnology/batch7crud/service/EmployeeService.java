@@ -21,7 +21,7 @@ public class EmployeeService {
 
   public void insert(Employee employee) throws DataException, ValidationException { //NOSONAR
     EmployeeValidator employeeValidator = new EmployeeValidator();
-    employeeValidator.isValid(employee);
+    employeeValidator.validate(employee);
     employeeDao.insert(employee);
   }
 
@@ -35,7 +35,7 @@ public class EmployeeService {
 
   public void update(Employee employee) throws DataException, ValidationException { //NOSONAR
     EmployeeValidator employeeValidator = new EmployeeValidator();
-    employeeValidator.isValid(employee);
+    employeeValidator.validate(employee);
     employeeDao.update(employee);
   }
 

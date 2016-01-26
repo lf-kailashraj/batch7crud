@@ -31,7 +31,7 @@
         </tr>
         <tr>
             <td>Contact Number:</td>
-            <td><input type="number" name="contact" value="${employee.getContact()}">${validationError.contact}</td>
+            <td><input type="text" name="contact" value="${employee.getContact()}">${validationError.contact}</td>
         </tr>
         </tbody>
     </table>

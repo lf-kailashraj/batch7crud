@@ -13,7 +13,7 @@ import java.io.IOException;
  * Created by Romit Amgai <romitamgai@lftechnology.com> on 1/26/16.
  */
 
-public class UserFilter implements Filter {
+public class AuthenticationFilter implements Filter {
   private String LOGIN_ACTION_URI;
 
   @Override

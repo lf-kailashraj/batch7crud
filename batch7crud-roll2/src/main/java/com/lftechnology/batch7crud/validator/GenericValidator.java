@@ -9,5 +9,5 @@ import java.util.Map;
  */
 public interface GenericValidator<T> {
 
-  void isValid(T entity) throws ValidationException;
+  void validate(T entity) throws ValidationException;
 }
