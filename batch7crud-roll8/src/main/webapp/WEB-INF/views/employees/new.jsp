@@ -20,18 +20,22 @@
       <div>
         <label>Name:</label>
         <input name="name" type="text"/>
+        ${errors.name}
       </div>
       <div>
         <label>Address:</label>
         <input name="address" type="text"/>
+        ${errors.address}
       </div>
       <div>
         <label>Designation:</label>
         <input name="designation" type="text"/>
+        ${errors.designation}
       </div>
       <div>
         <label>Phone:</label>
         <input name="phone" type="text"/>
+        ${errors.phone}
       </div>
       <div>
         <input type="submit"/>

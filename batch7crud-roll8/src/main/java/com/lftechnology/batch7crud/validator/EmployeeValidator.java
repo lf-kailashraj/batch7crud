@@ -1,57 +1,58 @@
 package com.lftechnology.batch7crud.validator;
 
+import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.model.Employee;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Grishma Shrestha grishmashrestha@lftechnology.com on 1/25/16.
  */
-public class EmployeeValidator {
-  HashMap<String, String> employeeErrors = new HashMap<>();
+public class EmployeeValidator implements Validator<Employee> {
 
-  public HashMap<String, String> validate(Employee employee) {
-    validateName(employee.getName());
-//    validateAddress(employee.getAddress());
-//    validateDesignation(employee.getDesignation());
-//    validatePhone(employee.getPhone());
-    return employeeErrors;
+  @Override public Employee createObject(Map<String, String> input) {
+    String name = input.get(AttributeConstants.NAME).trim();
+    String address = input.get(AttributeConstants.ADDRESS).trim();
+    String designation = input.get(AttributeConstants.DESIGNATION).trim();
+    String phone = input.get(AttributeConstants.PHONE).trim();
+    Employee employee = new Employee();
+    employee.setName(name);
+    employee.setAddress(address);
+    employee.setDesignation(designation);
+    employee.setPhone(phone);
+    return employee;
   }
 
-  private void validateName(String name) {
+  @Override public Map<String, String> validate(Employee employee) {
+    Map<String, String> errors = new HashMap<>();
+    String name = employee.getName().trim();
+    String address = employee.getAddress().trim();
+    String designation  = employee.getDesignation().trim();
+    String phone = employee.getPhone().trim();
+    if (isNullOrEmpty(name) || !isString(name)) {
+      errors.put(AttributeConstants.NAME, "Check name");
+    }
 
-    if (name == null) {
-      employeeErrors.put("name", "Name can't be null.");
+    if (isNullOrEmpty(address)) {
+      errors.put(AttributeConstants.ADDRESS, "Check address");
     }
-    else if (name.equals("") || name.trim().isEmpty()) {
-      employeeErrors.put("name", "Name can't be empty");
+
+    if (isNullOrEmpty(designation)) {
+      errors.put(AttributeConstants.DESIGNATION, "Check designation");
     }
-    else if (hasNumbers(name)) {
-      employeeErrors.put("name", "Name can't have any numbers in it.");
+
+    if (isNullOrEmpty(phone)) {
+      errors.put(AttributeConstants.PHONE, "Check phone");
     }
-    else {
-      employeeErrors.remove("name");
-    }
+    return errors;
   }
 
-//  private String  validateAddress(String address) {
-//
-//  }
-//
-//  private String validateDesignation(String designation) {
-//
-//  }
-//
-//  private String validatePhone(String phone) {
-//
-//  }
+   private boolean isNullOrEmpty(String argument) {
+    return "".equals(argument);
+   }
 
-  private boolean hasNumbers(String val) {
-    String pattern = ".*\\d+.*";
-    if (val.matches(pattern)) {
-      return true;
-    } else {
-      return false;
-    }
+  private boolean isString(String argument) {
+    return argument.matches("[A-Za-z]*");
   }
 }

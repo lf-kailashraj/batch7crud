@@ -3,6 +3,8 @@ package com.lftechnology.batch7crud.controller;
 import com.lftechnology.batch7crud.constants.AppConstants;
 import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
+import com.lftechnology.batch7crud.exception.DataException;
+import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.services.EmployeeService;
 import com.lftechnology.batch7crud.validator.EmployeeValidator;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -98,43 +101,44 @@ public class EmployeesController extends CommonHttpServlet {
     }
   }
 
-  private Employee setEmployeeAttributes (HttpServletRequest request) {
-    String name = request.getParameter(AttributeConstants.NAME);
-    String address = request.getParameter(AttributeConstants.ADDRESS);
-    String designation = request.getParameter(AttributeConstants.DESIGNATION);
-    String phone = request.getParameter(AttributeConstants.PHONE);
-
-    Employee employee = new Employee();
-    employee.setName(name);
-    employee.setAddress(address);
-    employee.setDesignation(designation);
-    employee.setPhone(phone);
-    return employee;
+  private Map<String, String> setEmployeeAttributes (HttpServletRequest request) {
+    Map<String, String> inputs = new HashMap<>();
+    inputs.put(AttributeConstants.NAME, request.getParameter(AttributeConstants.NAME));
+    inputs.put(AttributeConstants.ADDRESS, request.getParameter(AttributeConstants.ADDRESS));
+    inputs.put(AttributeConstants.DESIGNATION, request.getParameter(AttributeConstants.DESIGNATION));
+    inputs.put(AttributeConstants.PHONE, request.getParameter(AttributeConstants.PHONE));
+    return inputs;
   }
 
-  private void createProcess(HttpServletRequest request, HttpServletResponse response) {
+  private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    Employee employee = null;
     try {
-      Employee employee = setEmployeeAttributes(request);
-      employeeErrors = employeeValidator.validate(employee);
-      if (employeeErrors.isEmpty()) {
-        employeeService.create(employee);
-        response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
-      }
-      else {
-        System.out.println(employeeErrors.get("name"));
-      }
-
-    } catch (Exception e) {
+      Map<String, String> inputs = setEmployeeAttributes(request);
+      EmployeeValidator validator = new EmployeeValidator();
+      employee = validator.createObject(inputs);
+      employeeService.create(employee);
+      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
+    } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
       response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    }
+    catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute("errors", e.getErrors());
+      request.setAttribute("employee", employee);
+      RequestDispatcher view = request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_CREATE_PAGE);
+      view.forward(request, response);
     }
   }
 
   private void editProcess(HttpServletRequest request, HttpServletResponse response) {
     try{
       int id = parameterValueAsInt(request, 2);
-      Employee employee = setEmployeeAttributes(request);
+      Map<String, String> inputs = setEmployeeAttributes(request);
+      EmployeeValidator validator = new EmployeeValidator();
+      Employee employee;
+      employee = validator.createObject(inputs);
       employee.setId(id);
       employeeService.edit(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
