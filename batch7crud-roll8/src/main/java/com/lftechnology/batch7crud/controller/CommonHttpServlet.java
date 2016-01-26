@@ -4,7 +4,6 @@ import com.lftechnology.batch7crud.constants.AppConstants;
 import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,8 +30,7 @@ public abstract class CommonHttpServlet extends HttpServlet {
     try {
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, message);
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-      request.getRequestDispatcher(UrlConstants.ERROR_PAGE).forward(request, response);
-    } catch (ServletException | IOException e) {
+    } catch (IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
   }
