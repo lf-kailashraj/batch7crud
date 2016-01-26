@@ -80,7 +80,6 @@ public class EmployeesController extends CommonHttpServlet {
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
       response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
-
   }
 
   private void create(HttpServletRequest request, HttpServletResponse response) {
@@ -118,18 +117,16 @@ public class EmployeesController extends CommonHttpServlet {
     return inputs;
   }
 
-  private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
     Employee employee = null;
     try {
       Map<String, String> inputs = setEmployeeAttributes(request);
       EmployeeValidator validator = new EmployeeValidator();
       employee = validator.createObject(inputs);
       employeeService.create(employee);
-      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
-    } catch ( IOException | DataException e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_CREATED);
+      request.setAttribute(AttributeConstants.EMPLOYEE, employee);
+      request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
     }
     catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -139,15 +136,26 @@ public class EmployeesController extends CommonHttpServlet {
     }
   }
 
-  private void editProcess(HttpServletRequest request, HttpServletResponse response) throws DataException, IOException {
-    int id = parameterValueAsInt(request, 2);
-    Map<String, String> inputs = setEmployeeAttributes(request);
-    EmployeeValidator validator = new EmployeeValidator();
-    Employee employee;
-    employee = validator.createObject(inputs);
-    employee.setId(id);
-    employeeService.edit(employee);
-    response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
+  private void editProcess(HttpServletRequest request, HttpServletResponse response) throws DataException, IOException, ServletException {
+    Employee employee = null;
+    try {
+      int id = parameterValueAsInt(request, 2);
+      Map<String, String> inputs = setEmployeeAttributes(request);
+      EmployeeValidator validator = new EmployeeValidator();
+      employee = validator.createObject(inputs);
+      employee.setId(id);
+      employeeService.edit(employee);
+      request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_UPDATED);
+      request.setAttribute(AttributeConstants.EMPLOYEE, employee);
+      request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
+    }
+    catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute(AttributeConstants.ERRORS, e.getErrors());
+      request.setAttribute(AttributeConstants.EMPLOYEE, employee);
+      request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_EDIT_PAGE).forward(request, response);
+    }
+
   }
 
   private void deleteProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, DataException {

@@ -40,8 +40,14 @@ public class EmployeeService {
     return employeeDao.fetchById(id);
   }
 
-  public Employee edit(Employee employee) throws DataException {
-    return employeeDao.edit(employee);
+  public Employee edit(Employee employee) throws DataException, ValidationException {
+    Map<String, String> errors= validator.validate(employee);
+    if (errors.isEmpty()) {
+      return employeeDao.edit(employee);
+    }
+    else {
+      throw new ValidationException(errors);
+    }
   }
 
   public void delete(Integer id) throws DataException {
