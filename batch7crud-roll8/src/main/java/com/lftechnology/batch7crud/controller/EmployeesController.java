@@ -10,9 +10,11 @@ import com.lftechnology.batch7crud.services.EmployeeService;
 import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +28,6 @@ import java.util.logging.Logger;
 public class EmployeesController extends CommonHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(EmployeesController.class.getName());
   private EmployeeService employeeService = new EmployeeService(); // NOSONAR
-  private EmployeeValidator employeeValidator = new EmployeeValidator();
-  HashMap<String, String> employeeErrors = new HashMap<>();
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -58,21 +58,29 @@ public class EmployeesController extends CommonHttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-    String path = request.getPathInfo();
-    String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
-    if (AppConstants.CREATE.equals(parts[1])) {
-      createProcess(request, response);
+    try {
+      String path = request.getPathInfo();
+      String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
+      if (AppConstants.CREATE.equals(parts[1])) {
+        createProcess(request, response);
+      }
+      else if (AppConstants.EDIT.equals(parts[2])) {
+        editProcess(request, response);
+      }
+      else if (AppConstants.DELETE.equals(parts[2])) {
+        deleteProcess(request, response);
+      }
+      else {
+        request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.INTERNAL_SERVER_ERROR);
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      }
     }
-    else if (AppConstants.EDIT.equals(parts[2])) {
-      editProcess(request, response);
-    }
-    else if (AppConstants.DELETE.equals(parts[2])) {
-      deleteProcess(request, response);
-    }
-    else {
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.INTERNAL_SERVER_ERROR);
+    catch (Exception e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
       response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
+
   }
 
   private void create(HttpServletRequest request, HttpServletResponse response) {
@@ -118,49 +126,34 @@ public class EmployeesController extends CommonHttpServlet {
       employee = validator.createObject(inputs);
       employeeService.create(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
-    } catch (DataException e) {
+    } catch ( IOException | DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
       response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
     catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute("errors", e.getErrors());
-      request.setAttribute("employee", employee);
-      RequestDispatcher view = request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_CREATE_PAGE);
-      view.forward(request, response);
+      request.setAttribute(AttributeConstants.ERRORS, e.getErrors());
+      request.setAttribute(AttributeConstants.EMPLOYEE, employee);
+      request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request, response);
     }
   }
 
-  private void editProcess(HttpServletRequest request, HttpServletResponse response) {
-    try{
-      int id = parameterValueAsInt(request, 2);
-      Map<String, String> inputs = setEmployeeAttributes(request);
-      EmployeeValidator validator = new EmployeeValidator();
-      Employee employee;
-      employee = validator.createObject(inputs);
-      employee.setId(id);
-      employeeService.edit(employee);
-      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
-    }
-    catch (Exception e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-    }
+  private void editProcess(HttpServletRequest request, HttpServletResponse response) throws DataException, IOException {
+    int id = parameterValueAsInt(request, 2);
+    Map<String, String> inputs = setEmployeeAttributes(request);
+    EmployeeValidator validator = new EmployeeValidator();
+    Employee employee;
+    employee = validator.createObject(inputs);
+    employee.setId(id);
+    employeeService.edit(employee);
+    response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
   }
 
-  private void deleteProcess(HttpServletRequest request, HttpServletResponse response) {
-    try {
-      int id = parameterValueAsInt(request, 2);
-      employeeService.delete(id);
-      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
-    }
-    catch (Exception e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-    }
+  private void deleteProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, DataException {
+    int id = parameterValueAsInt(request, 2);
+    employeeService.delete(id);
+    response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
   }
 
   private void fetch(HttpServletRequest request, HttpServletResponse response) {
