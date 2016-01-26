@@ -1,5 +1,6 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
 
 import javax.servlet.ServletException;
@@ -25,12 +26,12 @@ public class LoginServlet extends HttpServlet {
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     // get request parameters for userID and password
-    String user = request.getParameter("username");
-    String pwd = request.getParameter("password");
+    String user = request.getParameter(AttributeConstants.USERNAME);
+    String pwd = request.getParameter(AttributeConstants.PASSWORD);
     if (userID.equals(user) && password.equals(pwd)) {
       HttpSession session = request.getSession();
       session.setAttribute("user", "Romit");
-      response.sendRedirect(request.getContextPath() + "/");
+      response.sendRedirect(request.getContextPath() + UrlConstants.INDEX_ROUTE);
     } else {
       request.setAttribute("loginError", "Username/Password Incorrect");
       request.getRequestDispatcher(UrlConstants.LOGIN_PAGE).forward(request, response);

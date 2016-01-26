@@ -8,7 +8,6 @@ import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.factory.EmployeeFactory;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
-import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

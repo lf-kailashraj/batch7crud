@@ -1,5 +1,7 @@
 package com.lftechnology.batch7crud.validator;
 
+import com.lftechnology.batch7crud.exception.ValidationException;
+
 import java.util.Map;
 
 /**
@@ -7,5 +9,5 @@ import java.util.Map;
  */
 public interface GenericValidator<T> {
 
-  Map<String, String> validate(T entity);
+  void isValid(T entity) throws ValidationException;
 }

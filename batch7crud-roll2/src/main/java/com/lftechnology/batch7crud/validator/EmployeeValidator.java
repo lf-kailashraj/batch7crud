@@ -2,6 +2,7 @@ package com.lftechnology.batch7crud.validator;
 
 import com.lftechnology.batch7crud.constants.AppConstants;
 import com.lftechnology.batch7crud.constants.AttributeConstants;
+import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.model.Employee;
 
 import java.util.HashMap;
@@ -13,7 +14,7 @@ import java.util.Map;
 public class EmployeeValidator implements GenericValidator<Employee> {
 
   @Override
-  public Map<String, String> validate(Employee entity) {
+  public void isValid(Employee entity) throws ValidationException {
     Map<String, String> errors = new HashMap<>();
     String email = entity.getEmail().trim();
 
@@ -29,7 +30,9 @@ public class EmployeeValidator implements GenericValidator<Employee> {
     if (isNullOrEmpty(entity.getContact().trim())) {
       errors.put(AttributeConstants.CONTACT, "Set Contact");
     }
-    return errors;
+    if (!errors.isEmpty()) {
+      throw new ValidationException(errors);
+    }
   }
 
   private boolean isNullOrEmpty(String value) {

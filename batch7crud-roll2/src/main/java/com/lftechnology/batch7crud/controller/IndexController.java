@@ -18,6 +18,5 @@ public class IndexController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     req.getServletContext().getRequestDispatcher(UrlConstants.INDEX_PAGE).forward(req, resp);
-    //resp.sendRedirect(req.getContextPath() + "/login");
   }
 }

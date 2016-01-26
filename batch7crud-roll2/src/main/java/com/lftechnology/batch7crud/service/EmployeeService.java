@@ -21,13 +21,8 @@ public class EmployeeService {
 
   public void insert(Employee employee) throws DataException, ValidationException { //NOSONAR
     EmployeeValidator employeeValidator = new EmployeeValidator();
-    Map<String, String> errors = employeeValidator.validate(employee);
-
-    if (errors.isEmpty())
-      employeeDao.insert(employee);
-    else {
-      throw new ValidationException(errors);
-    }
+    employeeValidator.isValid(employee);
+    employeeDao.insert(employee);
   }
 
   public List<Employee> fetch(int noOfRecordsPerPage, int page) throws DataException {
@@ -40,13 +35,8 @@ public class EmployeeService {
 
   public void update(Employee employee) throws DataException, ValidationException { //NOSONAR
     EmployeeValidator employeeValidator = new EmployeeValidator();
-    Map<String, String> errors = employeeValidator.validate(employee);
-
-    if (errors.isEmpty())
-      employeeDao.update(employee);
-    else {
-      throw new ValidationException(errors);
-    }
+    employeeValidator.isValid(employee);
+    employeeDao.update(employee);
   }
 
   public int getTotalNoOfRecords() throws DataException {

@@ -11,6 +11,7 @@ public class UrlConstants {
 
   public static final String EMPLOYEE_ROUTE = "/employees";
   public static final String LOGIN_ROUTE = "/login";
+  public static final String INDEX_ROUTE = "/";
   public static final String EMPLOYEE_LIST_PAGE = VIEWS + "employeesList.jsp";
   public static final String EMPLOYEE_CREATE_PAGE = VIEWS + "employeeCreate.jsp";
   public static final String EMPLOYEE_VIEW_PAGE = VIEWS + "employeeView.jsp";
