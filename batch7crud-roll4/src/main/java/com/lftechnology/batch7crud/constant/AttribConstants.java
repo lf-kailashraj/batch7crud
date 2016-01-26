@@ -12,6 +12,7 @@ public class AttribConstants {
 
 
   public static final String ATTRIB_MESSAGE = "message";
+  public static final String ATTRIB_ERRORS = "errors";
 
   private AttribConstants() {
 

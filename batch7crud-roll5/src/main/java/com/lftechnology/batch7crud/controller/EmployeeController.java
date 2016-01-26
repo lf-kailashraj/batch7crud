@@ -4,7 +4,7 @@ import com.lftechnology.batch7crud.constants.EmployeeAttributeConstants;
 import com.lftechnology.batch7crud.constants.NormalConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.model.Employee;
-import com.lftechnology.batch7crud.services.EmployeeService;
+import com.lftechnology.batch7crud.services.EmployeeServiceImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 public class EmployeeController extends CustomHttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
-    private static EmployeeService employeeService = new EmployeeService();
+    private static EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -43,7 +43,7 @@ public class EmployeeController extends CustomHttpServlet {
         else {
             fetchData(request, response);
         }
-
+        
     }
 
     @Override
@@ -75,14 +75,11 @@ public class EmployeeController extends CustomHttpServlet {
         try {
             int employeeId = parameterValueAsInt(request, 2);
             employeeService.deleteById(employeeId);
-
             response.sendRedirect(UrlConstants.EMPLOYEE_LIST_URL);
-
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
-
     }
 
     private void edit(HttpServletRequest request, HttpServletResponse response) {
@@ -102,9 +99,7 @@ public class EmployeeController extends CustomHttpServlet {
             int employeeId = parameterValueAsInt(request, 2);
             emp = setDataAttribute(request);
             emp.setId(employeeId);
-
             employeeService.edit(emp);
-
             response.sendRedirect(UrlConstants.EMPLOYEE_LIST_URL);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -120,33 +115,30 @@ public class EmployeeController extends CustomHttpServlet {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
-
     }
 
     private void createProcess(HttpServletRequest request, HttpServletResponse response) {
         try {
             employeeService.create(setDataAttribute(request));
-
             response.sendRedirect(UrlConstants.EMPLOYEE_LIST_URL);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
-
     }
 
     private void fetchData(HttpServletRequest request, HttpServletResponse response) {
         List<Employee> employeeList = new ArrayList<Employee>();
         try {
-            int employeeCount = employeeService.count();
+            Double employeeCount = (double) employeeService.count();
             int pageNo = pageNumber(request);
             employeeList = employeeService.fetch(10, (pageNo - 1) * 10);
-
+            
             request.setAttribute(NormalConstants.EMPLOYEE_LIST, employeeList);
             request.setAttribute(NormalConstants.PAGE_NO, pageNo);
             request.setAttribute(NormalConstants.NO_OF_EMPLOYEES, employeeCount);
-            request.setAttribute(NormalConstants.NO_EMP_IN_PAGE, 10);
-
+            request.setAttribute(NormalConstants.NO_RECORDS_IN_PAGE, 10);
+            request.setAttribute("pageLink", Math.ceil(employeeCount/10));
             request.getRequestDispatcher(UrlConstants.EMPLOYEE_FETCH_URL).forward(request, response);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

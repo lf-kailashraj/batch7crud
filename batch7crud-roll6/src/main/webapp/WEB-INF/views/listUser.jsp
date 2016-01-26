@@ -10,10 +10,11 @@
 table, th, td {
 	border: 1px solid black;
 }
+<base href="${pageContext.request.contextPath}/" />
 </style>
 </head>
 <body>
-	<a href="/batch7crud-roll6/users/add"> Add User</a>
+	<a href="users/add"> Add User</a>
 	<h1>User List</h1>
 	<table>
 		<thead>
@@ -26,15 +27,22 @@ table, th, td {
 			</tr>
 		</thead>
 		<tbody>
+		<c:if test="${currentPage == 1}">
+			<c:set var="count" value="1"></c:set>
+		</c:if>
+		<c:if test="${currentPage != 1}" >
+			<c:set var="count" value="${(currentPage -1)*limit +1}"></c:set>
+		</c:if>
 			<c:forEach items="${users}" var="user">
 				<tr>
-					<td><c:out value="${user.id}"></c:out></td>
+					<td><c:out value="${count}"></c:out></td>
 					<td><c:out value="${user.firstName}"></c:out></td>
 					<td><c:out value="${user.surName}"></c:out></td>
 					<td><c:out value="${user.userName}"></c:out></td>
 					<td><a href="users/${user.id}/edit">edit</a> <a
 						href="users/${user.id}/delete" class="deleteUser">delete</a></td>
 				</tr>
+			<c:set var="count" value="${count+1}"></c:set>
 			</c:forEach>
 		</tbody>
 	</table>
@@ -43,7 +51,13 @@ table, th, td {
 		<a href="?page=${currentPage-1}">Previous</a>
 	</c:if>
 	<c:forEach begin="1" end="${noOfPages}" var="i">
-		<a href="?page=${i}">${i}</a>
+		<c:if test="${currentPage == i }">
+			<c:out value="${i}">${i}</c:out>
+		</c:if>
+		<c:if test="${currentPage != i }">
+			<a href="?page=${i}">${i}</a>
+		</c:if>
+		
 	</c:forEach>
 	<c:if test="${currentPage < noOfPages }">
 		<a href="?page=${currentPage+1}">Next</a>

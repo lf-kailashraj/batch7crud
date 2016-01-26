@@ -12,9 +12,11 @@
 			display:block;
 	}
 </style>
+<base href="${pageContext.request.contextPath}/" />
 </head>
 <body>
-	<form method="post" action="/batch7crud-roll6/users/${user.id}/edit">
+base path is <c:out value="${pageContext.request.contextPath}"></c:out>
+	<form method="post" action="users/${user.id}/edit">
 		<span>First Name:</span> <input type = "text" name = "firstname" value ="${user.firstName}">
 		<span>Surname :</span> <input type = "text" name = "surname" value = "${user.surName }">
 		<span>Username:</span> <input type = "text" name="username" value = "${user.userName }">

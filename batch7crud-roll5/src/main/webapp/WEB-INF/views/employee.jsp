@@ -49,13 +49,13 @@
 	</c:if>
 
 	<c:set var="counter" value="0" />
-	<c:forEach begin="0" end="${noOfEmployees/noEmpInPage}" step="1"
+	<c:forEach begin="0" end="${pageLink - 1}" step="1"
 		varStatus="loop">
 		<c:set var="counter" value="${counter + 1}" />
 		<a href="employees?page=${counter}">${counter}</a>
 	</c:forEach>
 
-	<c:if test="${pageNo*noEmpInPage < noOfEmployees}">
+	<c:if test="${pageNo*noRecordsInPage < noOfEmployees}">
 		<a href="employees?page=${pageNo+1}">Next</a>
 	</c:if>
 

@@ -1,16 +1,16 @@
 package com.lftechnology.batch7crud.controller;
 
-import static com.lftechnology.batch7crud.constant.MessageConstant.*;
-import static com.lftechnology.batch7crud.constant.AttribConstants.*;
-import static com.lftechnology.batch7crud.constant.UrlConstants.*;
-import static com.lftechnology.batch7crud.constant.ParamConstants.*;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static com.lftechnology.batch7crud.constant.AttribConstants.ATTRIB_MESSAGE;
+import static com.lftechnology.batch7crud.constant.MessageConstant.MESSAGE_PAGE_NOT_FOUND;
+import static com.lftechnology.batch7crud.constant.ParamConstants.PARAM_PAGE;
+import static com.lftechnology.batch7crud.constant.UrlConstants.URL_ERROR_PAGE;
 
 /**
  * Created by Pratish Shrestha <pratishshrestha@lftechnology.com> on 1/19/16.
