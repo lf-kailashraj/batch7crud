@@ -19,19 +19,19 @@
         <tbody>
         <tr>
             <td>Name:</td>
-            <td><input type="text" name="name" value="${employee.getName()}"></td>
+            <td><input type="text" name="name" value="${employee.getName()}">${validationError.name}</td>
         </tr>
         <tr>
             <td>Address:</td>
-            <td><input type="text" name="address" value="${employee.getAddress()}"></td>
+            <td><input type="text" name="address" value="${employee.getAddress()}">${validationError.address}</td>
         </tr>
         <tr>
             <td>Email:</td>
-            <td><input type="text" name="email" value="${employee.getEmail()}"></td>
+            <td><input type="text" name="email" value="${employee.getEmail()}">${validationError.email}</td>
         </tr>
         <tr>
             <td>Contact Number:</td>
-            <td><input type="number" name="contact" value="${employee.getContact()}"></td>
+            <td><input type="number" name="contact" value="${employee.getContact()}">${validationError.contact}</td>
         </tr>
         </tbody>
     </table>
