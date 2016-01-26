@@ -1,6 +1,5 @@
 package com.lftechnology.batch7crud.validator;
 
-import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.constants.ValidatorConstants;
 import com.lftechnology.batch7crud.model.Employee;
 
@@ -12,20 +11,6 @@ import java.util.Map;
  */
 public class EmployeeValidator implements Validator<Employee> {
   Map<String, String> errors = new HashMap<>();
-
-  @Override public Employee createObject(Map<String, String> input) {
-    String name = input.get(AttributeConstants.NAME).trim();
-    String address = input.get(AttributeConstants.ADDRESS).trim();
-    String designation = input.get(AttributeConstants.DESIGNATION).trim();
-    String phone = input.get(AttributeConstants.PHONE).trim();
-
-    Employee employee = new Employee();
-    employee.setName(name);
-    employee.setAddress(address);
-    employee.setDesignation(designation);
-    employee.setPhone(phone);
-    return employee;
-  }
 
   @Override public Map<String, String> validate(Employee employee) {
     validateName(employee.getName().trim());

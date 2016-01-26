@@ -5,9 +5,9 @@ import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationException;
+import com.lftechnology.batch7crud.factory.EmployeeFactory;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.services.EmployeeService;
-import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -121,8 +121,8 @@ public class EmployeesController extends CommonHttpServlet {
     Employee employee = null;
     try {
       Map<String, String> inputs = setEmployeeAttributes(request);
-      EmployeeValidator validator = new EmployeeValidator();
-      employee = validator.createObject(inputs);
+      EmployeeFactory employeeFactory = new EmployeeFactory();
+      employee = employeeFactory.createObject(inputs);
       employeeService.create(employee);
       request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_CREATED);
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
@@ -141,8 +141,8 @@ public class EmployeesController extends CommonHttpServlet {
     try {
       int id = parameterValueAsInt(request, 2);
       Map<String, String> inputs = setEmployeeAttributes(request);
-      EmployeeValidator validator = new EmployeeValidator();
-      employee = validator.createObject(inputs);
+      EmployeeFactory employeeFactory = new EmployeeFactory();
+      employee = employeeFactory.createObject(inputs);
       employee.setId(id);
       employeeService.edit(employee);
       request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_UPDATED);
