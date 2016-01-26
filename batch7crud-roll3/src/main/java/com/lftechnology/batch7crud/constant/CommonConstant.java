@@ -12,6 +12,7 @@ public class CommonConstant {
   public static final String VIEW = SEPARATOR + "WEB-INF" + SEPARATOR + "views" + SEPARATOR;
   public static final String INDEX_PAGE = VIEW + "index.jsp";
   public static final String ERROR_PAGE = VIEW + "error.jsp";
+  public static final String LOGIN_PAGE = VIEW + "login.jsp";
 
   public static final String PAGE_NUMBER = "page";
   public static final String NUMBER_OF_PAGES = "numberOfPages";
