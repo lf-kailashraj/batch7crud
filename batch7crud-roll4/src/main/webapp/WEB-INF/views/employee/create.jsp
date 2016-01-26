@@ -15,14 +15,15 @@
 <h1>Add User</h1>
 
     <form action="employees/create" method="post">
-        First Name: <input type="text" name="firstName">
+        First Name: <input type="text" name="firstName" value="${employee.firstName}"> ${errors.firstName}
         <br/>
-        Last Name: <input type="text" name="lastName">
+        Last Name: <input type="text" name="lastName" value="${employee.lastName}"}> ${errors.lastName}
         <br/>
-        Station: <input type="text" name="station">
+        Station: <input type="text" name="station" value="${employee.station}"> ${errors.station}
         <br/>
         <input type="submit" name="submit" value="submit">
     </form>
+
 
 </body>
 </html>

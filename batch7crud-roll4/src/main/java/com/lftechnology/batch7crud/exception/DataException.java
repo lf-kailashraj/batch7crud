@@ -1,6 +1,6 @@
 package com.lftechnology.batch7crud.exception;
 
-import static com.lftechnology.batch7crud.constant.MessageConstant.*;
+import static com.lftechnology.batch7crud.constant.MessageConstant.MESSAGE_DATA_EXCEPTION;
 
 /**
  * Created by Pratish Shrestha <pratishshrestha@lftechnology.com> on 1/18/16.
