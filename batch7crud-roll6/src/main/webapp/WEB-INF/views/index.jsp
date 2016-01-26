@@ -7,7 +7,11 @@
 <head>
 <title>Hello</title>
 </head>
+<base href="${pageContext.request.contextPath}/" />
 <body>
-	<div>Hello world!!</div>
+
+	<h1>Welcome!!!!!</h1>
+	<a href="users">List User</a><br>
+	<a href="users/add">Add User</a>
 </body>
 </html>
