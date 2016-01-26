@@ -28,8 +28,10 @@ public class EmployeeServiceImpl {
     }
 
     public void edit(Employee employee) throws DataException, ValidationExceptions {
-        if (employeeValidator.isValid(employee))
+        if (employeeValidator.isValid(employee)) {
             employeeDAO.edit(employee);
+        }
+
     }
 
     public void deleteById(int id) throws DataException {

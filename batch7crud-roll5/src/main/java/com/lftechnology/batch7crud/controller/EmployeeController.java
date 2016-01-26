@@ -6,7 +6,7 @@ import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.exception.ValidationExceptions;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.services.EmployeeServiceImpl;
-import com.lftechnology.batch7crud.validator.EmployeeValidator;
+import com.lftechnology.batch7crud.util.EmployeeFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class EmployeeController extends CustomHttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
     private EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
-    private EmployeeValidator employeeValidator = new EmployeeValidator();
+    private EmployeeFactory employeeFactory = new EmployeeFactory();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -72,7 +72,6 @@ public class EmployeeController extends CustomHttpServlet {
         } else {
             fetchData(request, response);
         }
-
     }
 
     private void deleteProcess(HttpServletRequest request, HttpServletResponse response) {
@@ -90,7 +89,6 @@ public class EmployeeController extends CustomHttpServlet {
         try {
             int employeeId = parameterValueAsInt(request, 2);
             request.setAttribute(NormalConstants.EMPLOYEE, employeeService.fetchById(employeeId));
-            request.setAttribute(EmployeeAttributeConstants.ID, employeeId);
             request.getRequestDispatcher(UrlConstants.EMPLOYEE_EDIT_URL).forward(request, response);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -102,13 +100,13 @@ public class EmployeeController extends CustomHttpServlet {
         Employee emp = new Employee();
         try {
             int employeeId = parameterValueAsInt(request, 2);
-            emp = employeeValidator.createObject(setDataAttribute(request));
+            emp = employeeFactory.createObjects(setDataAttribute(request));
             emp.setId(employeeId);
-            employeeService.edit(emp);
+            employeeService.edit(emp);       
             response.sendRedirect(UrlConstants.EMPLOYEE_LIST_URL);
         } catch (ValidationExceptions e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);   
-            request.setAttribute("employeeId", emp.getId());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            request.setAttribute(NormalConstants.EMPLOYEE, emp);
             request.setAttribute(NormalConstants.MESSAGE, e.getErrorMessage());
             request.getRequestDispatcher(UrlConstants.EMPLOYEE_EDIT_URL).forward(request, response);
         } catch (Exception e) {
@@ -129,7 +127,7 @@ public class EmployeeController extends CustomHttpServlet {
 
     private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            employeeService.create(employeeValidator.createObject(setDataAttribute(request)));
+            employeeService.create(employeeFactory.createObjects(setDataAttribute(request)));
             response.sendRedirect(UrlConstants.EMPLOYEE_LIST_URL);
         } catch (ValidationExceptions e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

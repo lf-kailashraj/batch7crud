@@ -87,6 +87,7 @@ public class EmployeeDAOImpl {
     public void edit(Employee employee) throws DataException {
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(UPDATE_QUERY)) {
             setQueryAttribute(ps, employee).setInt(6, employee.getId());
+            System.out.println(ps);
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

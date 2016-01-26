@@ -11,7 +11,7 @@
 <body>
 
 	<h1>Edit Employee Form</h1>	
-	<form action="employees/${employeeId}/editProcess" method="post">
+	<form action="employees/${employee.getId()}/editProcess" method="post">
 		First Name:<input type="text" name="firstName"
 			value="${employee.getFirstName()}" id="fistName"/> ${message.firstName}<br>
 		Last Name:<input type="text" name="lastName"
@@ -22,20 +22,7 @@
 			value="${employee.getDepartment()}" id="department"/> ${message.department}<br>
 		Address:<input type="text" name="address"
 			value="${employee.getAddress()}" id="address"/> ${message.address}<br> 
-			
 			<input type="submit" name="create" value="Submit">
 	</form>
-
-	<script>
-		if("${message}"){
-			document.getElementById("fistName").value = "${param.firstName}";
-			document.getElementById("lastName").value = "${param.lastName}";
-			document.getElementById("password").value = "${param.password}";
-			document.getElementById("department").value = "${param.department}";
-			document.getElementById("address").value = "${param.address}";
-		}
-			
-	</script>
-
 </body>
 </html>
