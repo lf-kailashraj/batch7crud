@@ -35,7 +35,7 @@ public class StudentController extends CustomHttpServlet {
   private static StudentValidator studentValidator = new StudentValidator();
   private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
   private static final String STUDENT_LIST = "studentList";
-  private static final String ERROR = "error";
+  private static final String ERRORS = "errors";
 
 
   @Override
@@ -122,7 +122,7 @@ public class StudentController extends CustomHttpServlet {
         studentService.insert(student);
         resp.sendRedirect(req.getContextPath() + PageConstant.STUDENT_LIST_URL);
       } else {
-        req.setAttribute(ERROR, errors);
+        req.setAttribute(ERRORS, errors);
         create(req, resp);
       }
 
@@ -132,7 +132,7 @@ public class StudentController extends CustomHttpServlet {
 
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      req.setAttribute(ERROR, e.getErrors());
+      req.setAttribute(ERRORS, e.getErrors());
       create(req, resp);
 
     }
@@ -161,7 +161,7 @@ public class StudentController extends CustomHttpServlet {
         studentService.update(student);
         resp.sendRedirect(req.getContextPath() + PageConstant.STUDENT_LIST_URL);
       } else {
-        req.setAttribute(ERROR, errors);
+        req.setAttribute(ERRORS, errors);
         edit(req, resp, id);
       }
 
@@ -171,7 +171,7 @@ public class StudentController extends CustomHttpServlet {
 
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      req.setAttribute(ERROR, e.getErrors());
+      req.setAttribute(ERRORS, e.getErrors());
       edit(req, resp, id);
 
     }
