@@ -5,7 +5,6 @@ import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.factory.EmployeeFactory;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
-import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -109,7 +108,6 @@ public class EmployeeController extends CustomHttpServlet {
 
     try {
       employee = employeeFactory.createObject(inputs);
-
       employeeService.save(employee);
       response.sendRedirect(request.getContextPath() + ROUTE_EMPLOYEES);
     } catch (DataException e) {

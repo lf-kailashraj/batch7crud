@@ -7,7 +7,6 @@ import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Pratish Shrestha <pratishshrestha@lftechnology.com> on 1/14/16.
