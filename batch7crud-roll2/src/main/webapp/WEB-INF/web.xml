@@ -20,4 +20,17 @@
       Container
     </res-auth>
   </resource-ref>
+
+  <filter>
+    <filter-name>UserFilter</filter-name>
+    <filter-class>com.lftechnology.batch7crud.filter.UserFilter</filter-class>
+    <init-param>
+      <param-name>loginActionURI</param-name>
+      <param-value>/ems/login</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>UserFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 </web-app>

@@ -175,7 +175,6 @@ public class EmployeeController extends CommonHttpServlet {
       Map<String, String> inputs = mapParameters(request);
       EmployeeValidator employeeValidator = new EmployeeValidator();
       employee = employeeValidator.createObject(inputs);
-
       employee.setId(id);
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
