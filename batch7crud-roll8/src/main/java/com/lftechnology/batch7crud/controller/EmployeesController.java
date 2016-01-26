@@ -45,7 +45,8 @@ public class EmployeesController extends CommonHttpServlet {
         edit(request, response);
       }
       else {
-        pageNotFound(request, response);
+        request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       }
     }
   }
@@ -76,7 +77,8 @@ public class EmployeesController extends CommonHttpServlet {
       request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request, response);
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      errorPage(request, response, e.getMessage());
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -90,7 +92,8 @@ public class EmployeesController extends CommonHttpServlet {
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      errorPage(request, response, e.getMessage());
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -115,7 +118,8 @@ public class EmployeesController extends CommonHttpServlet {
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      errorPage(request, response, e.getMessage());
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -129,7 +133,8 @@ public class EmployeesController extends CommonHttpServlet {
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      errorPage(request, response, e.getMessage());
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -141,7 +146,8 @@ public class EmployeesController extends CommonHttpServlet {
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      errorPage(request, response, e.getMessage());
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -166,7 +172,8 @@ public class EmployeesController extends CommonHttpServlet {
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      errorPage(request, response, e.getMessage());
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -179,16 +186,19 @@ public class EmployeesController extends CommonHttpServlet {
         request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
       }
       else {
-        pageNotFound(request, response);
+        request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       }
     }
     catch (NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      pageNotFound(request, response);
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      errorPage(request, response, e.getMessage());
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
