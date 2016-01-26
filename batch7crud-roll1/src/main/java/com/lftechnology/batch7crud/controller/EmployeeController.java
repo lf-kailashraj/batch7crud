@@ -2,14 +2,18 @@ package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.entity.Employee;
+import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.service.EmployeeService;
+import com.lftechnology.batch7crud.utils.EmployeeFactory;
 
 import static com.lftechnology.batch7crud.constant.EntityConstant.*;
 import static com.lftechnology.batch7crud.constant.URLConstant.*;
 import static com.lftechnology.batch7crud.constant.AttributeConstant.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -99,16 +103,23 @@ public class EmployeeController extends CustomHttpServlet {
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-    String userName = request.getParameter(USER_NAME);
-    String password = request.getParameter(PASSWORD);
-    String fullName = request.getParameter(FULL_NAME);
-    String department = request.getParameter(DEPARTMENT);
-    String address = request.getParameter(ADDRESS);
-    Employee employee = new Employee(userName, password, fullName, department, address);
+    Map<String, String> inputs = new HashMap<>();
+    inputs.put(USER_NAME, request.getParameter(USER_NAME));
+    inputs.put(PASSWORD, request.getParameter(PASSWORD));
+    inputs.put(FULL_NAME, request.getParameter(FULL_NAME));
+    inputs.put(DEPARTMENT, request.getParameter(DEPARTMENT));
+    inputs.put(ADDRESS, request.getParameter(ADDRESS));
+    inputs.put(AGE, request.getParameter(AGE));
 
     try {
+      EmployeeFactory employeeFactory = new EmployeeFactory();
+      Employee employee = employeeFactory.getEmployee(inputs);
       employeeService.create(employee);
       response.sendRedirect(request.getContextPath() + EMPLOYEE_LIST);
+    } catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute(ERRORS, e.getErrors());
+      request.getRequestDispatcher(CREATE_PAGE).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       showServerError(request, response, e);
@@ -131,19 +142,35 @@ public class EmployeeController extends CustomHttpServlet {
   }
 
   private void editProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     int id = parameterValueAsInt(request, 2);
     String userName = request.getParameter(USER_NAME);
     String password = request.getParameter(PASSWORD);
     String fullName = request.getParameter(FULL_NAME);
     String department = request.getParameter(DEPARTMENT);
     String address = request.getParameter(ADDRESS);
-    Employee employee = new Employee(userName, password, fullName, department, address);
-    employee.setId(id);
+    String age = request.getParameter(AGE);
 
+    Map<String, String> inputs = new HashMap<>();
+    inputs.put(USER_NAME, userName);
+    inputs.put(FULL_NAME, fullName);
+    inputs.put(PASSWORD, password);
+    inputs.put(DEPARTMENT, department);
+    inputs.put(ADDRESS, address);
+    inputs.put(AGE, age);
+    Employee employee = null;
     try {
+      employee = new Employee(userName, password, fullName, department, address);
+      employee.setId(id);
+      EmployeeFactory employeeFactory = new EmployeeFactory();
+      employee = employeeFactory.getEmployee(inputs);
+      employee.setId(id);
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + EMPLOYEE_LIST);
+    } catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute(EMPLOYEE, employee);
+      request.setAttribute(ERRORS, e.getErrors());
+      request.getRequestDispatcher(EDIT_PAGE).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       showServerError(request, response, e);

@@ -14,6 +14,7 @@ public class Employee {
   private String fullName;
   private String department;
   private String address;
+  private int age;
 
   public Employee() {
     //empty constructor
@@ -22,11 +23,20 @@ public class Employee {
   public Employee(String userName, String password, String fullName, String department, String address) {
 
     this.userName = userName;
+    this.fullName = fullName;
+    this.password = password;
+    this.department = department;
+    this.address = address;
+  }
+
+  public Employee(String userName, String password, String fullName, String department, String address, int age) {
+
+    this.userName = userName;
     this.password = password;
     this.fullName = fullName;
     this.department = department;
     this.address = address;
-
+    this.age = age;
   }
 
   public int getId() {
@@ -87,5 +97,15 @@ public class Employee {
   public void setAddress(String address) {
 
     this.address = address;
+  }
+
+  public int getAge() {
+
+    return age;
+  }
+
+  public void setAge(int age) {
+
+    this.age = age;
   }
 }
