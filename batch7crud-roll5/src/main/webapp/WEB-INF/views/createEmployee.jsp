@@ -11,11 +11,12 @@
 
 	<h1>Sign Up Form</h1>
 	<form action="employees/createProcess" method="post">
-		First Name:<input type="text" name="firstName" /><br> 
-		Last Name:<input  type="text" name="lastName" /><br>
-		Department:<input type="text" name="department" /><br> 
-		Address:<input type="text" name="address" /><br> 
-		<input type="submit" name="create" value="Create"/>
+		First Name:<input type="text" name="firstName" value=${param.firstName } >${message.firstName}<br>
+		Last Name:<input type="text" name="lastName" value=${param.lastName } >${message.lastName}<br>
+		Password:<input type="password" name="password" value=${param.password } >${message.pass}<br>
+		Department:<input type="text" name="department" value=${param.department } >${message.department}<br>
+		Address:<input type="text" name="address" value=${param.address } >${message.address}<br>
+		<input type="submit" name="create" value="Create" >
 	</form>
 
 </body>

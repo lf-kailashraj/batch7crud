@@ -3,11 +3,14 @@ package com.lftechnology.batch7crud.controller;
 import com.lftechnology.batch7crud.constants.EmployeeAttributeConstants;
 import com.lftechnology.batch7crud.constants.NormalConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
+import com.lftechnology.batch7crud.exception.ValidationExceptions;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.services.EmployeeServiceImpl;
+import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 public class EmployeeController extends CustomHttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
-    private static EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
+    private EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
+    private EmployeeValidator employeeValidator = new EmployeeValidator();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -43,7 +47,7 @@ public class EmployeeController extends CustomHttpServlet {
         else {
             fetchData(request, response);
         }
-        
+
     }
 
     @Override
@@ -86,6 +90,7 @@ public class EmployeeController extends CustomHttpServlet {
         try {
             int employeeId = parameterValueAsInt(request, 2);
             request.setAttribute(NormalConstants.EMPLOYEE, employeeService.fetchById(employeeId));
+            request.setAttribute(EmployeeAttributeConstants.ID, employeeId);
             request.getRequestDispatcher(UrlConstants.EMPLOYEE_EDIT_URL).forward(request, response);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -93,14 +98,19 @@ public class EmployeeController extends CustomHttpServlet {
         }
     }
 
-    private void editProcess(HttpServletRequest request, HttpServletResponse response) {
+    private void editProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Employee emp = new Employee();
         try {
             int employeeId = parameterValueAsInt(request, 2);
-            emp = setDataAttribute(request);
+            emp = employeeValidator.createObject(setDataAttribute(request));
             emp.setId(employeeId);
             employeeService.edit(emp);
             response.sendRedirect(UrlConstants.EMPLOYEE_LIST_URL);
+        } catch (ValidationExceptions e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);   
+            request.setAttribute("employeeId", emp.getId());
+            request.setAttribute(NormalConstants.MESSAGE, e.getErrorMessage());
+            request.getRequestDispatcher(UrlConstants.EMPLOYEE_EDIT_URL).forward(request, response);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
@@ -117,14 +127,19 @@ public class EmployeeController extends CustomHttpServlet {
         }
     }
 
-    private void createProcess(HttpServletRequest request, HttpServletResponse response) {
+    private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            employeeService.create(setDataAttribute(request));
+            employeeService.create(employeeValidator.createObject(setDataAttribute(request)));
             response.sendRedirect(UrlConstants.EMPLOYEE_LIST_URL);
+        } catch (ValidationExceptions e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            request.setAttribute(NormalConstants.MESSAGE, e.getErrorMessage());
+            request.getRequestDispatcher(UrlConstants.EMPLOYEE_CREATE_URL).forward(request, response);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
+
     }
 
     private void fetchData(HttpServletRequest request, HttpServletResponse response) {
@@ -133,12 +148,12 @@ public class EmployeeController extends CustomHttpServlet {
             Double employeeCount = (double) employeeService.count();
             int pageNo = pageNumber(request);
             employeeList = employeeService.fetch(10, (pageNo - 1) * 10);
-            
+
             request.setAttribute(NormalConstants.EMPLOYEE_LIST, employeeList);
             request.setAttribute(NormalConstants.PAGE_NO, pageNo);
             request.setAttribute(NormalConstants.NO_OF_EMPLOYEES, employeeCount);
             request.setAttribute(NormalConstants.NO_RECORDS_IN_PAGE, 10);
-            request.setAttribute("pageLink", Math.ceil(employeeCount/10));
+            request.setAttribute("pageLink", Math.ceil(employeeCount / 10));
             request.getRequestDispatcher(UrlConstants.EMPLOYEE_FETCH_URL).forward(request, response);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -147,14 +162,14 @@ public class EmployeeController extends CustomHttpServlet {
 
     }
 
-    private Employee setDataAttribute(HttpServletRequest request) {
-        Employee emp = new Employee();
-        emp.setFirstName(request.getParameter(EmployeeAttributeConstants.FIRST_NAME));
-        emp.setLastName(request.getParameter(EmployeeAttributeConstants.LAST_NAME));
-        emp.setDepartment(request.getParameter(EmployeeAttributeConstants.DEPARTMENT));
-        emp.setAddress(request.getParameter(EmployeeAttributeConstants.ADDRESS));
-
-        return emp;
+    private HashMap<String, String> setDataAttribute(HttpServletRequest request) {
+        HashMap<String, String> input = new HashMap<String, String>();
+        input.put(EmployeeAttributeConstants.FIRST_NAME, request.getParameter(EmployeeAttributeConstants.FIRST_NAME));
+        input.put(EmployeeAttributeConstants.LAST_NAME, request.getParameter(EmployeeAttributeConstants.LAST_NAME));
+        input.put(EmployeeAttributeConstants.PASSWORD, request.getParameter(EmployeeAttributeConstants.PASSWORD));
+        input.put(EmployeeAttributeConstants.DEPARTMENT, request.getParameter(EmployeeAttributeConstants.DEPARTMENT));
+        input.put(EmployeeAttributeConstants.ADDRESS, request.getParameter(EmployeeAttributeConstants.ADDRESS));
+        return input;
     }
 
 }
