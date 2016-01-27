@@ -14,7 +14,7 @@
 <body>
 <h1>User Login</h1>
 ${loginError}
-<form action="login" method="POST">
+<form action="authenticate/login" method="POST">
     <table>
         <tbody>
         <tr>

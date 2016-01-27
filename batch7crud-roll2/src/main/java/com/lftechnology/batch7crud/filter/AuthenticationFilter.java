@@ -30,9 +30,9 @@ public class AuthenticationFilter implements Filter {
     String userSession = (String) session.getAttribute(AttributeConstants.USER);
     String loginPath = req.getContextPath() + loginActionUri;
 
-    if (userSession == null && !loginPath.equals(req.getRequestURI()))
+    if (userSession == null && !loginPath.equals(req.getRequestURI())) {
       res.sendRedirect(req.getContextPath() + UrlConstants.LOGIN_ROUTE);
-    else
+    } else
       filterChain.doFilter(servletRequest, servletResponse);
   }
 

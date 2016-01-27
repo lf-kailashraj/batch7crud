@@ -16,7 +16,7 @@
 
 <h1>Employee List</h1>
 
-<form action="logout" method="post">
+<form action="authenticate/logout" method="post">
     <input type="submit" value="Logout">
 </form>
 <table border="1px solid black">
