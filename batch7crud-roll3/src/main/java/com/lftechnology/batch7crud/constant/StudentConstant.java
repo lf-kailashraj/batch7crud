@@ -17,6 +17,8 @@ public class StudentConstant {
   public static final String LIST_PAGE = STUDENTS + "list.jsp";
 
   public static final String INVALID_ROLL_MESSAGE = "Invalid Roll Number";
+  public static final String ROLL_TOO_LARGE_MESSAGE = "Roll Number too large";
+  public static final String INVALID_NAME_MESSAGE = "Invalid Name";
 
   private StudentConstant() {
   }
