@@ -24,7 +24,7 @@ public class StudentFactory {
   }
 
   public static Student getStudent(Map<String, String> params, Map<String, String> errors) {
-    errors.clear();
+
     String name = params.get(NAME);
     String address = params.get(ADDRESS);
     String dob = params.get(DOB);

@@ -1,14 +1,10 @@
 package com.lftechnology.batch7crud.validator;
 
+import com.lftechnology.batch7crud.constant.EntityConstant;
 import com.lftechnology.batch7crud.entity.Student;
-import com.lftechnology.batch7crud.exception.ValidationException;
-import com.lftechnology.batch7crud.utils.DateUtils;
-import com.lftechnology.batch7crud.utils.annotation.FieldValidator;
+import sun.util.resources.cldr.de.CalendarData_de_LI;
 
-import java.text.ParseException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @Author Binod Shrestha <binodshrestha@lftechnology.com>
@@ -22,8 +18,17 @@ public class StudentValidator implements Validator<Student> {
 
     Date dob = student.getDob();
 
-    if(dob.after(new Date())){
-      errors.put("dob", "date greater than current date");
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(new Date());
+    calendar.add(Calendar.YEAR, 10);
+    Date date = calendar.getTime();
+
+    if (dob.after(date)) {
+      errors.put(EntityConstant.DOB, "date greater than current date");
+    }
+
+    if(student.getRoll() < 1){
+      errors.put(EntityConstant.ROLL, "roll number should be positive integer");
     }
 
     return errors;
