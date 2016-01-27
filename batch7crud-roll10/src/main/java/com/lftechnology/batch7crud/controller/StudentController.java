@@ -35,6 +35,7 @@ public class StudentController extends CustomHttpServlet {
     private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
     private static final String STUDENT_LIST = "studentList";
     private static final String ERRORS = "errors";
+    private static final String STUDENT = "student";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -114,7 +115,7 @@ public class StudentController extends CustomHttpServlet {
         try {
             Map<String, String> errors = new HashMap<>();
             Map<String, String> paramMap = buildParamMap(req);
-            Student student = StudentFactory.getStudent(paramMap, errors);
+            Student student = StudentFactory.createStudent(paramMap, errors);
 
             if (errors.isEmpty()) {
                 studentService.insert(student);
@@ -139,7 +140,7 @@ public class StudentController extends CustomHttpServlet {
     private void edit(HttpServletRequest req, HttpServletResponse resp, Integer id) throws ServletException, IOException {
         try {
             Student student = studentService.fetchById(id);
-            req.setAttribute("student", student);
+            req.setAttribute(STUDENT, student);
             req.getServletContext().getRequestDispatcher(PageConstant.STUDENT_EDIT_VIEW).forward(req, resp);
         } catch (DataException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -153,7 +154,7 @@ public class StudentController extends CustomHttpServlet {
             Map<String, String> errors = new HashMap<>();
             Map<String, String> paramMap = buildParamMap(req);
 
-            Student student = StudentFactory.getStudent(paramMap, errors);
+            Student student = StudentFactory.createStudent(paramMap, errors);
             if (errors.isEmpty()) {
                 student.setId(id);
                 studentService.update(student);

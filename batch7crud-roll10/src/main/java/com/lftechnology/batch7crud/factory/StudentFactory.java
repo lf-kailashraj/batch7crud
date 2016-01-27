@@ -23,7 +23,7 @@ public class StudentFactory {
   private StudentFactory(){
   }
 
-  public static Student getStudent(Map<String, String> params, Map<String, String> errors) {
+  public static Student createStudent(Map<String, String> params, Map<String, String> errors) {
 
     String name = params.get(NAME);
     String address = params.get(ADDRESS);
