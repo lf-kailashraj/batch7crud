@@ -22,7 +22,7 @@ public class EmployeeService {
     validator = new EmployeeValidator();
   }
 
-  public Employee create(Employee employee) throws DataException, ValidationException {
+  public Employee create(Employee employee) throws DataException, ValidationException { // NOSONAR
     Map<String, String> errors= validator.validate(employee);
     if (errors.isEmpty()) {
       return employeeDao.create(employee);
@@ -40,7 +40,7 @@ public class EmployeeService {
     return employeeDao.fetchById(id);
   }
 
-  public Employee edit(Employee employee) throws DataException, ValidationException {
+  public Employee edit(Employee employee) throws DataException, ValidationException { // NOSONAR
     Map<String, String> errors= validator.validate(employee);
     if (errors.isEmpty()) {
       return employeeDao.edit(employee);
