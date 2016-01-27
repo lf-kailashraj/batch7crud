@@ -12,7 +12,7 @@
     <title>LOG IN</title>
 </head>
 <body>
-    <form action="authenticate" method="post">
+    <form action="auth/login" method="post">
         username: <input type="text" name="username">
         <br/>
         password: <input type="password" name="password">

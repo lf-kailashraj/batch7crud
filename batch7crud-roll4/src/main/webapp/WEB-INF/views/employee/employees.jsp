@@ -14,6 +14,9 @@
     <title>Employees</title>
 </head>
 <h1>List of Employees</h1>
+<form action="auth/logout" method="post">
+    <input type="submit" name="submit" value="Log Out">
+</form>
 <a href="employees/create">Add Employee</a>
 
 <table border="1">

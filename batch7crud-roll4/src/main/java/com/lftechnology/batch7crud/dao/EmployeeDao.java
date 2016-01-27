@@ -11,13 +11,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.lftechnology.batch7crud.constant.EntityConstants.*;
-import static com.lftechnology.batch7crud.constant.QueryConstants.*;
 
 /**
  * Created by Pratish Shrestha <pratishshrestha@lftechnology.com> on 1/14/16.
  */
 public class EmployeeDao {
   private static final Logger LOGGER = Logger.getLogger(EmployeeDao.class.getName());
+  public static final String QUERY_SELECT_FROM_EMPLOYEES_LIMIT_OFFSET = "SELECT * FROM employee LIMIT ? OFFSET ?";
+  public static final String QUERY_SELECT_FROM_EMPLOYEES_WHERE_ID = "SELECT * FROM employee WHERE id=?";
+  public static final String QUERY_INSERT_INTO_EMPLOYEES = "INSERT INTO employee(first_name, last_name, station) VALUES(?,?,?)";
+  public static final String QUERY_UPDATE_SET_EMPLOYEES = "UPDATE employee SET first_name=?, last_name=?, station=? WHERE id=?";
+  public static final String QUERY_DELETE_FROM_EMPLOYEES_WHERE_ID = "DELETE FROM employee WHERE id=?";
+  public static final String QUERY_COUNT_RECORDS_FROM_EMPLOYEES = "SELECT COUNT(*) FROM employee";
 
   public List<Employee> fetch(int page, int recordLimit) throws DataException {
     try (Connection connection = DbConnection.getConnection();

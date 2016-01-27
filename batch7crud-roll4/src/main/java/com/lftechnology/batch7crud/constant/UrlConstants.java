@@ -18,6 +18,7 @@ public class UrlConstants {
   public static final String URL_EMPLOYEE_PROFILE_PAGE = EMPLOYEE_VIEW + "profile.jsp";
   public static final String URL_EMPLOYEE_EDIT_PAGE = EMPLOYEE_VIEW + "edit.jsp";
 
+  public static final String URL_LOGIN_PAGE = VIEW + "login.jsp";
   public static final String URL_ERROR_PAGE = VIEW + "error.jsp";
 
   private UrlConstants() {

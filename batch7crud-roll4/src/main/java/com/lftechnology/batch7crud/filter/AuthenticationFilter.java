@@ -12,11 +12,11 @@ import java.io.IOException;
  * Created by pratishshr on 1/26/16.
  */
 public class AuthenticationFilter implements Filter {
-  private String LOGIN_ACTION_URI;
+  private String loginUri;
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
-    LOGIN_ACTION_URI = filterConfig.getInitParameter("loginActionURI");
+    loginUri = filterConfig.getInitParameter("loginUri");
   }
 
   @Override
@@ -24,12 +24,12 @@ public class AuthenticationFilter implements Filter {
           throws IOException, ServletException {
     HttpServletRequest request = (HttpServletRequest) servletRequest;
     HttpServletResponse response = (HttpServletResponse) servletResponse;
+
     HttpSession session = request.getSession();
     String username = (String) session.getAttribute("username");
 
-    if (username == null && !LOGIN_ACTION_URI.equals(request.getRequestURI())) {
-      RequestDispatcher view = request.getRequestDispatcher(VIEW + "login.jsp");
-      view.forward(request, response);
+    if (username == null && !(request.getContextPath() + loginUri).equals(request.getRequestURI())) {
+      response.sendRedirect(request.getContextPath() + "/auth/login");
     } else {
       filterChain.doFilter(request, response);
     }
