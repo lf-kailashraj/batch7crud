@@ -54,7 +54,6 @@ public class EmployeeController extends CommonHttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String page = getPageFromPath(request);
-    System.out.print(page);
     switch (page) {
     case AppConstants.EMPLOYEE:
       list(request, response);
