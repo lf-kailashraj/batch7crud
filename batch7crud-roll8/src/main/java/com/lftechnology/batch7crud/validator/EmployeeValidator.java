@@ -77,11 +77,11 @@ public class EmployeeValidator implements Validator<Employee> {
 
   private boolean hasNumbers(String val) {
     String pattern = ".*\\d+.*";
-    return val.matches(pattern) ? true : false;
+    return val.matches(pattern);
   }
 
   private boolean hasAlphabets(String val) {
     String pattern = "[a-zA-z]+";
-    return val.matches(pattern) ? true : false;
+    return val.matches(pattern);
   }
 }
