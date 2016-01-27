@@ -1,9 +1,12 @@
 package com.lftechnology.batch7crud.validator;
 
 import com.lftechnology.batch7crud.entity.Employee;
+import com.lftechnology.batch7crud.exception.ValidationException;
+import com.lftechnology.batch7crud.utils.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 import static com.lftechnology.batch7crud.constant.EntityConstant.*;
 import static com.lftechnology.batch7crud.constant.EntityConstant.ADDRESS;
@@ -20,27 +23,27 @@ import static com.lftechnology.batch7crud.constant.EntityConstant.AGE;
 public class EmployeeValidator implements Validator<Employee> {
 
   @Override
-  public Map<String, String> validate(Employee employee) {
+  public void validate(Employee employee) throws ValidationException {
 
     Map<String, String> errors = new HashMap<>();
 
-    if (isNullOrEmpty(employee.getUserName().trim())) {
+    if (StringUtils.isNullOrEmpty(employee.getUserName())) {
       errors.put(USER_NAME, "username cannot be empty");
     }
 
-    if (isNullOrEmpty(employee.getPassword().trim())) {
+    if (StringUtils.isNullOrEmpty(employee.getPassword())) {
       errors.put(PASSWORD, "password cannot be empty");
     }
 
-    if (isNullOrEmpty(employee.getFullName().trim())) {
+    if (StringUtils.isNullOrEmpty(employee.getFullName())) {
       errors.put(FULL_NAME, "fullname cannot be empty");
     }
 
-    if (isNullOrEmpty(employee.getDepartment().trim())) {
+    if (StringUtils.isNullOrEmpty(employee.getDepartment())) {
       errors.put(DEPARTMENT, "department cannot be empty");
     }
 
-    if (isNullOrEmpty(employee.getAddress().trim())) {
+    if (StringUtils.isNullOrEmpty(employee.getAddress())) {
       errors.put(ADDRESS, "address cannot be empty");
     }
 
@@ -48,10 +51,9 @@ public class EmployeeValidator implements Validator<Employee> {
       errors.put(AGE, "invalid age");
     }
 
-    return errors;
+    if(!errors.isEmpty()){
+      throw new ValidationException(errors);
+    }
   }
 
-  public boolean isNullOrEmpty(String value) {
-    return value == null || value.isEmpty();
-  }
 }

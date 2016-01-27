@@ -15,7 +15,7 @@ public class IndexController extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    RequestDispatcher requestDispatcher = request.getServletContext().getRequestDispatcher(INDEX_PAGE);
+    RequestDispatcher requestDispatcher = request.getServletContext().getRequestDispatcher(LOGIN_PAGE);
     requestDispatcher.forward(request, response); //NOSONAR
   }
 }

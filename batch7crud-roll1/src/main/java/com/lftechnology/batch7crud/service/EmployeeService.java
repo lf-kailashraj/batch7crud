@@ -7,7 +7,6 @@ import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * EmployeeSevice provides Create, Delete, Edit services for employee
@@ -23,12 +22,8 @@ public class EmployeeService {
 
   public void create(Employee employee) throws DataException, ValidationException {   //NOSONAR
     EmployeeValidator employeeValidator = new EmployeeValidator();
-    Map<String, String> errors = employeeValidator.validate(employee);
-    if (errors.isEmpty()) {
-      employeeDAO.insert(employee);
-    } else {
-      throw new ValidationException(errors);
-    }
+    employeeValidator.validate(employee);
+    employeeDAO.insert(employee);
   }
 
   public List<Employee> fetch(int offset, int limit) throws DataException {
@@ -45,12 +40,8 @@ public class EmployeeService {
 
   public void update(Employee employee) throws DataException, ValidationException {   //NOSONAR
     EmployeeValidator employeeValidator = new EmployeeValidator();
-    Map<String, String> errors = employeeValidator.validate(employee);
-    if (errors.isEmpty()) {
-      employeeDAO.update(employee);
-    } else {
-      throw new ValidationException(errors);
-    }
+    employeeValidator.validate(employee);
+    employeeDAO.update(employee);
   }
 
   public void delete(int id) throws DataException {

@@ -4,7 +4,7 @@ import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.entity.Employee;
 import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.service.EmployeeService;
-import com.lftechnology.batch7crud.utils.EmployeeFactory;
+import com.lftechnology.batch7crud.factory.EmployeeFactory;
 
 import static com.lftechnology.batch7crud.constant.EntityConstant.*;
 import static com.lftechnology.batch7crud.constant.URLConstant.*;
@@ -106,7 +106,7 @@ public class EmployeeController extends CustomHttpServlet {
     Map<String, String> formValues = createMapOfFormParameters(request);
     try {
       EmployeeFactory employeeFactory = new EmployeeFactory();
-      Employee employee = employeeFactory.getEmployee(formValues);
+      Employee employee = employeeFactory.createEmployee(formValues);
       employeeService.create(employee);
       response.sendRedirect(request.getContextPath() + EMPLOYEE_LIST);
     } catch (ValidationException e) {
@@ -144,7 +144,7 @@ public class EmployeeController extends CustomHttpServlet {
               formValues.get(ADDRESS));
       employee.setId(id);
       EmployeeFactory employeeFactory = new EmployeeFactory();
-      employee = employeeFactory.getEmployee(formValues);
+      employee = employeeFactory.createEmployee(formValues);
       employee.setId(id);
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + EMPLOYEE_LIST);
