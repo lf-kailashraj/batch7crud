@@ -2,6 +2,7 @@ package com.lftechnology.batch7crud.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,10 +18,11 @@ import com.lftechnology.batch7crud.constant.CommonConstant;
 import com.lftechnology.batch7crud.constant.URLConstants;
 import com.lftechnology.batch7crud.constant.UserConstants;
 import com.lftechnology.batch7crud.exception.DataException;
+import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.model.User;
 import com.lftechnology.batch7crud.service.UserService;
-import com.lftechnology.batch7crud.util.CreateObjects;
 import com.lftechnology.batch7crud.util.TypeCaster;
+import com.lftechnology.batch7crud.util.UserFactory;
 import com.lftechnology.batch7crud.validator.UserValidator;
 
 /**
@@ -63,6 +65,7 @@ public class UserController extends CustomHttpServlet {
       }
     } catch (ServletException | HTTPException | IOException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
     }
   }
 
@@ -126,26 +129,31 @@ public class UserController extends CustomHttpServlet {
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+    Map<String, String> inputs = new HashMap<>();
+    Map<String, String> errors = new HashMap<>();
     
+    UserFactory userFactory = new UserFactory();
     UserValidator userValidator = new UserValidator();
-    CreateObjects createObjects = new CreateObjects();
-    User user = createObjects.createUserObect(request);
-    Map<String, String> errors = userValidator.validate(user);
+
+    inputs.put(UserConstants.FIRST_NAME, request.getParameter(UserConstants.FIRST_NAME));
+    inputs.put(UserConstants.SUR_NAME, request.getParameter(UserConstants.SUR_NAME));
+    inputs.put(UserConstants.USERNAME, request.getParameter(UserConstants.USERNAME));
+    inputs.put(UserConstants.PASSWORD, request.getParameter(UserConstants.PASSWORD));
+    inputs.put(UserConstants.AGE, request.getParameter(UserConstants.AGE));
     
-
-
-    if (errors.isEmpty()) {
-      try {
-        userService.addUser(user);
-        response.sendRedirect(ApplicationConstant.USER_LIST);
-      } catch (DataException e) {
-        LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      }
-    } else {
-      request.setAttribute("user", user);
+    userValidator.emptyValidate(inputs, errors);
+    
+    
+    try {
+      User user = userFactory.createUserObect(inputs,errors);
+      userService.addUser(user,errors);
+      response.sendRedirect(ApplicationConstant.USER_LIST);
+    } catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute("errors", errors);
       request.getRequestDispatcher(URLConstants.ADD_USER).forward(request, response);
-
+    } catch (DataException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
 
   }
@@ -177,7 +185,7 @@ public class UserController extends CustomHttpServlet {
       response.sendRedirect(ApplicationConstant.USER_LIST);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      showServerError(request, response, e);
+      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -188,11 +196,9 @@ public class UserController extends CustomHttpServlet {
 
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      showServerError(request, response, e);
+      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
 
   }
-
-
 
 }

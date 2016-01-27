@@ -13,5 +13,6 @@
 	<h1>Welcome!!!!!</h1>
 	<a href="users">List User</a><br>
 	<a href="users/add">Add User</a>
+	<a href="login">Login</a>
 </body>
 </html>

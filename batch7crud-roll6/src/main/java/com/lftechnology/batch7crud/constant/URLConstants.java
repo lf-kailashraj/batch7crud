@@ -12,6 +12,7 @@ public class URLConstants {
   public static final String WEB_INF = File.separator + "WEB-INF";
   public static final String VIEWS = File.separator + "views" + File.separator;
   public static final String INDEX_PAGE = WEB_INF + VIEWS + "index.jsp";
+  public static final String LOGIN_PAGE = WEB_INF + VIEWS + "login.jsp";
   public static final String LIST_USER = WEB_INF + VIEWS + "listUser.jsp";
   public static final String ADD_USER = WEB_INF + VIEWS + "addUser.jsp";
   public static final String READD_USER = WEB_INF + VIEWS + "retryAddUser.jsp";
