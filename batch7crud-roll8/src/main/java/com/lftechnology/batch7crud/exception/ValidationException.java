@@ -16,7 +16,9 @@ public class ValidationException extends Exception {
     super(message);
   }
 
-  public ValidationException(Map<String, String> errors) { this.errors = errors; }
+  public ValidationException(Map<String, String> errors) {
+    this.errors = errors;
+  }
 
   public Map<String, String> getErrors() {
     return this.errors;
