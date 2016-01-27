@@ -7,7 +7,6 @@ import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Grishma Shrestha grishmashrestha@lftechnology.com on 1/19/16.
@@ -23,13 +22,8 @@ public class EmployeeService {
   }
 
   public Employee create(Employee employee) throws DataException, ValidationException { // NOSONAR
-    Map<String, String> errors= validator.validate(employee);
-    if (errors.isEmpty()) {
-      return employeeDao.create(employee);
-    }
-    else {
-      throw new ValidationException(errors);
-    }
+    validator.validate(employee);
+    return employeeDao.create(employee);
   }
 
   public List<Employee> fetch(Integer pageLimit, Integer offset) throws DataException {
@@ -41,13 +35,8 @@ public class EmployeeService {
   }
 
   public Employee edit(Employee employee) throws DataException, ValidationException { // NOSONAR
-    Map<String, String> errors= validator.validate(employee);
-    if (errors.isEmpty()) {
-      return employeeDao.edit(employee);
-    }
-    else {
-      throw new ValidationException(errors);
-    }
+    validator.validate(employee);
+    return employeeDao.edit(employee);
   }
 
   public void delete(Integer id) throws DataException {
