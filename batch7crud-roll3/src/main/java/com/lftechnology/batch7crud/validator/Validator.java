@@ -5,7 +5,8 @@ import java.util.Map;
 import com.lftechnology.batch7crud.exception.ValidationException;
 
 public interface Validator<T> {
-  public T createObject(Map inputs) throws ValidationException;
 
-  public boolean isValid(T entity) throws ValidationException;
+  public void validateObject(T entity) throws ValidationException;
+
+  public void validateInputs(Map inputs) throws ValidationException;
 }

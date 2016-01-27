@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationException;
+import com.lftechnology.batch7crud.factory.StudentFactory;
 import com.lftechnology.batch7crud.service.StudentService;
 import com.lftechnology.batch7crud.validator.StudentValidator;
 
@@ -33,6 +34,9 @@ import com.lftechnology.batch7crud.validator.StudentValidator;
 @WebServlet("/students/*")
 public class StudentController extends CustomHttpServlet {
   private static StudentService studentService = new StudentService();
+  private static StudentValidator studentValidator = new StudentValidator();
+  private static StudentFactory studentFactory = new StudentFactory();
+
   private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
 
   @Override
@@ -140,9 +144,8 @@ public class StudentController extends CustomHttpServlet {
     try {
       Map<String, String> inputs = constructHashMapFromRequest(request);
 
-      StudentValidator studentValidator = new StudentValidator();
-      Student student = studentValidator.createObject(inputs);
-
+      studentValidator.validateInputs(inputs);
+      Student student = studentFactory.createObject(inputs);
       studentService.insert(student);
 
       response.sendRedirect(request.getContextPath() + STUDENT_LIST_CONTROLLER);
@@ -190,9 +193,11 @@ public class StudentController extends CustomHttpServlet {
 
       Map<String, String> inputs = constructHashMapFromRequest(request);
 
-      StudentValidator studentValidator = new StudentValidator();
-      student = studentValidator.createObject(inputs);
+      studentValidator.validateInputs(inputs);
+
+      student = studentFactory.createObject(inputs);
       student.setId(id);
+
       studentService.edit(student);
 
       response.sendRedirect(request.getContextPath() + STUDENT_LIST_CONTROLLER);

@@ -11,8 +11,7 @@ import com.lftechnology.batch7crud.utils.ValidatorUtil;
 public class StudentValidator extends ValidatorUtil implements Validator<Student> {
 
   @Override
-  public Student createObject(Map inputs) throws ValidationException {
-    Student student = new Student();
+  public void validateInputs(Map inputs) throws ValidationException {
     Map<String, String> errors = new HashMap<>();
     String roll = (String) inputs.get(ROLL);
     String name = (String) inputs.get(NAME);
@@ -23,15 +22,10 @@ public class StudentValidator extends ValidatorUtil implements Validator<Student
       exception.setErrors(errors);
       throw exception;
     }
-    student.setName(name);
-    if (!roll.isEmpty())
-      student.setRoll(Integer.parseInt(roll));
-    return student;
-
   }
 
   @Override
-  public boolean isValid(Student student) throws ValidationException {
+  public void validateObject(Student student) throws ValidationException {
     Map<String, String> errors = new HashMap<>();
 
     if (!isString(student.getName().trim()) || isEmpty(student.getName()))
@@ -44,6 +38,5 @@ public class StudentValidator extends ValidatorUtil implements Validator<Student
       exception.setErrors(errors);
       throw exception;
     }
-    return true;
   }
 }
