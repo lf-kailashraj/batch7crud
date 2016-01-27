@@ -7,7 +7,10 @@ import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.model.User;
 
 public class UserFactory {
-  public User createUserObect(Map<String, String> input, Map<String, String> errors) throws ValidationException {
+  private UserFactory(){
+    
+  }
+  public static User createUserObect(Map<String, String> input, Map<String, String> errors) throws ValidationException {
 
     try {
 

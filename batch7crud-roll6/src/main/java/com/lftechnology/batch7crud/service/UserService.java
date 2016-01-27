@@ -33,8 +33,16 @@ public class UserService {
     userDAOImpl.delete(userID);
   }
 
-  public void update(User user) throws DataException {
-    userDAOImpl.update(user);
+  public void update(User user,Map<String, String> errors) throws DataException, ValidationException {//NOSONAR
+    UserValidator userValidator = new UserValidator();
+    userValidator.validate(user,errors);
+
+    if (errors.isEmpty()) {
+      userDAOImpl.update(user);
+
+    } else {
+      throw new ValidationException(errors);
+    }
   }
 
   public List<User> fetch(int offset, int limit) throws DataException {
@@ -52,7 +60,7 @@ public class UserService {
   }
 
   public void checkUser(String username, String password) {
-    //TODO
+    
   }
 
 }

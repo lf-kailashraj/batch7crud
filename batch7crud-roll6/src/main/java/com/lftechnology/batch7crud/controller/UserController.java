@@ -131,8 +131,7 @@ public class UserController extends CustomHttpServlet {
 
     Map<String, String> inputs = new HashMap<>();
     Map<String, String> errors = new HashMap<>();
-    
-    UserFactory userFactory = new UserFactory();
+
     UserValidator userValidator = new UserValidator();
 
     inputs.put(UserConstants.FIRST_NAME, request.getParameter(UserConstants.FIRST_NAME));
@@ -140,17 +139,16 @@ public class UserController extends CustomHttpServlet {
     inputs.put(UserConstants.USERNAME, request.getParameter(UserConstants.USERNAME));
     inputs.put(UserConstants.PASSWORD, request.getParameter(UserConstants.PASSWORD));
     inputs.put(UserConstants.AGE, request.getParameter(UserConstants.AGE));
-    
+
     userValidator.emptyValidate(inputs, errors);
-    
-    
+
     try {
-      User user = userFactory.createUserObect(inputs,errors);
-      userService.addUser(user,errors);
+      User user = UserFactory.createUserObect(inputs, errors);
+      userService.addUser(user, errors);
       response.sendRedirect(ApplicationConstant.USER_LIST);
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute("errors", errors);
+      request.setAttribute(CommonConstant.ERRORS, errors);
       request.getRequestDispatcher(URLConstants.ADD_USER).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -159,8 +157,19 @@ public class UserController extends CustomHttpServlet {
   }
 
   private void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
+    Map<String, String> userAttributes = new HashMap<>();
     try {
-      request.setAttribute(CommonConstant.USER, userService.fetchByID(id));
+      User user = userService.fetchByID(id);
+
+      userAttributes.put(UserConstants.UID, Integer.toString(user.getId()));
+      userAttributes.put(UserConstants.FIRST_NAME, user.getFirstName());
+      userAttributes.put(UserConstants.SUR_NAME, user.getSurName());
+      userAttributes.put(UserConstants.USERNAME, user.getUserName());
+      userAttributes.put(UserConstants.PASSWORD, user.getPassword());
+      userAttributes.put(UserConstants.AGE, Integer.toString(user.getAge()));
+
+      request.setAttribute("userAttributes", userAttributes);
+
       request.getRequestDispatcher(URLConstants.EDIT_USER).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -169,20 +178,31 @@ public class UserController extends CustomHttpServlet {
 
   private void editProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
 
-    User user = new User();
+    Map<String, String> userAttributes = new HashMap<>();
+    Map<String, String> errors = new HashMap<>();
 
-    String firstName = request.getParameter(UserConstants.FIRST_NAME);
-    String surName = request.getParameter(UserConstants.SUR_NAME);
-    String username = request.getParameter(UserConstants.USERNAME);
+    UserValidator userValidator = new UserValidator();
 
-    user.setFirstName(firstName);
-    user.setSurName(surName);
-    user.setUserName(username);
-    user.setId(id);
+    userAttributes.put(UserConstants.FIRST_NAME, request.getParameter(UserConstants.FIRST_NAME));
+    userAttributes.put(UserConstants.SUR_NAME, request.getParameter(UserConstants.SUR_NAME));
+    userAttributes.put(UserConstants.USERNAME, request.getParameter(UserConstants.USERNAME));
+    userAttributes.put(UserConstants.AGE, request.getParameter(UserConstants.AGE));
 
+    userValidator.emptyValidate(userAttributes, errors);
+    userAttributes.put(UserConstants.UID, Integer.toString(id));
     try {
-      userService.update(user);
+      User user = UserFactory.createUserObect(userAttributes, errors);
+      user.setId(id);
+      userService.update(user,errors);
       response.sendRedirect(ApplicationConstant.USER_LIST);
+
+    } catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      
+      request.setAttribute(CommonConstant.ERRORS, errors);
+      request.setAttribute("userAttributes", userAttributes);
+      System.out.println("here");
+      request.getRequestDispatcher(URLConstants.EDIT_USER).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

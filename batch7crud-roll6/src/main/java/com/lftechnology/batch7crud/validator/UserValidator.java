@@ -21,20 +21,20 @@ public class UserValidator implements Validator<User> {
     
   }
 
-  public void emptyValidate(Map<String, String> input,Map<String, String> errors) {
+  public void emptyValidate(Map<String, String> userAttributes,Map<String, String> errors) {
 
     StringUtil stringUtil= new StringUtil();
     
-    if(stringUtil.isEmptyOrNull(input.get(UserConstants.FIRST_NAME))){
+    if(stringUtil.isEmptyOrNull(userAttributes.get(UserConstants.FIRST_NAME).trim())){
       errors.put(UserConstants.FIRST_NAME, "Please enter your first name");
     }
-    if(stringUtil.isEmptyOrNull(input.get(UserConstants.SUR_NAME))){
+    if(stringUtil.isEmptyOrNull(userAttributes.get(UserConstants.SUR_NAME).trim())){
       errors.put(UserConstants.SUR_NAME, "Please enter your Surname name");
     }
-    if(stringUtil.isEmptyOrNull(input.get(UserConstants.USERNAME))){
+    if(stringUtil.isEmptyOrNull(userAttributes.get(UserConstants.USERNAME).trim())){
       errors.put(UserConstants.USERNAME, "Please enter your user name");
     }
-    if(stringUtil.isEmptyOrNull(input.get(UserConstants.PASSWORD))){
+    if(stringUtil.isEmptyOrNull(userAttributes.get(UserConstants.PASSWORD))){
       errors.put(UserConstants.PASSWORD, "Please enter your password");
     }
 
@@ -50,7 +50,7 @@ public class UserValidator implements Validator<User> {
     if (!user.getSurName().matches(onlyCharRegex)) {
      errors.put(UserConstants.SUR_NAME, "Surname name cannot contain numeric value or special character");
     }
-    if(user.getPassword().length()<6){
+    if(user.getPassword() == null || user.getPassword().length()<6){
       errors.put(UserConstants.PASSWORD, "Password most contain atleast 6 characters");
     }
     if(user.getAge()>80){
