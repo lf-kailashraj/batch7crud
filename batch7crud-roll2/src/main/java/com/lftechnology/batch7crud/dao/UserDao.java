@@ -13,24 +13,21 @@ import java.util.logging.Logger;
 /**
  * Created by Romit Amgai <romitamgai@lftechnology.com> on 1/27/16.
  */
-public class AdminDao {
-  private static final Logger LOGGER = Logger.getLogger(AdminDao.class.getName());
-  private static final String ADMIN_SELECT = "SELECT id FROM admin WHERE username=? AND password=?";
+public class UserDao {
+  private static final Logger LOGGER = Logger.getLogger(UserDao.class.getName());
+  private static final String ADMIN_SELECT = "SELECT count(*) FROM admin WHERE username=? AND password=?"; //NOSONAR
 
-  public boolean isValid(String userName, String password) throws DataException {
+  public boolean checkValid(String userName, String password) throws DataException {
     try (Connection con = DBConnection.getSqlConnection();
             PreparedStatement preStmt = con.prepareStatement(ADMIN_SELECT)) {
       int id = 0;
       preStmt.setString(1, userName);
       preStmt.setString(2, password);
       ResultSet resultSet = preStmt.executeQuery();
-      while (resultSet.next()) {
-        id = resultSet.getInt("id");
+      if (resultSet.next()) {
+        id = resultSet.getInt(1);
       }
-      if (id != 0) {
-        return true;
-      }
-      return false;
+      return id != 0;
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
