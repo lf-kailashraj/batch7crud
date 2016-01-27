@@ -7,7 +7,6 @@ import com.lftechnology.batch7crud.utils.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import static com.lftechnology.batch7crud.constant.EntityConstant.*;
 import static com.lftechnology.batch7crud.constant.EntityConstant.ADDRESS;
 import static com.lftechnology.batch7crud.constant.EntityConstant.AGE;
@@ -51,9 +50,8 @@ public class EmployeeValidator implements Validator<Employee> {
       errors.put(AGE, "invalid age");
     }
 
-    if(!errors.isEmpty()){
+    if (!errors.isEmpty()) {
       throw new ValidationException(errors);
     }
   }
-
 }
