@@ -25,13 +25,8 @@ public class StudentService {
 
   public void insert(Student student) throws DataException, ValidationException { // NOSONAR
     StudentValidator validator = new StudentValidator();
-    Map<String, String> errors = validator.validate(student);
-
-    if(errors.isEmpty()){
-      studentDao.insert(student);
-    }else {
-      throw new ValidationException("validation failed", errors);
-    }
+    validator.validate(student);
+    studentDao.insert(student);
   }
 
   public void delete(Integer studentId) throws DataException {
@@ -40,13 +35,8 @@ public class StudentService {
 
   public void update(Student student) throws DataException, ValidationException { // NOSONAR
     StudentValidator validator = new StudentValidator();
-    Map<String, String> errors = validator.validate(student);
-
-    if(errors.isEmpty()){
-      studentDao.update(student);
-    }else {
-      throw new ValidationException("validation failed", errors);
-    }
+    validator.validate(student);
+    studentDao.update(student);
   }
 
   public Student fetchById(Integer id) throws DataException {
