@@ -8,6 +8,7 @@ import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.factory.EmployeeFactory;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.services.EmployeeService;
+import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,6 +29,7 @@ import java.util.logging.Logger;
 public class EmployeeController extends CommonHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
   private EmployeeService employeeService = new EmployeeService(); // NOSONAR
+  private EmployeeValidator validator = new EmployeeValidator();
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -136,6 +138,7 @@ public class EmployeeController extends CommonHttpServlet {
       Map<String, String> inputs = setEmployeeAttributes(request);
       EmployeeFactory employeeFactory = new EmployeeFactory();
       employee = employeeFactory.createObject(inputs);
+      validator.validate(employee);
       employeeService.create(employee);
       request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_CREATED);
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
@@ -157,6 +160,7 @@ public class EmployeeController extends CommonHttpServlet {
       EmployeeFactory employeeFactory = new EmployeeFactory();
       employee = employeeFactory.createObject(inputs);
       employee.setId(id);
+      validator.validate(employee);
       employeeService.edit(employee);
       request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_UPDATED);
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);

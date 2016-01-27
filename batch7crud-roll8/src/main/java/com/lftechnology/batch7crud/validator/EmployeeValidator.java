@@ -1,6 +1,7 @@
 package com.lftechnology.batch7crud.validator;
 
 import com.lftechnology.batch7crud.constants.ValidatorConstants;
+import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.model.Employee;
 
 import java.util.HashMap;
@@ -12,13 +13,14 @@ import java.util.Map;
 public class EmployeeValidator implements Validator<Employee> {
   Map<String, String> errors = new HashMap<>();
 
-  @Override public Map<String, String> validate(Employee employee) {
+  @Override public void validate(Employee employee) throws ValidationException {
     validateName(employee.getName().trim());
     validateAddress(employee.getAddress().trim());
     validateDesignation(employee.getDesignation().trim());
     validatePhone(employee.getPhone().trim());
-
-    return errors;
+    if (!errors.isEmpty()) {
+      throw new ValidationException(errors);
+    }
   }
 
   private void validateName(String name) {
