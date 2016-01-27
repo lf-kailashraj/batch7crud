@@ -34,33 +34,43 @@ public class EmployeeController extends CommonHttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String[] pathParts = getPathParameters(request);
-
-    if (pathParts.length == 3 && AppConstants.CREATE.equals(pathParts[2])) {
+    String page = getPageFromPath(request);
+    switch (page) {
+    case AppConstants.CREATE:
       createProcess(request, response);
-    } else if (pathParts.length == 4 && AppConstants.EDIT.equals(pathParts[3])) {
+      break;
+    case AppConstants.EDIT:
       editProcess(request, response);
-    } else if (pathParts.length == 4 && AppConstants.DELETE.equals(pathParts[3])) {
+      break;
+    case AppConstants.DELETE:
       deleteProcess(request, response);
-    } else {
+      break;
+    default:
       displayPageNotFound(request, response);
+      break;
     }
   }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String[] pathParts = getPathParameters(request);
-
-    if (pathParts.length == 2 && AppConstants.EMPLOYEE.equals(pathParts[1])) {
+    String page = getPageFromPath(request);
+    System.out.print(page);
+    switch (page) {
+    case AppConstants.EMPLOYEE:
       list(request, response);
-    } else if (pathParts.length == 3 && AppConstants.CREATE.equals(pathParts[2])) {
-      create(request, response);
-    } else if (pathParts.length == 4 && AppConstants.EDIT.equals(pathParts[3])) {
+      break;
+    case AppConstants.EDIT:
       edit(request, response);
-    } else if (pathParts.length == 3) {
+      break;
+    case AppConstants.CREATE:
+      create(request, response);
+      break;
+    case AppConstants.VIEW:
       view(request, response);
-    } else {
+      break;
+    default:
       displayPageNotFound(request, response);
+      break;
     }
   }
 

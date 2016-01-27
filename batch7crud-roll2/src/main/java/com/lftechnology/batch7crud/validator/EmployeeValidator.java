@@ -16,18 +16,18 @@ public class EmployeeValidator implements GenericValidator<Employee> {
   @Override
   public void validate(Employee entity) throws ValidationException {
     Map<String, String> errors = new HashMap<>();
-    String email = entity.getEmail().trim();
+    String email = entity.getEmail();
 
-    if (isNullOrEmpty(entity.getName().trim())) {
+    if (isNullOrEmpty(entity.getName())) {
       errors.put(AttributeConstants.NAME, "Set Name");
     }
-    if (isNullOrEmpty(entity.getAddress().trim())) {
+    if (isNullOrEmpty(entity.getAddress())) {
       errors.put(AttributeConstants.ADDRESS, "Set Address");
     }
     if (isNullOrEmpty(email) || !isValidEmail(email)) {
       errors.put(AttributeConstants.EMAIL, "Email not correct");
     }
-    if (isNullOrEmpty(entity.getContact().trim())) {
+    if (isNullOrEmpty(entity.getContact())) {
       errors.put(AttributeConstants.CONTACT, "Set Contact");
     }
     if (!errors.isEmpty()) {
@@ -36,7 +36,7 @@ public class EmployeeValidator implements GenericValidator<Employee> {
   }
 
   private boolean isNullOrEmpty(String value) {
-    return value == null || value.isEmpty();
+    return value == null || value.trim().isEmpty();
   }
 
   private boolean isValidEmail(String email) {

@@ -22,25 +22,32 @@ import java.util.logging.Logger;
 public class UserAuthenticationServlet extends CommonHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(UserAuthenticationServlet.class.getName());
 
+  @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String[] pathParts = getPathParameters(request);
-
-    if (pathParts.length == 3 && AppConstants.LOGIN.equals(pathParts[2])) {
+    String page = getPageFromPath(request);
+    switch (page) {           //NOSONAR
+    case AppConstants.LOGIN:
       login(request, response);
-    } else {
+      break;
+    default:
       displayPageNotFound(request, response);
+      break;
     }
   }
 
+  @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String[] pathParts = getPathParameters(request);
-
-    if (pathParts.length == 3 && AppConstants.LOGIN.equals(pathParts[2])) {
+    String page = getPageFromPath(request);
+    switch (page) {
+    case AppConstants.LOGIN:
       loginProcess(request, response);
-    } else if (pathParts.length == 3 && AppConstants.LOGOUT.equals(pathParts[2])) {
+      break;
+    case AppConstants.LOGOUT:
       logoutProcess(request, response);
-    } else {
+      break;
+    default:
       displayPageNotFound(request, response);
+      break;
     }
   }
 
