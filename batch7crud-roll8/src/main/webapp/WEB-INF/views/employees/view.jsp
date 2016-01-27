@@ -14,6 +14,7 @@
 </head>
 <body>
   <div>
+    ${message}
     <table>
       <tbody>
         <tr>
@@ -33,7 +34,7 @@
           <td>${employee.getPhone()}</td>
         </tr>
         <tr>
-          <td><a href="employees">Go Back</a></td>
+          <td><a href="employees">Employees Home</a></td>
         </tr>
       </tbody>
     </table>

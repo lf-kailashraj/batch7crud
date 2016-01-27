@@ -19,19 +19,23 @@
     <form action="employees/create" method="POST">
       <div>
         <label>Name:</label>
-        <input name="name" type="text"/>
+        <input name="name" type="text" value="${employee.name}"/>
+        ${errors.name}
       </div>
       <div>
         <label>Address:</label>
-        <input name="address" type="text"/>
+        <input name="address" type="text" value="${employee.address}"/>
+        ${errors.address}
       </div>
       <div>
         <label>Designation:</label>
-        <input name="designation" type="text"/>
+        <input name="designation" type="text" value="${employee.designation}"/>
+        ${errors.designation}
       </div>
       <div>
         <label>Phone:</label>
-        <input name="phone" type="text"/>
+        <input name="phone" type="text" value="${employee.phone}"/>
+        ${errors.phone}
       </div>
       <div>
         <input type="submit"/>

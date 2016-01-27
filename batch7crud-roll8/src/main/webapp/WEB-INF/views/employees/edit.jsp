@@ -20,19 +20,22 @@
       <div>
         <label>Name:</label>
         <input name="name" type="text" value = "${employee.getName()}">
+        ${errors.name}
       </div>
       <div>
         <label>Address:</label>
         <input name="address" type="text" value = "${employee.getAddress()}">
+        ${errors.address}
       </div>
       <div>
         <label>Designation:</label>
         <input name="designation" type="text" value = "${employee.getDesignation()}">
+        ${errors.designation}
       </div>
       <div>
-
         <label>Phone:</label>
         <input name="phone" type="text" value = "${employee.getPhone()}">
+        ${errors.phone}
       </div>
       <div>
         <input type="submit"/>

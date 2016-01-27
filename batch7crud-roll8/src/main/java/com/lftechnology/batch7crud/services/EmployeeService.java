@@ -11,7 +11,11 @@ import java.util.List;
  */
 
 public class EmployeeService {
-  private EmployeeDao employeeDao = new EmployeeDao();
+  private EmployeeDao employeeDao;
+
+  public EmployeeService() {
+    employeeDao = new EmployeeDao();
+  }
 
   public Employee create(Employee employee) throws DataException {
     return employeeDao.create(employee);
