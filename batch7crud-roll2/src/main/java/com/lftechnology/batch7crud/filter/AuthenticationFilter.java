@@ -38,6 +38,6 @@ public class AuthenticationFilter implements Filter {
 
   @Override
   public void destroy() {
-
+    //Called by the web container to indicate to a filter that it is being taken out of service.
   }
 }
