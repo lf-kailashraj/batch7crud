@@ -16,7 +16,6 @@ public class EntityConstant {
   public static final String DEPARTMENT = "department";
   public static final String AGE = "age";
 
-
   private EntityConstant() {
 
   }
