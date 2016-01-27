@@ -4,23 +4,14 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jstl/sql" %>
 <!DOCTYPE html>
-<sql:query var="rs" dataSource="jdbc/student">
-	select * from studentinfo;
-</sql:query>
-
 <html>
 <head>
-	<title>DB Test</title>
+	<base href="${pageContext.request.contextPath}/">
+	<title>SMS</title>
 </head>
 <body>
-
-<h2>Results</h2>
-
-<c:forEach var="row" items="${rs.rows}">
-	id ${row.id}<br/>
-	age ${row.age}<br/>
-	address ${row.address}<br/>
-</c:forEach>
-
+<h2>Student Management System</h2>
+<div><a href="students/create">New Student</a></div>
+<div><a href="students">See all Students</a></div>
 </body>
 </html>

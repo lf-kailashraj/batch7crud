@@ -3,86 +3,132 @@ package com.lftechnology.batch7crud.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-//import com.lftechnology.batch7crud.model.Student;
 import com.lftechnology.batch7crud.model.Student;
 import com.lftechnology.batch7crud.util.DBConnection;
-//import com.lftechnology.batch7crud.util.DBConnection;
 
 /**
  * Created by sagarmatha on 1/26/16.
  */
-public class StudentDaoImpl implements StudentDao{
-    private Connection connection=null;
-    Student student;
+public class StudentDaoImpl implements StudentDao {
+    private static final Logger LOGGER = Logger.getLogger(StudentDaoImpl.class.getName());
 
-    public StudentDaoImpl() {
-        connection = DBConnection.getDBConnection();
-    }
-    public void addStudent(Student student){
+    private static final String INSERT = "INSERT INTO studentinfo (fname,lname,age,address) VALUES (?,?,?,?,?)";
+    private static final String VIEW = "SELECT * FROM studentinfo LIMIT ? OFFSET ?";
+    private static final String UPDATE = "UPDATE studentinfo SET fname=?, lname=?, age=?, address=? WHERE id=?";
+    private static final String VIEW_BY_ID = "SELECT * FROM studentinfo WHERE id=?";
+    private static final String DELETE = "DELETE FROM studentinfo WHERE id=?";
+    private static final String COUNT_STUDENTS = "SELECT count(*) FROM studentinfo";
+
+    public Student addStudent(Student student) {
         try {
-            String sql = "insert into student(fname,lname,age,address)values(?,?,?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            Connection connection = DBConnection.getDBConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, student.getFirstName());
             preparedStatement.setString(2, student.getLastName());
             preparedStatement.setInt(3, student.getAge());
             preparedStatement.setString(4, student.getAddress());
-            int rowsInserted = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
             preparedStatement.close();
-            if (rowsInserted > 0) {
-                System.out.println("A new user was inserted successfully!");
+            connection.close();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                student.setStudentID(resultSet.getInt(1));
             }
-        }catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
+        return student;
     }
     public void deleteStudent(int studentID){
         try {
-            String sql = "delete from student where studentId=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            Connection connection = DBConnection.getDBConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
             preparedStatement.setInt(1, studentID);
             preparedStatement.executeUpdate();
             preparedStatement.close();
+            connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
-    public void updateStudent(Student student){
+    public Student updateStudent(Student student){
         try {
-            String sql = "UPDATE student SET fname=?, lname=?, age=?, address=? WHERE fname=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            Connection connection = DBConnection.getDBConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
             preparedStatement.setString(1, student.getFirstName());
             preparedStatement.setString(2, student.getLastName());
             preparedStatement.setInt(3, student.getAge());
             preparedStatement.setString(4, student.getAddress());
-            int rowsUpdated = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
             preparedStatement.close();
-            if (rowsUpdated > 0) {
-                System.out.println("An existing user was updated successfully!");
-            }
+            connection.close();
         }catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
+        return student;
     }
-    public List<Student> getAllStudents(){
-        List<Student> students = new ArrayList<Student>();
+    public List<Student> getAllStudents(int page, int limit){
+        List<Student> studentsList = new ArrayList<Student>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery( "select * from student" );
+            Connection connection = DBConnection.getDBConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(VIEW);
+            int startOffset = (page - 1) * limit;
+            preparedStatement.setInt(1, limit);
+            preparedStatement.setInt(2, startOffset);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while( resultSet.next() ) {
                 Student student = new Student();
                 student.setStudentID( resultSet.getInt( "id" ) );
-                student.setFirstName( resultSet.getString( "fname" ) );
-                student.setLastName( resultSet.getString( "lname" ) );
+                student.setFirstName( resultSet.getString( "firstName" ) );
+                student.setLastName( resultSet.getString( "lastName" ) );
                 student.setAge( resultSet.getInt( "age" ) );
                 student.setAddress( resultSet.getString( "address" ) );
-                students.add(student);
+                studentsList.add(student);
             }
             resultSet.close();
-            statement.close();
+            preparedStatement.close();
+            connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
-        return students;
+        return studentsList;
+    }
+
+    public Student getStudentByID(int studentID){
+        Student student = null;
+        try {
+            Connection connection = DBConnection.getDBConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(VIEW_BY_ID);
+            preparedStatement.setInt(1, studentID);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                student=new Student();
+                student.setStudentID(rs.getInt(1));
+                student.setFirstName(rs.getString(2));
+                student.setLastName(rs.getString(3));
+                student.setAge(rs.getInt(4));
+                student.setAddress(rs.getString(5));
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return student;
+    }
+    public int countStudents(){
+        int totalStudents = 0;
+        try {
+            Connection connection = DBConnection.getDBConnection();
+            PreparedStatement preparedStatement =  connection.prepareStatement(COUNT_STUDENTS);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next())
+                totalStudents = resultSet.getInt(1);
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return totalStudents;
     }
 }
+
