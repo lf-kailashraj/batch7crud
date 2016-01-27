@@ -2,9 +2,7 @@ package com.lftechnology.batch7crud.services;
 
 import com.lftechnology.batch7crud.dao.EmployeeDao;
 import com.lftechnology.batch7crud.exception.DataException;
-import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.model.Employee;
-import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import java.util.List;
 
@@ -14,15 +12,12 @@ import java.util.List;
 
 public class EmployeeService {
   private EmployeeDao employeeDao;
-  private EmployeeValidator validator;
 
   public EmployeeService() {
     employeeDao = new EmployeeDao();
-    validator = new EmployeeValidator();
   }
 
-  public Employee create(Employee employee) throws DataException, ValidationException { // NOSONAR
-    validator.validate(employee);
+  public Employee create(Employee employee) throws DataException {
     return employeeDao.create(employee);
   }
 
@@ -34,8 +29,7 @@ public class EmployeeService {
     return employeeDao.fetchById(id);
   }
 
-  public Employee edit(Employee employee) throws DataException, ValidationException { // NOSONAR
-    validator.validate(employee);
+  public Employee edit(Employee employee) throws DataException {
     return employeeDao.edit(employee);
   }
 
