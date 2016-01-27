@@ -23,7 +23,7 @@ public class StudentService {
     return studentDao.fetch(offset, limit);
   }
 
-  public void insert(Student student) throws DataException, ValidationException {
+  public void insert(Student student) throws DataException, ValidationException { // NOSONAR
     StudentValidator validator = new StudentValidator();
     Map<String, String> errors = validator.validate(student);
 
@@ -38,7 +38,7 @@ public class StudentService {
     studentDao.delete(studentId);
   }
 
-  public void update(Student student) throws DataException, ValidationException {
+  public void update(Student student) throws DataException, ValidationException { // NOSONAR
     StudentValidator validator = new StudentValidator();
     Map<String, String> errors = validator.validate(student);
 

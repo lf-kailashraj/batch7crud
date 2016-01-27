@@ -8,7 +8,7 @@ import java.util.Map;
  * Created on 1/25/16
  */
 public class ValidationException extends Exception{
-  private Map<String, String> errors = new HashMap<>();
+  private Map<String, String> errors = new HashMap<>();  //NOSONAR
 
   public ValidationException(){
     super("validation failed");

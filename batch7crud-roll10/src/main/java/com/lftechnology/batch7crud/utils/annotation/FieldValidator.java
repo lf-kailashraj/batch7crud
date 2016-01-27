@@ -58,7 +58,7 @@ public class FieldValidator {
     fields.addAll(Arrays.asList(type.getDeclaredFields()));
 
     if (type.getSuperclass() != null) {
-      fields = getAllFields(fields, type.getSuperclass());
+      fields = getAllFields(fields, type.getSuperclass());  //NOSONAR
     }
 
     return fields;
