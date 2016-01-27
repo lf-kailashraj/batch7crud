@@ -14,7 +14,7 @@ public class StudentValidator extends ValidatorUtil implements Validator<Student
   public void validateInputs(Map inputs) throws ValidationException {
     Map<String, String> errors = new HashMap<>();
     String roll = (String) inputs.get(ROLL);
-    String name = (String) inputs.get(NAME);
+
     if (!isInteger(roll))
       errors.put(ROLL, INVALID_ROLL_MESSAGE);
     if (!errors.isEmpty()) {
