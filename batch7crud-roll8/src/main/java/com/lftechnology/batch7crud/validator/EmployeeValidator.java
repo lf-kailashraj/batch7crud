@@ -82,7 +82,6 @@ public class EmployeeValidator implements Validator<Employee> {
 
   private boolean isValidPhone(String val) {
     String pattern = "^\\+?[0-9. ()-]{10,25}$";
-    System.out.println(val.matches(pattern));
     return val.matches(pattern);
   }
 }
