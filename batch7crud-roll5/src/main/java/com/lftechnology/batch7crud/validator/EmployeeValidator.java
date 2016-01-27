@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 import javax.validation.ValidationException;
 
-import com.lftechnology.batch7crud.constants.EmployeeAttributeConstants;
 import com.lftechnology.batch7crud.exception.ValidationExceptions;
 import com.lftechnology.batch7crud.model.Employee;
 

@@ -17,5 +17,7 @@ public interface EmployeeService {
     void deleteById(int id) throws DataException;
     
     int count() throws DataException;
+    
+    Employee login(String name, String password);
 
 }

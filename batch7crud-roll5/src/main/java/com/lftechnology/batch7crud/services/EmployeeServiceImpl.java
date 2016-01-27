@@ -41,5 +41,4 @@ public class EmployeeServiceImpl {
     public int count() throws DataException {
         return employeeDAO.count();
     }
-
 }

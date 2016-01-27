@@ -21,7 +21,7 @@ public class EmployeeDAOImpl {
     private static final String DELETE_QUERY = "DELETE FROM employee WHERE id = ?";
     private static final String UPDATE_QUERY =
             "UPDATE employee SET first_name = ?, last_name = ?, department = ?, address = ?, password = ? WHERE id = ?";
-    private static final String READ_BY_ID_QUERY = "SELECT * FROM employee where id = ?";
+    private static final String READ_BY_ID_QUERY = "SELECT * FROM employee WHERE id = ?";
     private static final String READ_ALL_QUERY = "SELECT * FROM employee LIMIT ? OFFSET ?";
     private static final String COUNT_QUERY = "SELECT COUNT(*) FROM employee";
 
@@ -29,12 +29,13 @@ public class EmployeeDAOImpl {
         List<Employee> empList = new ArrayList<Employee>();
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(READ_ALL_QUERY)) {
+            Employee emp = new Employee();
             ps.setInt(1, limit);
             ps.setInt(2, offSet);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                empList.add(setObjectAttribute(rs));
+                empList.add(setObjectAttribute(rs, emp));
             }
             return empList;
         } catch (SQLException e) {
@@ -45,13 +46,12 @@ public class EmployeeDAOImpl {
 
     public Employee fetchById(int id) throws DataException {
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(READ_BY_ID_QUERY)) {
-            Employee emp = null;
+            Employee emp = new Employee();
             ps.setInt(1, id);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    emp = setObjectAttribute(rs);
-                }
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                emp = setObjectAttribute(rs,emp);
             }
             return emp;
         } catch (SQLException e) {
@@ -87,7 +87,6 @@ public class EmployeeDAOImpl {
     public void edit(Employee employee) throws DataException {
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(UPDATE_QUERY)) {
             setQueryAttribute(ps, employee).setInt(6, employee.getId());
-            System.out.println(ps);
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -108,8 +107,7 @@ public class EmployeeDAOImpl {
         }
     }
 
-    public Employee setObjectAttribute(ResultSet rs) throws SQLException {
-        Employee emp = new Employee();
+    public Employee setObjectAttribute(ResultSet rs, Employee emp) throws SQLException {
         emp.setId(rs.getInt("id"));
         emp.setFirstName(rs.getString("first_name"));
         emp.setLastName(rs.getString("last_name"));
@@ -127,4 +125,5 @@ public class EmployeeDAOImpl {
         ps.setString(5, employee.getPassword());
         return ps;
     }
+
 }

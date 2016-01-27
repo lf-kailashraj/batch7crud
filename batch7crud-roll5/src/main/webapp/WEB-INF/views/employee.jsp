@@ -10,6 +10,7 @@
 </head>
 <body>
 	<a href="employees/create">Add Employee</a>
+	<a href="employeeAuthentication/logout">Log Out</a>
 	<h1>List Of Employees</h1>
 	<table border="2px">
 		<thead>

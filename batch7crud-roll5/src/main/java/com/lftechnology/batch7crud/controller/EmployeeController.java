@@ -53,7 +53,6 @@ public class EmployeeController extends CustomHttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getPathInfo();
-
         if (path != null) {
             String[] pathParts = path.split("/");
 
@@ -116,7 +115,7 @@ public class EmployeeController extends CustomHttpServlet {
 
     }
 
-    private void create(HttpServletRequest request, HttpServletResponse response) {
+    private void create(HttpServletRequest request, HttpServletResponse response){
         try {
             request.getRequestDispatcher(UrlConstants.EMPLOYEE_CREATE_URL).forward(request, response);
         } catch (Exception e) {
