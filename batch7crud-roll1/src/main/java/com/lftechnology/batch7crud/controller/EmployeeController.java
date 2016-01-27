@@ -103,17 +103,10 @@ public class EmployeeController extends CustomHttpServlet {
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-    Map<String, String> inputs = new HashMap<>();
-    inputs.put(USER_NAME, request.getParameter(USER_NAME));
-    inputs.put(PASSWORD, request.getParameter(PASSWORD));
-    inputs.put(FULL_NAME, request.getParameter(FULL_NAME));
-    inputs.put(DEPARTMENT, request.getParameter(DEPARTMENT));
-    inputs.put(ADDRESS, request.getParameter(ADDRESS));
-    inputs.put(AGE, request.getParameter(AGE));
-
+    Map<String, String> formValues = createMapOfFormParameters(request);
     try {
       EmployeeFactory employeeFactory = new EmployeeFactory();
-      Employee employee = employeeFactory.getEmployee(inputs);
+      Employee employee = employeeFactory.getEmployee(formValues);
       employeeService.create(employee);
       response.sendRedirect(request.getContextPath() + EMPLOYEE_LIST);
     } catch (ValidationException e) {
@@ -142,27 +135,16 @@ public class EmployeeController extends CustomHttpServlet {
   }
 
   private void editProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    int id = parameterValueAsInt(request, 2);
-    String userName = request.getParameter(USER_NAME);
-    String password = request.getParameter(PASSWORD);
-    String fullName = request.getParameter(FULL_NAME);
-    String department = request.getParameter(DEPARTMENT);
-    String address = request.getParameter(ADDRESS);
-    String age = request.getParameter(AGE);
 
-    Map<String, String> inputs = new HashMap<>();
-    inputs.put(USER_NAME, userName);
-    inputs.put(FULL_NAME, fullName);
-    inputs.put(PASSWORD, password);
-    inputs.put(DEPARTMENT, department);
-    inputs.put(ADDRESS, address);
-    inputs.put(AGE, age);
+    int id = parameterValueAsInt(request, 2);
+    Map<String, String> formValues = createMapOfFormParameters(request);
     Employee employee = null;
     try {
-      employee = new Employee(userName, password, fullName, department, address);
+      employee = new Employee(formValues.get(USER_NAME), formValues.get(PASSWORD), formValues.get(FULL_NAME), formValues.get(DEPARTMENT),
+              formValues.get(ADDRESS));
       employee.setId(id);
       EmployeeFactory employeeFactory = new EmployeeFactory();
-      employee = employeeFactory.getEmployee(inputs);
+      employee = employeeFactory.getEmployee(formValues);
       employee.setId(id);
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + EMPLOYEE_LIST);
@@ -186,5 +168,17 @@ public class EmployeeController extends CustomHttpServlet {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       showServerError(request, response, e);
     }
+  }
+
+  private Map<String, String> createMapOfFormParameters(HttpServletRequest request) {
+    Map<String, String> formValues = new HashMap<>();
+    formValues.put(USER_NAME, request.getParameter(USER_NAME));
+    formValues.put(PASSWORD, request.getParameter(PASSWORD));
+    formValues.put(FULL_NAME, request.getParameter(FULL_NAME));
+    formValues.put(DEPARTMENT, request.getParameter(DEPARTMENT));
+    formValues.put(ADDRESS, request.getParameter(ADDRESS));
+    formValues.put(AGE, request.getParameter(AGE));
+
+    return formValues;
   }
 }

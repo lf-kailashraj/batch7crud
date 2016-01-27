@@ -10,6 +10,8 @@
 </head>
 <body>
 
+    <h2>Welcome in Employee Management System</h2>
+
     <ul>
         <li><a href="employees/create">Add Employee</a></li>
         <li><a href="employees">List Employee</a></li>
