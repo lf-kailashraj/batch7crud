@@ -2,9 +2,9 @@ package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidatorException;
+import com.lftechnology.batch7crud.factory.StudentFactory;
 import com.lftechnology.batch7crud.model.Student;
 import com.lftechnology.batch7crud.service.StudentServices;
-import com.lftechnology.batch7crud.validator.StudentValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -100,8 +100,8 @@ public class StudentController extends CommonHttpServlet{
     Map<String,String> studentMap = createHashMapFromInputs(request);
 
     try {
-      StudentValidator studentValidator = new StudentValidator();
-      Student student = studentValidator.createObject(studentMap);
+      StudentFactory studentFactory = new StudentFactory();
+      Student student = studentFactory.createObject(studentMap);
       studentService.addNew(student);
       response.sendRedirect(request.getContextPath() + "/" + CommonConstants.LIST_URL);
     } catch (ValidatorException e) {
@@ -126,17 +126,20 @@ public class StudentController extends CommonHttpServlet{
     throws ServletException, IOException, DataException {
 
     Map<String,String> studentMap = createHashMapFromInputs(request);
+    Student student = null;
 
     try {
-      StudentValidator studentValidator = new StudentValidator();
-      Student student = studentValidator.createObject(studentMap);
+      StudentFactory studentFactory = new StudentFactory();
+      student = studentFactory.createObject(studentMap);
       student.setId(id);
 
+      request.setAttribute("student", student);
       studentService.update(student);
       response.sendRedirect(request.getContextPath() + "/" + CommonConstants.LIST_URL);
     } catch (ValidatorException e) {
-      LOGGER.log(Level.SEVERE,e.getMessage(),e);
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute("error", e.getErrors());
+
       request.setAttribute("student", studentService.fetchById(id));
       request.getServletContext().getRequestDispatcher(CommonConstants.EDIT_ENTRY_VIEW).forward(request, response);
     }
