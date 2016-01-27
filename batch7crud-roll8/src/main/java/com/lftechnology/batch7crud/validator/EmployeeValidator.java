@@ -67,8 +67,8 @@ public class EmployeeValidator implements Validator<Employee> {
     else if (phone.isEmpty()) {
       errors.put(ValidatorConstants.EMPLOYEE_PHONE, ValidatorConstants.EMPLOYEE_PHONE_EMPTY);
     }
-    else if (hasAlphabets(phone)) {
-      errors.put(ValidatorConstants.EMPLOYEE_PHONE, ValidatorConstants.EMPLOYEE_PHONE_HAS_ALPHABETS);
+    else if (!isValidPhone(phone)) {
+      errors.put(ValidatorConstants.EMPLOYEE_PHONE, ValidatorConstants.EMPLOYEE_PHONE_IS_INVALID);
     }
     else {
       errors.remove(ValidatorConstants.EMPLOYEE_PHONE);
@@ -80,8 +80,9 @@ public class EmployeeValidator implements Validator<Employee> {
     return val.matches(pattern);
   }
 
-  private boolean hasAlphabets(String val) {
-    String pattern = "[a-zA-z]+";
+  private boolean isValidPhone(String val) {
+    String pattern = "^\\+?[0-9. ()-]{10,25}$";
+    System.out.println(val.matches(pattern));
     return val.matches(pattern);
   }
 }

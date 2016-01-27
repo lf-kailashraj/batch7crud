@@ -21,7 +21,7 @@ public class ValidatorConstants {
 
   public static final String EMPLOYEE_PHONE_EMPTY = "Phone can't be empty.";
   public static final String EMPLOYEE_PHONE_NULL = "Phone can't be null." ;
-  public static final String EMPLOYEE_PHONE_HAS_ALPHABETS = "Phone can't have alphabets.";
+  public static final String EMPLOYEE_PHONE_IS_INVALID = "Phone number is invalid.";
 
   private ValidatorConstants() {
 

@@ -168,7 +168,6 @@ public class EmployeeController extends CommonHttpServlet {
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
       request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_EDIT_PAGE).forward(request, response);
     }
-
   }
 
   private void deleteProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, DataException {
