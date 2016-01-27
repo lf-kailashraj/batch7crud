@@ -13,6 +13,7 @@
   <title>Students</title>
 </head>
 <body>
+<div><a href="/auth/logout">logout</a></div>
 <table>
   <tr>
     <th>NAME</th>
