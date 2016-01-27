@@ -14,11 +14,11 @@ import java.io.IOException;
  */
 
 public class AuthenticationFilter implements Filter {
-  private String LOGIN_ACTION_URI;
+  private String loginActionUri;
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
-    LOGIN_ACTION_URI = filterConfig.getInitParameter("loginActionURI");
+    loginActionUri = filterConfig.getInitParameter("loginActionURI");
   }
 
   @Override
@@ -28,11 +28,12 @@ public class AuthenticationFilter implements Filter {
     HttpServletResponse res = (HttpServletResponse) servletResponse;
     HttpSession session = req.getSession();
     String userSession = (String) session.getAttribute(AttributeConstants.USER);
-    if (userSession == null && !LOGIN_ACTION_URI.equals(req.getRequestURI())) {
+    String loginPath = req.getContextPath() + loginActionUri;
+
+    if (userSession == null && !loginPath.equals(req.getRequestURI()))
       res.sendRedirect(req.getContextPath() + UrlConstants.LOGIN_ROUTE);
-    } else {
+    else
       filterChain.doFilter(servletRequest, servletResponse);
-    }
   }
 
   @Override

@@ -15,9 +15,21 @@
 <h1>User Login</h1>
 ${loginError}
 <form action="login" method="POST">
-    Username: <input type="text" name="username"><br>
-    Password: <input type="password" name="password"><br>
-    <input type="submit" value="Login">
+    <table>
+        <tbody>
+        <tr>
+            <td>Username</td>
+            <td><input type="text" name="username"></td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td><input type="password" name="password"></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Login"></td>
+        </tr>
+        </tbody>
+    </table>
 </form>
 </body>
 </html>
