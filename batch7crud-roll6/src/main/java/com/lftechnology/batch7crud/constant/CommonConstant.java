@@ -13,6 +13,8 @@ public class CommonConstant {
   public static final String CURRENT_PAGE = "currentPage";
   public static final String NO_OF_PAGES = "noOfPages";
   public static final String EMPTY_STRING = "";
+  public static final String ERRORS = "errors";
+
 
 
   private CommonConstant() {
