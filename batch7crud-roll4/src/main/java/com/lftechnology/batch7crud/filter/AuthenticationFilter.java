@@ -1,7 +1,5 @@
 package com.lftechnology.batch7crud.filter;
 
-import static com.lftechnology.batch7crud.constant.UrlConstants.*;
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +35,6 @@ public class AuthenticationFilter implements Filter {
 
   @Override
   public void destroy() {
-
+    loginUri = null;
   }
 }

@@ -31,24 +31,42 @@ public class AuthenticationServlet extends CustomHttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String[] parameter = parameterValues(request);
-    if (parameter.length == 3 && "login".equals(parameter[2])) {
+    String action = fetchActionFromParameter(request);
+
+    switch (action) {
+    case "login":
       logIn(request, response);
-    } else if (parameter.length == 3 && "logout".equals(parameter[2])) {
+      break;
+
+    case "logout":
       logOut(request, response);
+      break;
+
+    default:
+      show404(request, response);
+      break;
     }
   }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String[] parameter = parameterValues(request);
+    String action = fetchActionFromParameter(request);
 
-    if (parameter.length == 3 && "login".equals(parameter[2])) {
+    switch (action) {
+    case "login":
       RequestDispatcher view = request.getRequestDispatcher(VIEW + "login.jsp");
       view.forward(request, response);
-    } else {
+      break;
+
+    case "logout":
+      response.sendRedirect(request.getContextPath() + "/login.jsp");
+      break;
+
+    default:
       show404(request, response);
+      break;
     }
+
   }
 
   private void logIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

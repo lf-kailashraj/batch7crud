@@ -10,6 +10,7 @@ import java.io.IOException;
 import static com.lftechnology.batch7crud.constant.AttribConstants.ATTRIB_MESSAGE;
 import static com.lftechnology.batch7crud.constant.MessageConstant.MESSAGE_PAGE_NOT_FOUND;
 import static com.lftechnology.batch7crud.constant.ParamConstants.PARAM_PAGE;
+import static com.lftechnology.batch7crud.constant.RouteConstants.ROUTE_DELETE;
 import static com.lftechnology.batch7crud.constant.UrlConstants.URL_ERROR_PAGE;
 
 /**
@@ -51,8 +52,39 @@ public abstract class CustomHttpServlet extends HttpServlet {
   }
 
   public int parameterValueAsInt(HttpServletRequest request, int index) {
-    String[] paths = parameterValues(request);
-    return Integer.parseInt(paths[index]);
+    String[] parameters = parameterValues(request);
+    return Integer.parseInt(parameters[index]);
   }
 
+  public String fetchActionFromParameter(HttpServletRequest request) {
+    String[] parameters = parameterValues(request);
+    String action = "pageNotFound";
+
+//    if (parameters.length == 3) {
+//
+//    }else if (parameters.length <= 4) {
+//        action = parameters[parameters.length - 1];
+//      }
+//    }
+//
+//    return action;
+
+        if (parameters.length == 2 && "employees".equals(parameters[1])) {
+          action = "list";
+        } else if (parameters.length == 3 && "create".equals(parameters[2])) {
+          action = "create";
+        } else if (parameters.length == 4 && "edit".equals(parameters[3])) {
+          action = "edit";
+        } else if (parameters.length == 3 && "employees".equals(parameters[1])) {
+          action = "profile";
+        } else if (parameters.length == 4 && "delete".equals(parameters[3])) {
+          action = "delete";
+        } else if (parameters.length == 3 && "login".equals(parameters[2])) {
+          action = "login";
+        } else if (parameters.length == 3 && "logout".equals(parameters[2])) {
+          action = "logout";
+        }
+
+    return action;
+  }
 }

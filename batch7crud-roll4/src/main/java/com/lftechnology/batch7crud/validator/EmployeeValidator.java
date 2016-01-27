@@ -17,9 +17,9 @@ public class EmployeeValidator implements Validator<Employee> {
   public void validate(Employee employee) throws ValidationException {
     Map<String, String> errors = new HashMap<String, String>();
 
-    String firstName = employee.getFirstName().trim();
-    String lastName = employee.getLastName().trim();
-    String station = employee.getStation().trim();
+    String firstName = employee.getFirstName();
+    String lastName = employee.getLastName();
+    String station = employee.getStation();
 
     if (isNullOrEmpty(firstName) || !isAlphabet(firstName)) {
       errors.put(PARAM_FIRST_NAME, "Check first name");
@@ -39,7 +39,7 @@ public class EmployeeValidator implements Validator<Employee> {
   }
 
   private boolean isNullOrEmpty(String argument) {
-    return "".equals(argument) || argument == null;
+    return argument == null || argument.trim().isEmpty();
   }
 
   private boolean isAlphabet(String argument) {

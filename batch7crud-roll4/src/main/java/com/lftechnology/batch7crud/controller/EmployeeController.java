@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 import static com.lftechnology.batch7crud.constant.AttribConstants.*;
 import static com.lftechnology.batch7crud.constant.ParamConstants.*;
-import static com.lftechnology.batch7crud.constant.RouteConstants.*;
+import static com.lftechnology.batch7crud.constant.RouteConstants.ROUTE_EMPLOYEES;
 import static com.lftechnology.batch7crud.constant.UrlConstants.*;
 
 /**
@@ -40,35 +40,53 @@ public class EmployeeController extends CustomHttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String[] parameters = parameterValues(request);
+    String action = fetchActionFromParameter(request);
 
-    if (parameters.length == 2) { // for /employees , listing page
+    switch (action) {
+    case "employees":
       list(request, response);
-    } else if (parameters.length == 3 && ROUTE_CREATE.equals(parameters[2])) {
-      create(request, response);
-    } else if (parameters.length == 3) {
-      viewProfile(request, response);
-    } else if (parameters.length == 4 && ROUTE_EDIT.equals(parameters[3])) {
-      edit(request, response);
-    } else {
-      show404(request, response);
-    }
+      break;
 
+    case "create":
+      create(request, response);
+      break;
+
+    case "profile":
+      viewProfile(request, response);
+      break;
+
+    case "edit":
+      edit(request, response);
+      break;
+
+    default:
+      show404(request, response);
+      break;
+    }
   }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String[] parameters = parameterValues(request);
+    String action = fetchActionFromParameter(request);
 
-    if (parameters.length == 3 && ROUTE_CREATE.equals(parameters[2])) {
+    switch (action) {
+    case "create":
       createProcess(request, response);
-    } else if (parameters.length == 4 && ROUTE_EDIT.equals(parameters[3])) {
-      editProcess(request, response);
-    } else if (parameters.length == 4 && ROUTE_DELETE.equals(parameters[3])) {
+      break;
+
+    case "delete":
       deleteProcess(request, response);
-    } else {
+      break;
+
+    case "edit":
+      editProcess(request, response);
+      break;
+
+    default:
       show404(request, response);
+      break;
     }
+
   }
 
   private void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

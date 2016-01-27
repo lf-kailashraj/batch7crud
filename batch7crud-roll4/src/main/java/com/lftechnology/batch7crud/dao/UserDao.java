@@ -1,8 +1,6 @@
 package com.lftechnology.batch7crud.dao;
 
 import com.lftechnology.batch7crud.exception.DataException;
-import com.lftechnology.batch7crud.model.Employee;
-import com.lftechnology.batch7crud.model.User;
 import com.lftechnology.batch7crud.util.DbConnection;
 import com.lftechnology.batch7crud.util.Md5;
 
@@ -11,12 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static com.lftechnology.batch7crud.constant.EntityConstants.*;
 
 /**
  * Created by pratishshr on 1/27/16.
