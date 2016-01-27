@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.lftechnology.batch7crud.constant.CommonConstant;
+import com.lftechnology.batch7crud.constant.StudentConstant;
 import com.lftechnology.batch7crud.entity.User;
 
 public class AuthenticationFilter implements javax.servlet.Filter {
@@ -31,6 +32,7 @@ public class AuthenticationFilter implements javax.servlet.Filter {
 
     User user = (User) session.getAttribute("user");
 
+    System.out.println(req.getRequestURI());
     if (user == null && !LOGIN_ACTION_URI.equals(req.getRequestURI())) {
       RequestDispatcher rd = req.getRequestDispatcher(CommonConstant.LOGIN_PAGE);
       rd.forward(req, resp);
@@ -39,12 +41,6 @@ public class AuthenticationFilter implements javax.servlet.Filter {
 
     chain.doFilter(request, response);
   }
-
-  /*
-   * private boolean isAuth(HttpServletRequest request, HttpServletResponse
-   * response) throws ServletException, IOException {
-   * response.sendRedirect(CommonConstant.LOGIN_PAGE); return false; }
-   */
 
   public void destroy() {
   }

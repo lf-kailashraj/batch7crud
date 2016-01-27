@@ -1,21 +1,8 @@
 package com.lftechnology.batch7crud.controller;
 
-import static com.lftechnology.batch7crud.constant.CommonConstant.CREATE;
-import static com.lftechnology.batch7crud.constant.CommonConstant.DELETE;
-import static com.lftechnology.batch7crud.constant.CommonConstant.EDIT;
-import static com.lftechnology.batch7crud.constant.CommonConstant.MESSAGE;
-import static com.lftechnology.batch7crud.constant.CommonConstant.NUMBER_OF_PAGES;
-import static com.lftechnology.batch7crud.constant.CommonConstant.PAGE_NUMBER;
-import static com.lftechnology.batch7crud.constant.CommonConstant.RECORDS_PER_PAGE;
-import static com.lftechnology.batch7crud.constant.StudentConstant.CREATE_PAGE;
-import static com.lftechnology.batch7crud.constant.StudentConstant.EDIT_PAGE;
-import static com.lftechnology.batch7crud.constant.StudentConstant.LIST_PAGE;
-import static com.lftechnology.batch7crud.constant.StudentConstant.NAME;
-import static com.lftechnology.batch7crud.constant.StudentConstant.ROLL;
-import static com.lftechnology.batch7crud.constant.StudentConstant.SHOW_PAGE;
-import static com.lftechnology.batch7crud.constant.StudentConstant.STUDENT;
-import static com.lftechnology.batch7crud.constant.StudentConstant.STUDENT_LIST;
-import static com.lftechnology.batch7crud.constant.StudentConstant.STUDENT_LIST_CONTROLLER;
+import static com.lftechnology.batch7crud.constant.CommonConstant.*;
+
+import static com.lftechnology.batch7crud.constant.StudentConstant.*;
 
 import java.io.IOException;
 import java.util.HashMap;

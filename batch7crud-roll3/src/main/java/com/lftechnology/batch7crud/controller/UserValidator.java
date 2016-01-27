@@ -1,5 +1,7 @@
 package com.lftechnology.batch7crud.controller;
 
+import static com.lftechnology.batch7crud.constant.StudentConstant.STUDENT_LIST_CONTROLLER;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,8 +24,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.lftechnology.batch7crud.constant.StudentConstant;
 import com.lftechnology.batch7crud.entity.User;
 
+@WebServlet("/userValidator")
 public class UserValidator extends HttpServlet {
 
   public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -36,6 +40,8 @@ public class UserValidator extends HttpServlet {
     String password = req.getParameter("password");
 
     System.out.println("Validating...");
+    System.out.println(name);
+    System.out.println(password);
     boolean isValid = validateLogin(name, password);
 
     if (!isValid) {
@@ -43,11 +49,10 @@ public class UserValidator extends HttpServlet {
     } else {
       HttpSession session = req.getSession();
       session.setAttribute("user", new User("admin", "admin"));
-      rd = req.getRequestDispatcher("/loginSuccess.jsp");
+      res.sendRedirect(req.getContextPath() + StudentConstant.STUDENT_LIST_CONTROLLER); // NOSONAR
       System.out.println("Success");
     }
 
-    rd.forward(req, res);
   }
 
   /**
@@ -63,14 +68,16 @@ public class UserValidator extends HttpServlet {
    */
   private boolean validateLogin(String name, String password) {
     // All parameters must be valid
+
     if (name == null || password == null) {
       return false;
     }
-
+    System.out.println(name);
+    System.out.println(password);
     if ("admin".equals(password.trim())) {
-      return false;
+      return true;
     }
 
-    return true;
+    return false;
   }
 }
