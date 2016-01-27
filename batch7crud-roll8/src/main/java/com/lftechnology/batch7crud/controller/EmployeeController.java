@@ -30,34 +30,41 @@ public class EmployeeController extends CommonHttpServlet {
   private EmployeeService employeeService = new EmployeeService(); // NOSONAR
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-    String path = request.getPathInfo();
-    if (path == null) {
-      fetch(request, response);
-    }
-    else {
-      String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
-      if (parts.length == 0) {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    try {
+      String path = request.getPathInfo();
+      if (path == null) {
         fetch(request, response);
       }
-      else if (parts.length == 2 && AppConstants.CREATE.equals(parts[1])) {
-        create(request, response);
-      }
-      else if (parts.length == 2) {
-        view(request, response);
-      }
-      else if (parts.length == 3 && AppConstants.EDIT.equals(parts[2])) {
-        edit(request, response);
-      }
       else {
-        request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
+        if (parts.length == 0) {
+          fetch(request, response);
+        }
+        else if (parts.length == 2 && AppConstants.CREATE.equals(parts[1])) {
+          create(request, response);
+        }
+        else if (parts.length == 2) {
+          view(request, response);
+        }
+        else if (parts.length == 3 && AppConstants.EDIT.equals(parts[2])) {
+          edit(request, response);
+        }
+        else {
+          request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
+          response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
       }
+    }
+    catch (Exception e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
+      response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     try {
       String path = request.getPathInfo();
       String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
@@ -72,39 +79,45 @@ public class EmployeeController extends CommonHttpServlet {
       }
       else {
         request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.INTERNAL_SERVER_ERROR);
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       }
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
-  private void create(HttpServletRequest request, HttpServletResponse response) {
+  private void create(HttpServletRequest request, HttpServletResponse response) throws IOException {
     try {
       request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request,
         response);
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
-  private void edit(HttpServletRequest request, HttpServletResponse response) {
+  private void edit(HttpServletRequest request, HttpServletResponse response) throws IOException {
     try {
       int id = parameterValueAsInt(request, 2);
       Employee employee = employeeService.fetchById(id);
-      request.setAttribute(AttributeConstants.EMPLOYEE, employee);
-      RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_EDIT_PAGE);
-      dispatcher.forward(request, response);
+      if (employee != null) {
+        request.setAttribute(AttributeConstants.EMPLOYEE, employee);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_EDIT_PAGE);
+        dispatcher.forward(request, response);
+      }
+      else {
+        request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+      }
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -164,7 +177,7 @@ public class EmployeeController extends CommonHttpServlet {
     response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
   }
 
-  private void fetch(HttpServletRequest request, HttpServletResponse response) {
+  private void fetch(HttpServletRequest request, HttpServletResponse response) throws IOException {
     try {
       Integer pageLimit = AppConstants.PAGE_LIMIT;
       Integer pageNo = getCurrentPage(request);
@@ -186,11 +199,11 @@ public class EmployeeController extends CommonHttpServlet {
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
-  private void view(HttpServletRequest request, HttpServletResponse response) {
+  private void view(HttpServletRequest request, HttpServletResponse response) throws IOException {
     try {
       int id = parameterValueAsInt(request, 2);
       Employee employee = employeeService.fetchById(id);
@@ -200,18 +213,18 @@ public class EmployeeController extends CommonHttpServlet {
       }
       else {
         request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
       }
     }
     catch (NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
-      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
 
