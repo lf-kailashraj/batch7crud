@@ -21,6 +21,7 @@ import com.lftechnology.batch7crud.service.UserService;
 import com.lftechnology.batch7crud.util.TypeCaster;
 
 /**
+ * 
  * @author madandhungana <madandhungana@lftechnology.com> Jan 18, 2016
  */
 
@@ -37,7 +38,7 @@ public class UserController extends CustomHttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       String[] pathArgs = pathArgs(request);
-        
+
       if (pathArgs.length <= 1) {
         int page = 1;
         String arg = request.getParameter(CommonConstant.PAGE);
@@ -57,9 +58,9 @@ public class UserController extends CustomHttpServlet {
 
         }
       }
-    } catch (HTTPException | IOException | NumberFormatException e) {
+    } catch (ServletException | HTTPException | IOException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-    }
+    } 
   }
 
   @Override
@@ -89,7 +90,7 @@ public class UserController extends CustomHttpServlet {
         }
 
       }
-    } catch (HTTPException | IOException e) {
+    } catch (ServletException | HTTPException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
 
@@ -100,16 +101,20 @@ public class UserController extends CustomHttpServlet {
       int totalUser = userService.totalUser();
       int noOfPages = (int) Math.ceil(totalUser * 1.0 / LIMIT);
       if (page < 1 || page > noOfPages) {
-        showPageNotFound(request, response);
+        response.sendRedirect(ApplicationConstant.USER_LIST);
       }
-      request.setAttribute(CommonConstant.USERS, userService.fetch(page, LIMIT));
+      int offset = (page - 1) * LIMIT;
+      request.setAttribute(CommonConstant.USERS, userService.fetch(offset, LIMIT));
       request.setAttribute(CommonConstant.CURRENT_PAGE, page);
       request.setAttribute(CommonConstant.NO_OF_PAGES, noOfPages);
+      request.setAttribute(CommonConstant.LIMIT, LIMIT);
       request.getRequestDispatcher(URLConstants.LIST_USER).forward(request, response);
 
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      showServerError(request, response, e);
+    } catch (IllegalStateException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
     }
   }
 
@@ -136,7 +141,6 @@ public class UserController extends CustomHttpServlet {
       response.sendRedirect(ApplicationConstant.USER_LIST);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      showServerError(request, response, e);
     }
   }
 
@@ -146,7 +150,6 @@ public class UserController extends CustomHttpServlet {
       request.getRequestDispatcher(URLConstants.EDIT_USER).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      showServerError(request, response, e);
     }
   }
 

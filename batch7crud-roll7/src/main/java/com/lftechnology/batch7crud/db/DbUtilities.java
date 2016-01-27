@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by leapfrog on 1/18/16.
+ * Created by Prajjwal Raj Kandel <prajjwalkandel@lftechnology.com> on 1/18/16.
  */
 public class DbUtilities {
   private static final Logger LOGGER = Logger.getLogger(DbUtilities.class.getName());
@@ -27,10 +27,7 @@ public class DbUtilities {
       Context envCtx = (Context) initCtx.lookup("java:comp/env");
       DataSource ds = (DataSource) envCtx.lookup("jdbc/lfform");
       return ds.getConnection();
-    } catch (SQLException ex) {
-      LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
-      throw new DataException();
-    } catch (NamingException ex) {
+    } catch (SQLException | NamingException ex) {
       LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
       throw new DataException();
     }
