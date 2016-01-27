@@ -25,8 +25,8 @@ import java.util.logging.Logger;
  * Created by Grishma Shrestha grishmashrestha@lftechnology.com on 1/19/16.
  */
 @WebServlet({ "/employees/*" })
-public class EmployeesController extends CommonHttpServlet {
-  private static final Logger LOGGER = Logger.getLogger(EmployeesController.class.getName());
+public class EmployeeController extends CommonHttpServlet {
+  private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
   private EmployeeService employeeService = new EmployeeService(); // NOSONAR
 
   @Override
