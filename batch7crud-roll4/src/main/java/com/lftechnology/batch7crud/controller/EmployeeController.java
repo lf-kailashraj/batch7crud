@@ -17,9 +17,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.lftechnology.batch7crud.constant.ActionConstants.*;
 import static com.lftechnology.batch7crud.constant.AttribConstants.*;
 import static com.lftechnology.batch7crud.constant.ParamConstants.*;
-import static com.lftechnology.batch7crud.constant.RouteConstants.ROUTE_EMPLOYEES;
 import static com.lftechnology.batch7crud.constant.UrlConstants.*;
 
 /**
@@ -43,19 +43,19 @@ public class EmployeeController extends CustomHttpServlet {
     String action = fetchActionFromParameter(request);
 
     switch (action) {
-    case "employees":
+    case ACTION_LIST:
       list(request, response);
       break;
 
-    case "create":
+    case ACTION_CREATE:
       create(request, response);
       break;
 
-    case "profile":
+    case ACTION_PROFILE:
       viewProfile(request, response);
       break;
 
-    case "edit":
+    case ACTION_EDIT:
       edit(request, response);
       break;
 
@@ -70,15 +70,15 @@ public class EmployeeController extends CustomHttpServlet {
     String action = fetchActionFromParameter(request);
 
     switch (action) {
-    case "create":
+    case ACTION_CREATE:
       createProcess(request, response);
       break;
 
-    case "delete":
+    case ACTION_DELETE:
       deleteProcess(request, response);
       break;
 
-    case "edit":
+    case ACTION_EDIT:
       editProcess(request, response);
       break;
 
@@ -127,7 +127,7 @@ public class EmployeeController extends CustomHttpServlet {
     try {
       employee = employeeFactory.createObject(inputs);
       employeeService.save(employee);
-      response.sendRedirect(request.getContextPath() + ROUTE_EMPLOYEES);
+      response.sendRedirect(request.getContextPath() + ACTION_EMPLOYEES);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
@@ -182,7 +182,7 @@ public class EmployeeController extends CustomHttpServlet {
       employee.setId(employeeId);
 
       employeeService.update(employee);
-      response.sendRedirect(request.getContextPath() + ROUTE_EMPLOYEES);
+      response.sendRedirect(request.getContextPath() + ACTION_EMPLOYEES);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);
@@ -200,7 +200,7 @@ public class EmployeeController extends CustomHttpServlet {
     try {
       int employeeId = parameterValueAsInt(request, 2);
       employeeService.deleteEmployee(employeeId);
-      response.sendRedirect(request.getContextPath() + ROUTE_EMPLOYEES);
+      response.sendRedirect(request.getContextPath() + ACTION_EMPLOYEES);
     } catch (DataException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show500(request, response, e);

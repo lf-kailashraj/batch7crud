@@ -13,7 +13,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.lftechnology.batch7crud.constant.RouteConstants.ROUTE_EMPLOYEES;
+import static com.lftechnology.batch7crud.constant.ActionConstants.ACTION_EMPLOYEES;
+import static com.lftechnology.batch7crud.constant.ActionConstants.ACTION_LOGIN;
+import static com.lftechnology.batch7crud.constant.ActionConstants.ACTION_LOGOUT;
+import static com.lftechnology.batch7crud.constant.ParamConstants.*;
 import static com.lftechnology.batch7crud.constant.UrlConstants.URL_LOGIN_PAGE;
 import static com.lftechnology.batch7crud.constant.UrlConstants.VIEW;
 
@@ -34,11 +37,11 @@ public class AuthenticationServlet extends CustomHttpServlet {
     String action = fetchActionFromParameter(request);
 
     switch (action) {
-    case "login":
+    case ACTION_LOGIN:
       logIn(request, response);
       break;
 
-    case "logout":
+    case ACTION_LOGOUT:
       logOut(request, response);
       break;
 
@@ -53,13 +56,13 @@ public class AuthenticationServlet extends CustomHttpServlet {
     String action = fetchActionFromParameter(request);
 
     switch (action) {
-    case "login":
-      RequestDispatcher view = request.getRequestDispatcher(VIEW + "login.jsp");
+    case ACTION_LOGIN:
+      RequestDispatcher view = request.getRequestDispatcher(URL_LOGIN_PAGE);
       view.forward(request, response);
       break;
 
-    case "logout":
-      response.sendRedirect(request.getContextPath() + "/login.jsp");
+    case ACTION_LOGOUT:
+      response.sendRedirect(request.getContextPath() + "/" + "auth/login");
       break;
 
     default:
@@ -72,13 +75,13 @@ public class AuthenticationServlet extends CustomHttpServlet {
   private void logIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     try {
-      String username = request.getParameter("username");
-      String password = request.getParameter("password");
+      String username = request.getParameter(PARAM_USERNAME);
+      String password = request.getParameter(PARAM_PASS);
 
       if (userService.isValidUser(username, password)) {
         HttpSession session = request.getSession();
-        session.setAttribute("username", username);
-        response.sendRedirect(request.getContextPath() + ROUTE_EMPLOYEES);
+        session.setAttribute(PARAM_USERNAME, username);
+        response.sendRedirect(request.getContextPath() + ACTION_EMPLOYEES);
       } else {
         RequestDispatcher view = request.getRequestDispatcher(URL_LOGIN_PAGE);
         view.forward(request, response);
