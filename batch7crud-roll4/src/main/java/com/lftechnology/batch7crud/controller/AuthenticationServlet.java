@@ -13,12 +13,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.lftechnology.batch7crud.constant.ActionConstants.ACTION_EMPLOYEES;
-import static com.lftechnology.batch7crud.constant.ActionConstants.ACTION_LOGIN;
-import static com.lftechnology.batch7crud.constant.ActionConstants.ACTION_LOGOUT;
-import static com.lftechnology.batch7crud.constant.ParamConstants.*;
+import static com.lftechnology.batch7crud.constant.ActionConstants.*;
+import static com.lftechnology.batch7crud.constant.ParamConstants.PARAM_PASS;
+import static com.lftechnology.batch7crud.constant.ParamConstants.PARAM_USERNAME;
 import static com.lftechnology.batch7crud.constant.UrlConstants.URL_LOGIN_PAGE;
-import static com.lftechnology.batch7crud.constant.UrlConstants.VIEW;
 
 /**
  * Created by pratishshr on 1/26/16.
