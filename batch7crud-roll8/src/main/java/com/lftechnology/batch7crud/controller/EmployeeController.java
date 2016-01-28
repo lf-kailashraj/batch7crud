@@ -140,7 +140,7 @@ public class EmployeeController extends CommonHttpServlet {
       employee = employeeFactory.createObject(inputs);
       validator.validate(employee);
       employeeService.create(employee);
-      request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_CREATED);
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.EMPLOYEE_CREATED);
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
       request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
     }
@@ -162,7 +162,7 @@ public class EmployeeController extends CommonHttpServlet {
       employee.setId(id);
       validator.validate(employee);
       employeeService.edit(employee);
-      request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_UPDATED);
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.EMPLOYEE_UPDATED);
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
       request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
     }
