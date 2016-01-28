@@ -5,9 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Hello</title>
+<base href="${pageContext.request.contextPath}/">
+<title>Student Management System</title>
 </head>
 <body>
-	<div>Hello world!!</div>
+	<div><h1>School Management System</h1></div>
+	<a href = "students">Student</a>
 </body>
 </html>

@@ -8,13 +8,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.lftechnology.batch7crud.util.TypeCaster;
+import com.lftechnology.batch7crud.constant.URLConstants;
 
-@WebServlet({ "/" })
+/**
+ * @author madandhungana <madandhungana@lftechnology.com> Jan 18, 2016
+ */
+@WebServlet("/")
 public class IndexController extends HttpServlet {
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer i = TypeCaster.toInt("123");
-        System.out.println("value of i: " + i);
-        req.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
-    }
+  private static final long serialVersionUID = 1L;
+
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    request.getRequestDispatcher(URLConstants.INDEX_PAGE).forward(request, response);
+
+  }
+
 }
