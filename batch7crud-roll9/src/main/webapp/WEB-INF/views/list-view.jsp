@@ -65,7 +65,6 @@
         </c:forEach>
     </span>
 <c:if test="${page<totalPages}"><span><a href="students?page=${page+1}">Next</a></span> </c:if>
-<script src="js/custom.js"></script>
 <script>
     var deleteElement = document.getElementsByClassName("delete");
     for (var i = 0; i < deleteElement.length; i++) {

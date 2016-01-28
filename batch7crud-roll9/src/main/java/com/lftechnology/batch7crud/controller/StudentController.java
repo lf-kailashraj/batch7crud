@@ -11,6 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.lftechnology.batch7crud.exception.ValidationException;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -120,59 +123,40 @@ public class StudentController extends HTTPStatusHandler {
   }
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    Student student= null;
     try {
       Map<String, String> input = getParam(request);
-      Map<String, String> error = new HashMap();
-      Student student = studentValidator.createObject(error, input);
-      if (error.size() > 0) {
-        setError(request, error);
-        create(request, response);
-      } else {
-        error = studentService.save(student);
-        if (error.size() > 0) {
-          setError(request, error);
-          create(request, response);
-        } else {
-          response.sendRedirect(request.getContextPath());
-        }
-      }
+      student = studentValidator.createObject(input);
+      student = studentService.save(student);
+      response.sendRedirect(request.getContextPath() + File.separator + UrlConstant.STUDENTS + File.separator + student.getId() + File.separator + UrlConstant.VIEW);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show404(request, response);
-    } catch (ServletException e) {
+    } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-    } catch (IOException e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute(AttributeConstant.USER_INFO_ERRORS, e.getErrors());
+      request.setAttribute(AttributeConstant.STUDENT, student);
+      create(request, response);
     }
-
   }
 
   private void editProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    Student student = null;
     try {
-      int studentId = parameterValueAsInt(request, 2);
       Map<String, String> input = getParam(request);
-      Map<String, String> error = new HashMap<>();
-      Student student = studentValidator.createObject(error, input);
-      student.setId(studentId);
-      if (error.size() > 0) {
-        setError(request, error);
-        edit(request, response);
-      } else {
-        error = studentService.edit(student);
-        if (error.size() > 0) {
-          setError(request, error);
-          create(request, response);
-        } else {
-          response.sendRedirect(request.getContextPath());
-        }
-      }
+      student = studentValidator.createObject(input);
+      student.setId(parameterValueAsInt(request, 2));
+      student = studentService.edit(student);
+      response.sendRedirect(request.getContextPath() + File.separator + UrlConstant.STUDENTS + File.separator + student.getId() + File.separator + UrlConstant.VIEW);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       show404(request, response);
-    } catch (ServletException e) {
+    } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-    } catch (IOException e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute(AttributeConstant.USER_INFO_ERRORS, e.getErrors());
+      request.setAttribute(AttributeConstant.STUDENT, student);
+      RequestDispatcher view = request.getRequestDispatcher(PageConstant.EDIT);
+      view.forward(request, response);
     }
   }
 
@@ -197,54 +181,5 @@ public class StudentController extends HTTPStatusHandler {
     input.put(ParameterConstant.ADDRESS, request.getParameter(ParameterConstant.ADDRESS));
     input.put(ParameterConstant.GRADE, request.getParameter(ParameterConstant.GRADE));
     return input;
-  }
-
-
-  private void setError(HttpServletRequest request, Map<String, String> hm) {
-    Set set = hm.entrySet();
-    Iterator iterator = set.iterator();
-    while (iterator.hasNext()) {
-      Map.Entry me = (Map.Entry) iterator.next();
-      if (me.getKey().equals(AttributeConstant.ERROR_FNAME)) {
-        request.setAttribute(AttributeConstant.ERROR_FNAME, me.getValue());
-      } else {
-        request.setAttribute(ParameterConstant.MIDDLE_NAME, request.getParameter(ParameterConstant.MIDDLE_NAME));
-        request.setAttribute(ParameterConstant.LAST_NAME, request.getParameter(ParameterConstant.LAST_NAME));
-        request.setAttribute(ParameterConstant.ADDRESS, request.getParameter(ParameterConstant.ADDRESS));
-        request.setAttribute(ParameterConstant.GRADE, request.getParameter(ParameterConstant.GRADE));
-      }
-      if (me.getKey().equals(AttributeConstant.ERROR_MNAME)) {
-        request.setAttribute(AttributeConstant.ERROR_MNAME, me.getValue());
-      } else {
-        request.setAttribute(ParameterConstant.FIRST_NAME, request.getParameter(ParameterConstant.FIRST_NAME));
-        request.setAttribute(ParameterConstant.LAST_NAME, request.getParameter(ParameterConstant.LAST_NAME));
-        request.setAttribute(ParameterConstant.ADDRESS, request.getParameter(ParameterConstant.ADDRESS));
-        request.setAttribute(ParameterConstant.GRADE, request.getParameter(ParameterConstant.GRADE));
-      }
-      if (me.getKey().equals(AttributeConstant.ERROR_LNAME)) {
-        request.setAttribute(AttributeConstant.ERROR_LNAME, me.getValue());
-      } else {
-        request.setAttribute(ParameterConstant.FIRST_NAME, request.getParameter(ParameterConstant.FIRST_NAME));
-        request.setAttribute(ParameterConstant.MIDDLE_NAME, request.getParameter(ParameterConstant.MIDDLE_NAME));
-        request.setAttribute(ParameterConstant.ADDRESS, request.getParameter(ParameterConstant.ADDRESS));
-        request.setAttribute(ParameterConstant.GRADE, request.getParameter(ParameterConstant.GRADE));
-      }
-      if (me.getKey().equals(AttributeConstant.ERROR_ADDRESS)) {
-        request.setAttribute(AttributeConstant.ERROR_ADDRESS, me.getValue());
-      } else {
-        request.setAttribute(ParameterConstant.FIRST_NAME, request.getParameter(ParameterConstant.FIRST_NAME));
-        request.setAttribute(ParameterConstant.MIDDLE_NAME, request.getParameter(ParameterConstant.MIDDLE_NAME));
-        request.setAttribute(ParameterConstant.LAST_NAME, request.getParameter(ParameterConstant.LAST_NAME));
-        request.setAttribute(ParameterConstant.GRADE, request.getParameter(ParameterConstant.GRADE));
-      }
-      if (me.getKey().equals(AttributeConstant.ERROR_GRADE)) {
-        request.setAttribute(AttributeConstant.ERROR_GRADE, me.getValue());
-      } else {
-        request.setAttribute(ParameterConstant.FIRST_NAME, request.getParameter(ParameterConstant.FIRST_NAME));
-        request.setAttribute(ParameterConstant.MIDDLE_NAME, request.getParameter(ParameterConstant.MIDDLE_NAME));
-        request.setAttribute(ParameterConstant.LAST_NAME, request.getParameter(ParameterConstant.LAST_NAME));
-        request.setAttribute(ParameterConstant.ADDRESS, request.getParameter(ParameterConstant.ADDRESS));
-      }
-    }
   }
 }

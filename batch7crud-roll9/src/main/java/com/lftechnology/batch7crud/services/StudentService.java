@@ -1,11 +1,14 @@
 package com.lftechnology.batch7crud.services;
 
+import com.lftechnology.batch7crud.constants.AttributeConstant;
+import com.lftechnology.batch7crud.constants.MessageConstant;
 import com.lftechnology.batch7crud.dao.StudentDAO;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
+import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.util.StudentValidator;
 
-import java.util.HashMap;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -16,13 +19,16 @@ import java.util.Map;
 public class StudentService {
   private StudentDAO stdDAO = new StudentDAO();
 
-  public Map save(Student student) throws DataException {
+  public Student save(Student student) throws DataException, ValidationException {
     StudentValidator studentValidator = new StudentValidator();
-    Map error = studentValidator.validate(student);
-    if(error.size()<=0){
-      stdDAO.insert(student);
+    Student insertStudent;
+    try {
+      studentValidator.validate(student);
+      insertStudent = stdDAO.insert(student);
+    } catch (ValidationException e) {
+      throw e;
     }
-    return error;
+    return insertStudent;
   }
 
   public List<Student> fetch(int page, int limit) throws DataException {
@@ -37,13 +43,16 @@ public class StudentService {
     return stdDAO.fetchById(id);
   }
 
-  public Map edit(Student student) throws DataException {
+  public Student edit(Student student) throws DataException, ValidationException {
     StudentValidator studentValidator = new StudentValidator();
-    Map<String, String> error = studentValidator.validate(student);
-    if(error.size()<0){
-      stdDAO.edit(student);
+    Student editStudent;
+    try {
+      studentValidator.validate(student);
+      editStudent = stdDAO.edit(student);
+    } catch (ValidationException e) {
+      throw e;
     }
-    return error;
+    return editStudent;
   }
 
   public int studentCount() throws DataException {

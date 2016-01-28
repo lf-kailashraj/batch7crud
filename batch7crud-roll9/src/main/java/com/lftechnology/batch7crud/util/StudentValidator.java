@@ -5,6 +5,8 @@ import com.lftechnology.batch7crud.constants.AttributeConstant;
 import com.lftechnology.batch7crud.constants.MessageConstant;
 import com.lftechnology.batch7crud.constants.ParameterConstant;
 import com.lftechnology.batch7crud.entity.Student;
+import com.lftechnology.batch7crud.exception.ValidationException;
+import com.lftechnology.batch7crud.factory.StudentFactory;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -14,60 +16,40 @@ import java.util.regex.Pattern;
  * Created by sanjay on 1/22/16.
  */
 public class StudentValidator {
-  public Student createObject(Map<String, String> error, Map<String, String> input) {
-    Student student = new Student();
-    Set set = input.entrySet();
-    Iterator iterator = set.iterator();
-    while (iterator.hasNext()) {
-      Map.Entry mapEntry = (Map.Entry) iterator.next();
-      if (mapEntry.getKey().equals(ParameterConstant.FIRST_NAME)) {
-        student.setFirstName((String) mapEntry.getValue());
-      }
-      if (mapEntry.getKey().equals(ParameterConstant.MIDDLE_NAME)) {
-        student.setMiddleName((String) mapEntry.getValue());
-      }
-      if (mapEntry.getKey().equals(ParameterConstant.LAST_NAME)) {
-        student.setLastName((String) mapEntry.getValue());
-      }
-      if (mapEntry.getKey().equals(ParameterConstant.ADDRESS)) {
-        student.setAddress((String) mapEntry.getValue());
-      }
-      if (mapEntry.getKey().equals(ParameterConstant.GRADE)) {
-        try{
-          student.setGrade(Integer.parseInt((String) mapEntry.getValue()));
-        } catch(NumberFormatException e){
-          error.put(AttributeConstant.ERROR_GRADE,MessageConstant.ERROR_GRADE);
-        }
-      }
-    }
-    return student;
+  public Student createObject(Map<String, String> input) throws ValidationException {
+    StudentFactory studentFactory = new StudentFactory();
+    return studentFactory.createObject(input);
   }
 
-  public Map<String, String> validate(Student student) {
-    Map<String, String> hm = new HashMap<>();
+  public void validate(Student student) throws ValidationException{
+    Map<String, String> error = new HashMap<>();
     if (!isValid(student.getFirstName())) {
-      hm.put(AttributeConstant.ERROR_FNAME, MessageConstant.ERROR_FNAME);
+      error.put(AttributeConstant.ERROR_FNAME, MessageConstant.ERROR_FNAME);
     }
     if (!isValid(student.getMiddleName())) {
-      hm.put(AttributeConstant.ERROR_MNAME, MessageConstant.ERROR_MNAME);
+      error.put(AttributeConstant.ERROR_MNAME, MessageConstant.ERROR_MNAME);
     }
     if (!isValid(student.getLastName())) {
-      hm.put(AttributeConstant.ERROR_LNAME, MessageConstant.ERROR_LNAME);
+      error.put(AttributeConstant.ERROR_LNAME, MessageConstant.ERROR_LNAME);
     }
     if (!isValid(student.getAddress())) {
-      hm.put(AttributeConstant.ERROR_ADDRESS, MessageConstant.ERROR_ADDRESS);
+      error.put(AttributeConstant.ERROR_ADDRESS, MessageConstant.ERROR_ADDRESS);
     }
     if (!isValid(student.getGrade())) {
-      hm.put(AttributeConstant.ERROR_GRADE, MessageConstant.ERROR_GRADE);
+      error.put(AttributeConstant.ERROR_GRADE, MessageConstant.ERROR_GRADE);
     }
-    return hm;
+    if(!error.isEmpty()){
+      ValidationException validationException = new ValidationException();
+      validationException.setErrors(error);
+      throw validationException;
+    }
   }
 
   public boolean isValid(String input) {
     String pattern = "^[A-z]+$";
     Pattern r = Pattern.compile(pattern);
     Matcher m = r.matcher(input);
-    return m.find()? true : false;
+    return m.find() ? true : false;
   }
 
   public boolean isValid(int input) {

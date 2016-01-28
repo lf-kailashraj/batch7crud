@@ -19,9 +19,7 @@ public class AttributeConstant {
   public static final String ERROR_MNAME = "errorMname";
   public static final String ERROR_LNAME = "errorLname";
   public static final String ERROR_ADDRESS = "errorAddress";
-
-
-
+  public static final String USER_INFO_ERRORS = "user_info_errors";
 
   private AttributeConstant() {
   }

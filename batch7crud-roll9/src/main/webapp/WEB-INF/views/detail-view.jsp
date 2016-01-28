@@ -30,6 +30,31 @@
 </div>
 <a href="students/${student.getId()}/edit" class="edit">Edit This</a>
 <a href="students/${student.getId()}/delete" class="delete">Delete This</a>
+<script>
+    var deleteElement = document.getElementsByClassName("delete")[0];
+    deleteElement.onclick = function (e) {
+            e.preventDefault();
+            var form = document.createElement('form');
+            var destinationLink = e.target.getAttribute("href");
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", destinationLink);
+            if (confirm("Are you sure you want to delete this?") == true) {
+                form.submit();
+            }
+
+    }
+    var editElement = document.getElementsByClassName("edit")[0];
+        editElement.onclick = function (e) {
+            e.preventDefault();
+            var form = document.createElement('form');
+            var destinationLink = e.target.getAttribute("href");
+            form.setAttribute("method", "GET");
+            form.setAttribute("action", destinationLink);
+            form.submit();
+        };
+
+</script>
+
 
 </body>
 </html>

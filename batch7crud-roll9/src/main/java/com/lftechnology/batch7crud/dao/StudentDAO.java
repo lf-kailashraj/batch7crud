@@ -4,10 +4,7 @@ import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.util.DBConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,7 +25,8 @@ public class StudentDAO {
 
   public Student insert(Student student) throws DataException
   {
-    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(INSERT)) {
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement pstmt =  conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
       pstmt.setString(1, student.getFirstName());
       pstmt.setString(2, student.getMiddleName());
       pstmt.setString(3, student.getLastName());
