@@ -28,9 +28,9 @@ public class AuthenticationFilter implements javax.servlet.Filter {
     HttpServletRequest req = (HttpServletRequest) request;
     HttpServletResponse resp = (HttpServletResponse) response;
     HttpSession session = req.getSession();
-    
+
     String user = (String) session.getAttribute("user");
-    
+
     if (user == null && !loginActionURI.equals(req.getRequestURI())) {
       RequestDispatcher rd = req.getRequestDispatcher(CommonConstant.LOGIN_PAGE);
       rd.forward(req, resp);

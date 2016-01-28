@@ -1,8 +1,25 @@
 package com.lftechnology.batch7crud.controller;
 
-import static com.lftechnology.batch7crud.constant.CommonConstant.*;
-
-import static com.lftechnology.batch7crud.constant.StudentConstant.*;
+import static com.lftechnology.batch7crud.constant.CommonConstant.CREATE;
+import static com.lftechnology.batch7crud.constant.CommonConstant.DELETE;
+import static com.lftechnology.batch7crud.constant.CommonConstant.EDIT;
+import static com.lftechnology.batch7crud.constant.CommonConstant.INTERNAL_SERVER_ERROR;
+import static com.lftechnology.batch7crud.constant.CommonConstant.LIST;
+import static com.lftechnology.batch7crud.constant.CommonConstant.MESSAGE;
+import static com.lftechnology.batch7crud.constant.CommonConstant.NUMBER_OF_PAGES;
+import static com.lftechnology.batch7crud.constant.CommonConstant.PAGE_NOT_FOUND;
+import static com.lftechnology.batch7crud.constant.CommonConstant.PAGE_NUMBER;
+import static com.lftechnology.batch7crud.constant.CommonConstant.RECORDS_PER_PAGE;
+import static com.lftechnology.batch7crud.constant.CommonConstant.SHOW;
+import static com.lftechnology.batch7crud.constant.StudentConstant.CREATE_PAGE;
+import static com.lftechnology.batch7crud.constant.StudentConstant.EDIT_PAGE;
+import static com.lftechnology.batch7crud.constant.StudentConstant.LIST_PAGE;
+import static com.lftechnology.batch7crud.constant.StudentConstant.NAME;
+import static com.lftechnology.batch7crud.constant.StudentConstant.ROLL;
+import static com.lftechnology.batch7crud.constant.StudentConstant.SHOW_PAGE;
+import static com.lftechnology.batch7crud.constant.StudentConstant.STUDENT;
+import static com.lftechnology.batch7crud.constant.StudentConstant.STUDENT_LIST;
+import static com.lftechnology.batch7crud.constant.StudentConstant.STUDENT_LIST_CONTROLLER;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -40,30 +57,33 @@ public class StudentController extends CustomHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    validateURL(request);
     try {
       processRequestForGet(request, response);
-    } catch (DataException | IOException | ServletException e) {
+    } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-      show500(request, response, e);
+      throw new ServletException(INTERNAL_SERVER_ERROR);
     }
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    validateURL(request);
     try {
       processRequestForPost(request, response);
-    } catch (DataException | IOException | ServletException e) {
+    } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-      show500(request, response, e);
+      throw new ServletException(INTERNAL_SERVER_ERROR);
     }
   }
 
   private void processRequestForGet(HttpServletRequest request, HttpServletResponse response)
       throws DataException, ServletException, IOException {
     String action = getAction(request);
+    
     switch (action) {
     case LIST:
       list(request, response);
@@ -78,7 +98,6 @@ public class StudentController extends CustomHttpServlet {
       edit(request, response);
       break;
     default:
-      show404(request, response);
       break;
     }
   }
@@ -87,18 +106,19 @@ public class StudentController extends CustomHttpServlet {
       throws ServletException, IOException, DataException {
     String action = getAction(request);
     switch (action) {
-    case DELETE:
-      deleteProcess(request, response);
-      break;
     case CREATE:
       createProcess(request, response);
       break;
+
+    case DELETE:
+      deleteProcess(request, response);
+      break;
+
     case EDIT:
       editProcess(request, response);
       break;
+
     default:
-      show404(request, response);
-      break;
     }
   }
 
@@ -109,7 +129,7 @@ public class StudentController extends CustomHttpServlet {
     try {
       page = getPageNumber(request);
     } catch (NumberFormatException e) {
-      show404(request, response);
+      throw new ServletException(PAGE_NOT_FOUND);
     }
 
     List<Student> studentList = studentService.fetch(page, RECORDS_PER_PAGE);
@@ -118,8 +138,7 @@ public class StudentController extends CustomHttpServlet {
     int numberOfPages = (int) Math.ceil(count / (float) RECORDS_PER_PAGE);
 
     if (page != 1 && page > numberOfPages) {
-      show404(request, response);
-      return;
+      throw new ServletException(PAGE_NOT_FOUND);
     }
 
     request.setAttribute(STUDENT_LIST, studentList);
@@ -135,13 +154,12 @@ public class StudentController extends CustomHttpServlet {
       Student student = studentService.fetchStudentById(id);
 
       if (student == null) {
-        show404(request, response);
-        return;
+        throw new ServletException(PAGE_NOT_FOUND);
       }
       request.setAttribute(STUDENT, student);
       request.getRequestDispatcher(SHOW_PAGE).forward(request, response);
     } catch (NumberFormatException e) {
-      show404(request, response);
+      throw new ServletException(PAGE_NOT_FOUND);
     }
   }
 
@@ -185,13 +203,12 @@ public class StudentController extends CustomHttpServlet {
       Student student = studentService.fetchStudentById(id);
 
       if (student == null) {
-        show404(request, response);
-        return;
+        throw new ServletException(PAGE_NOT_FOUND);
       }
       request.setAttribute(STUDENT, student);
       request.getRequestDispatcher(EDIT_PAGE).forward(request, response);
     } catch (NumberFormatException e) {
-      show404(request, response);
+      throw new ServletException(PAGE_NOT_FOUND);
     }
   }
 

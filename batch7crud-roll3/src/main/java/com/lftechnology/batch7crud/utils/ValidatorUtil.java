@@ -1,6 +1,10 @@
 package com.lftechnology.batch7crud.utils;
 
 public abstract class ValidatorUtil {
+  private ValidatorUtil() {
+
+  }
+
   public static boolean isEmpty(String value) {
     if (value == null || value.trim().isEmpty()) {
       return true;

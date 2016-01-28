@@ -33,13 +33,10 @@ public class AuthenticationDao {
         }
         return number == 1;
       }
-    } catch (SQLException e) {
+    } catch (SQLException | NoSuchAlgorithmException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
       throw new DataException(e.getMessage());
-    } catch (NoSuchAlgorithmException e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
-    return false;
   }
 }
