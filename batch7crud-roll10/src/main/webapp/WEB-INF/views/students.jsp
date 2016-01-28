@@ -51,7 +51,7 @@
 
 <a href="students/create">add student</a>
 
-
+<script src="js/index.js"></script>
 <script type="text/javascript">
   var deleteBtn = document.querySelectorAll("a.delete");
 

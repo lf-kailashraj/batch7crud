@@ -23,6 +23,8 @@ public class AuthenticationServlet extends CustomHttpServlet{
   private static AuthenticationService authenticationService = new AuthenticationService();
   private static final Logger LOGGER = Logger.getLogger(AuthenticationServlet.class.getName());
   private static final String USER = "user";
+  private static final String USERNAME = "username";
+  private static final String PASSWORD = "password";
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -40,8 +42,8 @@ public class AuthenticationServlet extends CustomHttpServlet{
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-    String username = req.getParameter("username");
-    String password = req.getParameter("password");
+    String username = req.getParameter(USERNAME);
+    String password = req.getParameter(PASSWORD);
 
     User user = null;
     try {

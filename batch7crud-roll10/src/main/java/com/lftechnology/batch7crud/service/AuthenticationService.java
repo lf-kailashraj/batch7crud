@@ -4,8 +4,6 @@ import com.lftechnology.batch7crud.dao.AuthenticationDao;
 import com.lftechnology.batch7crud.entity.User;
 import com.lftechnology.batch7crud.exception.DataException;
 
-import java.security.MessageDigest;
-
 /**
  * @Author binodnme
  * Created on 1/27/16

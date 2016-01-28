@@ -12,7 +12,6 @@
   <title>error</title>
 </head>
 <body>
-<div>error</div>
-<p>${errorMessage}</p>
+<div><h1>PAGE NOT FOUND</h1></div>
 </body>
 </html>

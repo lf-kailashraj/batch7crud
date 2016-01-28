@@ -28,10 +28,49 @@ public abstract class CustomHttpServlet extends HttpServlet {
 
   public String[] params(HttpServletRequest req) {
     String servletPath = req.getPathInfo();
+
     if (servletPath == null) {
       return new String[] {};
     } else {
       return servletPath.split("/");
     }
+  }
+
+  public String paramsTest(HttpServletRequest req){
+    String servletPath = req.getPathInfo();
+
+    if(servletPath == null || "/".equalsIgnoreCase(servletPath)){
+      return PageConstant.LIST;
+    }
+
+    String[] urlTokens = servletPath.split("/");
+
+    if(urlTokens.length == 2 && PageConstant.CREATE.equalsIgnoreCase(urlTokens[1])){
+      return PageConstant.CREATE;
+    }
+    if(urlTokens.length == 2 && PageConstant.LIST.equalsIgnoreCase(urlTokens[1])){
+      return PageConstant.LIST;
+    }
+    if(urlTokens.length == 3 && PageConstant.EDIT.equalsIgnoreCase(urlTokens[2])){
+
+      try{
+        Integer.parseInt(urlTokens[1]);
+        return PageConstant.EDIT;
+      }catch (NumberFormatException e){
+        return null;
+      }
+
+    }
+    if(urlTokens.length == 3 && PageConstant.DELETE.equalsIgnoreCase(urlTokens[2])){
+      try{
+        Integer.parseInt(urlTokens[1]);
+        return PageConstant.DELETE;
+      }catch (NumberFormatException e){
+        return null;
+      }
+    }
+
+    return null;
+
   }
 }

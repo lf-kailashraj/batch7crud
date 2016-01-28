@@ -8,11 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <base href="${pageContext.request.contextPath}/">
     <title>Login</title>
+    <%--<link type="text/css" rel="stylesheet" href="/css/index.css">--%>
 </head>
 <body>
     <div>
-        <p>login</p>
+        <p>login${pageContext.request.contextPath}</p>
         <div>
             <form action="/auth/login" method="post">
                 <label>username</label> <input type="text" name="username"><br>
@@ -21,5 +23,7 @@
             </form>
         </div>
     </div>
+
+    <%--<script src="static/js/index.js"></script>--%>
 </body>
 </html>

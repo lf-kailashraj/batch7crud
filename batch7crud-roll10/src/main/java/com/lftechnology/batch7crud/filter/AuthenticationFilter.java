@@ -30,8 +30,8 @@ public class AuthenticationFilter implements Filter{
     User user = (User) session.getAttribute("user");
 
     if (user == null && !loginActionUri.equals(req.getRequestURI())){
-      RequestDispatcher rd = req.getRequestDispatcher(PageConstant.LOGIN);
-      rd.forward(request, response);
+      HttpServletResponse resp = (HttpServletResponse) response;
+      resp.sendRedirect(PageConstant.LOGIN_URL);
       return;
     }
 
