@@ -14,12 +14,13 @@
 <body>
 
 <form action="authenticate" method="post">
-  username: <input type="text" name="name">
+  Username: <input type="text" name="name">
   <br/>
-  password: <input type="password" name="password">
+  Password: <input type="password" name="password">
   <br/>
-  <input type="submit">
+  <input type="submit" value = "Log In">
 </form>
+${error}
 
 </body>
 </html>

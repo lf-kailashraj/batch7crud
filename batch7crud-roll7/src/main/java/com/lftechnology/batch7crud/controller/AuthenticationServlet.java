@@ -34,6 +34,7 @@ public class AuthenticationServlet extends HttpServlet {
         session.setAttribute("user", username);
         response.sendRedirect(request.getContextPath() + "/");
       } else {
+        request.setAttribute("error","Invalid Combination");
         request.getRequestDispatcher(CommonConstants.LOG_IN_VIEW).forward(request, response);
       }
 

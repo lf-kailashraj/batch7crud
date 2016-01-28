@@ -17,6 +17,7 @@ public class UserFilter implements Filter {
     LOGIN_ACTION_URI = fConfig.getInitParameter("loginActionURI");
   }
 
+  @Override
   public void destroy() {
   }
 
@@ -30,7 +31,6 @@ public class UserFilter implements Filter {
       rd.forward(request, response);
       return;
     }
-
     chain.doFilter(request, response);
   }
 }

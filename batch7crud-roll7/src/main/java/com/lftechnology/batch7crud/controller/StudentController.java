@@ -126,21 +126,23 @@ public class StudentController extends CommonHttpServlet{
     throws ServletException, IOException, DataException {
 
     Map<String,String> studentMap = createHashMapFromInputs(request);
-    Student student = null;
+    studentMap.put("id",String.valueOf(id));
+    Student student = new Student();
 
     try {
       StudentFactory studentFactory = new StudentFactory();
       student = studentFactory.createObject(studentMap);
       student.setId(id);
 
-      request.setAttribute("student", student);
+      request.setAttribute("student", studentMap);
       studentService.update(student);
       response.sendRedirect(request.getContextPath() + "/" + CommonConstants.LIST_URL);
     } catch (ValidatorException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute("error", e.getErrors());
 
-      request.setAttribute("student", studentService.fetchById(id));
+//      request.setAttribute("student", studentService.fetchById(id));
+      request.setAttribute("student", studentMap);
       request.getServletContext().getRequestDispatcher(CommonConstants.EDIT_ENTRY_VIEW).forward(request, response);
     }
 
