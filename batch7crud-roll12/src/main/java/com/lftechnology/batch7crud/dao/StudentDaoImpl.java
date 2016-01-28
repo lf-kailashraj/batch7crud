@@ -15,7 +15,7 @@ import com.lftechnology.batch7crud.util.DBConnection;
 public class StudentDaoImpl implements StudentDao {
     private static final Logger LOGGER = Logger.getLogger(StudentDaoImpl.class.getName());
 
-    private static final String INSERT = "INSERT INTO studentinfo (fname,lname,age,address) VALUES (?,?,?,?,?)";
+    private static final String INSERT = "INSERT INTO studentinfo (fname,lname,age,address) VALUES (?,?,?,?)";
     private static final String VIEW = "SELECT * FROM studentinfo LIMIT ? OFFSET ?";
     private static final String UPDATE = "UPDATE studentinfo SET fname=?, lname=?, age=?, address=? WHERE id=?";
     private static final String VIEW_BY_ID = "SELECT * FROM studentinfo WHERE id=?";
@@ -62,6 +62,7 @@ public class StudentDaoImpl implements StudentDao {
             preparedStatement.setString(2, student.getLastName());
             preparedStatement.setInt(3, student.getAge());
             preparedStatement.setString(4, student.getAddress());
+            preparedStatement.setInt(5, student.getStudentID());
             preparedStatement.executeUpdate();
             preparedStatement.close();
             connection.close();
@@ -73,8 +74,8 @@ public class StudentDaoImpl implements StudentDao {
     public List<Student> getAllStudents(int page, int limit){
         List<Student> studentsList = new ArrayList<Student>();
         try {
-            Connection connection = DBConnection.getDBConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(VIEW);
+            Connection connection = DBConnection.getDBConnection(); // NOSONAR
+            PreparedStatement preparedStatement = connection.prepareStatement(VIEW); //NOSONAR
             int startOffset = (page - 1) * limit;
             preparedStatement.setInt(1, limit);
             preparedStatement.setInt(2, startOffset);
@@ -82,8 +83,8 @@ public class StudentDaoImpl implements StudentDao {
             while( resultSet.next() ) {
                 Student student = new Student();
                 student.setStudentID( resultSet.getInt( "id" ) );
-                student.setFirstName( resultSet.getString( "firstName" ) );
-                student.setLastName( resultSet.getString( "lastName" ) );
+                student.setFirstName( resultSet.getString( "fName" ) );
+                student.setLastName( resultSet.getString( "lName" ) );
                 student.setAge( resultSet.getInt( "age" ) );
                 student.setAddress( resultSet.getString( "address" ) );
                 studentsList.add(student);
@@ -91,7 +92,7 @@ public class StudentDaoImpl implements StudentDao {
             resultSet.close();
             preparedStatement.close();
             connection.close();
-        } catch (SQLException e) {
+            } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         return studentsList;
@@ -112,6 +113,8 @@ public class StudentDaoImpl implements StudentDao {
                 student.setAge(rs.getInt(4));
                 student.setAddress(rs.getString(5));
             }
+            preparedStatement.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -120,11 +123,13 @@ public class StudentDaoImpl implements StudentDao {
     public int countStudents(){
         int totalStudents = 0;
         try {
-            Connection connection = DBConnection.getDBConnection();
-            PreparedStatement preparedStatement =  connection.prepareStatement(COUNT_STUDENTS);
+            Connection connection = DBConnection.getDBConnection(); // NOSONAR
+            PreparedStatement preparedStatement =  connection.prepareStatement(COUNT_STUDENTS); // NOSONAR
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next())
                 totalStudents = resultSet.getInt(1);
+            preparedStatement.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }

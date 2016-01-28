@@ -8,19 +8,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <title>Edit Details</title>
+  <title>Update Details</title>
   <base href="${pageContext.request.contextPath}/"/>
 </head>
 <body>
-<form method="POST" action="students/${student.getStudentId()}/edit">
+<form method="POST" action="students/${student.studentID}/update">
   First Name :
-  <input type="text" value="${student.getFirstName()}" name="fname"/>
+  <input type="text" value="${student.firstName}" name="firstName"/>
   Last Name :
-  <input type="text" value="${student.getLastName()}" name="lname"/>
+  <input type="text" value="${student.lastName}" name="lastName"/>
   Age :
-  <input type="text" value="${student.getAge()}" name="age"/>
+  <input type="text" value="${student.age}" name="age"/>
   Address :
-  <input type="text" value="${student.getAddress()}" name="address"/>
+  <input type="text" value="${student.address}" name="address"/>
   <input type="submit"/>
 </form>
 </body>

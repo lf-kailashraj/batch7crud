@@ -22,33 +22,25 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${student}" var="student" varStatus="counter">
+    <c:forEach items="${studentList}" var="student" varStatus="counter">
         <tr>
-            <td><a href="students/${student.getStudentId()}/view" class="view">${counter.count+(page-1)*10}</a></td>
-            <td>${student.studentID}/>
+            <td>${student.studentID}
             </td>
-            <td>{student.firstName}/>
+            <td>${student.firstName}
             </td>
-            <td>${student.lastName}/>
+            <td>${student.lastName}
             </td>
-            <td>${student.age}/>
+            <td>${student.age}
             </td>
-            <td>${student.address}/>
+            <td>${student.address}
             </td>
-            <td><a href="students/${student.getStudentId()}/edit" class="edit">Edit</a></td>
-            <td><a href="students/${student.getStudentId()}/delete" class="delete">Delete</a></td>
+            <td><a href="students/${student.studentID}/update" class="update">Update</a></td>
+            <td><a href="students/${student.studentID}/delete" class="delete">Delete</a></td>
+            <td><a href="students/${student.studentID}/view" class="view">View</a></td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-<c:if test="${page>1}"><span><a href="students?page=${page-1}">Previous</a></span> </c:if>
-    <span>
-        <c:forEach begin="1" end="${totalPages}" var="counter">
-            <c:if test="${page == counter}"><span> ${counter} </span></c:if>
-            <c:if test="${page != counter}"><span><a href="students?page=${counter}"> ${counter} </a></span></c:if>
-        </c:forEach>
-    </span>
-<c:if test="${page<totalPages}"><span><a href="students?page=${page+1}">Next</a></span> </c:if>
 <script>
     var deleteElement = document.getElementsByClassName("delete");
     for (var i = 0; i < deleteElement.length; i++) {
@@ -65,9 +57,9 @@
     }
     ;
 
-    var editElement = document.getElementsByClassName("edit");
-    for (var i = 0; i < deleteElement.length; i++) {
-        editElement[i].onclick = function (e) {
+    var updateElement = document.getElementsByClassName("update");
+    for (var i = 0; i < updateElement.length; i++) {
+        updateElement[i].onclick = function (e) {
             e.preventDefault();
             var form = document.createElement('form');
             var destinationLink = e.target.getAttribute("href");
@@ -76,8 +68,6 @@
             form.submit();
         };
     }
-    ;
-
     var viewElement = document.getElementsByClassName("view");
     for (var i = 0; i < viewElement.length; i++) {
         viewElement[i].onclick = function (e) {
@@ -88,7 +78,7 @@
             form.setAttribute("action", destinationLink);
             form.submit();
         };
-    };
+    }
 </script>
 </body>
 </html>

@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <title>SMS | ${student.getFirstName()} | Details</title>
+  <title>SMS | ${student.firstName} | Details</title>
   <base href="${pageContext.request.contextPath}/"/>
 </head>
 <body>
@@ -16,18 +16,32 @@
 
   <div>
     <label>Name: </label>
-    <span>${student.getFirstName()} ${student.getLastName()}</span>
+    <span>${student.firstName} ${student.lastName}</span>
   </div>
   <div>
     <label>Age: </label>
-    <span>${student.getAge()}</span>
+    <span>${student.age}</span>
   </div>
   <div>
     <label>Address: </label>
-    <span>${student.getAddress()}</span>
+    <span>${student.address}</span>
   </div>
-  <a href="students/${student.getId()}/edit" class="edit">Edit info</a>
-  <a href="students/${student.getId()}/delete" class="delete">Delete record</a>
-
+  <a href="students/${student.studentID}/update" class="update">Update info</a>
+  <a href="students/${student.studentID}/delete" class="delete">Delete record</a>
+<script>
+  var deleteElement = document.getElementsByClassName("delete");
+  for (var i = 0; i < deleteElement.length; i++) {
+    deleteElement[i].onclick = function (e) {
+      e.preventDefault();
+      var form = document.createElement('form');
+      var destinationLink = e.target.getAttribute("href");
+      form.setAttribute("method", "POST");
+      form.setAttribute("action", destinationLink);
+      if (confirm("Are you sure you want to delete this record?") == true) {
+        form.submit();
+      }
+    };
+  }
+</script>
 </body>
 </html>
