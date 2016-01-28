@@ -24,17 +24,17 @@ public class EmployeeDAOImpl {
     private static final String READ_BY_ID_QUERY = "SELECT * FROM employee WHERE id = ?";
     private static final String READ_ALL_QUERY = "SELECT * FROM employee LIMIT ? OFFSET ?";
     private static final String COUNT_QUERY = "SELECT COUNT(*) FROM employee";
+    private Employee emp = null;
 
     public List<Employee> fetch(int limit, int offSet) throws DataException {
         List<Employee> empList = new ArrayList<Employee>();
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(READ_ALL_QUERY)) {
-            Employee emp = new Employee();
             ps.setInt(1, limit);
             ps.setInt(2, offSet);
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
+                emp = new Employee();
                 empList.add(setObjectAttribute(rs, emp));
             }
             return empList;
@@ -46,12 +46,11 @@ public class EmployeeDAOImpl {
 
     public Employee fetchById(int id) throws DataException {
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(READ_BY_ID_QUERY)) {
-            Employee emp = new Employee();
             ps.setInt(1, id);
-
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                emp = setObjectAttribute(rs,emp);
+                emp = new Employee();
+                emp = setObjectAttribute(rs, emp);
             }
             return emp;
         } catch (SQLException e) {
@@ -125,5 +124,4 @@ public class EmployeeDAOImpl {
         ps.setString(5, employee.getPassword());
         return ps;
     }
-
 }

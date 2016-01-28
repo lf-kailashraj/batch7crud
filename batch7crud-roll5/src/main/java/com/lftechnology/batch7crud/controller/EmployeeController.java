@@ -29,47 +29,49 @@ public class EmployeeController extends CustomHttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String path = request.getPathInfo();
-        if (path != null) {
-            String[] pathParts = path.split("/");
+        actionByURLForGet(request, response);
+    }
 
-            if (pathParts.length == 2 && NormalConstants.CREATE.equals(pathParts[1]))
-                create(request, response);
-
-            else if (pathParts.length == 3 && NormalConstants.EDIT.equals(pathParts[2])) {
-                edit(request, response);
-            }
-
-            else
-                show404(request, response);
-        }
-
-        else {
+    private void actionByURLForGet(HttpServletRequest request, HttpServletResponse response) {
+        String action = getAction(request);
+        switch (action) {
+        case NormalConstants.LIST:
             fetchData(request, response);
-        }
+            break;
 
+        case NormalConstants.EDIT:
+            edit(request, response);
+            break;
+
+        case NormalConstants.CREATE:
+            create(request, response);
+            break;
+
+        default:
+            show404(request, response);
+            break;
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String path = request.getPathInfo();
-        if (path != null) {
-            String[] pathParts = path.split("/");
+        String action = getAction(request);
+        switch (action) {
+        case NormalConstants.EDIT:
+            editProcess(request, response);
+            break;
 
-            if (NormalConstants.CREATE_PROCESS.equals(pathParts[1])) {
-                createProcess(request, response);
-            }
+        case NormalConstants.CREATE:
+            createProcess(request, response);
+            break;
 
-            else if (NormalConstants.EDIT_PROCESS.equals(pathParts[2])) {
-                editProcess(request, response);
-            }
+        case NormalConstants.DELETE_PROCESS:
+            deleteProcess(request, response);
+            break;
 
-            else if (NormalConstants.DELETE_PROCESS.equals(pathParts[2])) {
-                deleteProcess(request, response);
-            }
-
-        } else {
-            fetchData(request, response);
+        default:
+            show404(request, response);
+            break;
         }
     }
 
@@ -101,7 +103,7 @@ public class EmployeeController extends CustomHttpServlet {
             int employeeId = parameterValueAsInt(request, 2);
             emp = employeeFactory.createObjects(setDataAttribute(request));
             emp.setId(employeeId);
-            employeeService.edit(emp);       
+            employeeService.edit(emp);
             response.sendRedirect(UrlConstants.EMPLOYEE_LIST_URL);
         } catch (ValidationExceptions e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -115,7 +117,7 @@ public class EmployeeController extends CustomHttpServlet {
 
     }
 
-    private void create(HttpServletRequest request, HttpServletResponse response){
+    private void create(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.getRequestDispatcher(UrlConstants.EMPLOYEE_CREATE_URL).forward(request, response);
         } catch (Exception e) {
@@ -145,7 +147,6 @@ public class EmployeeController extends CustomHttpServlet {
             Double employeeCount = (double) employeeService.count();
             int pageNo = pageNumber(request);
             employeeList = employeeService.fetch(10, (pageNo - 1) * 10);
-
             request.setAttribute(NormalConstants.EMPLOYEE_LIST, employeeList);
             request.setAttribute(NormalConstants.PAGE_NO, pageNo);
             request.setAttribute(NormalConstants.NO_OF_EMPLOYEES, employeeCount);

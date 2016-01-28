@@ -6,6 +6,7 @@ public class NormalConstants {
     public static final String PAGE = "page";
     public static final String CREATE = "create";
     public static final String EDIT = "edit";
+    public static final String LIST = "list";
     public static final String DELETE_PROCESS = "deleteProcess";
     public static final String EDIT_PROCESS = "editProcess";
     public static final String CREATE_PROCESS = "createProcess";
@@ -16,6 +17,8 @@ public class NormalConstants {
     public static final String NO_RECORDS_IN_PAGE = "noRecordsInPage";
     public static final String DATABASE = "jdbc/EmployeeManagement";
     public static final String SQL_ERROR_MESSAGE = "Sql error"; 
+    public static final String LOGIN = "login";
+    public static final String LOGOUT = "logout";
     
     private NormalConstants() {
 

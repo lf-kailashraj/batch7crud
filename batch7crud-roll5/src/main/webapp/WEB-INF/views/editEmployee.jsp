@@ -11,17 +11,17 @@
 <body>
 
 	<h1>Edit Employee Form</h1>	
-	<form action="employees/${employee.getId()}/editProcess" method="post">
+	<form action="employees/${employee.getId()}/edit" method="post">
 		First Name:<input type="text" name="firstName"
-			value="${employee.getFirstName()}" id="fistName"/> ${message.firstName}<br>
+			value="${employee.getFirstName()}"/> ${message.firstName}<br>
 		Last Name:<input type="text" name="lastName"
-			value="${employee.getLastName()}" id="lastName"/> ${message.lastName}<br>
+			value="${employee.getLastName()}"/> ${message.lastName}<br>
 		Password:<input type="password" name="password"
-			value="${employee.getPassword()}" id="password"/> ${message.pass}<br>
+			value="${employee.getPassword()}"/> ${message.pass}<br>
 		Department:<input type="text" name="department"
-			value="${employee.getDepartment()}" id="department"/> ${message.department}<br>
+			value="${employee.getDepartment()}"/> ${message.department}<br>
 		Address:<input type="text" name="address"
-			value="${employee.getAddress()}" id="address"/> ${message.address}<br> 
+			value="${employee.getAddress()}"/> ${message.address}<br> 
 			<input type="submit" name="create" value="Submit">
 	</form>
 </body>

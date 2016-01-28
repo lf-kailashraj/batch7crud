@@ -17,13 +17,15 @@ public class AdminDAOImpl {
 
     public Admin login(String name, String password) throws DataException {
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(AUTHENTICATE_USER)) {
-            Admin admin = new Admin();
+            Admin admin = null;
             ps.setString(1, name);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
+                admin = new Admin();
                 admin = setObjectAttribute(rs, admin);
             }
+            
             return admin;
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

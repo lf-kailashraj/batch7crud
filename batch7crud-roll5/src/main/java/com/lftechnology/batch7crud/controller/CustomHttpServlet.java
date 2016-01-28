@@ -60,4 +60,20 @@ public abstract class CustomHttpServlet extends HttpServlet {
         String[] paths = parameterValues(request);
         return Integer.parseInt(paths[index]);
     }
+
+    public String getAction(HttpServletRequest request) {
+        String[] pathParts = parameterValues(request);
+        String action = "";
+        if (pathParts.length == 2) {
+            action = NormalConstants.LIST;
+        } else if (pathParts.length == 3 && NormalConstants.CREATE.equals(pathParts[2])) {
+            action = NormalConstants.CREATE;
+        } else if (pathParts.length == 4 && NormalConstants.EDIT.equals(pathParts[3])) {
+            action = NormalConstants.EDIT;
+        } else if (pathParts.length == 4 && NormalConstants.DELETE_PROCESS.equals(pathParts[3])) {
+            action = NormalConstants.DELETE_PROCESS;
+        }
+        return action;
+    }
+
 }

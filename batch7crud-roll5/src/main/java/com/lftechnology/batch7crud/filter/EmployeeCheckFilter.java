@@ -29,7 +29,9 @@ public class EmployeeCheckFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
-        String employeeName = (String) session.getAttribute("employeeName");
+        String employeeName = (String) session.getAttribute("name");
+        System.out.println(request.getRequestURI());
+        System.out.println(request.getContextPath() + LOGIN_ACTION_URI);
         if (employeeName == null && !request.getRequestURI().equals(request.getContextPath() + LOGIN_ACTION_URI)) {
             request.getRequestDispatcher(UrlConstants.LOGIN_PAGE).forward(request, response);
         } else
