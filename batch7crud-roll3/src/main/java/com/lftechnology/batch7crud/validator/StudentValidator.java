@@ -6,17 +6,18 @@ import java.util.Map;
 import static com.lftechnology.batch7crud.constant.StudentConstant.*;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.ValidationException;
-import com.lftechnology.batch7crud.utils.ValidatorUtil;
+import static com.lftechnology.batch7crud.utils.ValidatorUtil.*;
 
-public class StudentValidator extends ValidatorUtil implements Validator<Student> {
+public class StudentValidator implements Validator<Student> {
 
   @Override
   public void validateInputs(Map inputs) throws ValidationException {
     Map<String, String> errors = new HashMap<>();
     String roll = (String) inputs.get(ROLL);
 
-    if (!isInteger(roll))
+    if (!isInteger(roll)) {
       errors.put(ROLL, INVALID_ROLL_MESSAGE);
+    }
     if (!errors.isEmpty()) {
       ValidationException exception = new ValidationException();
       exception.setErrors(errors);

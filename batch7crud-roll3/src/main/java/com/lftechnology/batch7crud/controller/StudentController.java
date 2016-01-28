@@ -33,16 +33,16 @@ import com.lftechnology.batch7crud.validator.StudentValidator;
  */
 @WebServlet("/students/*")
 public class StudentController extends CustomHttpServlet {
-  private static StudentService studentService = new StudentService();
-  private static StudentValidator studentValidator = new StudentValidator();
-  private static StudentFactory studentFactory = new StudentFactory();
+  private StudentService studentService = new StudentService();
+  private StudentValidator studentValidator = new StudentValidator();
+  private StudentFactory studentFactory = new StudentFactory();
 
   private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) {
     try {
-      checkRequestForGet(request, response);
+      processRequestForGet(request, response);
     } catch (DataException | IOException | ServletException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -53,7 +53,7 @@ public class StudentController extends CustomHttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) {
     try {
-      checkRequestForPost(request, response);
+      processRequestForPost(request, response);
     } catch (DataException | IOException | ServletException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -61,34 +61,44 @@ public class StudentController extends CustomHttpServlet {
     }
   }
 
-  private void checkRequestForGet(HttpServletRequest request, HttpServletResponse response)
+  private void processRequestForGet(HttpServletRequest request, HttpServletResponse response)
       throws DataException, ServletException, IOException {
-    String[] parameters = parameterValues(request);
-    if (parameters.length == 2) {
+    String action = getAction(request);
+    switch (action) {
+    case LIST:
       list(request, response);
-    } else if (parameters.length == 3 && (CREATE).equals(parameters[2])) {
-      create(request, response);
-    } else if (parameters.length == 4 && (EDIT).equals(parameters[3])) {
-      edit(request, response);
-    } else if (parameters.length == 3) {
+      break;
+    case SHOW:
       show(request, response);
-    } else {
+      break;
+    case CREATE:
+      create(request, response);
+      break;
+    case EDIT:
+      edit(request, response);
+      break;
+    default:
       show404(request, response);
+      break;
     }
   }
 
-  private void checkRequestForPost(HttpServletRequest request, HttpServletResponse response)
+  private void processRequestForPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException, DataException {
-    String[] parameters = parameterValues(request);
-
-    if (parameters.length == 3 && (CREATE).equals(parameters[2])) {
-      createProcess(request, response);
-    } else if (parameters.length == 4 && (EDIT).equals(parameters[3])) {
-      editProcess(request, response);
-    } else if (parameters.length == 4 && (DELETE).equals(parameters[3])) {
+    String action = getAction(request);
+    switch (action) {
+    case DELETE:
       deleteProcess(request, response);
-    } else {
+      break;
+    case CREATE:
+      createProcess(request, response);
+      break;
+    case EDIT:
+      editProcess(request, response);
+      break;
+    default:
       show404(request, response);
+      break;
     }
   }
 

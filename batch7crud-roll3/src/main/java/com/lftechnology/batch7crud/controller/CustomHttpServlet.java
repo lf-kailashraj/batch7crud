@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lftechnology.batch7crud.utils.ValidatorUtil;
+
 import static com.lftechnology.batch7crud.constant.CommonConstant.*;
 
 /**
@@ -60,5 +62,24 @@ public abstract class CustomHttpServlet extends HttpServlet {
     } else {
       return 1;
     }
+  }
+
+  protected String getAction(HttpServletRequest request) {
+    String[] parameters = parameterValues(request);
+    String action = "";
+
+    if (parameters.length == 2) {
+      action = LIST;
+    } else if (parameters.length == 4 && EDIT.equals(parameters[3])) {
+      action = EDIT;
+    } else if (parameters.length == 4 && DELETE.equals(parameters[3])) {
+      action = DELETE;
+    } else if (parameters.length == 3 && ValidatorUtil.isInteger(parameters[2])) {
+      action = SHOW;
+    } else if (parameters.length == 3) {
+      action = parameters[parameters.length - 1];
+    }
+
+    return action;
   }
 }
