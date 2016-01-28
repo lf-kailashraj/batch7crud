@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 @WebServlet(name = "EmployeeController", urlPatterns = { "/employees/*" })
 public class EmployeeController extends CommonHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
-  private static EmployeeService employeeService;
+  private EmployeeService employeeService;  //NOSONAR
 
   public EmployeeController() {
     employeeService = new EmployeeService();

@@ -14,11 +14,10 @@ import java.io.IOException;
  */
 
 public class AuthenticationFilter implements Filter {
-  private String loginActionUri;
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
-    loginActionUri = filterConfig.getInitParameter("loginActionURI");
+    //Initial params can be handled here
   }
 
   @Override
@@ -28,10 +27,10 @@ public class AuthenticationFilter implements Filter {
     HttpServletResponse res = (HttpServletResponse) servletResponse;
     HttpSession session = req.getSession();
     String userSession = (String) session.getAttribute(AttributeConstants.USER);
-    String loginPath = req.getContextPath() + loginActionUri;
+    String loginPath = req.getContextPath() + UrlConstants.LOGIN_ROUTE;
 
     if (userSession == null && !loginPath.equals(req.getRequestURI())) {
-      res.sendRedirect(req.getContextPath() + UrlConstants.LOGIN_ROUTE);
+      res.sendRedirect(loginPath);
     } else
       filterChain.doFilter(servletRequest, servletResponse);
   }
