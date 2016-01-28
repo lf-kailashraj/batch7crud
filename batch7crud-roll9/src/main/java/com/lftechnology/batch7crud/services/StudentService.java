@@ -1,16 +1,11 @@
 package com.lftechnology.batch7crud.services;
 
-import com.lftechnology.batch7crud.constants.AttributeConstant;
-import com.lftechnology.batch7crud.constants.MessageConstant;
 import com.lftechnology.batch7crud.dao.StudentDAO;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.util.StudentValidator;
-
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by sanjay on 1/14/16.
