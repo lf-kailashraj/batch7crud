@@ -28,11 +28,11 @@
         </tr>
         <tr>
             <td>Email:</td>
-            <td><input type="text" name="email" ${employee.getEmail()}>${validationError.email}</td>
+            <td><input type="text" name="email" value="${employee.getEmail()}">${validationError.email}</td>
         </tr>
         <tr>
             <td>Contact Number:</td>
-            <td><input type="number" name="contact" ${employee.getContact()}>${validationError.contact}</td>
+            <td><input type="text" name="contact" value="${employee.getContact()}">${validationError.contact}</td>
         </tr>
         </tbody>
     </table>

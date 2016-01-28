@@ -7,7 +7,10 @@ public class AppConstants {
   public static final String CREATE = "create";
   public static final String EDIT = "edit";
   public static final String DELETE = "delete";
+  public static final String VIEW = "view";
   public static final String EMPLOYEE = "employees";
+  public static final String LOGIN = "login";
+  public static final String LOGOUT = "logout";
   public static final String PAGE_NOT_FOUND_MESSAGE = "Page Not Found";
   public static final String EMAIL_PATTERN =
           "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";

@@ -5,9 +5,9 @@ import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationException;
+import com.lftechnology.batch7crud.factory.EmployeeFactory;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
-import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 @WebServlet(name = "EmployeeController", urlPatterns = { "/employees/*" })
 public class EmployeeController extends CommonHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
-  private static EmployeeService employeeService;
+  private EmployeeService employeeService;  //NOSONAR
 
   public EmployeeController() {
     employeeService = new EmployeeService();
@@ -34,33 +34,42 @@ public class EmployeeController extends CommonHttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String[] pathParts = getPathParameters(request);
-
-    if (pathParts.length == 3 && AppConstants.CREATE.equals(pathParts[2])) {
+    String page = getPageFromPath(request);
+    switch (page) {
+    case AppConstants.CREATE:
       createProcess(request, response);
-    } else if (pathParts.length == 4 && AppConstants.EDIT.equals(pathParts[3])) {
+      break;
+    case AppConstants.EDIT:
       editProcess(request, response);
-    } else if (pathParts.length == 4 && AppConstants.DELETE.equals(pathParts[3])) {
+      break;
+    case AppConstants.DELETE:
       deleteProcess(request, response);
-    } else {
+      break;
+    default:
       displayPageNotFound(request, response);
+      break;
     }
   }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String[] pathParts = getPathParameters(request);
-
-    if (pathParts.length == 2 && AppConstants.EMPLOYEE.equals(pathParts[1])) {
+    String page = getPageFromPath(request);
+    switch (page) {
+    case AppConstants.EMPLOYEE:
       list(request, response);
-    } else if (pathParts.length == 3 && AppConstants.CREATE.equals(pathParts[2])) {
-      create(request, response);
-    } else if (pathParts.length == 4 && AppConstants.EDIT.equals(pathParts[3])) {
+      break;
+    case AppConstants.EDIT:
       edit(request, response);
-    } else if (pathParts.length == 3) {
+      break;
+    case AppConstants.CREATE:
+      create(request, response);
+      break;
+    case AppConstants.VIEW:
       view(request, response);
-    } else {
+      break;
+    default:
       displayPageNotFound(request, response);
+      break;
     }
   }
 
@@ -114,8 +123,8 @@ public class EmployeeController extends CommonHttpServlet {
     Employee employee = null;
     try {
       Map<String, String> inputs = mapParameters(request);
-      EmployeeValidator employeeValidator = new EmployeeValidator();
-      employee = employeeValidator.createObject(inputs);
+      EmployeeFactory employeeFactory = new EmployeeFactory();
+      employee = employeeFactory.createObject(inputs);
 
       employeeService.insert(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
@@ -173,9 +182,8 @@ public class EmployeeController extends CommonHttpServlet {
     Employee employee = null;
     try {
       Map<String, String> inputs = mapParameters(request);
-      EmployeeValidator employeeValidator = new EmployeeValidator();
-      employee = employeeValidator.createObject(inputs);
-
+      EmployeeFactory employeeFactory = new EmployeeFactory();
+      employee = employeeFactory.createObject(inputs);
       employee.setId(id);
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);

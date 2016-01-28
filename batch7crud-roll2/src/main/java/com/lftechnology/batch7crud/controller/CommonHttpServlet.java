@@ -36,4 +36,30 @@ public abstract class CommonHttpServlet extends HttpServlet {
     String[] paths = getPathParameters(request);
     return Integer.parseInt(paths[index]);
   }
+
+  protected String getPageFromPath(HttpServletRequest request) {
+    String[] pathParts = getPathParameters(request);
+    String page = "No Page";
+
+    if (pathParts.length == 2) {
+      page = AppConstants.EMPLOYEE;
+    } else if (pathParts.length == 3) {
+      if (AppConstants.CREATE.equals(pathParts[2])) {
+        page = AppConstants.CREATE;
+      } else if (AppConstants.EMPLOYEE.equals(pathParts[1])) {
+        page = AppConstants.VIEW;
+      } else if (AppConstants.LOGIN.equals(pathParts[2])) {
+        page = AppConstants.LOGIN;
+      } else if (AppConstants.LOGOUT.equals(pathParts[2])) {
+        page = AppConstants.LOGOUT;
+      }
+    } else if (pathParts.length == 4) {
+      if (AppConstants.EDIT.equals(pathParts[3])) {
+        page = AppConstants.EDIT;
+      } else if (AppConstants.DELETE.equals(pathParts[3])) {
+        page = AppConstants.DELETE;
+      }
+    }
+    return page;
+  }
 }
