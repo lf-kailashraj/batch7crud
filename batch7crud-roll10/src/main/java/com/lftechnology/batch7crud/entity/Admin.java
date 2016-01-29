@@ -1,6 +1,5 @@
 package com.lftechnology.batch7crud.entity;
 
-import java.util.Date;
 
 /**
  * Admin class holds the admin credentials for login and status
@@ -10,6 +9,7 @@ import java.util.Date;
  */
 public class Admin extends Person {
   private Integer userId;
+  //other admin specific field will be added here
 
   public Integer getUserId() {
     return userId;

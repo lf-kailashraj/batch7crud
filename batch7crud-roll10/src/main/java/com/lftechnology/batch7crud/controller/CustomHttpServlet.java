@@ -2,11 +2,8 @@ package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.constant.PageConstant;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * This is custom HttpServlet that is used to handle the common operations of all servlets.

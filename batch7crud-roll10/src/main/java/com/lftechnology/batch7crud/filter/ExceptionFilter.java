@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  */
 public class ExceptionFilter implements Filter {
 
-  public static final Logger LOGGER = Logger.getLogger(ExceptionFilter.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(ExceptionFilter.class.getName());
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {   //NOSONAR
 
