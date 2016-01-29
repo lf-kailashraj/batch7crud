@@ -269,8 +269,6 @@ public class EmployeeController extends CommonHttpServlet {
   private String postAction(HttpServletRequest request) {
     String[] parts = getPathParams(request);
     String action;
-    System.out.println(request.getPathInfo());
-    System.out.println(parts.length);
     if (parts.length == 3 && AppConstants.CREATE.equals(parts[2])) {
       action = AppConstants.CREATE;
     }
