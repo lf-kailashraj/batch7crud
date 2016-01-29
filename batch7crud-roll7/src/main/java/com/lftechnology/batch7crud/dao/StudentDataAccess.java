@@ -39,7 +39,7 @@ public class StudentDataAccess {
 
   public List<Student> fetch(int limit, int offset) throws DataException {
     try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(FETCH_ALL)) {
-      List<Student> studentList = new ArrayList<Student>();
+      List<Student> studentList = new ArrayList<>();
       ps.setInt(1, limit);
       ps.setInt(2, offset);
 

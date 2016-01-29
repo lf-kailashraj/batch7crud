@@ -14,5 +14,6 @@
 <div>SMS</div>
 <div><a href="students/newEntry">New Entry</a></div>
 <div><a href="students">View All</a></div>
+<div><a href="logOut">Log Out</a></div>
 </body>
 </html>

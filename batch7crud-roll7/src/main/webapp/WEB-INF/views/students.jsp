@@ -53,6 +53,9 @@
   <a href="students?page=${pageNum + 1}">Next</a>
 </c:if>
 
+
+<div><a href="logOut">Log Out</a></div>
+
 <script>
 
   var deleteBtn = document.getElementsByClassName("delete");

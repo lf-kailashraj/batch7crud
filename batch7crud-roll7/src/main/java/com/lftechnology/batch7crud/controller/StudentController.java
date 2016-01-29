@@ -140,8 +140,6 @@ public class StudentController extends CommonHttpServlet{
     } catch (ValidatorException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute("error", e.getErrors());
-
-//      request.setAttribute("student", studentService.fetchById(id));
       request.setAttribute("student", studentMap);
       request.getServletContext().getRequestDispatcher(CommonConstants.EDIT_ENTRY_VIEW).forward(request, response);
     }

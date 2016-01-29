@@ -11,7 +11,8 @@ import java.util.Map;
  */
 public class StudentValidator implements Validator<Student> {
 
-    public Map<String,String> validate(Student student){
+  @Override
+  public Map<String,String> validate(Student student){
       Map<String,String> errors = new HashMap<>();
 
       if(student.getName() == null || "".equals(student.getName().trim()))

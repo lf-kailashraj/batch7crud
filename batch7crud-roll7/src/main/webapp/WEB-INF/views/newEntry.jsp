@@ -24,5 +24,6 @@
   <%--<p>Error in entered roll</p>--%>
 <%--</c:if>--%>
 <div><a href="students">View All</a></div>
+<div><a href="logOut">Log Out</a></div>
 </body>
 </html>

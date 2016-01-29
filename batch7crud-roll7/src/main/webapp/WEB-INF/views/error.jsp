@@ -15,6 +15,7 @@
 <p>OoPs something went wrong !!!</p>
 <p>${errorMessage}</p>
 <a href="students">View All</a>
+<div><a href="logOut">Log Out</a></div>
 
 </body>
 </html>

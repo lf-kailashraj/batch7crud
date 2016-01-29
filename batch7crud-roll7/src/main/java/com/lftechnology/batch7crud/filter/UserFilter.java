@@ -19,6 +19,7 @@ public class UserFilter implements Filter {
 
   @Override
   public void destroy() {
+    //
   }
 
   @Override
@@ -26,7 +27,7 @@ public class UserFilter implements Filter {
     HttpServletRequest req = (HttpServletRequest) request;
     HttpSession session = req.getSession();
     String user = (String) session.getAttribute("user");
-    if (user == null && !LOGIN_ACTION_URI.equals(req.getRequestURI())){
+    if (user == null && !(req.getContextPath()+LOGIN_ACTION_URI).equals(req.getRequestURI())){
       RequestDispatcher rd = req.getRequestDispatcher(CommonConstants.LOG_IN_VIEW);
       rd.forward(request, response);
       return;

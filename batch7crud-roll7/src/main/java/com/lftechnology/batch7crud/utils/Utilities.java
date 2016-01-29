@@ -1,15 +1,18 @@
-package com.lftechnology.batch7crud.Utils;
+package com.lftechnology.batch7crud.utils;
 
 import com.lftechnology.batch7crud.exception.DataException;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by leapfrog on 1/27/16.
  */
 public class Utilities {
+  private static final Logger LOGGER = Logger.getLogger(Utilities.class.getName());
   private Utilities(){
 
   }
@@ -27,6 +30,7 @@ public class Utilities {
       return hashText;
     }
     catch (NoSuchAlgorithmException e) {
+      LOGGER.log(Level.SEVERE,e.getMessage(),e);
       throw new DataException();
     }
   }
