@@ -12,6 +12,7 @@
 
 	<h1>Employee Management System</h1>
 	<a href="employees">Employees</a>
+	<a href="employeeAuthentication/logout">Log Out</a>
 
 </body>
 </html>

@@ -28,8 +28,8 @@ public class EmployeeAuthenticationController extends CustomHttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getPathInfo();
         if (path != null) {
-            String[] pathParts = path.split("/");
-            if (pathParts.length == 2 && NormalConstants.LOGOUT.equals(pathParts[1])) {
+            String[] pathParts = parameterValues(request);
+            if (pathParts.length == 3 && NormalConstants.LOGOUT.equals(pathParts[2])) {
                 logout(request, response);
             }
         } else {
@@ -42,13 +42,12 @@ public class EmployeeAuthenticationController extends CustomHttpServlet {
         String path = request.getPathInfo();
         if (path != null) {
             String[] pathParts = parameterValues(request);
-            if (pathParts.length == 2 && NormalConstants.LOGIN.equals(pathParts[1])) {
+            if (pathParts.length == 3 && NormalConstants.LOGIN.equals(pathParts[2])) {
                 login(request, response);
             }
         } else {
             show404(request, response);
         }
-
     }
 
     private void login(HttpServletRequest request, HttpServletResponse response) {
@@ -68,20 +67,15 @@ public class EmployeeAuthenticationController extends CustomHttpServlet {
         }
     }
 
-    private void logout(HttpServletRequest request, HttpServletResponse response) {
-        String path = request.getPathInfo();
+    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            if (path != null) {
-                String[] pathParts = parameterValues(request);
-                if (pathParts.length == 2 && NormalConstants.LOGOUT.equals(pathParts[1])) {
-                    HttpSession session = request.getSession();
-                    session.invalidate();
-                    response.sendRedirect(request.getContextPath());
-                }
-            }
-        } catch (Exception e) {
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendRedirect(request.getContextPath());
+        } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show500(request, response, e);
         }
+
     }
 }

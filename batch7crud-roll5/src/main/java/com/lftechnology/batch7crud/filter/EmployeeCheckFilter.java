@@ -15,11 +15,11 @@ import javax.servlet.http.HttpSession;
 import com.lftechnology.batch7crud.constants.UrlConstants;
 
 public class EmployeeCheckFilter implements Filter {
-    private String LOGIN_ACTION_URI;
+    private String loginActionUri;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        LOGIN_ACTION_URI = filterConfig.getInitParameter("loginActionURI");
+    public  void init(FilterConfig filterConfig) throws ServletException {
+        loginActionUri = filterConfig.getInitParameter("loginActionURI");
 
     }
 
@@ -30,17 +30,14 @@ public class EmployeeCheckFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
         String employeeName = (String) session.getAttribute("name");
-        System.out.println(request.getRequestURI());
-        System.out.println(request.getContextPath() + LOGIN_ACTION_URI);
-        if (employeeName == null && !request.getRequestURI().equals(request.getContextPath() + LOGIN_ACTION_URI)) {
+        if (employeeName == null && !request.getRequestURI().equals(request.getContextPath() + loginActionUri)) {
             request.getRequestDispatcher(UrlConstants.LOGIN_PAGE).forward(request, response);
         } else
             chain.doFilter(request, response);
     }
 
     @Override
-    public void destroy() {
-        // TODO Auto-generated method stub
-        
+    public void destroy() { // NOSONAR
+
     }
 }
