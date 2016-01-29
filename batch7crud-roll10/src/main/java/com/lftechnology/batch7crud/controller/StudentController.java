@@ -42,7 +42,7 @@ public class StudentController extends CustomHttpServlet {
 
     String action = paramsTest(req);
     if(action == null){
-      showPageNotFound(req, resp);
+      throw new ServletException(PageConstant.PAGE_NOT_FOUND);
     }
 
     switch (action){
@@ -59,7 +59,7 @@ public class StudentController extends CustomHttpServlet {
       break;
 
     default:
-      showPageNotFound(req, resp);
+      throw new ServletException(PageConstant.PAGE_NOT_FOUND);
     }
   }
 
@@ -68,7 +68,7 @@ public class StudentController extends CustomHttpServlet {
 
     String action = paramsTest(req);
     if(action == null){
-      showPageNotFound(req, resp);
+      throw new ServletException(PageConstant.PAGE_NOT_FOUND);
     }
 
     switch (action){
@@ -86,7 +86,7 @@ public class StudentController extends CustomHttpServlet {
       break;
 
     default:
-      showPageNotFound(req, resp);
+      throw new ServletException(PageConstant.PAGE_NOT_FOUND);
     }
   }
 
@@ -109,7 +109,8 @@ public class StudentController extends CustomHttpServlet {
       req.getServletContext().getRequestDispatcher(PageConstant.STUDENT_LIST_VIEW).forward(req, resp);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      showServerError(req, resp, e);
+
+      throw new ServletException(PageConstant.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -133,7 +134,7 @@ public class StudentController extends CustomHttpServlet {
 
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      showServerError(req, resp, e);
+      throw new ServletException(PageConstant.INTERNAL_SERVER_ERROR);
 
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -149,13 +150,18 @@ public class StudentController extends CustomHttpServlet {
       if(req.getAttribute(STUDENT)==null){
         Integer id = TypeCaster.toInt(req.getPathInfo().split("/")[1]);
         Student student = studentService.fetchById(id);
-        req.setAttribute(STUDENT, student);
+        if(student != null){
+          req.setAttribute(STUDENT, student);
+        }else{
+          throw new ServletException(PageConstant.PAGE_NOT_FOUND);
+        }
+
       }
 
       req.getServletContext().getRequestDispatcher(PageConstant.STUDENT_EDIT_VIEW).forward(req, resp);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      showServerError(req, resp, e);
+      throw new ServletException(PageConstant.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -166,7 +172,7 @@ public class StudentController extends CustomHttpServlet {
       resp.sendRedirect(req.getContextPath() + PageConstant.STUDENT_LIST_URL);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      showServerError(req, resp, e);
+      throw new ServletException(PageConstant.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -190,7 +196,8 @@ public class StudentController extends CustomHttpServlet {
 
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      showServerError(req, resp, e);
+
+      throw new ServletException(PageConstant.INTERNAL_SERVER_ERROR);
 
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -198,7 +205,6 @@ public class StudentController extends CustomHttpServlet {
       req.setAttribute(STUDENT, paramMap);
       req.setAttribute(ERRORS, e.getErrors());
       edit(req, resp);
-
     }
   }
 

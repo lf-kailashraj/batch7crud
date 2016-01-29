@@ -72,6 +72,14 @@ public abstract class CustomHttpServlet extends HttpServlet {
       }
     }
 
+    if(urlTokens.length == 2 && PageConstant.LOGIN.equalsIgnoreCase(urlTokens[1])){
+      return PageConstant.LOGIN;
+    }
+
+    if(urlTokens.length == 2 && PageConstant.LOGOUT.equalsIgnoreCase(urlTokens[1])){
+      return PageConstant.LOGOUT;
+    }
+
     return null;
 
   }

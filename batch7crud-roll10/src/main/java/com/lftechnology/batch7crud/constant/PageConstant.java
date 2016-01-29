@@ -27,6 +27,9 @@ public class PageConstant {
   public static final String LIST = "list";
   public static final Integer TOTAL_DATA_TO_FETCH = 2;
 
+  public static final String INTERNAL_SERVER_ERROR = "500";
+  public static final String PAGE_NOT_FOUND = "404";
+
   private PageConstant() {
   }
 }

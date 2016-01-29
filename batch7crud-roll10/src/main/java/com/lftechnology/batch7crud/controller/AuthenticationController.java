@@ -28,39 +28,56 @@ public class AuthenticationController extends CustomHttpServlet{
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    String[] params = params(req);
 
-    if(PageConstant.LOGIN.equalsIgnoreCase(params[1])){
-      req.getServletContext().getRequestDispatcher(PageConstant.LOGIN_VIEW).forward(req, resp);
-    }else if(PageConstant.LOGOUT.equalsIgnoreCase(params[1])){
-      HttpSession session = req.getSession();
-      session.removeAttribute(USER);
-      resp.sendRedirect(PageConstant.LOGIN_URL);
+    String action = paramsTest(req);
+
+    switch (action){
+    case PageConstant.LOGIN:
+      login(req, resp);
+      break;
+    case PageConstant.LOGOUT:
+      logout(req, resp);
+      break;
+    default:
+      throw new ServletException(PageConstant.PAGE_NOT_FOUND);
     }
   }
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-    String username = req.getParameter(USERNAME);
-    String password = req.getParameter(PASSWORD);
+    String action = paramsTest(req);
 
-    User user = null;
-    try {
-      user = validateLogin(username, password);
-    } catch (DataException e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
-    }
+    if(PageConstant.LOGIN.equalsIgnoreCase(action)){
+      String username = req.getParameter(USERNAME);
+      String password = req.getParameter(PASSWORD);
 
-    if (user == null){
-      req.getRequestDispatcher(PageConstant.LOGIN_VIEW).forward(req, resp);
-    }
-    else{
-      HttpSession session = req.getSession();
-      session.setAttribute(USER, user);
-      resp.sendRedirect(PageConstant.STUDENT_LIST_URL);
-    }
+      User user = null;
+      try {
+        user = validateLogin(username, password);
+      } catch (DataException e) {
+        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      }
 
+      if (user == null){
+        req.getRequestDispatcher(PageConstant.LOGIN_VIEW).forward(req, resp);
+      }
+      else{
+        HttpSession session = req.getSession();
+        session.setAttribute(USER, user);                 //NOSONAR
+        resp.sendRedirect(PageConstant.STUDENT_LIST_URL);
+      }
+    }
+  }
+
+  private void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    req.getServletContext().getRequestDispatcher(PageConstant.LOGIN_VIEW).forward(req, resp);
+  }
+
+  private void logout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    HttpSession session = req.getSession();
+    session.removeAttribute(USER);
+    resp.sendRedirect(PageConstant.LOGIN_URL);
   }
 
   private User validateLogin(String username, String password) throws DataException {
