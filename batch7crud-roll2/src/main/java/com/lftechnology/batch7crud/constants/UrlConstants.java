@@ -19,7 +19,7 @@ public class UrlConstants {
   public static final String INDEX_PAGE = VIEWS + "index.jsp";
   public static final String LOGIN_PAGE = VIEWS + "login.jsp";
   public static final String PAGE_NOT_FOUND = VIEWS + "pageNotFound.jsp";
-  public static final String ERROR_PAGE = VIEWS + "errorPage.jsp";
+  public static final String ERROR_PAGE = VIEWS + "internalErrorPage.jsp";
 
   private UrlConstants() {
 

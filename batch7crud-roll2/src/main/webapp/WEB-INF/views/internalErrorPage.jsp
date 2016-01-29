@@ -13,7 +13,7 @@
     <title>Error Page</title>
 </head>
 <body>
-<h1>Internal Server Error</h1>
+<h1>Internal Server Error!!</h1>
 ${message}
 <a href="employees">Go Back</a>
 </body>

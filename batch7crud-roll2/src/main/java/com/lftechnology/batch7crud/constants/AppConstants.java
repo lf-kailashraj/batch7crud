@@ -12,6 +12,7 @@ public class AppConstants {
   public static final String LOGIN = "login";
   public static final String LOGOUT = "logout";
   public static final String PAGE_NOT_FOUND_MESSAGE = "Page Not Found";
+  public static final String INTERNAL_SERVER_ERROR_MESSAGE = "Internal Server Error";
   public static final String EMAIL_PATTERN =
           "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 
