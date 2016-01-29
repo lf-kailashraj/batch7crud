@@ -243,4 +243,24 @@ public class EmployeeController extends CommonHttpServlet {
       return 1;
     }
   }
+  
+  private String getAction(HttpServletRequest request) {
+    String[] parts = getPathParams(request);
+
+    if (parts.length == 0) {
+      return AppConstants.FETCH;
+    }
+    else if (parts.length == 3 && AppConstants.CREATE.equals(parts[2])) {
+      return AppConstants.CREATE;
+    }
+    else if (parts.length == 3) {
+      return AppConstants.VIEW;
+    }
+    else if (parts.length == 4 && AppConstants.EDIT.equals(parts[3])) {
+      return AppConstants.EDIT;
+    }
+    else {
+      return null;
+    }
+  }
 }
