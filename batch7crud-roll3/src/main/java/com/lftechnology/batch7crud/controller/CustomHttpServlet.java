@@ -24,8 +24,6 @@ import com.lftechnology.batch7crud.utils.ValidatorUtil;
  *
  */
 public abstract class CustomHttpServlet extends HttpServlet {
-  private static final Logger LOGGER = Logger.getLogger(CustomHttpServlet.class.getName());
-
   public String[] parameterValues(HttpServletRequest request) {
     String urlPath = request.getRequestURI().substring(request.getContextPath().length());
     return urlPath.split("/");

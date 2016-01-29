@@ -1,6 +1,9 @@
 package com.lftechnology.batch7crud.filter;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -10,11 +13,14 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import com.lftechnology.batch7crud.constant.CommonConstant;
+import com.lftechnology.batch7crud.controller.AuthenticationController;
 
 public class ExceptionFilter implements Filter {
 
+  private static final Logger LOGGER = Logger.getLogger(ExceptionFilter.class.getName());
+
   @Override
-  public void destroy() {
+  public void destroy() { // NOSONAR
 
   }
 
@@ -24,6 +30,8 @@ public class ExceptionFilter implements Filter {
     try {
       chain.doFilter(request, response);
     } catch (ServletException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
       request.setAttribute("message", e.getMessage());
       if (CommonConstant.PAGE_NOT_FOUND.equals(e.getMessage())) {
         ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -34,6 +42,6 @@ public class ExceptionFilter implements Filter {
   }
 
   @Override
-  public void init(FilterConfig fConfig) throws ServletException {
+  public void init(FilterConfig fConfig) throws ServletException { // NOSONAR
   }
 }
