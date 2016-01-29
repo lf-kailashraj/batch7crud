@@ -16,27 +16,7 @@ import java.io.IOException;
  */
 public abstract class CustomHttpServlet extends HttpServlet {
 
-  protected void showPageNotFound(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    req.getServletContext().getRequestDispatcher(PageConstant.ERROR_PAGE).forward(req, resp);
-  }
-
-  protected void showServerError(HttpServletRequest req, HttpServletResponse resp, Throwable e) throws ServletException, IOException {
-    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-    req.setAttribute(PageConstant.ERROR_MESSAGE, e.getMessage());
-    req.getServletContext().getRequestDispatcher(PageConstant.ERROR_PAGE).forward(req, resp);
-  }
-
-  public String[] params(HttpServletRequest req) {
-    String servletPath = req.getPathInfo();
-
-    if (servletPath == null) {
-      return new String[] {};
-    } else {
-      return servletPath.split("/");
-    }
-  }
-
-  public String paramsTest(HttpServletRequest req){
+  public String paramsTest(HttpServletRequest req){   //NOSONAR
     String servletPath = req.getPathInfo();
 
     if(servletPath == null || "/".equalsIgnoreCase(servletPath)){

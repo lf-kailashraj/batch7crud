@@ -15,19 +15,19 @@ import java.io.IOException;
  */
 
 public class AuthenticationFilter implements Filter{
-
+  private static final String USER = "user";
   private static String loginActionUri;
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
-    loginActionUri =  filterConfig.getInitParameter("loginActionURI");
+    loginActionUri =  filterConfig.getInitParameter("loginActionURI");    //NOSONAR
   }
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
     HttpServletRequest req = (HttpServletRequest) request;
     HttpSession session = req.getSession();
-    User user = (User) session.getAttribute("user");
+    User user = (User) session.getAttribute(USER);
 
     if (user == null && !loginActionUri.equals(req.getRequestURI())){
       HttpServletResponse resp = (HttpServletResponse) response;
@@ -39,7 +39,7 @@ public class AuthenticationFilter implements Filter{
   }
 
   @Override
-  public void destroy() {
+  public void destroy() {   //NOSONAR
 
   }
 }

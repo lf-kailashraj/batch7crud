@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
+/**This class handles all the exceptions and sends error code corresponding to the exception message
+ *
  * @Author Binod Shrestha <binodshrestha@lftechnology.com>
  * Created on 1/29/16
  */
@@ -16,7 +17,7 @@ public class ExceptionFilter implements Filter {
 
   public static final Logger LOGGER = Logger.getLogger(ExceptionFilter.class.getName());
   @Override
-  public void init(FilterConfig filterConfig) throws ServletException {
+  public void init(FilterConfig filterConfig) throws ServletException {   //NOSONAR
 
   }
 
@@ -28,17 +29,15 @@ public class ExceptionFilter implements Filter {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
       if(PageConstant.INTERNAL_SERVER_ERROR.equalsIgnoreCase(e.getMessage())){
-        System.out.println("internal server error");
         ((HttpServletResponse) response).sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       }else if(PageConstant.PAGE_NOT_FOUND.equalsIgnoreCase(e.getMessage())){
-        System.out.println("page not found");
         ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);
       }
     }
   }
 
   @Override
-  public void destroy() {
+  public void destroy() {   //NOSONAR
 
   }
 }

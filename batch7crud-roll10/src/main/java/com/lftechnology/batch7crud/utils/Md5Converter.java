@@ -16,7 +16,7 @@ public class Md5Converter {
     MessageDigest md = MessageDigest.getInstance("MD5");
     byte[] encodedPassword = md.digest(text.getBytes());
 
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     for (byte anEncodedPassword : encodedPassword)
       sb.append(Integer.toString((anEncodedPassword & 0xff) + 0x100, 16).substring(1));
 
