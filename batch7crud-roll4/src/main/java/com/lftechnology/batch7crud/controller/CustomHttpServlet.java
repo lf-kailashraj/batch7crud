@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import static com.lftechnology.batch7crud.constant.ActionConstants.*;
 import static com.lftechnology.batch7crud.constant.AttribConstants.ATTRIB_MESSAGE;
-import static com.lftechnology.batch7crud.constant.MessageConstant.MESSAGE_PAGE_NOT_FOUND;
+import static com.lftechnology.batch7crud.constant.MessageConstants.MESSAGE_PAGE_NOT_FOUND;
 import static com.lftechnology.batch7crud.constant.ParamConstants.PARAM_PAGE;
 import static com.lftechnology.batch7crud.constant.UrlConstants.URL_ERROR_PAGE;
 
@@ -58,27 +58,46 @@ public abstract class CustomHttpServlet extends HttpServlet {
     return Integer.parseInt(parameters[index]);
   }
 
+  public void validateUrl(HttpServletRequest request) throws ServletException {
+    String[] parameters = parameterValues(request);
+    boolean isValid = false;
+
+    switch (parameters.length) {
+    case 2:
+      isValid = true;
+      break;
+    case 3:
+      if (ACTION_CREATE.equals(parameters[2]) || CheckParameter.isInt(parameters[2]) || ACTION_LOGIN.equals(parameters[2]) || ACTION_LOGOUT
+              .equals(parameters[2])) {
+        isValid = true;
+      }
+      break;
+    case 4:
+      if (ACTION_EDIT.equals(parameters[3]) || ACTION_DELETE.equals(parameters[3])) {
+        isValid = true;
+      }
+      break;
+    default:
+      isValid = false;
+      break;
+    }
+
+    if (!isValid) {
+      throw new ServletException(MESSAGE_PAGE_NOT_FOUND);
+    }
+
+  }
+
   public String fetchActionFromParameter(HttpServletRequest request) {
     String[] parameters = parameterValues(request);
-    String action = ACTION_PAGE_NOT_FOUND;
+    String action;
 
-    if (parameters.length == 2) {
+    if(parameters.length == 2) {
       action = ACTION_LIST;
-    } else if (parameters.length == 3) {
-      if (ACTION_CREATE.equals(parameters[2])) {
-        action = ACTION_CREATE;
-      } else if (CheckParameter.isInt(parameters[2])) {
-        action = ACTION_PROFILE;
-      } else if (ACTION_LOGIN.equals(parameters[2])) {
-        action = ACTION_LOGIN;
-      } else if (ACTION_LOGOUT.equals(parameters[2]))
-        action = ACTION_LOGOUT;
-    } else if (parameters.length == 4) {
-      if (ACTION_EDIT.equals(parameters[2])) {
-        action = ACTION_EDIT;
-      } else if (ACTION_DELETE.equals(parameters[2])) {
-        action = ACTION_DELETE;
-      }
+    } else if (parameters.length == 3 &&  CheckParameter.isInt(parameters[2])) {
+      action = ACTION_PROFILE;
+    } else {
+      action = parameters[parameters.length - 1];
     }
 
     return action;

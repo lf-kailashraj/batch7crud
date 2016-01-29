@@ -19,6 +19,8 @@ import java.util.logging.Logger;
 
 import static com.lftechnology.batch7crud.constant.ActionConstants.*;
 import static com.lftechnology.batch7crud.constant.AttribConstants.*;
+import static com.lftechnology.batch7crud.constant.MessageConstants.MESSAGE_INTERNAL_SERVER_ERROR;
+import static com.lftechnology.batch7crud.constant.MessageConstants.MESSAGE_PAGE_NOT_FOUND;
 import static com.lftechnology.batch7crud.constant.ParamConstants.*;
 import static com.lftechnology.batch7crud.constant.UrlConstants.*;
 
@@ -40,6 +42,7 @@ public class EmployeeController extends CustomHttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    validateUrl(request);
     String action = fetchActionFromParameter(request);
 
     switch (action) {
@@ -60,13 +63,13 @@ public class EmployeeController extends CustomHttpServlet {
       break;
 
     default:
-      show404(request, response);
-      break;
+      throw new ServletException(MESSAGE_PAGE_NOT_FOUND);
     }
   }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    validateUrl(request);
     String action = fetchActionFromParameter(request);
 
     switch (action) {
@@ -83,8 +86,7 @@ public class EmployeeController extends CustomHttpServlet {
       break;
 
     default:
-      show404(request, response);
-      break;
+      throw new ServletException(MESSAGE_PAGE_NOT_FOUND);
     }
 
   }
@@ -96,7 +98,8 @@ public class EmployeeController extends CustomHttpServlet {
       int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / ATTRIB_RECORD_LIMIT);
 
       if (page != 1 && page > noOfPages) {
-        show404(request, response);
+        request.setAttribute(ATTRIB_MESSAGE, MESSAGE_PAGE_NOT_FOUND);
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
         return;
       }
 
@@ -109,7 +112,7 @@ public class EmployeeController extends CustomHttpServlet {
 
     } catch (DataException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      show500(request, response, e);
+      throw new ServletException(MESSAGE_INTERNAL_SERVER_ERROR);
     }
 
   }
@@ -130,7 +133,8 @@ public class EmployeeController extends CustomHttpServlet {
       response.sendRedirect(request.getContextPath() + ACTION_EMPLOYEES);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      show500(request, response, e);
+      request.setAttribute(ATTRIB_MESSAGE, e.getMessage());
+      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(ATTRIB_ERRORS, e.getErrors());
@@ -151,7 +155,7 @@ public class EmployeeController extends CustomHttpServlet {
       view.forward(request, response);
     } catch (DataException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      show500(request, response, e);
+      throw new ServletException(MESSAGE_INTERNAL_SERVER_ERROR);
     }
 
   }
@@ -165,7 +169,7 @@ public class EmployeeController extends CustomHttpServlet {
       view.forward(request, response);
     } catch (DataException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      show500(request, response, e);
+      throw new ServletException(MESSAGE_INTERNAL_SERVER_ERROR);
     }
 
   }
@@ -185,7 +189,7 @@ public class EmployeeController extends CustomHttpServlet {
       response.sendRedirect(request.getContextPath() + ACTION_EMPLOYEES);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      show500(request, response, e);
+      throw new ServletException(MESSAGE_INTERNAL_SERVER_ERROR);
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(ATTRIB_ERRORS, e.getErrors());
@@ -203,7 +207,7 @@ public class EmployeeController extends CustomHttpServlet {
       response.sendRedirect(request.getContextPath() + ACTION_EMPLOYEES);
     } catch (DataException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      show500(request, response, e);
+      throw new ServletException(MESSAGE_INTERNAL_SERVER_ERROR);
     }
   }
 

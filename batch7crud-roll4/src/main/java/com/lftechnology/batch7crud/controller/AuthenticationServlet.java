@@ -14,6 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.lftechnology.batch7crud.constant.ActionConstants.*;
+import static com.lftechnology.batch7crud.constant.MessageConstants.MESSAGE_INTERNAL_SERVER_ERROR;
+import static com.lftechnology.batch7crud.constant.MessageConstants.MESSAGE_PAGE_NOT_FOUND;
 import static com.lftechnology.batch7crud.constant.ParamConstants.PARAM_PASS;
 import static com.lftechnology.batch7crud.constant.ParamConstants.PARAM_USERNAME;
 import static com.lftechnology.batch7crud.constant.UrlConstants.URL_LOGIN_PAGE;
@@ -32,6 +34,7 @@ public class AuthenticationServlet extends CustomHttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    validateUrl(request);
     String action = fetchActionFromParameter(request);
 
     switch (action) {
@@ -51,6 +54,7 @@ public class AuthenticationServlet extends CustomHttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    validateUrl(request);
     String action = fetchActionFromParameter(request);
 
     switch (action) {
@@ -64,14 +68,12 @@ public class AuthenticationServlet extends CustomHttpServlet {
       break;
 
     default:
-      show404(request, response);
-      break;
+      throw new ServletException(MESSAGE_PAGE_NOT_FOUND);
     }
 
   }
 
   private void logIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     try {
       String username = request.getParameter(PARAM_USERNAME);
       String password = request.getParameter(PARAM_PASS);
@@ -86,7 +88,7 @@ public class AuthenticationServlet extends CustomHttpServlet {
       }
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      show500(request, response, e);
+      throw new ServletException(MESSAGE_INTERNAL_SERVER_ERROR);
     }
   }
 
