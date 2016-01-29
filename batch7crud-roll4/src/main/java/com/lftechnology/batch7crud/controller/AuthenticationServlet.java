@@ -47,8 +47,7 @@ public class AuthenticationServlet extends CustomHttpServlet {
       break;
 
     default:
-      show404(request, response);
-      break;
+      throw new ServletException(MESSAGE_PAGE_NOT_FOUND);
     }
   }
 
