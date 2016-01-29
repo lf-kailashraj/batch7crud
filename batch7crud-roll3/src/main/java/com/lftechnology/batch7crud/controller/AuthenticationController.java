@@ -24,7 +24,7 @@ public class AuthenticationController extends CustomHttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    validateURL(request);
+    validateAuthURL(request);
     String action = getAction(request);
     if (("logout").equals(action)) {
       logout(request, response);
@@ -40,7 +40,7 @@ public class AuthenticationController extends CustomHttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    validateURL(request);
+    validateAuthURL(request);
 
     login(request, response);
   }

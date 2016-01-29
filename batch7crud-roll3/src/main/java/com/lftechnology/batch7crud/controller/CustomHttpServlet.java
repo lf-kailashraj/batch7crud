@@ -56,16 +56,24 @@ public abstract class CustomHttpServlet extends HttpServlet {
     return action;
   }
 
-  protected void validateURL(HttpServletRequest request) throws ServletException {
+  protected void validateCrudURL(HttpServletRequest request) throws ServletException { // NOSONAR
+    boolean isValid = false;
     String[] parameters = parameterValues(request);
-    boolean isValid;
 
-    if ("authentication".equals(parameters[1])) {
-      isValid = validateAuthURL(parameters);
-    } else if (parameters.length == 2) {
+    switch (parameters.length) {
+    case 2:
       isValid = true;
-    } else {
-      isValid = validateCrudURL(parameters);
+      break;
+    case 3:
+      if (ValidatorUtil.isInteger(parameters[2]) || CREATE.equals(parameters[2]))
+        isValid = true;
+      break;
+    case 4:
+      if (DELETE.equals(parameters[3]) || EDIT.equals(parameters[3]))
+        isValid = true;
+      break;
+    default:
+      break;
     }
 
     if (!isValid) {
@@ -73,26 +81,15 @@ public abstract class CustomHttpServlet extends HttpServlet {
     }
   }
 
-  private boolean validateCrudURL(String[] parameters) {
-    switch (parameters.length) {
-    case 3:
-      if (ValidatorUtil.isInteger(parameters[2]) || CREATE.equals(parameters[2]))
-        return true;
-      break;
-    case 4:
-      if (DELETE.equals(parameters[3]) || EDIT.equals(parameters[3]))
-        return true;
-      break;
-    default:
-      break;
-    }
-    return false;
-  }
+  protected void validateAuthURL(HttpServletRequest request) throws ServletException {
+    String[] parameters = parameterValues(request);
+    boolean isValid = false;
 
-  private boolean validateAuthURL(String[] parameters) {
     if (parameters.length == 3 && ("login".equals(parameters[2]) || "logout".equals(parameters[2]))) {
-      return true;
+      isValid = true;
     }
-    return false;
+    if (!isValid) {
+      throw new ServletException(PAGE_NOT_FOUND);
+    }
   }
 }

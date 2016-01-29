@@ -58,7 +58,7 @@ public class StudentController extends CustomHttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    validateURL(request);
+    validateCrudURL(request);
     try {
       processRequestForGet(request, response);
     } catch (DataException e) {
@@ -70,7 +70,7 @@ public class StudentController extends CustomHttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    validateURL(request);
+    validateCrudURL(request);
     try {
       processRequestForPost(request, response);
     } catch (DataException e) {
@@ -83,7 +83,7 @@ public class StudentController extends CustomHttpServlet {
   private void processRequestForGet(HttpServletRequest request, HttpServletResponse response)
       throws DataException, ServletException, IOException {
     String action = getAction(request);
-    
+
     switch (action) {
     case LIST:
       list(request, response);
