@@ -7,6 +7,8 @@ public class AppConstants {
   public static final String CREATE = "create";
   public static final String EDIT = "edit";
   public static final String DELETE = "delete";
+  public static final String VIEW = "view";
+  public static final String FETCH = "fetch";
   public static final String PAGE_NOT_FOUND_MESSAGE = "Page Not Found";
   public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
   public static final String EMPLOYEE_CREATED = "Employee successfully created.";

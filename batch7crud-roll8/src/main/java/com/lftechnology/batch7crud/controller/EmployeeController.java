@@ -39,20 +39,21 @@ public class EmployeeController extends CommonHttpServlet {
         fetch(request, response);
       }
       else {
-        String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
-        if (parts.length == 0) {
+        String action = getAction(request);
+        switch (action) {
+        case AppConstants.FETCH:
           fetch(request, response);
-        }
-        else if (parts.length == 2 && AppConstants.CREATE.equals(parts[1])) {
+          break;
+        case AppConstants.CREATE:
           create(request, response);
-        }
-        else if (parts.length == 2) {
-          view(request, response);
-        }
-        else if (parts.length == 3 && AppConstants.EDIT.equals(parts[2])) {
+          break;
+        case AppConstants.EDIT:
           edit(request, response);
-        }
-        else {
+          break;
+        case AppConstants.VIEW:
+          view(request, response);
+          break;
+        default:
           request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
           response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
@@ -80,8 +81,8 @@ public class EmployeeController extends CommonHttpServlet {
         deleteProcess(request, response);
       }
       else {
-        request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.INTERNAL_SERVER_ERROR);
-        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
       }
     }
     catch (Exception e) {
