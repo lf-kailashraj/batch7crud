@@ -13,7 +13,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import com.lftechnology.batch7crud.constant.CommonConstant;
-import com.lftechnology.batch7crud.controller.AuthenticationController;
 
 public class ExceptionFilter implements Filter {
 
