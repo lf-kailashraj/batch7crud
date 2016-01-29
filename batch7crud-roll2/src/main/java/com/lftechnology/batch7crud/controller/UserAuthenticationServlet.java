@@ -30,8 +30,7 @@ public class UserAuthenticationServlet extends CommonHttpServlet {
       login(request, response);
       break;
     default:
-      displayPageNotFound(request, response);
-      break;
+      throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
     }
   }
 
@@ -46,8 +45,7 @@ public class UserAuthenticationServlet extends CommonHttpServlet {
       logoutProcess(request, response);
       break;
     default:
-      displayPageNotFound(request, response);
-      break;
+      throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
     }
   }
 
@@ -75,7 +73,7 @@ public class UserAuthenticationServlet extends CommonHttpServlet {
       }
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      displayErrorPage(request, response, e.getMessage());
+      throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR_MESSAGE);
     }
   }
 
