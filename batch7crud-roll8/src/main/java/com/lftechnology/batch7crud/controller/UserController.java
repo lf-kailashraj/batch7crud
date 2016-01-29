@@ -40,7 +40,8 @@ public class UserController extends HttpServlet {
           createProcess(request, response);
         }
         else if (AppConstants.EDIT.equals(parts[1])) {
-          request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.USER_HOME_PAGE).forward(request, response);
+          request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.USER_HOME_PAGE).forward(request,
+            response);
         }
         else if (AppConstants.SIGN_IN.equals(parts[1])) {
             authenticateUser(request, response);
@@ -73,9 +74,7 @@ public class UserController extends HttpServlet {
           request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.USER_SIGN_UP).forward(request, response);
         }
         else if (AppConstants.SIGN_IN.equals(parts[1])) {
-          User user = setUserAttributesForSignIn(request);
-          User authenticatedUser = userService.fetchUserByUsernameAndPassword(user);
-          redirectAuthenticatedUser(request, response, authenticatedUser);
+          redirectAuthenticatedUser(request, response);
         }
       }
     }
@@ -145,15 +144,15 @@ public class UserController extends HttpServlet {
     return user;
   }
 
-  private void redirectAuthenticatedUser(HttpServletRequest request, HttpServletResponse response, User authenticatedUser)
+  private void redirectAuthenticatedUser(HttpServletRequest request, HttpServletResponse response)
     throws IOException, ServletException {
-    if (authenticatedUser != null) {
-      HttpSession session = request.getSession();
-      session.setAttribute(AttributeConstants.USER, authenticatedUser.getId());
-      response.sendRedirect(request.getContextPath() + UrlConstants.USER_ROUTE);
+    HttpSession session = request.getSession();
+    if (session.getAttribute(AttributeConstants.USER) == null) {
+      request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.USER_SIGN_IN).forward(request,
+        response);
     }
     else {
-      request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.USER_SIGN_IN).forward(request, response);
+      response.sendRedirect(request.getContextPath() + UrlConstants.USER_ROUTE);
     }
   }
 }
