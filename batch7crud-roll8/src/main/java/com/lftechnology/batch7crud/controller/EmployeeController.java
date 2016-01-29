@@ -69,18 +69,19 @@ public class EmployeeController extends CommonHttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     try {
-      String path = request.getPathInfo();
-      String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
-      if (AppConstants.CREATE.equals(parts[1])) {
+      String action = postAction(request);
+
+      switch (action) {
+      case AppConstants.CREATE:
         createProcess(request, response);
-      }
-      else if (AppConstants.EDIT.equals(parts[2])) {
+        break;
+      case AppConstants.EDIT:
         editProcess(request, response);
-      }
-      else if (AppConstants.DELETE.equals(parts[2])) {
+        break;
+      case AppConstants.DELETE:
         deleteProcess(request, response);
-      }
-      else {
+        break;
+      default:
         request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
         response.sendError(HttpServletResponse.SC_NOT_FOUND);
       }
@@ -258,6 +259,26 @@ public class EmployeeController extends CommonHttpServlet {
     }
     else if (parts.length == 4 && AppConstants.EDIT.equals(parts[3])) {
       action = AppConstants.EDIT;
+    }
+    else {
+      action = null;
+    }
+    return action;
+  }
+
+  private String postAction(HttpServletRequest request) {
+    String[] parts = getPathParams(request);
+    String action;
+    System.out.println(request.getPathInfo());
+    System.out.println(parts.length);
+    if (parts.length == 3 && AppConstants.CREATE.equals(parts[2])) {
+      action = AppConstants.CREATE;
+    }
+    else if (parts.length == 4 && AppConstants.EDIT.equals(parts[3])) {
+      action = AppConstants.EDIT;
+    }
+    else if (parts.length == 4 && AppConstants.DELETE.equals(parts[3])) {
+      action = AppConstants.DELETE;
     }
     else {
       action = null;
