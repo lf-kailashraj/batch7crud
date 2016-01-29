@@ -14,4 +14,8 @@ public class UserService {
     return userDao.create(user);
   }
 
+  public User fetchUserByUsernameAndPassword (User user) throws DataException {
+    return userDao.fetchUserByUsernameAndPassword(user);
+  }
+
 }

@@ -13,6 +13,9 @@ public class AppConstants {
   public static final String EMPLOYEE_UPDATED = "Employee successfully updated.";
   public static final String SIGN_UP = "signup";
   public static final String SIGN_IN = "signin";
+  public static final String LOG_OUT = "logout";
+  public static final String LOG_OUT_SUCCESS_MESSAGE = "Successfully logged out.";
+
   public static final int PAGE_LIMIT = 4;
 
   private AppConstants() {

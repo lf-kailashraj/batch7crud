@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 @WebServlet({ "/employees/*" })
 public class EmployeeController extends CommonHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
-  private EmployeeService employeeService = new EmployeeService(); // NOSONAR
+  private EmployeeService employeeService = new EmployeeService();
   private EmployeeValidator validator = new EmployeeValidator();
 
   @Override

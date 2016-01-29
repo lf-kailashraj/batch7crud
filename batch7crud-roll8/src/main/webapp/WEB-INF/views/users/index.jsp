@@ -20,8 +20,11 @@
   <%--</c:when>--%>
   <%--</c:choose>--%>
   <div>
-    <a href="/employees">Manage Employees</a>
+    <p><a href="/employees">Manage Employees</a></p>
     <p><a href="#">Manage your Deets</a></p>
+    <p><form action="/users/logout" method="post">
+    <input type="submit" value="Logout" >
+  </form></p>
   </div>
 </body>
 </html>
