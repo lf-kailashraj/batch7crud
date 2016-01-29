@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 @WebServlet({ "/users/*" })
 public class UserController extends HttpServlet {
   private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
-  UserService userService = new UserService();
+  UserService userService = new UserService(); // NOSONAR
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
