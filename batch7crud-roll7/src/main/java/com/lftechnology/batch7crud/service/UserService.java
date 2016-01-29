@@ -8,7 +8,7 @@ import com.lftechnology.batch7crud.model.User;
 /**
  * Created by leapfrog on 1/27/16.
  */
-public class UserService {
+public class UserService implements UserServiceInterface {
   private UserDao userDao = new UserDao();
 
   public User fetch(String name, String password) throws DataException {

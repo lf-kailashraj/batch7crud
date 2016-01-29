@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 /**
  * Created by leapfrog on 1/27/16.
  */
-public class UserDao {
+public class UserDao implements UserDaoInterface {
   private static final Logger LOGGER = Logger.getLogger(UserDao.class.getName());
   private static final String FETCH_USER = "select * from users where username = ? and password = ?";
 
