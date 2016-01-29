@@ -48,9 +48,11 @@ public abstract class CustomHttpServlet extends HttpServlet {
     if(urlTokens.length == 2 && PageConstant.CREATE.equalsIgnoreCase(urlTokens[1])){
       return PageConstant.CREATE;
     }
+
     if(urlTokens.length == 2 && PageConstant.LIST.equalsIgnoreCase(urlTokens[1])){
       return PageConstant.LIST;
     }
+
     if(urlTokens.length == 3 && PageConstant.EDIT.equalsIgnoreCase(urlTokens[2])){
 
       try{
@@ -59,8 +61,8 @@ public abstract class CustomHttpServlet extends HttpServlet {
       }catch (NumberFormatException e){
         return null;
       }
-
     }
+
     if(urlTokens.length == 3 && PageConstant.DELETE.equalsIgnoreCase(urlTokens[2])){
       try{
         Integer.parseInt(urlTokens[1]);

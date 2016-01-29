@@ -19,9 +19,9 @@ import java.util.logging.Logger;
  * Created on 1/27/16
  */
 @WebServlet("/auth/*")
-public class AuthenticationServlet extends CustomHttpServlet{
+public class AuthenticationController extends CustomHttpServlet{
   private static AuthenticationService authenticationService = new AuthenticationService();
-  private static final Logger LOGGER = Logger.getLogger(AuthenticationServlet.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(AuthenticationController.class.getName());
   private static final String USER = "user";
   private static final String USERNAME = "username";
   private static final String PASSWORD = "password";

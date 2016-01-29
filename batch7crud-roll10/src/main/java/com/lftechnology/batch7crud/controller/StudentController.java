@@ -146,9 +146,12 @@ public class StudentController extends CustomHttpServlet {
   private void edit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     try {
 
-      Integer id = TypeCaster.toInt(req.getPathInfo().split("/")[1]);
-      Student student = studentService.fetchById(id);
-      req.setAttribute(STUDENT, student);
+      if(req.getAttribute(STUDENT)==null){
+        Integer id = TypeCaster.toInt(req.getPathInfo().split("/")[1]);
+        Student student = studentService.fetchById(id);
+        req.setAttribute(STUDENT, student);
+      }
+
       req.getServletContext().getRequestDispatcher(PageConstant.STUDENT_EDIT_VIEW).forward(req, resp);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -168,10 +171,10 @@ public class StudentController extends CustomHttpServlet {
   }
 
   private void editProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    Map<String, String> errors = new HashMap<>();
+    Map<String, String> paramMap = buildParamMap(req);
+    Integer id = TypeCaster.toInt(req.getPathInfo().split("/")[1]);
     try {
-      Integer id = TypeCaster.toInt(req.getPathInfo().split("/")[1]);
-      Map<String, String> errors = new HashMap<>();
-      Map<String, String> paramMap = buildParamMap(req);
 
       Student student = StudentFactory.createStudent(paramMap, errors);
       if (errors.isEmpty()) {
@@ -179,6 +182,8 @@ public class StudentController extends CustomHttpServlet {
         studentService.update(student);
         resp.sendRedirect(req.getContextPath() + PageConstant.STUDENT_LIST_URL);
       } else {
+        paramMap.put(EntityConstant.ID, id.toString());
+        req.setAttribute(STUDENT, paramMap);
         req.setAttribute(ERRORS, errors);
         edit(req, resp);
       }
@@ -189,6 +194,8 @@ public class StudentController extends CustomHttpServlet {
 
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      paramMap.put(EntityConstant.ID, id.toString());
+      req.setAttribute(STUDENT, paramMap);
       req.setAttribute(ERRORS, e.getErrors());
       edit(req, resp);
 
