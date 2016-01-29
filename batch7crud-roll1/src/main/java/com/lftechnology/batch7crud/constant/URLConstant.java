@@ -18,6 +18,7 @@ public class URLConstant {
   public static final String INDEX_PAGE = VIEWS + "index.jsp";
   public static final String EMPLOYEE_LIST = "/employees";
   public static final String ERROR_PAGE = VIEWS + "error.jsp";
+  public static final String LOGIN_PAGE = VIEWS + "login.jsp";
 
   private URLConstant() {
 

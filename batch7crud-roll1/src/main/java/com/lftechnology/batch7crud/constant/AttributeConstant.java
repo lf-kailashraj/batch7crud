@@ -19,6 +19,8 @@ public class AttributeConstant {
   public static final String EDIT = "edit";
   public static final String ERROR_MESSAGE = "errorMessage";
   public static final String ERRORS = "errors";
+  public static final String LOGIN = "login";
+  public static final String LOGOUT = "logout";
 
   private AttributeConstant() {
 

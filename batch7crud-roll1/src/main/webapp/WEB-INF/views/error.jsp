@@ -15,8 +15,8 @@
     <title>error</title>
 </head>
 <body>
-
-    <p><c:out value="${errorMessage}"/></p>
+    <h2>Error!</h2>
+    <h4><c:out value="${errorMessage}"/></h4>
 
 </body>
 </html>

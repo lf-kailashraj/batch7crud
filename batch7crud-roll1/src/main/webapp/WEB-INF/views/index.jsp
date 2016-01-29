@@ -15,6 +15,19 @@
     <ul>
         <li><a href="employees/create">Add Employee</a></li>
         <li><a href="employees">List Employee</a></li>
+        <li><a href="authentication/logout" id="logout">Logout</a></li>
     </ul>
+
+    <script type="text/javascript">
+        var logoutButton = document.getElementById("logout");
+        logoutButton.onclick = function (e) {
+            e.preventDefault();
+            var href = this.getAttribute("href");
+            var form = document.createElement("form");
+            form.action = href;
+            form.method = "post";
+            form.submit();
+        }
+    </script>
 </body>
 </html>
