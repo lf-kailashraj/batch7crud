@@ -25,7 +25,6 @@ public class UserService {
     try {
       passwordHash = PasswordGenerator.hashUsingMD5(user.getPassword());
       user.setPassword(passwordHash);
-      System.out.println(passwordHash);
       return userDao.fetchUserByUsernameAndPassword(user);
     } catch (NoSuchAlgorithmException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
