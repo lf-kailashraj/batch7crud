@@ -58,7 +58,7 @@ public abstract class CustomHttpServlet extends HttpServlet {
     return Integer.parseInt(parameters[index]);
   }
 
-  public void validateUrl(HttpServletRequest request) throws ServletException {
+  public void validateUrl(HttpServletRequest request) throws ServletException { //NOSONAR
     String[] parameters = parameterValues(request);
     boolean isValid = false;
 
@@ -92,9 +92,9 @@ public abstract class CustomHttpServlet extends HttpServlet {
     String[] parameters = parameterValues(request);
     String action;
 
-    if(parameters.length == 2) {
+    if (parameters.length == 2) {
       action = ACTION_LIST;
-    } else if (parameters.length == 3 &&  CheckParameter.isInt(parameters[2])) {
+    } else if (parameters.length == 3 && CheckParameter.isInt(parameters[2])) {
       action = ACTION_PROFILE;
     } else {
       action = parameters[parameters.length - 1];
