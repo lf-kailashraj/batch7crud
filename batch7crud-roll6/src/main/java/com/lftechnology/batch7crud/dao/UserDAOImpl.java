@@ -44,7 +44,7 @@ public class UserDAOImpl implements UserDAO {
       preparedStatement.executeUpdate();
 
       ResultSet rs = preparedStatement.getGeneratedKeys();
-      if(rs.next()){
+      if (rs.next()) {
         user.setId(rs.getInt(1));
       }
     } catch (SQLException e) {
@@ -114,6 +114,8 @@ public class UserDAOImpl implements UserDAO {
         user.setSurName(results.getString(UserConstants.SUR_NAME));
         user.setUserName(results.getString(UserConstants.USERNAME));
         user.setPassword(results.getString(UserConstants.PASSWORD));
+        user.setAge(Integer.parseInt(results.getString(UserConstants.AGE)));
+
       }
 
     } catch (SQLException e) {
@@ -157,6 +159,33 @@ public class UserDAOImpl implements UserDAO {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
     return totalNumber;
+  }
+
+  @Override
+  public User fetchUser(String username, String password) throws DataException {
+    User user = null;
+
+    String query = "select * from user where username = ? and password = ?";
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+      preparedStatement.setString(1, username);
+      preparedStatement.setString(2, password);
+      ResultSet results = preparedStatement.executeQuery();
+
+      while (results.next()) {
+        user = new User();
+
+        user.setId(results.getInt(UserConstants.UID));
+        user.setFirstName(results.getString(UserConstants.FIRST_NAME));
+        user.setSurName(results.getString(UserConstants.SUR_NAME));
+        user.setUserName(results.getString(UserConstants.USERNAME));
+        user.setPassword(results.getString(UserConstants.PASSWORD));
+      }
+
+    } catch (SQLException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      throw new DataException(e.getMessage());
+    }
+    return user;
   }
 
 }

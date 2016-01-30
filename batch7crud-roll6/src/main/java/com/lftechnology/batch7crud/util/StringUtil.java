@@ -1,10 +1,16 @@
 package com.lftechnology.batch7crud.util;
 
+
 public class StringUtil {
-  public boolean isEmptyOrNull(String input) {
-    if (input == null || input.isEmpty()) {
+  private StringUtil() {
+
+  }
+
+  public static boolean isEmptyOrNull(String input) {
+    if (input == null || input.isEmpty()) { // NOSONAR
       return true;
+    } else {
+      return false;
     }
-    return false;
   }
 }

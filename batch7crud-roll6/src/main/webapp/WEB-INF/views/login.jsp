@@ -10,10 +10,12 @@ input{
 		display:block;
 	}
 </style>
+<base href="${pageContext.request.contextPath}/" />
+
 </head>
 <body>
 Inventory Managemant System Login
-<form action="">
+<form action="login" method="post">
 	<label>Username</label><input type = "text" name = "username">
 	<label>Password</label><input type = "password" name = "password">
 	<input type = "submit" name="submit" value = "Login">

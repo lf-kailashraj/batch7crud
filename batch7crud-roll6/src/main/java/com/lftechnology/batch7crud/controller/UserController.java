@@ -23,6 +23,7 @@ import com.lftechnology.batch7crud.model.User;
 import com.lftechnology.batch7crud.service.UserService;
 import com.lftechnology.batch7crud.util.TypeCaster;
 import com.lftechnology.batch7crud.util.UserFactory;
+import com.lftechnology.batch7crud.validator.PasswordValidator;
 import com.lftechnology.batch7crud.validator.UserValidator;
 
 /**
@@ -66,6 +67,9 @@ public class UserController extends CustomHttpServlet {
     } catch (ServletException | HTTPException | IOException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
+    }catch(ArrayIndexOutOfBoundsException e){
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
   }
 
@@ -130,25 +134,26 @@ public class UserController extends CustomHttpServlet {
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     Map<String, String> inputs = new HashMap<>();
-    Map<String, String> errors = new HashMap<>();
 
     UserValidator userValidator = new UserValidator();
+    PasswordValidator passwordValidator = new PasswordValidator();
 
     inputs.put(UserConstants.FIRST_NAME, request.getParameter(UserConstants.FIRST_NAME));
     inputs.put(UserConstants.SUR_NAME, request.getParameter(UserConstants.SUR_NAME));
     inputs.put(UserConstants.USERNAME, request.getParameter(UserConstants.USERNAME));
-    inputs.put(UserConstants.PASSWORD, request.getParameter(UserConstants.PASSWORD));
     inputs.put(UserConstants.AGE, request.getParameter(UserConstants.AGE));
 
-    userValidator.emptyValidate(inputs, errors);
-
     try {
-      User user = UserFactory.createUserObect(inputs, errors);
-      userService.addUser(user, errors);
+      userValidator.emptyValidate(inputs);
+      passwordValidator.isEmpty(request.getParameter(UserConstants.PASSWORD));
+      inputs.put(UserConstants.PASSWORD, request.getParameter(UserConstants.PASSWORD));
+
+      User user = UserFactory.createUserObect(inputs);
+      userService.addUser(user);
       response.sendRedirect(ApplicationConstant.USER_LIST);
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(CommonConstant.ERRORS, errors);
+      request.setAttribute(CommonConstant.ERRORS, e.getErrors());
       request.getRequestDispatcher(URLConstants.ADD_USER).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -179,7 +184,6 @@ public class UserController extends CustomHttpServlet {
   private void editProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
 
     Map<String, String> userAttributes = new HashMap<>();
-    Map<String, String> errors = new HashMap<>();
 
     UserValidator userValidator = new UserValidator();
 
@@ -187,21 +191,20 @@ public class UserController extends CustomHttpServlet {
     userAttributes.put(UserConstants.SUR_NAME, request.getParameter(UserConstants.SUR_NAME));
     userAttributes.put(UserConstants.USERNAME, request.getParameter(UserConstants.USERNAME));
     userAttributes.put(UserConstants.AGE, request.getParameter(UserConstants.AGE));
-
-    userValidator.emptyValidate(userAttributes, errors);
+    
     userAttributes.put(UserConstants.UID, Integer.toString(id));
     try {
-      User user = UserFactory.createUserObect(userAttributes, errors);
+      userValidator.emptyValidate(userAttributes);
+      User user = UserFactory.createUserObect(userAttributes);
       user.setId(id);
-      userService.update(user,errors);
+      userService.update(user);
       response.sendRedirect(ApplicationConstant.USER_LIST);
 
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       
-      request.setAttribute(CommonConstant.ERRORS, errors);
+      request.setAttribute(CommonConstant.ERRORS, e.getErrors());
       request.setAttribute("userAttributes", userAttributes);
-      System.out.println("here");
       request.getRequestDispatcher(URLConstants.EDIT_USER).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
