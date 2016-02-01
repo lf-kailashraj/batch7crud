@@ -23,7 +23,7 @@ import java.io.File;
  */
 
 @WebServlet("/students/*")
-public class StudentController extends CommonHTTPRequestHAndler {
+public class StudentController extends CommonHTTPRequestHandler {
     private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
     private static StudentService studentService = new StudentService();
     static Map<String, String> errorMessege = new HashMap<String, String>();

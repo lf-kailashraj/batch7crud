@@ -16,4 +16,5 @@ public interface StudentDao {
     Student getStudentByID(int studentID);
     int countStudents();
     boolean findStudent(int studentID);
+    boolean validateUser(String userName, String passWord);
 }

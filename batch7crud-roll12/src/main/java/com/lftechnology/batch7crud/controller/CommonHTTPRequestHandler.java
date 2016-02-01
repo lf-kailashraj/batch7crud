@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Created by sagarmatha on 1/28/16.
  */
-public abstract class CommonHTTPRequestHAndler extends HttpServlet {
+public abstract class CommonHTTPRequestHandler extends HttpServlet {
     protected void show404(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         RequestDispatcher view = request.getRequestDispatcher(PageConstants.ERROR_PAGE);

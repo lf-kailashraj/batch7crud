@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<base href="${pageContext.request.contextPath}/">
+	<base href="${pageContext.request.contextPath}/"/>
 	<title>SMS</title>
 </head>
 <body>

@@ -21,6 +21,29 @@ public class StudentDaoImpl implements StudentDao {
     private static final String VIEW_BY_ID = "SELECT * FROM studentinfo WHERE id=?";
     private static final String DELETE = "DELETE FROM studentinfo WHERE id=?";
     private static final String COUNT_STUDENTS = "SELECT count(*) FROM studentinfo";
+    private static final String VIEW_USER = "SELECT * FROM admin";
+
+    public boolean validateUser(String userName, String passWord){
+        int statusCheck=0;
+        try {
+            Connection connection = DBConnection.getDBConnection(); // NOSONAR
+            PreparedStatement preparedStatement = connection.prepareStatement(VIEW_USER); //NOSONAR
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while( resultSet.next() ) {
+                if(userName.equals(resultSet.getString( "username" )) && passWord.equals(resultSet.getString("password")))
+                    statusCheck=1;
+            }
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+        if(statusCheck == 1)
+            return true;
+        else
+            return false;
+    }
 
     public Student addStudent(Student student) {
         try {
