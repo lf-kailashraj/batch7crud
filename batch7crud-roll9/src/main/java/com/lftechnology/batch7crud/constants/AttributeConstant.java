@@ -21,6 +21,13 @@ public class AttributeConstant {
   public static final String ERROR_ADDRESS = "errorAddress";
   public static final String USER_INFO_ERRORS = "user_info_errors";
 
+  public static final String ERROR_LOGIN_DATA = "error_login_data";
+  public static final String ERROR_UNAME = "errorUname";
+  public static final String ERROR_PASSWORD = "errorPassword";
+
+  public static final String DATA_MISMATCH = "data_mismatch";
+  public static final String USER = "user";
+
   private AttributeConstant() {
   }
 }

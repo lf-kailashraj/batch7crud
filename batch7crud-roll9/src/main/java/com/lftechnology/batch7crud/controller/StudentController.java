@@ -101,6 +101,9 @@ public class StudentController extends HTTPStatusHandler {
       show404(request, response);
     } catch (NumberFormatException e) {
       show404(request, response);
+    } catch (Exception e){
+      System.out.println(e);
+
     }
   }
 

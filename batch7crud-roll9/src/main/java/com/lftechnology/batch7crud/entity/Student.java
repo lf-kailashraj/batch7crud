@@ -60,7 +60,7 @@ public class Student {
   }
 
   @Override
-  public String toString(){
-    return "'"+id+"', '"+ firstName +"', '" +middleName +"', '" +lastName +"', '" +address +"', '" +grade +"'";
+  public String toString() {
+    return "'" + id + "', '" + firstName + "', '" + middleName + "', '" + lastName + "', '" + address + "', '" + grade + "'";
   }
 }

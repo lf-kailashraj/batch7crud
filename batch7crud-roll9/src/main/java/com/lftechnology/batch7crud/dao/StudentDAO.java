@@ -50,6 +50,7 @@ public class StudentDAO {
       int startOffset = (page - 1) * limit;
       pstmt.setInt(1, limit);
       pstmt.setInt(2, startOffset);
+
       ResultSet rs = pstmt.executeQuery();
       while (rs.next()) {
         Student std = new Student();

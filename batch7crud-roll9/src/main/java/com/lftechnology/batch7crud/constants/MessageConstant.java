@@ -10,6 +10,8 @@ public class MessageConstant {
   public static final String ERROR_ADDRESS= "Invalid Address";
   public static final String ERROR_GRADE= "Invalid Grade";
   public static final String EMPTY_FIELD= "Cannot Be Empty";
+  public static final String DATA_MISMATCH= "Wrong Username or Password";
+
   private MessageConstant() {
   }
 }

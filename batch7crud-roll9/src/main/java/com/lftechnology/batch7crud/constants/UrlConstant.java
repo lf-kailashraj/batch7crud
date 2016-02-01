@@ -9,6 +9,8 @@ public class UrlConstant {
   public static final String EDIT = "edit";
   public static final String DELETE = "delete";
   public static final String STUDENTS = "students";
+  public static final String HOME= "home";
+  public static final String STATIC= "static";
 
   private UrlConstant(){
   }

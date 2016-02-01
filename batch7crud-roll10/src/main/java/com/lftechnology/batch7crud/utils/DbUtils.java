@@ -34,7 +34,10 @@ public class DbUtils {
         dataSource = (DataSource) envContext.lookup("jdbc/library");
       }
       return dataSource.getConnection();
-    } catch (NamingException | SQLException e) {
+    } catch (NamingException e){
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      throw new DataException();
+    } catch(SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException();
     }

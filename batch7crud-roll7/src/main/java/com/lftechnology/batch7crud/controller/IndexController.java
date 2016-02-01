@@ -13,5 +13,4 @@ public class IndexController extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     req.getServletContext().getRequestDispatcher(CommonConstants.INDEX_VIEW).forward(req, resp);
   }
-
 }

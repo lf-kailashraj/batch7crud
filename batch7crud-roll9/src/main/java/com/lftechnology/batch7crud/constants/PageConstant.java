@@ -14,6 +14,7 @@ public class PageConstant {
   public static final String NEW_STUDENT = BASE + "newStudent.jsp";
   public static final String INDEX_PAGE = BASE + "index.jsp";
   public static final String ERROR_PAGE = BASE + "error-page.jsp";
+  public static final String LOGIN_PAGE = BASE + "login.jsp";
 
   private PageConstant() {
   }

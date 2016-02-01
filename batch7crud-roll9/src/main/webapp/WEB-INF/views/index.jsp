@@ -1,17 +1,40 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
     <base href="${pageContext.request.contextPath}/"/>
-    <title>Hello</title>
+    <title>Dashboard</title>
+    <link href="static/css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="static/css/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
+<div class="header-wrapper"><div class="logo">Dashboard</div></div>
+<div class="left-container">
+    <ul>
+        <li><a href="students">All Students</a></li>
+        <li><a href="students/create">New Student</a></li>
+        <li><a href="logout" class="logout">Logout</a></li>
+    </ul>
+</div>
+<div class="main-container">
+<div>Welcome! ${username}</div>
+</div>
 
-<div>Welcome.</div>
-<div><a href="students/create">New Student</a></div>
-<a href="students">See all Students</a>
+
+<div class="footer">footer</div>
+<script>
+    var logoutElement = document.getElementsByClassName("logout")[0];
+    logoutElement.onclick = function (e) {
+        e.preventDefault();
+        var form = document.createElement('form');
+        var destinationLink = e.target.getAttribute("href");
+        form.setAttribute("method", "POST");
+        form.setAttribute("action", destinationLink);
+        if (confirm("Are you sure you want to Logout???") == true) {
+            form.submit();
+        }
+    };
+</script>
 </body>
 </html>
