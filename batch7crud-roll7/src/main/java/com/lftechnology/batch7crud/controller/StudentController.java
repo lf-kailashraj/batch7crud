@@ -48,25 +48,27 @@ public class StudentController extends CommonHttpServlet{
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String[] urlPath = urlParts(request);
     try {
-      if (urlPath.length == 2 && CommonConstants.LIST_URL.equals(urlPath[1]))
-        list(request, response);
-      else if (urlPath.length == 3 && CommonConstants.NEW_ENTRY.equals(urlPath[2]))
-        create(request, response);
-      else if (urlPath.length == 4 && CommonConstants.EDIT.equals(urlPath[3]))
-        edit(request, response, Integer.parseInt(urlPath[2]));
-      else if (urlPath.length == 3)
-        show(request, response);
-      else{
-        throw new ServletException(CommonConstants.PAGE_NOT_FOUND);
-      }
+      getProcess(request,response);
     } catch (DataException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new ServletException(CommonConstants.INTERNAL_SERVER_ERROR);
     } catch (NumberFormatException e){
       throw new ServletException(CommonConstants.PAGE_NOT_FOUND);
     }
+  }
+  private void getProcess(HttpServletRequest request,HttpServletResponse response) throws DataException,IOException,ServletException{
+    String[] urlPath = urlParts(request);
+    if (urlPath.length == 2 && CommonConstants.LIST_URL.equals(urlPath[1]))
+      list(request, response);
+    else if (urlPath.length == 3 && CommonConstants.NEW_ENTRY.equals(urlPath[2]))
+      create(request, response);
+    else if (urlPath.length == 4 && CommonConstants.EDIT.equals(urlPath[3]))
+      edit(request, response, Integer.parseInt(urlPath[2]));
+    else if (urlPath.length == 3)
+      show(request, response);
+    else
+      throw new ServletException(CommonConstants.PAGE_NOT_FOUND);
   }
 
   private void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
