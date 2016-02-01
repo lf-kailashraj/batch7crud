@@ -27,7 +27,7 @@ public class UserController extends HttpServlet {
   UserService userService = new UserService(); // NOSONAR
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     String path = request.getPathInfo();
 
     try {
@@ -56,8 +56,7 @@ public class UserController extends HttpServlet {
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
     }
   }
 
@@ -80,8 +79,7 @@ public class UserController extends HttpServlet {
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
     }
 
   }
@@ -100,8 +98,7 @@ public class UserController extends HttpServlet {
     }
     catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR);
     }
   }
 
