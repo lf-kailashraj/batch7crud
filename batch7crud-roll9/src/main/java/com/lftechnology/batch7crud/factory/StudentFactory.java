@@ -17,7 +17,7 @@ import java.util.Set;
 public class StudentFactory implements Factory<Student> {
 
   @Override
-  public Student createObject(Map<String, String> input) throws ValidationException{
+  public Student createObject(Map<String, String> input) throws ValidationException {
     Student student = new Student();
     Map<String, String> error = new HashMap<>();
     Set set = input.entrySet();

@@ -1,80 +1,96 @@
-body{
-    background-color:#d2d6de;
+body {
+    background-color: #d2d6de;
 }
-.login-wrapper{
-    width:100%;
+
+.login-wrapper {
+    width: 100%;
 }
-.login-box{
-    width:360px;
-    margin:7% auto;
+
+.login-box {
+    width: 360px;
+    margin: 7% auto;
 }
-.login-container{
-    padding:20px;
-    color:#666;
-    border-top:0;
-    background:#fff;
+
+.login-container {
+    padding: 20px;
+    color: #666;
+    border-top: 0;
+    background: #fff;
 }
-.title{
-    font-size:35px;
+
+.title {
+    font-size: 35px;
     text-align: center;
-    margin-bottom:25px;
+    margin-bottom: 25px;
     font-weight: 300;
 }
-.page-info{
-    text-align:center;
-    color:#434343;
-    padding:0px 20px 20px 20px;
+
+.page-info {
+    text-align: center;
+    color: #434343;
+    padding: 0px 20px 20px 20px;
 }
-form div{
-    width:100%;
+
+form div {
+    width: 100%;
 }
-form input[type="text"],[type="password"]{
-    width:96%;
-    margin:0 auto;
-    border:1px solid #d2d6de;
-    height:30px;
-    padding-left:10px;
+
+form input[type="text"], [type="password"] {
+    width: 96%;
+    margin: 0 auto;
+    border: 1px solid #d2d6de;
+    height: 30px;
+    padding-left: 10px;
     padding-top: 5px;
 }
-form input[type="text"]:focus,[type="password"]:focus{
-    border:1px solid #3c8dbc;
+
+form input[type="text"]:focus, [type="password"]:focus {
+    border: 1px solid #3c8dbc;
 }
-form input[type="submit"]{
-    width:25%;
-    margin:0 auto;
-    border:0px;
-    display:block;
-    height:30px;
-    background:#3c8dbc;
-    float:right;
+
+form input[type="submit"] {
+    width: 25%;
+    margin: 0 auto;
+    border: 0px;
+    display: block;
+    height: 30px;
+    background: #3c8dbc;
+    float: right;
 }
-.login-container a,.register-container a{
+
+.login-container a, .register-container a {
     text-decoration: none;
-    color:#434343;
+    color: #434343;
 }
-.login-container a:hover,.register-container a:hover{
+
+.login-container a:hover, .register-container a:hover {
     text-decoration: none;
-    color:#121212;
-    padding:5px 0px;
+    color: #121212;
+    padding: 5px 0px;
 }
-.sm{
-    width:25%;
+
+.sm {
+    width: 25%;
 }
-.login-box span,label{
-    padding-left:5px;
+
+.login-box span, label {
+    padding-left: 5px;
 }
-.remember{
-    padding-top:8px;
-    float:left;
-    width:75%;
+
+.remember {
+    padding-top: 8px;
+    float: left;
+    width: 75%;
 }
-.register-container{
-    margin:5px 0px;
-    padding:20px;
-    color:#666;
-    border-top:0;
-    background:#fff;
+
+.register-container {
+    margin: 5px 0px;
+    padding: 20px;
+    color: #666;
+    border-top: 0;
+    background: #fff;
 }
-.error{
-    color:red;
+
+.error {
+    color: red;
 }

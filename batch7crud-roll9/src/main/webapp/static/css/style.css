@@ -1,41 +1,45 @@
-body{
-    background-color:#d2d6de;
-}
-.header-wrapper{
-    width:100%;
-    background:#3c8dbc;
-    height:75px;
-}
-.header-wrapper .logo{
-    width:20%;
-    background:#3cbc8d;
-    height:75px;
-}
-.left-container{
-    padding-top:50px;
-    min-height:100%;
-    width:230px;
-    z-index:810;
-}
-.left-container ul li{
-    padding:5px 10px;
+body {
+    background-color: #d2d6de;
 }
 
-
-
-.main-container{
-    width:80%;
-    background:red;
-    float:right;
+.header-wrapper {
+    width: 100%;
+    background: #3c8dbc;
+    height: 75px;
 }
-.footer-wrapper{
-    width:100%;
-    position:absolute                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ;
-    z-index:5;
-    bottom:0px;
+
+.header-wrapper .logo {
+    width: 20%;
+    background: #3cbc8d;
+    height: 75px;
 }
-.footer{
-    background:#3c8dbc;
+
+.left-container {
+    padding-top: 50px;
+    min-height: 100%;
+    width: 230px;
+    z-index: 810;
+}
+
+.left-container ul li {
+    padding: 5px 10px;
+}
+
+.main-container {
+    width: 80%;
+    background: red;
+    float: right;
+}
+
+.footer-wrapper {
+    width: 100%;
+    position: absolute;
+    z-index: 5;
+    bottom: 0px;
+}
+
+.footer {
+    background: #3c8dbc;
 }
 
 

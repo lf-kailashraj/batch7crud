@@ -5,11 +5,13 @@
 <head>
     <base href="${pageContext.request.contextPath}/"/>
     <title>Dashboard</title>
-    <link href="static/css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="static/css/reset.css" rel="stylesheet" type="text/css"/>
     <link href="static/css/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div class="header-wrapper"><div class="logo">Dashboard</div></div>
+<div class="header-wrapper">
+    <div class="logo">Dashboard</div>
+</div>
 <div class="left-container">
     <ul>
         <li><a href="students">All Students</a></li>
@@ -18,7 +20,7 @@
     </ul>
 </div>
 <div class="main-container">
-<div>Welcome! ${username}</div>
+    <div>Welcome! ${username}</div>
 </div>
 
 

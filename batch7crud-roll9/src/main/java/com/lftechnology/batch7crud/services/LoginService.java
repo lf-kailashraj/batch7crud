@@ -9,7 +9,8 @@ import com.lftechnology.batch7crud.exception.DataException;
  */
 public class LoginService {
   private LoginDAO loginDAO = new LoginDAO();
-  public boolean authenticate(User user) throws DataException{
+
+  public boolean authenticate(User user) throws DataException {
     return loginDAO.authenticate(user);
   }
 }

@@ -1,6 +1,5 @@
 package com.lftechnology.batch7crud.dao;
 
-import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.entity.User;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.util.DBConnection;
@@ -20,14 +19,14 @@ public class LoginDAO {
 
   private static final Logger LOGGER = Logger.getLogger(LoginDAO.class.getName());
 
-  public boolean authenticate(User user) throws DataException{
+  public boolean authenticate(User user) throws DataException {
     boolean state = false;
-    try(Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(USER_AUTHENTICATE)) {
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(USER_AUTHENTICATE)) {
       pstmt.setString(1, user.getUsername());
       pstmt.setString(2, user.getPassword());
       ResultSet rs = pstmt.executeQuery();
-      if (rs.next() && rs.getInt(1)>0){
-          state = true;
+      if (rs.next() && rs.getInt(1) > 0) {
+        state = true;
       }
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);

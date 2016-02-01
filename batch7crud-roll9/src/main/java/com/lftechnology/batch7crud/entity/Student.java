@@ -39,20 +39,20 @@ public class Student {
     return middleName;
   }
 
-  public String getFirstName() {
-    return firstName;
+  public void setMiddleName(String middleName) {
+    this.middleName = middleName;
   }
 
-  public String getLastName() {
-    return lastName;
+  public String getFirstName() {
+    return firstName;
   }
 
   public void setFirstName(String firstName) {
     this.firstName = firstName;
   }
 
-  public void setMiddleName(String middleName) {
-    this.middleName = middleName;
+  public String getLastName() {
+    return lastName;
   }
 
   public void setLastName(String lastName) {

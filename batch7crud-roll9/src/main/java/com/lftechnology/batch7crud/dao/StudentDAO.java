@@ -23,10 +23,9 @@ public class StudentDAO {
   private static final String DELETE = "DELETE FROM tbl_userinfo WHERE id=?";
   private static final String COUNT_STUDENTS = "SELECT count(*) FROM tbl_userinfo";
 
-  public Student insert(Student student) throws DataException
-  {
+  public Student insert(Student student) throws DataException {
     try (Connection conn = DBConnection.getConnection();
-         PreparedStatement pstmt =  conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
+         PreparedStatement pstmt = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
       pstmt.setString(1, student.getFirstName());
       pstmt.setString(2, student.getMiddleName());
       pstmt.setString(3, student.getLastName());
@@ -45,7 +44,7 @@ public class StudentDAO {
   }
 
   public List<Student> fetch(int page, int limit) throws DataException {
-    try(Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(LIST)) {
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(LIST)) {
       List<Student> stdList = new ArrayList<>();
       int startOffset = (page - 1) * limit;
       pstmt.setInt(1, limit);
@@ -69,9 +68,8 @@ public class StudentDAO {
     }
   }
 
-  public void delete(int id) throws DataException
-  {
-    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(DELETE)){
+  public void delete(int id) throws DataException {
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(DELETE)) {
       pstmt.setInt(1, id);
       pstmt.executeUpdate();
     } catch (SQLException e) {
@@ -81,7 +79,7 @@ public class StudentDAO {
   }
 
   public Student fetchById(int id) throws DataException {
-    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(SELECT_BY_ID)){
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(SELECT_BY_ID)) {
       pstmt.setInt(1, id);
       ResultSet rs = pstmt.executeQuery();
       Student std = null;
@@ -102,7 +100,7 @@ public class StudentDAO {
   }
 
   public Student edit(Student student) throws DataException {
-    try(Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(UPDATE)) {
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(UPDATE)) {
       pstmt.setString(1, student.getFirstName());
       pstmt.setString(2, student.getMiddleName());
       pstmt.setString(3, student.getLastName());
@@ -117,9 +115,8 @@ public class StudentDAO {
     return student;
   }
 
-  public int studentCount() throws DataException
-  {
-    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt =  conn.prepareStatement(COUNT_STUDENTS)) {
+  public int studentCount() throws DataException {
+    try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(COUNT_STUDENTS)) {
       int totalStudents = 0;
       ResultSet rs = pstmt.executeQuery();
       while (rs.next())

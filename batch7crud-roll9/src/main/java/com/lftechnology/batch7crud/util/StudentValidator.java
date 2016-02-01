@@ -7,7 +7,8 @@ import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.factory.StudentFactory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +21,7 @@ public class StudentValidator {
     return studentFactory.createObject(input);
   }
 
-  public void validate(Student student) throws ValidationException{
+  public void validate(Student student) throws ValidationException {
     Map<String, String> error = new HashMap<>();
     if (!isValid(student.getFirstName())) {
       error.put(AttributeConstant.ERROR_FNAME, MessageConstant.ERROR_FNAME);
@@ -37,7 +38,7 @@ public class StudentValidator {
     if (!isValid(student.getGrade())) {
       error.put(AttributeConstant.ERROR_GRADE, MessageConstant.ERROR_GRADE);
     }
-    if(!error.isEmpty()){
+    if (!error.isEmpty()) {
       ValidationException validationException = new ValidationException();
       validationException.setErrors(error);
       throw validationException;

@@ -11,9 +11,10 @@
 <head>
     <title>ERROR!!!</title>
     <base href="${pageContext.request.contextPath}/"/>
-
 </head>
 <body>
-<h1>Something went wrong.</h1>
+<h1>ERROR!!!</h1>
+
+<p>${errorMessage}</p>
 </body>
 </html>

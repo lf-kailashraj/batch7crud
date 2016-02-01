@@ -7,7 +7,7 @@ import java.io.File;
  */
 public class PageConstant {
   private static final String SEPARATOR = File.separator;
-  private static final String BASE = SEPARATOR+"WEB-INF" + SEPARATOR + "views" +SEPARATOR;
+  private static final String BASE = SEPARATOR + "WEB-INF" + SEPARATOR + "views" + SEPARATOR;
   public static final String EDIT = BASE + "edit.jsp";
   public static final String DETAIL_VIEW = BASE + "detail-view.jsp";
   public static final String LIST_VIEW = BASE + "list-view.jsp";

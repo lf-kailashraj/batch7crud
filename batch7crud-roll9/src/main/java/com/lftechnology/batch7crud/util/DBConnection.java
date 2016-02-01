@@ -15,11 +15,10 @@ import java.util.logging.Logger;
  * Created by sanjay on 1/18/16.
  */
 public class DBConnection {
-  private static Connection conn = null;
   private static final Logger LOGGER = Logger.getLogger(DBConnection.class.getName());
-
   private static final String DB_NAME = "jdbc/db_userinfo_test";
   private static final String DB_CONTEXT = "java:/comp/env";
+  private static Connection conn = null;
 
 
   private DBConnection() {

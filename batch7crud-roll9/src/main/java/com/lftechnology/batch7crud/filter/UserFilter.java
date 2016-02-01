@@ -31,13 +31,12 @@ public class UserFilter implements Filter {
     HttpSession session = req.getSession();
     String user = (String) session.getAttribute(AppConstant.USER);
 
-    if (user == null && !(req.getContextPath()+LOGIN_ACTION_URI).equals(req.getRequestURI()) && !req.getRequestURI().contains(UrlConstant.STATIC)){
+    if (user == null && !(req.getContextPath() + LOGIN_ACTION_URI).equals(req.getRequestURI()) && !req.getRequestURI().contains(UrlConstant.STATIC)) {
       RequestDispatcher rd = req.getRequestDispatcher(PageConstant.LOGIN_PAGE);
       rd.forward(request, response);
       return;
-    }else{
+    } else {
       chain.doFilter(request, response);
     }
-
   }
 }

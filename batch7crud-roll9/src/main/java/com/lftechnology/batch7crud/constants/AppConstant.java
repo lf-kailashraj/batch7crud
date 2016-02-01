@@ -11,6 +11,6 @@ public class AppConstant {
   public static final String USER = "user";
   public static final String USEROBJECT = "userObject";
 
-  private AppConstant(){
+  private AppConstant() {
   }
 }

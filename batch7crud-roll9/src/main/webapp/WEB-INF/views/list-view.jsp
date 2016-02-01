@@ -32,28 +32,28 @@
 <body>
 <table>
     <thead>
-        <tr>
-            <th>S.N.</th>
-            <th>First Name</th>
-            <th>Middle Name</th>
-            <th>Last Name</th>
-            <th>Address</th>
-            <th>Grade</th>
-        </tr>
+    <tr>
+        <th>S.N.</th>
+        <th>First Name</th>
+        <th>Middle Name</th>
+        <th>Last Name</th>
+        <th>Address</th>
+        <th>Grade</th>
+    </tr>
     </thead>
     <tbody>
-        <c:forEach items="${studentList}" var="studentList" varStatus="counter">
-            <tr>
-                <td><a href="students/${studentList.getId()}/view" class="view">${counter.count+(page-1)*20}</a></td>
-                <td>${studentList.getFirstName()}</td>
-                <td>${studentList.getMiddleName()}</td>
-                <td>${studentList.getLastName()}</td>
-                <td>${studentList.getAddress()}</td>
-                <td>${studentList.getGrade()}</td>
-                <td><a href="students/${studentList.getId()}/edit" class="edit">Edit This</a></td>
-                <td><a href="students/${studentList.getId()}/delete" class="delete">Delete This</a></td>
-            </tr>
-        </c:forEach>
+    <c:forEach items="${studentList}" var="studentList" varStatus="counter">
+        <tr>
+            <td><a href="students/${studentList.getId()}/view" class="view">${counter.count+(page-1)*20}</a></td>
+            <td>${studentList.getFirstName()}</td>
+            <td>${studentList.getMiddleName()}</td>
+            <td>${studentList.getLastName()}</td>
+            <td>${studentList.getAddress()}</td>
+            <td>${studentList.getGrade()}</td>
+            <td><a href="students/${studentList.getId()}/edit" class="edit">Edit This</a></td>
+            <td><a href="students/${studentList.getId()}/delete" class="delete">Delete This</a></td>
+        </tr>
+    </c:forEach>
     </tbody>
 </table>
 

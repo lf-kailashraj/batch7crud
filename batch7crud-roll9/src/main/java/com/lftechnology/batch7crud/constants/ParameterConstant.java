@@ -15,7 +15,7 @@ public class ParameterConstant {
 
   public static final String PAGE = "page";
 
-  private ParameterConstant(){
+  private ParameterConstant() {
   }
 
 }
