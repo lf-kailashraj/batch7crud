@@ -10,6 +10,7 @@
     <title>Show All Students</title>
 </head>
 <body>
+<h2><a href="students/create" class="create">Add new student</a></h2>
 <table border=1>
     <thead>
     <tr>

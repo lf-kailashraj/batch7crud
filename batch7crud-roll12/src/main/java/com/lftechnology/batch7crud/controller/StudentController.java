@@ -3,6 +3,7 @@ package com.lftechnology.batch7crud.controller;
 import com.lftechnology.batch7crud.constants.*;
 import com.lftechnology.batch7crud.model.Student;
 import com.lftechnology.batch7crud.service.StudentService;
+import com.lftechnology.batch7crud.validator.formValidator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,35 +26,36 @@ import java.io.File;
 public class StudentController extends CommonHTTPRequestHAndler {
     private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
     private static StudentService studentService = new StudentService();
+    static Map<String, String> errorMessege = new HashMap<String, String>();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException { //NOSONAR
         String urlPath = req.getRequestURI().substring(req.getContextPath().length());
         String[] parameters = urlPath.split(File.separator);
         try {
-            if (parameters.length == 2 && UrlConstants.STUDENTS.equals(parameters[1])) {
+            if (parameters.length == 2 && UrlConstants.STUDENTS.equals(parameters[1]))
                 listStudents(req, res);
-            } else if (parameters.length == 3 && UrlConstants.CREATE.equals(parameters[2])) {
+            else if (parameters.length == 3 && UrlConstants.CREATE.equals(parameters[2]))
                 createStudent(req, res);
-            } else if (parameters.length == 4 && UrlConstants.UPDATE.equals(parameters[3])) {
+            else if (parameters.length == 4 && UrlConstants.UPDATE.equals(parameters[3]))
                 updateStudent(req, res);
-            } else if (parameters.length == 4 && UrlConstants.VIEW.equals(parameters[3])) {
+            else if (parameters.length == 4 && UrlConstants.VIEW.equals(parameters[3]))
                 viewStudentDetail(req, res);
-            } else {
+            else
                 show404(req,res);
-            }
         } catch (ServletException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            show500(req, res);
+            show500(req, res); // NOSONAR
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            show500(req, res);
+            show500(req, res); // NOSONAR
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String urlPath = req.getRequestURI().substring(req.getContextPath().length());
+        req.setAttribute("errorMessege", errorMessege);
         String[] parameters = urlPath.split(File.separator);
         try {
             if (parameters.length == 3 && UrlConstants.CREATE.equals(parameters[2])) {
@@ -65,10 +69,10 @@ public class StudentController extends CommonHTTPRequestHAndler {
             }
         } catch (ServletException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            show500(req, res);
+            show500(req, res); // NOSONAR
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            show500(req, res);
+            show500(req, res); // NOSONAR
         }
     }
 
@@ -95,12 +99,17 @@ public class StudentController extends CommonHTTPRequestHAndler {
         try {
             String urlPath = req.getRequestURI().substring(req.getContextPath().length());
             int studentId= Integer.parseInt(urlPath.split(File.separator)[2]);
-            Student std = studentService.viewDetail(studentId);
-            int totalStudents = studentService.countStudents();
-            req.setAttribute(AttributeConstants.STUDENT, std);
-            req.setAttribute(AttributeConstants.CURRENT_STUDENT, studentId);
-            req.setAttribute(AttributeConstants.TOTAL_STUDENTS, totalStudents);
-            req.getServletContext().getRequestDispatcher(PageConstants.DETAIL_VIEW).forward(req, res);
+            if(studentService.findRecord(studentId)){
+                Student std = studentService.viewDetail(studentId);
+                int totalStudents = studentService.countStudents();
+                req.setAttribute(AttributeConstants.STUDENT, std);
+                req.setAttribute(AttributeConstants.CURRENT_STUDENT, studentId);
+                req.setAttribute(AttributeConstants.TOTAL_STUDENTS, totalStudents);
+                req.getServletContext().getRequestDispatcher(PageConstants.DETAIL_VIEW).forward(req, res);
+            }else {
+                req.getServletContext().getRequestDispatcher(PageConstants.INDEX_PAGE).forward(req, res);
+            }
+
         }catch (ServletException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show404(req,res);
@@ -113,9 +122,13 @@ public class StudentController extends CommonHTTPRequestHAndler {
     private void updateStudent(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         try {
             int studentId = parameterValueAsInt(req, 2);
-            req.setAttribute(AttributeConstants.STUDENT, studentService.viewDetail(studentId));
-            RequestDispatcher view = req.getRequestDispatcher(PageConstants.UPDATE);
-            view.forward(req, res);
+            if(studentService.findRecord(studentId)) {
+                req.setAttribute(AttributeConstants.STUDENT, studentService.viewDetail(studentId));
+                RequestDispatcher view = req.getRequestDispatcher(PageConstants.UPDATE);
+                view.forward(req, res);
+            }else{
+                req.getServletContext().getRequestDispatcher(PageConstants.INDEX_PAGE).forward(req, res);
+            }
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             show404(req,res);
@@ -123,33 +136,53 @@ public class StudentController extends CommonHTTPRequestHAndler {
     }
 
     private void createMethod(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        Student student = new Student();
-        student.setFirstName(req.getParameter(ParameterConstants.FIRST_NAME));
-        student.setLastName(req.getParameter(ParameterConstants.LAST_NAME));
-        student.setAge(Integer.parseInt(req.getParameter(ParameterConstants.AGE)));
-        student.setAddress(req.getParameter(ParameterConstants.ADDRESS));
-        try {
-            studentService.insert(student);
-            res.sendRedirect(req.getContextPath());
-        } catch (NumberFormatException e) {
-            show404(req, res);
-        }
-    }
-
-    private void updateMethod(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        try {
-            String urlPath = req.getRequestURI().substring(req.getContextPath().length());
-            int studentId= Integer.parseInt(urlPath.split(File.separator)[2]);
+        formValidator validate = new formValidator(errorMessege);
+        Boolean statusCheck;
+        Map<String,String> data=new HashMap<String, String>();
+        data.put("firstName",req.getParameter(ParameterConstants.FIRST_NAME));
+        data.put("lastName",req.getParameter(ParameterConstants.LAST_NAME));
+        data.put("age",req.getParameter(ParameterConstants.AGE));
+        data.put("address",req.getParameter(ParameterConstants.ADDRESS));
+        statusCheck = validate.validateInput(data);
+        if(statusCheck){
             Student student = new Student();
-            student.setStudentID(studentId);
             student.setFirstName(req.getParameter(ParameterConstants.FIRST_NAME));
             student.setLastName(req.getParameter(ParameterConstants.LAST_NAME));
             student.setAge(Integer.parseInt(req.getParameter(ParameterConstants.AGE)));
             student.setAddress(req.getParameter(ParameterConstants.ADDRESS));
-            studentService.update(student);
-            res.sendRedirect(req.getContextPath() + File.separator + UrlConstants.STUDENTS);
-        } catch (NumberFormatException e) {
-            show404(req, res);
+            studentService.insert(student);
+            res.sendRedirect(req.getContextPath());
+        }else {
+            req.getServletContext().getRequestDispatcher(PageConstants.NEW_STUDENT).forward(req, res);
+        }
+    }
+
+    private void updateMethod(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        formValidator validate = new formValidator(errorMessege);
+        Boolean statusCheck;
+        Map<String,String> data=new HashMap<String, String>();
+        data.put("firstName",req.getParameter(ParameterConstants.FIRST_NAME));
+        data.put("lastName",req.getParameter(ParameterConstants.LAST_NAME));
+        data.put("age",req.getParameter(ParameterConstants.AGE));
+        data.put("address",req.getParameter(ParameterConstants.ADDRESS));
+        statusCheck = validate.validateInput(data);
+        if(statusCheck) {
+            try {
+                String urlPath = req.getRequestURI().substring(req.getContextPath().length());
+                int studentId = Integer.parseInt(urlPath.split(File.separator)[2]);
+                Student student = new Student();
+                student.setStudentID(studentId);
+                student.setFirstName(req.getParameter(ParameterConstants.FIRST_NAME));
+                student.setLastName(req.getParameter(ParameterConstants.LAST_NAME));
+                student.setAge(Integer.parseInt(req.getParameter(ParameterConstants.AGE)));
+                student.setAddress(req.getParameter(ParameterConstants.ADDRESS));
+                studentService.update(student);
+                res.sendRedirect(req.getContextPath() + File.separator + UrlConstants.STUDENTS);
+            } catch (NumberFormatException e) {
+                show404(req, res);
+            }
+        }else{
+            req.getServletContext().getRequestDispatcher(PageConstants.NEW_STUDENT).forward(req, res);
         }
     }
 

@@ -14,13 +14,13 @@
 <body>
 <form method="POST" action="students/${student.studentID}/update">
   First Name :
-  <input type="text" value="${student.firstName}" name="firstName"/>
+  <input type="text" value="${student.firstName}" name="firstName"/><br/>
   Last Name :
-  <input type="text" value="${student.lastName}" name="lastName"/>
+  <input type="text" value="${student.lastName}" name="lastName"/><br/>
   Age :
-  <input type="text" value="${student.age}" name="age"/>
+  <input type="text" value="${student.age}" name="age"/><br/>
   Address :
-  <input type="text" value="${student.address}" name="address"/>
+  <input type="text" value="${student.address}" name="address"/><br/>
   <input type="submit"/>
 </form>
 </body>

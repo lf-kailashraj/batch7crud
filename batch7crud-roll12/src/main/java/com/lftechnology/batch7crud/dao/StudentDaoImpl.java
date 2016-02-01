@@ -135,5 +135,28 @@ public class StudentDaoImpl implements StudentDao {
         }
         return totalStudents;
     }
+    public boolean findStudent(int studentID){
+        int statusCheck=0;
+        try {
+            Connection connection = DBConnection.getDBConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(VIEW_BY_ID);
+            preparedStatement.setInt(1, studentID);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()){
+                statusCheck=1;
+            }else{
+                statusCheck=2;
+            }
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+        if(statusCheck == 1){ // NOSONAR
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
 

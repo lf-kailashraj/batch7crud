@@ -9,11 +9,14 @@
 </head>
 <body>
 <form method="POST" action="${pageContext.request.contextPath}/students/create">
-  Student ID : <input type="text" readonly="readonly" name="studentID" value="<c:out value="${student.studentID}" />" /> <br />
-  First Name : <input type="text" name="firstName" value="<c:out value="${student.firstName}" />" /> <br />
-  Last Name : <input type="text" name="lastName" value="<c:out value="${student.lastName}" />" /> <br />
-  Age :  <input type="text" name="age" value="<c:out value="${student.age}" />" /> <br />
-  Address : <input type="text" name="address" value="<c:out value="${student.address}" />" /> <br />
+  First Name : <input type="text" name="firstName" placeholder="first name" value="<c:out value="${param.firstName}" />" />
+  <span class="error">${errorMessege.fname}</span><br />
+  Last Name : <input type="text" name="lastName" placeholder="last name" value="<c:out value="${param.lastName}" />" />
+  <span class="error">${errorMessege.lname}</span><br />
+  Age :  <input type="text" name="age" placeholder="age" value="<c:out value="${param.age}" />" />
+  <span class="error">${errorMessege.age}</span><br />
+  Address : <input type="text" name="address" placeholder="address" value="<c:out value="${param.address}" />" />
+  <span class="error">${errorMessege.address}</span><br />
   <input type="submit" value="Submit" />
 </form>
 </body>

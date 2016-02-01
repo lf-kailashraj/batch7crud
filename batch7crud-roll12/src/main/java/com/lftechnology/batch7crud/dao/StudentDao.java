@@ -15,4 +15,5 @@ public interface StudentDao {
     List<Student> getAllStudents(int page, int limit);
     Student getStudentByID(int studentID);
     int countStudents();
+    boolean findStudent(int studentID);
 }

@@ -17,7 +17,7 @@ public class StudentService {
     }
 
     public List<Student> viewList(int page, int limit) {
-        return dao.getAllStudents(page , limit);
+        return dao.getAllStudents(page, limit);
     }
 
     public Student viewDetail(int studentID) {
@@ -34,5 +34,9 @@ public class StudentService {
 
     public int countStudents(){
         return dao.countStudents();
+    }
+
+    public boolean findRecord(int studentID){
+        return dao.findStudent(studentID);
     }
 }
