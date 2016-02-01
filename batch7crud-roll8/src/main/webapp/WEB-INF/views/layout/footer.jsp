@@ -10,7 +10,8 @@
 <div class="footer-wrapper">
   <div class="footer-container">
     <div class="footer">
-      Copyright &copy; 2016 Leapfrog Technologies. All rights reserved.
+      <div class="copyright">
+        <p>Copyright &copy; 2016 <span>Leapfrog Technologies</span>. All rights reserved.</p></div>
     </div>
   </div>
 </div>

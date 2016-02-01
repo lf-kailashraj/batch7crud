@@ -6,13 +6,15 @@
   font-size: 16px;
 }
 
+/* Header */
+
 .header-wrapper {
   background-color: #605CA8;
   width: 100%;
 }
 
 .header-container {
-  padding: 20px 20px;
+  padding: 10px 20px;
 }
 
 .header {
@@ -54,4 +56,30 @@
 .user-info ul li a {
   text-decoration: none;
   color: #fff;
+}
+
+/* Footer */
+
+.footer-wrapper {
+  width: 100%;
+  background-color: #fff;
+}
+
+.footer-container {
+  padding: 10px 20px;
+}
+
+.footer {
+  width: 1170px;
+  margin: 0 auto;
+}
+
+.copyright p {
+  font-size: 14px;
+  color: #444;
+}
+
+.copyright p span {
+  color: #68BD62;
+  font-weight: bold;
 }
