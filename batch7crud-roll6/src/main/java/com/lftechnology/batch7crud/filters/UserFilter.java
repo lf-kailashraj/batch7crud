@@ -41,7 +41,10 @@ public class UserFilter implements Filter {
     String uri = req.getRequestURI();
     HttpSession session = req.getSession();
     String user = (String) session.getAttribute("user");
-    if (user == null && !loginUri.equals(uri)) {
+    if (uri.contains("/css") ||uri.contains("/images") ) {
+      chain.doFilter(request, response);
+    } else if (user == null && !loginUri.equals(uri)) {
+
       res.sendRedirect(ApplicationConstant.LOGIN);
     } else {
       chain.doFilter(request, response);

@@ -21,6 +21,7 @@ import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.model.User;
 import com.lftechnology.batch7crud.service.UserService;
+import com.lftechnology.batch7crud.util.PasswordEncoder;
 import com.lftechnology.batch7crud.util.TypeCaster;
 import com.lftechnology.batch7crud.util.UserFactory;
 import com.lftechnology.batch7crud.validator.PasswordValidator;
@@ -146,7 +147,7 @@ public class UserController extends CustomHttpServlet {
     try {
       userValidator.emptyValidate(inputs);
       passwordValidator.isEmpty(request.getParameter(UserConstants.PASSWORD));
-      inputs.put(UserConstants.PASSWORD, request.getParameter(UserConstants.PASSWORD));
+      inputs.put(UserConstants.PASSWORD,PasswordEncoder.encodePassword(request.getParameter(UserConstants.PASSWORD)));
 
       User user = UserFactory.createUserObect(inputs);
       userService.addUser(user);
@@ -170,7 +171,7 @@ public class UserController extends CustomHttpServlet {
       userAttributes.put(UserConstants.FIRST_NAME, user.getFirstName());
       userAttributes.put(UserConstants.SUR_NAME, user.getSurName());
       userAttributes.put(UserConstants.USERNAME, user.getUserName());
-      userAttributes.put(UserConstants.PASSWORD, user.getPassword());
+      userAttributes.put(UserConstants.PASSWORD, PasswordEncoder.encodePassword(user.getPassword()));
       userAttributes.put(UserConstants.AGE, Integer.toString(user.getAge()));
 
       request.setAttribute("userAttributes", userAttributes);

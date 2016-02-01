@@ -13,7 +13,7 @@ import com.lftechnology.batch7crud.constant.URLConstants;
 /**
  * @author madandhungana <madandhungana@lftechnology.com> Jan 18, 2016
  */
-@WebServlet("/")
+@WebServlet("/index")
 public class IndexController extends HttpServlet {
   private static final long serialVersionUID = 1L;
 

@@ -16,6 +16,7 @@ import com.lftechnology.batch7crud.constant.URLConstants;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.User;
 import com.lftechnology.batch7crud.service.UserService;
+import com.lftechnology.batch7crud.util.PasswordEncoder;
 
 /**
  * @author madandhungana <madandhungana@lftechnology.com> Jan 27, 2016 batch7crud-roll6 2016
@@ -37,7 +38,7 @@ public class LoginController extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     String username = request.getParameter("username");
-    String password = request.getParameter("password");
+    String password = PasswordEncoder.encodePassword(request.getParameter("password"));
 
     UserService userService = new UserService();
 
