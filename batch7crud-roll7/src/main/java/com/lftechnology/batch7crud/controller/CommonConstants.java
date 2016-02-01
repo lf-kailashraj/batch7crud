@@ -21,6 +21,9 @@ public class CommonConstants {
   public static final int PAGE_SIZE = 3;
   public static final int LOWER_LIMIT_FOR_ROLL = 0;
   public static final int UPPER_LIMIT_FOR_ROLL = 200;
+  public static final String PAGE_NOT_FOUND = "Error 404";
+  public static final String INTERNAL_SERVER_ERROR = "Error 500";
+  public static final String ERROR_MESSAGE = "errorMessage";
 
   private CommonConstants(){
     

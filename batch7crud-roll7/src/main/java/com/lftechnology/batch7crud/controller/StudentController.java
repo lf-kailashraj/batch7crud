@@ -37,10 +37,11 @@ public class StudentController extends CommonHttpServlet{
       else if (urlPath.length == 4 && CommonConstants.DELETE.equals(urlPath[3]))
         deleteProcess(request, response, Integer.parseInt(urlPath[2]));
       else
-        showNotFoundErrorPage(request, response);
-    } catch (DataException | ServletException | IOException e) {
+          throw new ServletException(CommonConstants.PAGE_NOT_FOUND);
+    }
+      catch (DataException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      showInternalErrorPage(request, response);
+      throw new ServletException(CommonConstants.INTERNAL_SERVER_ERROR);
     }
 
   }
@@ -58,15 +59,14 @@ public class StudentController extends CommonHttpServlet{
       else if (urlPath.length == 3)
         show(request, response);
       else{
-        showNotFoundErrorPage(request, response);
+        throw new ServletException(CommonConstants.PAGE_NOT_FOUND);
       }
-    } catch (DataException | ServletException | IOException e) {
+    } catch (DataException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      showInternalErrorPage(request, response);
+      throw new ServletException(CommonConstants.INTERNAL_SERVER_ERROR);
     } catch (NumberFormatException e){
-      showNotFoundErrorPage(request, response);
+      throw new ServletException(CommonConstants.PAGE_NOT_FOUND);
     }
-
   }
 
   private void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
@@ -75,7 +75,7 @@ public class StudentController extends CommonHttpServlet{
     try {
       page = getPageNumber(request);
     } catch (NumberFormatException e) {
-      showNotFoundErrorPage(request, response);
+      throw new ServletException(CommonConstants.PAGE_NOT_FOUND);
     }
     int totalStudents = studentService.fetchTotal();
     int numberOfPages = (int) Math.ceil(totalStudents / (float) pageSize);
@@ -114,16 +114,14 @@ public class StudentController extends CommonHttpServlet{
 
   private void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException, DataException {
     if(studentService.fetchById(id) == null) {
-      showNotFoundErrorPage(request, response);
-      return;
+      throw new ServletException(CommonConstants.PAGE_NOT_FOUND);
     }
     request.setAttribute("student", studentService.fetchById(id));
     request.getRequestDispatcher(CommonConstants.EDIT_ENTRY_VIEW).forward(request, response);
 
   }
 
-  private void editProcess(HttpServletRequest request, HttpServletResponse response, int id)
-    throws ServletException, IOException, DataException {
+  private void editProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException, DataException {
 
     Map<String,String> studentMap = createHashMapFromInputs(request);
     studentMap.put("id",String.valueOf(id));
@@ -146,8 +144,7 @@ public class StudentController extends CommonHttpServlet{
 
   }
 
-  private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id)
-    throws ServletException, IOException, DataException {
+  private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException, DataException {
     studentService.delete(id);
     response.sendRedirect(request.getContextPath() + "/" + CommonConstants.LIST_URL);
 
@@ -158,13 +155,13 @@ public class StudentController extends CommonHttpServlet{
       int id = urlInteger(request, 2);
       Student student = studentService.fetchById(id);
       if (student == null)
-        showNotFoundErrorPage(request, response);
+        throw new ServletException(CommonConstants.PAGE_NOT_FOUND);
       else {
         request.setAttribute("student", student);
         request.getRequestDispatcher(CommonConstants.SHOW_STUDENT_VIEW).forward(request, response);
       }
     } catch (NumberFormatException e) {
-      showNotFoundErrorPage(request, response);
+      throw new ServletException(CommonConstants.PAGE_NOT_FOUND);
     }
 
   }
