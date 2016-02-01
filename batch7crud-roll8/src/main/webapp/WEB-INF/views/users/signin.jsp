@@ -11,22 +11,34 @@
 <head>
   <base href="${pageContext.request.contextPath}/">
   <title>Sign In</title>
+  <jsp:include page="/WEB-INF/views/layout/cssAndJsIncludes.jsp" />
 </head>
 <body>
-Sign In Form
-<form action="users/signin" method="POST">
-  <div>
-    <label>Username:</label>
-    <input name="username" type="text"/>
-  </div>
-  <div>
-    <label>Password:</label>
-    <input name="password" type="password"/>
-  </div>
-  <div>
-    <input type="submit"/>
+<div class="main-wrapper">
+  <jsp:include page="/WEB-INF/views/layout/header.jsp" />
+
+  <div class="container-wrapper">
+    <div class="container-container">
+      <div class="container">
+        <div class="signin-form">
+          Sign In
+          <form action="users/signin" method="POST">
+            <div>
+              <input name="username" type="text" placeholder="username"/>
+            </div>
+            <div>
+              <input name="password" type="password" placeholder="password"/>
+            </div>
+            <div>
+              <input type="submit"/>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 
-</form>
+  <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+</div>
 </body>
 </html>

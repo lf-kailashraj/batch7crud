@@ -12,19 +12,15 @@
 <head>
   <base href="${pageContext.request.contextPath}/">
   <title>Users</title>
+  <jsp:include page="/WEB-INF/views/layout/cssAndJsIncludes.jsp" />
 </head>
 <body>
-  <%--<c:choose>--%>
-  <%--<c:when test="${success}">--%>
-  <%--Welcome user!--%>
-  <%--</c:when>--%>
-  <%--</c:choose>--%>
+<div class="main-wrapper">
+  <jsp:include page="/WEB-INF/views/layout/header.jsp" />
   <div>
     <p><a href="/employees">Manage Employees</a></p>
     <p><a href="#">Manage your Deets</a></p>
-    <p><form action="/users/logout" method="post">
-    <input type="submit" value="Logout" >
-  </form></p>
   </div>
+</div>
 </body>
 </html>

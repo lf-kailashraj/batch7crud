@@ -26,13 +26,15 @@ public class ApplicationFilter implements Filter {
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
     HttpServletRequest req = (HttpServletRequest) request;
     HttpSession session = req.getSession();
     HttpServletResponse res = (HttpServletResponse) response;
     String loginPath = req.getContextPath() + UrlConstants.USER_SIGN_IN_ROUTE;
 
-    if (session.getAttribute(AttributeConstants.USER) == null && !loginPath.equals(req.getRequestURI())){
+    if (req.getRequestURI().matches(".*[css|jpg|png|gif|js].*")) {
+      chain.doFilter(request, response);
+    }
+    else if (session.getAttribute(AttributeConstants.USER) == null && !loginPath.equals(req.getRequestURI())){
       res.sendRedirect(req.getContextPath() + UrlConstants.USER_SIGN_IN_ROUTE);
     }
     else {

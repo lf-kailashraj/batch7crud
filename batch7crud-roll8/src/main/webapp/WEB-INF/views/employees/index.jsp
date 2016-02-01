@@ -12,7 +12,7 @@
 <head>
   <base href="${pageContext.request.contextPath}/">
   <title>Employees</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <jsp:include page="/WEB-INF/views/layout/cssAndJsIncludes.jsp" />
 </head>
 <body>
 <div>
