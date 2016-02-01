@@ -1,9 +1,9 @@
 package com.lftechnology.batch7crud.service;
 
-import com.lftechnology.batch7crud.utils.Utilities;
 import com.lftechnology.batch7crud.dao.UserDao;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.User;
+import com.lftechnology.batch7crud.utils.Utilities;
 
 /**
  * Created by leapfrog on 1/27/16.
