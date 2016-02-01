@@ -11,38 +11,49 @@
 <head>
   <base href="${pageContext.request.contextPath}/">
   <title>Edit Details of Employee</title>
+  <jsp:include page="/WEB-INF/views/layout/cssAndJsIncludes.jsp" />
 </head>
 <body>
-<div>
-  <h1>Edit Employee Form</h1>
-  <div>
-    <form action="employees/${employee.getId()}/edit" method="POST">
-      <div>
-        <label>Name:</label>
-        <input name="name" type="text" value = "${employee.getName()}">
-        ${errors.name}
-      </div>
-      <div>
-        <label>Address:</label>
-        <input name="address" type="text" value = "${employee.getAddress()}">
-        ${errors.address}
-      </div>
-      <div>
-        <label>Designation:</label>
-        <input name="designation" type="text" value = "${employee.getDesignation()}">
-        ${errors.designation}
-      </div>
-      <div>
-        <label>Phone:</label>
-        <input name="phone" type="text" value = "${employee.getPhone()}">
-        ${errors.phone}
-      </div>
-      <div>
-        <input type="submit"/>
-      </div>
-    </form>
-  </div>
+<div class="main-wrapper">
+  <jsp:include page="/WEB-INF/views/layout/header.jsp" />
 
+  <div class="container-wrapper">
+    <div class="container-container">
+      <div class="container">
+        <div>
+          <h1>Edit Employee Form</h1>
+          <div>
+            <form action="employees/${employee.getId()}/edit" method="POST">
+              <div>
+                <label>Name:</label>
+                <input name="name" type="text" value = "${employee.getName()}">
+                ${errors.name}
+              </div>
+              <div>
+                <label>Address:</label>
+                <input name="address" type="text" value = "${employee.getAddress()}">
+                ${errors.address}
+              </div>
+              <div>
+                <label>Designation:</label>
+                <input name="designation" type="text" value = "${employee.getDesignation()}">
+                ${errors.designation}
+              </div>
+              <div>
+                <label>Phone:</label>
+                <input name="phone" type="text" value = "${employee.getPhone()}">
+                ${errors.phone}
+              </div>
+              <div>
+                <input type="submit"/>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 </div>
 </body>
 </html>

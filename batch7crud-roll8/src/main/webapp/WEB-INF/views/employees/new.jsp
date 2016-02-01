@@ -11,38 +11,49 @@
 <head>
   <base href="${pageContext.request.contextPath}/">
   <title>Create New Employee</title>
+  <jsp:include page="/WEB-INF/views/layout/cssAndJsIncludes.jsp" />
 </head>
 <body>
-<div>
-  Create New Employee
-  <div>
-    <form action="employees/create" method="POST">
-      <div>
-        <label>Name:</label>
-        <input name="name" type="text" value="${employee.name}"/>
-        ${errors.name}
-      </div>
-      <div>
-        <label>Address:</label>
-        <input name="address" type="text" value="${employee.address}"/>
-        ${errors.address}
-      </div>
-      <div>
-        <label>Designation:</label>
-        <input name="designation" type="text" value="${employee.designation}"/>
-        ${errors.designation}
-      </div>
-      <div>
-        <label>Phone:</label>
-        <input name="phone" type="text" value="${employee.phone}"/>
-        ${errors.phone}
-      </div>
-      <div>
-        <input type="submit"/>
-      </div>
-    </form>
-  </div>
-</div>
+<div class="main-wrapper">
+  <jsp:include page="/WEB-INF/views/layout/header.jsp" />
 
+  <div class="container-wrapper">
+    <div class="container-container">
+      <div class="container">
+        <div>
+          Create New Employee
+          <div>
+            <form action="employees/create" method="POST">
+              <div>
+                <label>Name:</label>
+                <input name="name" type="text" value="${employee.name}"/>
+                ${errors.name}
+              </div>
+              <div>
+                <label>Address:</label>
+                <input name="address" type="text" value="${employee.address}"/>
+                ${errors.address}
+              </div>
+              <div>
+                <label>Designation:</label>
+                <input name="designation" type="text" value="${employee.designation}"/>
+                ${errors.designation}
+              </div>
+              <div>
+                <label>Phone:</label>
+                <input name="phone" type="text" value="${employee.phone}"/>
+                ${errors.phone}
+              </div>
+              <div>
+                <input type="submit"/>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+</div>
 </body>
 </html>

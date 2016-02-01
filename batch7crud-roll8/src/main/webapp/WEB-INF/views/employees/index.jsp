@@ -15,61 +15,72 @@
   <jsp:include page="/WEB-INF/views/layout/cssAndJsIncludes.jsp" />
 </head>
 <body>
-<div>
-  <div>
-    <a href="/employees/create">New Employee</a>
-  </div>
-  <div>
-    List of Employees
-    <div>
-      <table border="1px">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Address</th>
-          <th>Designation</th>
-          <th>Phone</th>
-          <th>View</th>
-          <th>Edit</th>
-          <th>Delete</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${employeeList}" var="employee">
-          <tr>
-            <td>${employee.getName()}</td>
-            <td>${employee.getAddress()}</td>
-            <td>${employee.getDesignation()}</td>
-            <td>${employee.getPhone()}</td>
-            <td><a href="employees/${employee.getId()}">View</a></td>
-            <td><a href="employees/${employee.getId()}/edit">Edit</a></td>
-            <td><a class="delete" href= "employees/${employee.getId()}/delete">Delete</a></td>
-          </tr>
-        </c:forEach>
-        </tbody>
-      </table>
-    </div>
-    <div>
-      <c:if test = "${pageNo > 1}">
-        <a href="employees?page=${pageNo - 1}">Previous</a>
-      </c:if>
-      <c:forEach begin="1" end="${lastPageNo}" var="i">
-        <c:choose>
-          <c:when test="${pageNo eq i}">
-            <td>${i}</td>
-          </c:when>
-          <c:otherwise>
-            <td><a href="employees?page=${i}">${i}</a></td>
-          </c:otherwise>
-        </c:choose>
-      </c:forEach>
+<div class="main-wrapper">
+  <jsp:include page="/WEB-INF/views/layout/header.jsp" />
 
-      <c:if test = "${pageNo < lastPageNo}">
-        <a href="employees?page=${pageNo + 1}">Next</a>
-      </c:if>
+  <div class="container-wrapper">
+    <div class="container-container">
+      <div class="container">
+        <div>
+          <div>
+            <a href="/employees/create">New Employee</a>
+          </div>
+          <div>
+            List of Employees
+            <div>
+              <table border="1px">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Address</th>
+                  <th>Designation</th>
+                  <th>Phone</th>
+                  <th>View</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${employeeList}" var="employee">
+                  <tr>
+                    <td>${employee.getName()}</td>
+                    <td>${employee.getAddress()}</td>
+                    <td>${employee.getDesignation()}</td>
+                    <td>${employee.getPhone()}</td>
+                    <td><a href="employees/${employee.getId()}">View</a></td>
+                    <td><a href="employees/${employee.getId()}/edit">Edit</a></td>
+                    <td><a class="delete" href= "employees/${employee.getId()}/delete">Delete</a></td>
+                  </tr>
+                </c:forEach>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <c:if test = "${pageNo > 1}">
+                <a href="employees?page=${pageNo - 1}">Previous</a>
+              </c:if>
+              <c:forEach begin="1" end="${lastPageNo}" var="i">
+                <c:choose>
+                  <c:when test="${pageNo eq i}">
+                    <td>${i}</td>
+                  </c:when>
+                  <c:otherwise>
+                    <td><a href="employees?page=${i}">${i}</a></td>
+                  </c:otherwise>
+                </c:choose>
+              </c:forEach>
 
+              <c:if test = "${pageNo < lastPageNo}">
+                <a href="employees?page=${pageNo + 1}">Next</a>
+              </c:if>
+
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+  <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 </div>
 <script>
   $("a.delete").click(function (event) {

@@ -11,33 +11,46 @@
 <head>
   <base href="${pageContext.request.contextPath}/">
   <title>Employee Details</title>
+  <jsp:include page="/WEB-INF/views/layout/cssAndJsIncludes.jsp" />
 </head>
 <body>
-  <div>
-    ${message}
-    <table>
-      <tbody>
-        <tr>
-          <td>Name:</td>
-          <td>${employee.getName()}</td>
-        </tr>
-        <tr>
-          <td>Address:</td>
-          <td>${employee.getAddress()}</td>
-        </tr>
-        <tr>
-          <td>Email:</td>
-          <td>${employee.getDesignation()}</td>
-        </tr>
-        <tr>
-          <td>Contact Number:</td>
-          <td>${employee.getPhone()}</td>
-        </tr>
-        <tr>
-          <td><a href="employees">Employees Home</a></td>
-        </tr>
-      </tbody>
-    </table>
+<div class="main-wrapper">
+  <jsp:include page="/WEB-INF/views/layout/header.jsp" />
+
+  <div class="container-wrapper">
+    <div class="container-container">
+      <div class="container">
+        <div>
+          ${message}
+          <table>
+            <tbody>
+            <tr>
+              <td>Name:</td>
+              <td>${employee.getName()}</td>
+            </tr>
+            <tr>
+              <td>Address:</td>
+              <td>${employee.getAddress()}</td>
+            </tr>
+            <tr>
+              <td>Email:</td>
+              <td>${employee.getDesignation()}</td>
+            </tr>
+            <tr>
+              <td>Contact Number:</td>
+              <td>${employee.getPhone()}</td>
+            </tr>
+            <tr>
+              <td><a href="employees">Employees Home</a></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
+  <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+</div>
+
 </body>
 </html>

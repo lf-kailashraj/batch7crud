@@ -17,10 +17,18 @@
 <body>
 <div class="main-wrapper">
   <jsp:include page="/WEB-INF/views/layout/header.jsp" />
-  <div>
-    <p><a href="/employees">Manage Employees</a></p>
-    <p><a href="#">Manage your Deets</a></p>
+
+  <div class="container-wrapper">
+    <div class="container-container">
+      <div class="container">
+        <div>
+          <p><a href="/employees">Manage Employees</a></p>
+          <p><a href="#">Manage your Deets</a></p>
+        </div>
+      </div>
+    </div>
   </div>
+  <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 </div>
 </body>
 </html>

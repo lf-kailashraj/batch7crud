@@ -10,10 +10,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <base href="${pageContext.request.contextPath}/">
   <title>Internal Server Error</title>
+  <jsp:include page="/WEB-INF/views/layout/cssAndJsIncludes.jsp" />
 </head>
 <body>
-OOPS Something went wrong!
+<div class="main-wrapper">
+  <jsp:include page="/WEB-INF/views/layout/header.jsp" />
 
+  <div class="container-wrapper">
+    <div class="container-container">
+      <div class="container">
+        OOPS Something went wrong!
+      </div>
+    </div>
+  </div>
+  <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+</div>
 </body>
 </html>
