@@ -10,8 +10,19 @@
 	<title>SMS</title>
 </head>
 <body>
-<h2>Student Management System</h2>
+<%
+	//allow access only if session exists
+	String user = (String) session.getAttribute("user");
+%>
+<h3>Hi <%=user %>, Login successful.
+<br>
+User=<%=user %>
+<br>
+<%--<h2>Student Management System</h2>--%>
 <div><a href="students/create">New Student</a></div>
 <div><a href="students">See all Students</a></div>
+<form action="LogoutController" method="post">
+	<input type="submit" value="Logout" >
+</form>
 </body>
 </html>

@@ -10,6 +10,7 @@ public class ParameterConstants {
     public static final String ADDRESS = "address";
 
     public static final String PAGE = "page";
+    public static final String USER = "user";
 
     private ParameterConstants(){
     }
