@@ -11,16 +11,23 @@
 	input{
 			display:block;
 	}
+	.error{
+		color:red;
+		display:block;
+	}
 </style>
 <base href="${pageContext.request.contextPath}/" />
 </head>
 <body>
-base path is <c:out value="${pageContext.request.contextPath}"></c:out>
-	<form method="post" action="users/${user.id}/edit">
-		<span>First Name:</span> <input type = "text" name = "firstname" value ="${user.firstName}">
-		<span>Surname :</span> <input type = "text" name = "surname" value = "${user.surName }">
-		<span>Username:</span> <input type = "text" name="username" value = "${user.userName }">
-		<span>Password:</span> <input type = "password" name = "password" value = "${user.password }">
+	<form method="post" action="users/${userAttributes['id']}/edit">
+		<span>First Name:</span> <input type = "text" name = "firstname" value ="${userAttributes['firstname']}">
+		<span class="error"><c:out value="${errors['firstname']}"></c:out></span>
+		<span>Surname :</span> <input type = "text" name = "surname" value = "${userAttributes['surname']}">
+		<span class="error"><c:out value="${errors['surname']}"></c:out></span>
+		<span>Username:</span> <input type = "text" name="username" value = "${userAttributes.username}">
+		<span class="error"><c:out value="${errors['username']}"></c:out></span>
+		<label>Age:</label> <input name="age"  type="text" value="${userAttributes.age}">
+		<span class="error"><c:out value="${errors['age']}"></c:out></span>
 		<input type="submit" value = "submit">
 	
 	</form>

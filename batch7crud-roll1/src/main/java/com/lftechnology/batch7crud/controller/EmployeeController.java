@@ -2,14 +2,18 @@ package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.entity.Employee;
+import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.service.EmployeeService;
+import com.lftechnology.batch7crud.factory.EmployeeFactory;
 
 import static com.lftechnology.batch7crud.constant.EntityConstant.*;
 import static com.lftechnology.batch7crud.constant.URLConstant.*;
 import static com.lftechnology.batch7crud.constant.AttributeConstant.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -99,16 +103,16 @@ public class EmployeeController extends CustomHttpServlet {
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-    String userName = request.getParameter(USER_NAME);
-    String password = request.getParameter(PASSWORD);
-    String fullName = request.getParameter(FULL_NAME);
-    String department = request.getParameter(DEPARTMENT);
-    String address = request.getParameter(ADDRESS);
-    Employee employee = new Employee(userName, password, fullName, department, address);
-
+    Map<String, String> formValues = createMapOfFormParameters(request);
     try {
+      EmployeeFactory employeeFactory = new EmployeeFactory();
+      Employee employee = employeeFactory.createEmployee(formValues);
       employeeService.create(employee);
       response.sendRedirect(request.getContextPath() + EMPLOYEE_LIST);
+    } catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute(ERRORS, e.getErrors());
+      request.getRequestDispatcher(CREATE_PAGE).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       showServerError(request, response, e);
@@ -133,17 +137,22 @@ public class EmployeeController extends CustomHttpServlet {
   private void editProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     int id = parameterValueAsInt(request, 2);
-    String userName = request.getParameter(USER_NAME);
-    String password = request.getParameter(PASSWORD);
-    String fullName = request.getParameter(FULL_NAME);
-    String department = request.getParameter(DEPARTMENT);
-    String address = request.getParameter(ADDRESS);
-    Employee employee = new Employee(userName, password, fullName, department, address);
-    employee.setId(id);
-
+    Map<String, String> formValues = createMapOfFormParameters(request);
+    Employee employee = null;
     try {
+      employee = new Employee(formValues.get(USER_NAME), formValues.get(PASSWORD), formValues.get(FULL_NAME), formValues.get(DEPARTMENT),
+              formValues.get(ADDRESS));
+      employee.setId(id);
+      EmployeeFactory employeeFactory = new EmployeeFactory();
+      employee = employeeFactory.createEmployee(formValues);
+      employee.setId(id);
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + EMPLOYEE_LIST);
+    } catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      request.setAttribute(EMPLOYEE, employee);
+      request.setAttribute(ERRORS, e.getErrors());
+      request.getRequestDispatcher(EDIT_PAGE).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       showServerError(request, response, e);
@@ -159,5 +168,17 @@ public class EmployeeController extends CustomHttpServlet {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       showServerError(request, response, e);
     }
+  }
+
+  private Map<String, String> createMapOfFormParameters(HttpServletRequest request) {
+    Map<String, String> formValues = new HashMap<>();
+    formValues.put(USER_NAME, request.getParameter(USER_NAME));
+    formValues.put(PASSWORD, request.getParameter(PASSWORD));
+    formValues.put(FULL_NAME, request.getParameter(FULL_NAME));
+    formValues.put(DEPARTMENT, request.getParameter(DEPARTMENT));
+    formValues.put(ADDRESS, request.getParameter(ADDRESS));
+    formValues.put(AGE, request.getParameter(AGE));
+
+    return formValues;
   }
 }

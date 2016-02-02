@@ -14,6 +14,7 @@ public class EntityConstant {
   public static final String PASSWORD = "password"; //NOSONAR
   public static final String ADDRESS = "address";
   public static final String DEPARTMENT = "department";
+  public static final String AGE = "age";
 
   private EntityConstant() {
 

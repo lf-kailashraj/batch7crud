@@ -25,7 +25,7 @@ public class EmployeeDAO {
 
   public void insert(Employee employee) throws DataException {
 
-    String sqlQuery = "INSERT INTO employee(username,password,fullname,department,address) VALUES(?,?,?,?,?)";
+    String sqlQuery = "INSERT INTO employee(username,password,fullname,department,address,age) VALUES(?,?,?,?,?,?)";
     try (Connection connection = DbUtils.getConnection();
             PreparedStatement ps = connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS)
     ) {
@@ -34,6 +34,7 @@ public class EmployeeDAO {
       ps.setString(3, employee.getFullName());
       ps.setString(4, employee.getDepartment());
       ps.setString(5, employee.getAddress());
+      ps.setInt(6, employee.getAge());
       ps.executeUpdate();
       ResultSet resultSet = ps.getGeneratedKeys();
       if (resultSet.next()) {
@@ -65,6 +66,7 @@ public class EmployeeDAO {
         employee.setFullName(result.getString(FULL_NAME));
         employee.setAddress(result.getString(ADDRESS));
         employee.setDepartment(result.getString(DEPARTMENT));
+        employee.setAge(result.getInt(AGE));
         employees.add(employee);
       }
       return employees;
@@ -89,6 +91,7 @@ public class EmployeeDAO {
         employee.setFullName(result.getString(FULL_NAME));
         employee.setAddress(result.getString(ADDRESS));
         employee.setDepartment(result.getString(DEPARTMENT));
+        employee.setAge(result.getInt(AGE));
       }
       return employee;
     } catch (SQLException e) {
@@ -99,7 +102,7 @@ public class EmployeeDAO {
 
   public void update(Employee employee) throws DataException {
 
-    String sqlQuery = "UPDATE employee SET userName=?, password=?,fullName=?,department=?,address=? WHERE id=?"; //NOSONAR
+    String sqlQuery = "UPDATE employee SET userName=?, password=?,fullName=?,department=?,address=?,age=? WHERE id=?"; //NOSONAR
     try (Connection connection = DbUtils.getConnection();
             PreparedStatement ps = connection.prepareStatement(sqlQuery)) {
       ps.setString(1, employee.getUserName());
@@ -107,7 +110,8 @@ public class EmployeeDAO {
       ps.setString(3, employee.getFullName());
       ps.setString(4, employee.getDepartment());
       ps.setString(5, employee.getAddress());
-      ps.setInt(6, employee.getId());
+      ps.setInt(6, employee.getAge());
+      ps.setInt(7, employee.getId());
       ps.executeUpdate();
 
     } catch (SQLException e) {
