@@ -5,9 +5,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Hello</title>
+    <base href="${pageContext.request.contextPath}/">
+    <title>Hello</title>
 </head>
 <body>
-	<div>Hello world!!</div>
+
+    <h2>Welcome in Employee Management System</h2>
+
+    <ul>
+        <li><a href="employees/create">Add Employee</a></li>
+        <li><a href="employees">List Employee</a></li>
+    </ul>
 </body>
 </html>
