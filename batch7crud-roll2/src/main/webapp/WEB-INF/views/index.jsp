@@ -18,12 +18,12 @@
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
-<div class="mainWrapper clearfix">
-    <div class="headerWrapper clearfix">
+<div class="main-wrapper clearfix">
+    <div class="header-wrapper clearfix">
         <div class="logo">Employee Management System</div>
-        <div class="loggedinUser">Welcome,Romit Amgai</div>
+        <div class="loggedin-user">Welcome,Romit Amgai</div>
     </div>
-    <div class="bodyWrapper clearfix">
+    <div class="body-wrapper clearfix">
         <div class="col2-left clearfix">
             <div class="left">
                 <ul>
@@ -37,11 +37,11 @@
                 </ul>
             </div>
             <div class="right">
-                <h1 class="textGreen">Welcome to Employee Management System</h1>
+                <h1>Welcome to Employee Management System</h1>
             </div>
         </div>
     </div>
-    <div class="footerWrapper clearfix">Copyright 2016, Leapfrog Technology, Inc</div>
+    <div class="footer-wrapper clearfix">Copyright 2016, Leapfrog Technology, Inc</div>
 </div>
 </body>
 </html>

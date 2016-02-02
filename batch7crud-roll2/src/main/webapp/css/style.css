@@ -3,11 +3,11 @@ body, html {
     position: relative;
 }
 
-.mainWrapper {
+.main-wrapper {
     max-width: 100%;
 }
 
-.headerWrapper {
+.header-wrapper {
     background-color: #666666;
     padding: 30px 45px 30px 100px;
     color: #ffffff;
@@ -19,11 +19,12 @@ body, html {
     font-size: 22px;
 }
 
-.bodyWrapper {
+.body-wrapper {
     min-height: 600px;
 }
 
 .col2-left {
+    /*NOSONAR*/
     width: 100%;
 }
 
@@ -41,7 +42,8 @@ body, html {
 }
 
 /*Login Page*/
-.loginBox {
+.login-box {
+    /*NOSONAR*/
     width: 20%;
     margin: 10% auto;
     background-color: #336699;
@@ -49,7 +51,7 @@ body, html {
     padding: 50px 5% 0 5%;
 }
 
-.loginTitle {
+.login-title {
     text-align: center;
     color: #ffffff;
     font-size: 16px;
@@ -57,7 +59,7 @@ body, html {
     padding-bottom: 30px;
 }
 
-.formLabel {
+.form-label {
     color: #ffffff;
     font-size: 14px;
     clear: both;
@@ -65,19 +67,19 @@ body, html {
     padding-bottom: 5px;
 }
 
-.inputText {
+.input-text {
     width: 100%;
     clear: both;
 }
 
-.loginBox input[type=text], input[type=password] {
+.login-box input[type=text], input[type=password] {
     width: 100%;
     float: left;
     margin-bottom: 10px;
     height: 30px;
 }
 
-.loginBox input[type=submit] {
+.login-box input[type=submit] {
     clear: both;
     float: right;
     width: 50%;
@@ -86,7 +88,7 @@ body, html {
     height: 30px;
 }
 
-.errorMessage {
+.error-message {
     font-size: 12px;
     color: #c9302c;
 }
@@ -98,7 +100,7 @@ body, html {
     cursor: pointer;
 }
 
-.left ul li a {
+.left a {
     width: 100%;
     font-size: 16px;
     display: block;
@@ -109,7 +111,7 @@ body, html {
 
 /*List Page*/
 
-.bodyTitle {
+.body-title {
     text-align: left;
     width: 97%;
     padding: 20px 0 20px 3%;
@@ -119,7 +121,7 @@ body, html {
     border-bottom: 2px solid #333333;
 }
 
-.loggedinUser {
+.loggedin-user {
     font-size: 12px;
     float: right;
 }
@@ -129,12 +131,13 @@ body, html {
     float: right;
 }
 
-.addNewEmployee {
+.addnew-employee {
     padding: 20px 0 20px 3%;
 }
 
-.addNewEmployee a {
-    width: 10%;
+.addnew-employee a {
+    box-sizing: border-box;
+    width: 12%;
     background-color: #336699;
     color: #ffffff;
     display: block;
@@ -146,42 +149,45 @@ body, html {
     padding-right: 1%;
 }
 
-.employeeListTable {
+.employee-list {
     padding-left: 3%;
 }
 
-.employeeListTable table {
+.employee-list table {
+    box-sizing: border-box;
     border: 1px solid #cccccc;
     width: 95%;
 }
 
-.employeeListTable table tr {
+.employee-list table tr {
     line-height: 50px;
     font-size: 14px;
     color: #666666;
 }
 
-.employeeListTable table tr:nth-child(odd) {
+.employee-list table tr:nth-child(odd) {
     background-color: #eeeeee;
 }
 
-.employeeListTable table td {
+.employee-list table td {
+    /*NOSONAR*/
     padding-left: 5px;
     border-right: 2px solid #cccccc;
     width: 15%;
     padding-right: 5px;
 }
 
-.employeeListTable table td:first-child {
+.employee-list table td:first-child {
+    /*NOSONAR*/
     width: 10%;
 }
 
-.employeeListTable table td:nth-child(n+6) {
+.employee-list table td:nth-child(n+6) {
     width: 5%;
     border-right: none;
 }
 
-.employeeListTable table td a {
+.employee-list a {
     width: 100%;
     display: block;
     background: #336699;
@@ -190,11 +196,11 @@ body, html {
     line-height: 30px;
 }
 
-.employeeListTable table td:nth-last-child(3) a {
+table td:nth-last-child(3) a {
     background: #5cb85c;
 }
 
-.employeeListTable table td:last-child a {
+table td:last-child a {
     background: #c9302c;
 }
 
@@ -220,7 +226,7 @@ body, html {
     border: none;
 }
 
-.pagination ul li a {
+.pagination a {
     width: 100%;
     display: block;
     color: #666666;
@@ -229,15 +235,15 @@ body, html {
 }
 
 /*View Employee*/
-.viewEmployee {
+.view-employee {
     padding: 10px 0 10px 3%;
 }
 
-.viewEmployee ul {
+.view-employee ul {
     width: 40%;
 }
 
-.viewEmployee ul li {
+.view-employee ul li {
     display: block;
     padding: 5px 5px;
     color: #ffffff;
@@ -245,42 +251,42 @@ body, html {
     border: 1px solid #6b8fa3;
 }
 
-.viewEmployee ul li span {
+.view-employee span {
     text-align: left;
     line-height: 30px;
     padding-left: 5%;
 }
 
 /*Edit/Create Employee*/
-.employeeForm {
+.employee-form {
     margin: 10px 0 10px 3%;
     background: #336699;
-    width: 40%
+    width: 40%;
 }
 
-.employeeForm ul li {
+.employee-form ul li {
     display: block;
     padding: 5px 5px;
     color: #ffffff;
     border: 1px solid #6b8fa3;
 }
 
-.employeeForm .nameFields {
+.employee-form .name-field {
     clear: both;
     float: left;
     width: 50%;
     line-height: 30px;
 }
 
-.employeeForm .inputFields {
+.employee-form .input-field {
     clear: both;
 }
 
-.inputFields input[type=text] {
+.input-field input[type=text] {
     height: 30px;
 }
 
-.employeeForm input[type=submit] {
+.employee-form input[type=submit] {
     height: 35px;
     width: 20%;
     float: right;
@@ -290,7 +296,7 @@ body, html {
 
 /*Create employee*/
 
-.footerWrapper {
+.footer-wrapper {
     background-color: #666666;
     color: #ffffff;
     border-top: 2px solid #333333;

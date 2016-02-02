@@ -15,12 +15,12 @@
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
-<div class="mainWrapper clearfix">
-    <div class="headerWrapper clearfix">
+<div class="main-wrapper clearfix">
+    <div class="header-wrapper clearfix">
         <div class="logo">Employee Management System</div>
-        <div class="loggedinUser">Welcome,Romit Amgai</div>
+        <div class="loggedin-user">Welcome,Romit Amgai</div>
     </div>
-    <div class="bodyWrapper clearfix">
+    <div class="body-wrapper clearfix">
         <div class="col2-left clearfix">
             <div class="left">
                 <ul>
@@ -34,9 +34,9 @@
                 </ul>
             </div>
             <div class="right">
-                <div class="bodyTitle">Employee List</div>
-                <div class="addNewEmployee"><a href="employees/create">Add New Employee</a></div>
-                <div class="employeeListTable">
+                <div class="body-title">Employee List</div>
+                <div class="addnew-employee"><a href="employees/create">Add New Employee</a></div>
+                <div class="employee-list">
                     <table>
                         <tbody>
                         <tr>
@@ -92,7 +92,7 @@
             </div>
         </div>
     </div>
-    <div class="footerWrapper clearfix">Copyright 2016, Leapfrog Technology, Inc</div>
+    <div class="footer-wrapper clearfix">Copyright 2016, Leapfrog Technology, Inc</div>
 </div>
 <script>
     var deleteElement = document.querySelectorAll('a.delete');

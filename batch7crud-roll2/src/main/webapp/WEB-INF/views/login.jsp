@@ -16,19 +16,19 @@
 
 </head>
 <body>
-<div class="mainWrapper clearfix">
-    <div class="headerWrapper clearfix">
+<div class="main-wrapper clearfix">
+    <div class="header-wrapper clearfix">
         <div class="logo"> Employee Management System</div>
     </div>
-    <div class="bodyWrapper clearfix">
+    <div class="body-wrapper clearfix">
         <div class="col2-left clearfix">
-            <div class="loginBox">
-                <div class="loginTitle">Login</div>
+            <div class="login-box">
+                <div class="login-title">Login</div>
                 <form action="authenticate/login" method="POST">
-                    <div class="formLabel">Username</div>
-                    <div class="inputText"><input type="text" name="username"></div>
-                    <div class="formLabel">Password</div>
-                    <div class="inputText"><input type="password" name="password"></div>
+                    <div class="form-label">Username</div>
+                    <div class="input-text"><input type="text" name="username"></div>
+                    <div class="form-label">Password</div>
+                    <div class="input-text"><input type="password" name="password"></div>
                     <span class="errorMessage">${loginError}</span>
 
                     <input type="submit" value="Login">
@@ -36,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div class="footerWrapper clearfix">Copyright 2016, Leapfrog Technology, Inc</div>
+    <div class="footer-wrapper clearfix">Copyright 2016, Leapfrog Technology, Inc</div>
 </div>
 </body>
 </html>
