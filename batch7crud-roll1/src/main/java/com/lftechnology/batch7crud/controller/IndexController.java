@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static com.lftechnology.batch7crud.constant.URLConstant.*;
 
-@WebServlet({ "/" })
+@WebServlet({ "/home" })
 public class IndexController extends HttpServlet {
 
   @Override

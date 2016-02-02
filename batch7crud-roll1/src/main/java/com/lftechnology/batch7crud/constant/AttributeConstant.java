@@ -21,6 +21,7 @@ public class AttributeConstant {
   public static final String ERRORS = "errors";
   public static final String LOGIN = "login";
   public static final String LOGOUT = "logout";
+  public static final String USER = "user";
 
   private AttributeConstant() {
 

@@ -3,6 +3,7 @@ package com.lftechnology.batch7crud.controller;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.entity.Employee;
 import com.lftechnology.batch7crud.exception.ValidationException;
+import com.lftechnology.batch7crud.factory.ServiceFactory;
 import com.lftechnology.batch7crud.service.EmployeeService;
 import com.lftechnology.batch7crud.factory.EmployeeFactory;
 
@@ -32,7 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet({ "/employees/*" })
 public class EmployeeController extends CustomHttpServlet {
-  private EmployeeService employeeService = new EmployeeService();  //NOSONAR
+
+  private EmployeeService employeeService = ServiceFactory.createEmployeeService();    //NOSONAR
   private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
   private static final int RECORD_TO_FETCH = 5;
 
@@ -105,8 +107,7 @@ public class EmployeeController extends CustomHttpServlet {
 
     Map<String, String> formValues = createMapOfFormParameters(request);
     try {
-      EmployeeFactory employeeFactory = new EmployeeFactory();
-      Employee employee = employeeFactory.createEmployee(formValues);
+      Employee employee = EmployeeFactory.createEmployee(formValues);
       employeeService.create(employee);
       response.sendRedirect(request.getContextPath() + EMPLOYEE_LIST);
     } catch (ValidationException e) {
@@ -125,9 +126,10 @@ public class EmployeeController extends CustomHttpServlet {
       Employee employee = employeeService.fetchById(id);
       if (employee == null) {
         showPageNotFound(request, response);
+      } else {
+        request.setAttribute(EMPLOYEE, employee);
+        request.getServletContext().getRequestDispatcher(EDIT_PAGE).forward(request, response);
       }
-      request.setAttribute(EMPLOYEE, employee);
-      request.getServletContext().getRequestDispatcher(EDIT_PAGE).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       showServerError(request, response, e);
@@ -143,8 +145,7 @@ public class EmployeeController extends CustomHttpServlet {
       employee = new Employee(formValues.get(USER_NAME), formValues.get(PASSWORD), formValues.get(FULL_NAME), formValues.get(DEPARTMENT),
               formValues.get(ADDRESS));
       employee.setId(id);
-      EmployeeFactory employeeFactory = new EmployeeFactory();
-      employee = employeeFactory.createEmployee(formValues);
+      employee = EmployeeFactory.createEmployee(formValues);
       employee.setId(id);
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + EMPLOYEE_LIST);
@@ -178,7 +179,6 @@ public class EmployeeController extends CustomHttpServlet {
     formValues.put(DEPARTMENT, request.getParameter(DEPARTMENT));
     formValues.put(ADDRESS, request.getParameter(ADDRESS));
     formValues.put(AGE, request.getParameter(AGE));
-
     return formValues;
   }
 }

@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 /**
  * UserDAO performs database operation in user table
- *
+ * <p>
  * Created by kiran on 1/29/16.
  */
 public class UserDAO {

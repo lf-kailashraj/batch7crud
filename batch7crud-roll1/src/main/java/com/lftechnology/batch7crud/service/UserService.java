@@ -12,6 +12,6 @@ public class UserService {
   private UserDAO userDAO = new UserDAO();
 
   public boolean isValidUser(String userName,String password) throws DataException{
-    return userDAO.isValidUser(userName,password);
+    return userDAO.isValidUser(userName, password);
   }
 }

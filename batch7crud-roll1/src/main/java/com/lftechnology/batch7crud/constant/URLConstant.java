@@ -16,9 +16,11 @@ public class URLConstant {
   public static final String CREATE_PAGE = EMPLOYEE_VIEWS + "create.jsp";
   public static final String EDIT_PAGE = EMPLOYEE_VIEWS + "edit.jsp";
   public static final String INDEX_PAGE = VIEWS + "index.jsp";
-  public static final String EMPLOYEE_LIST = "/employees";
+  public static final String EMPLOYEE_LIST = File.separator + "employees";
   public static final String ERROR_PAGE = VIEWS + "error.jsp";
   public static final String LOGIN_PAGE = VIEWS + "login.jsp";
+  public static final String LOGIN_PATH = File.separator + "authentication" + File.separator + "login";
+  public static final String HOME_PATH = File.separator + "home";
 
   private URLConstant() {
 

@@ -1,7 +1,9 @@
 package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.exception.DataException;
+import com.lftechnology.batch7crud.exception.PasswordEncoderException;
 import com.lftechnology.batch7crud.service.UserService;
+import com.lftechnology.batch7crud.utils.PasswordEncoder;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -69,21 +71,20 @@ public class AuthenticationController extends CustomHttpServlet {
 
     try {
 
-      if (userService.isValidUser(userName, password)) {
+      if (userService.isValidUser(userName, PasswordEncoder.encodePassword(password))) {
         HttpSession session = request.getSession();
-        session.setAttribute("user", "user");
-        response.sendRedirect(request.getContextPath() + "/");
+        session.setAttribute(USER, USER);
+        response.sendRedirect(request.getContextPath() + HOME_PATH);
 
       } else {
         request.setAttribute(ERRORS, "invalid username or password");
         RequestDispatcher requestDispatcher = request.getServletContext().getRequestDispatcher(LOGIN_PAGE);
         requestDispatcher.forward(request, response); //NOSONAR
       }
-    } catch (DataException e) {
+    } catch (DataException | PasswordEncoderException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       showServerError(request, response, e);
     }
-
   }
 
   private void logoutProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -1,33 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!DOCTYPE html>
-<html>
-<head>
-    <base href="${pageContext.request.contextPath}/">
-    <title>Hello</title>
-</head>
-<body>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<t:mainLayout>
 
-    <h2>Welcome in Employee Management System</h2>
+    <jsp:attribute name="mainContent">
+        <h2>Dashboard</h2>
+    </jsp:attribute>
 
-    <ul>
-        <li><a href="employees/create">Add Employee</a></li>
-        <li><a href="employees">List Employee</a></li>
-        <li><a href="authentication/logout" id="logout">Logout</a></li>
-    </ul>
+</t:mainLayout>
 
-    <script type="text/javascript">
-        var logoutButton = document.getElementById("logout");
-        logoutButton.onclick = function (e) {
-            e.preventDefault();
-            var href = this.getAttribute("href");
-            var form = document.createElement("form");
-            form.action = href;
-            form.method = "post";
-            form.submit();
-        }
-    </script>
-</body>
-</html>
+

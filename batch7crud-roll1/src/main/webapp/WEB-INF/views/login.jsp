@@ -1,35 +1,39 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: kiran
-  Date: 1/27/16
-  Time: 9:40 AM
-  To change this template use File | Settings | File Templates.
---%>
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <base href="${pageContext.request.contextPath}/">
     <title>login page</title>
+    <link rel="stylesheet" type="text/css" href="resources/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/style.css">
 </head>
 <body>
+    <div class="wrapper">
+        <div class="login-content">
+            <div class="login-title">
+                <h2>Login To Leapfrog EMS</h2>
+            </div>
 
-<h2> Login </h2>
+            <div class="login-form">
+                <form action="authentication/login" method="post">
 
-<div>
-    <span>${errors}</span>
-    <form action="authentication/login" method="post">
-        <div>
-            <label>User Name :</label>
-            <input type="text" name="userName">
+                    <span>${errors}</span>
+
+                    <div class="form-group">
+                        <label>User Name</label>
+                        <input class="form-control" name="userName" type="text">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input class="form-control" name="password" type="password">
+                    </div>
+
+                    <input type="submit" class="button button-primary" value="login">
+                </form>
+            </div>
         </div>
-        <div>
-            <label>Password :</label>
-            <input type="password" name="password">
-        </div>
-
-        <input type="submit" value="login">
-    </form>
-</div>
+    </div>
 
 </body>
 </html>
