@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet({ "/" })
+@WebServlet({ "/home" })
 public class IndexController extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     req.getServletContext().getRequestDispatcher(CommonConstants.INDEX_VIEW).forward(req, resp);

@@ -33,7 +33,7 @@ public class AuthenticationServlet extends HttpServlet {
       if (user != null) {
         HttpSession session = request.getSession();
         session.setAttribute("user", username);
-        response.sendRedirect(request.getContextPath() + "/");
+        response.sendRedirect(request.getContextPath() + "/home");
       } else {
         request.setAttribute("error","Invalid Combination");
         request.getRequestDispatcher(CommonConstants.LOG_IN_VIEW).forward(request, response);

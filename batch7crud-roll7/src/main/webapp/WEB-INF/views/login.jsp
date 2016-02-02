@@ -9,17 +9,42 @@
 <html>
 <head>
   <base href="${pageContext.request.contextPath}/">
+  <link rel="stylesheet" type="text/css" href="static/css/reset.css" />
+  <link rel="stylesheet" type="text/css" href="static/css/layout.css" />
   <title>Log In</title>
 </head>
 <body>
 
-<form action="authenticate" method="post">
-  Username: <input type="text" name="name">
-  <br/>
-  Password: <input type="password" name="password">
-  <br/>
-  <input type="submit" value = "Log In">
-</form>
+<div class="header">
+  <div class="header-text">
+    SHREE KAMANA BOARDING HIGH SCHOOL
+  </div>
+</div>
+
+<div class="mainbody">
+  <div class="login-container">
+    <form action="authenticate" method="post">
+      <div>
+        <input type="text" name="name" placeholder="Username">
+      </div>
+
+      <div>
+        <input type="password" name="password" placeholder="password">
+      </div>
+
+      <div>
+        <input type="submit" value = "Log In">
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="copyright">Copyright</div>
+  <div class="contact">Contact</div>
+</div>
 ${error}
 
 </body>

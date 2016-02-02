@@ -18,7 +18,7 @@ public class CommonConstants {
   public static final String ERROR_VIEW = VIEW_BASE + "error.jsp";
   public static final String INDEX_VIEW = VIEW_BASE + "index.jsp";
   public static final String LOG_IN_VIEW = VIEW_BASE + "login.jsp";
-  public static final int PAGE_SIZE = 3;
+  public static final int PAGE_SIZE = 5;
   public static final int LOWER_LIMIT_FOR_ROLL = 0;
   public static final int UPPER_LIMIT_FOR_ROLL = 200;
   public static final String PAGE_NOT_FOUND = "Error 404";
