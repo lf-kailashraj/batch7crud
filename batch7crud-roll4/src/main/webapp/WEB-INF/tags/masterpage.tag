@@ -21,7 +21,7 @@
         <div class="user-info clrfix">
             <a href="#" class="username">Pratish Shrestha</a>
             <a href="auth/logout" class="logout-btn">
-                <img src="resources/images/logout.png">
+                <img src="resources/images/logout.png" alt="logout icon" title="Log Out">
             </a>
         </div>
     </div>
