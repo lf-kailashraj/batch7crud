@@ -10,7 +10,6 @@
 <a>
   <div>Header</div>
   <div>
-    <a href="users/signup">Sign Up</a>
     <a href="users/signin">Sign In</a>
   </div>
   <div>Footer</div>

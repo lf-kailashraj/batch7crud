@@ -29,80 +29,78 @@ import java.util.logging.Logger;
 public class EmployeeController extends CommonHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
   private EmployeeService employeeService = new EmployeeService(); // NOSONAR
-  private EmployeeValidator validator = new EmployeeValidator();
+  private EmployeeValidator validator = new EmployeeValidator(); // NOSONAR
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     try {
       String path = request.getPathInfo();
       if (path == null) {
         fetch(request, response);
       }
       else {
-        String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
-        if (parts.length == 0) {
+        String action = getAction(request);
+        switch (action) {
+        case AppConstants.FETCH:
           fetch(request, response);
-        }
-        else if (parts.length == 2 && AppConstants.CREATE.equals(parts[1])) {
+          break;
+        case AppConstants.CREATE:
           create(request, response);
-        }
-        else if (parts.length == 2) {
-          view(request, response);
-        }
-        else if (parts.length == 3 && AppConstants.EDIT.equals(parts[2])) {
+          break;
+        case AppConstants.EDIT:
           edit(request, response);
-        }
-        else {
-          request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
-          response.sendError(HttpServletResponse.SC_NOT_FOUND);
+          break;
+        case AppConstants.VIEW:
+          view(request, response);
+          break;
+        default:
+          throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
         }
       }
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.sendError(HttpServletResponse.SC_NOT_FOUND);
+      throw new ServletException(e.getMessage());
     }
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     try {
-      String path = request.getPathInfo();
-      String[] parts = path.split(UrlConstants.PATH_SEPARATOR);
-      if (AppConstants.CREATE.equals(parts[1])) {
+      String action = postAction(request);
+
+      switch (action) {
+      case AppConstants.CREATE:
         createProcess(request, response);
-      }
-      else if (AppConstants.EDIT.equals(parts[2])) {
+        break;
+      case AppConstants.EDIT:
         editProcess(request, response);
-      }
-      else if (AppConstants.DELETE.equals(parts[2])) {
+        break;
+      case AppConstants.DELETE:
         deleteProcess(request, response);
-      }
-      else {
-        request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.INTERNAL_SERVER_ERROR);
-        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        break;
+      default:
+        request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
       }
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      throw new ServletException(e.getMessage());
     }
   }
 
-  private void create(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  private void create(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     try {
       request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request,
         response);
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      throw new ServletException(e.getMessage());
     }
   }
 
-  private void edit(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  private void edit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     try {
       int id = parameterValueAsInt(request, 2);
       Employee employee = employeeService.fetchById(id);
@@ -113,13 +111,13 @@ public class EmployeeController extends CommonHttpServlet {
       }
       else {
         request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
-        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
       }
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -140,7 +138,7 @@ public class EmployeeController extends CommonHttpServlet {
       employee = employeeFactory.createObject(inputs);
       validator.validate(employee);
       employeeService.create(employee);
-      request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_CREATED);
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.EMPLOYEE_CREATED);
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
       request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
     }
@@ -162,7 +160,7 @@ public class EmployeeController extends CommonHttpServlet {
       employee.setId(id);
       validator.validate(employee);
       employeeService.edit(employee);
-      request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_UPDATED);
+      request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.EMPLOYEE_UPDATED);
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
       request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
     }
@@ -180,7 +178,7 @@ public class EmployeeController extends CommonHttpServlet {
     response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
   }
 
-  private void fetch(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  private void fetch(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     try {
       Integer pageLimit = AppConstants.PAGE_LIMIT;
       Integer pageNo = getCurrentPage(request);
@@ -201,12 +199,11 @@ public class EmployeeController extends CommonHttpServlet {
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR);
     }
   }
 
-  private void view(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  private void view(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     try {
       int id = parameterValueAsInt(request, 2);
       Employee employee = employeeService.fetchById(id);
@@ -215,19 +212,17 @@ public class EmployeeController extends CommonHttpServlet {
         request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
       }
       else {
-        request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
-        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
       }
     }
     catch (NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
-      response.sendError(HttpServletResponse.SC_NOT_FOUND);
+      throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
-      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -241,5 +236,45 @@ public class EmployeeController extends CommonHttpServlet {
     } catch(NumberFormatException e){
       return 1;
     }
+  }
+
+  private String getAction(HttpServletRequest request) {
+    String[] parts = getPathParams(request);
+    String action;
+
+    if (parts.length == 2) {
+      action = AppConstants.FETCH;
+    }
+    else if (parts.length == 3 && AppConstants.CREATE.equals(parts[2])) {
+      action = AppConstants.CREATE;
+    }
+    else if (parts.length == 3) {
+      action = AppConstants.VIEW;
+    }
+    else if (parts.length == 4 && AppConstants.EDIT.equals(parts[3])) {
+      action = AppConstants.EDIT;
+    }
+    else {
+      action = null;
+    }
+    return action;
+  }
+
+  private String postAction(HttpServletRequest request) {
+    String[] parts = getPathParams(request);
+    String action;
+    if (parts.length == 3 && AppConstants.CREATE.equals(parts[2])) {
+      action = AppConstants.CREATE;
+    }
+    else if (parts.length == 4 && AppConstants.EDIT.equals(parts[3])) {
+      action = AppConstants.EDIT;
+    }
+    else if (parts.length == 4 && AppConstants.DELETE.equals(parts[3])) {
+      action = AppConstants.DELETE;
+    }
+    else {
+      action = null;
+    }
+    return action;
   }
 }

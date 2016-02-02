@@ -19,6 +19,7 @@ public class UrlConstants {
   public static final String EMPLOYEE_EDIT_PAGE = VIEWS + EMPLOYEE_ROUTE + FILE_SEPARATOR + "edit.jsp";
 
   public static final String USER_ROUTE = FILE_SEPARATOR + "users";
+  public static final String USER_SIGN_IN_ROUTE = USER_ROUTE + FILE_SEPARATOR + "signin";
   public static final String USER_HOME_PAGE = VIEWS + USER_ROUTE + FILE_SEPARATOR + INDEX;
   public static final String USER_CREATE_PAGE = VIEWS + USER_ROUTE + FILE_SEPARATOR + "new.jsp";
   public static final String USER_VIEW_PAGE = VIEWS + USER_ROUTE + FILE_SEPARATOR + "view.jsp";
