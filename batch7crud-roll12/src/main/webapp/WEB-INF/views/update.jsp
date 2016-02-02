@@ -12,7 +12,6 @@
   <base href="${pageContext.request.contextPath}/"/>
 </head>
 <body>
-skfhnd
 <form method="POST" action="students/${student.studentID}/update">
   First Name :
   <input type="text" value="${student.firstName}" name="firstName"/>

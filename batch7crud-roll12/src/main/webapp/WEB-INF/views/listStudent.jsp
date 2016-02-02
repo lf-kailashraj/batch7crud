@@ -11,6 +11,14 @@
 </head>
 <body>
 <h2><a href="students/create" class="create">Add new student</a></h2>
+<%--For displaying Previous link except for the 1st page --%>
+<c:if test="${page != 1}">
+    <td><a href="students?page=${page - 1}">Previous</a></td>
+</c:if>
+<%--For displaying Next link --%>
+<c:if test="${page lt totalPages}">
+    <td><a href="students?page=${page + 1}">Next</a></td>
+</c:if>
 <table border=1>
     <thead>
     <tr>
@@ -41,6 +49,23 @@
         </tr>
     </c:forEach>
     </tbody>
+</table>
+
+<%--For displaying Page numbers.
+The when condition does not display a link for the current page--%>
+<table border="1" cellpadding="5" cellspacing="5">
+    <tr>
+        <c:forEach begin="1" end="${totalPages}" var="i">
+            <c:choose>
+                <c:when test="${page eq i}">
+                    <td>${i}</td>
+                </c:when>
+                <c:otherwise>
+                    <td><a href="students?page=${i}">${i}</a></td>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+    </tr>
 </table>
 <script>
     var deleteElement = document.getElementsByClassName("delete");
