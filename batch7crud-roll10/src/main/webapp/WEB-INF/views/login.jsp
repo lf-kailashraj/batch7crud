@@ -10,7 +10,7 @@
 <head>
     <base href="${pageContext.request.contextPath}/">
     <title>Login</title>
-    <%--<link type="text/css" rel="stylesheet" href="/css/index.css">--%>
+    <link type="text/css" rel="stylesheet" href="static/css/index.css">
 </head>
 <body>
     <div>
@@ -24,6 +24,6 @@
         </div>
     </div>
 
-    <%--<script src="static/js/index.js"></script>--%>
+    <script src="static/js/index.js"></script>
 </body>
 </html>

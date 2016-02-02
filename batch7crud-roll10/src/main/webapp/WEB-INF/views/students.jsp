@@ -38,20 +38,20 @@
 
 <div>
   <c:if test="${currentPage != 1}">
-    <a href="students?page=${currentPage-1}">prev</a>
+    <a href="students/list?page=${currentPage-1}">prev</a>
   </c:if>
   <c:forEach begin="1" end="${totalPages}" var="i">
-    <a href="students?page=${i}">${i}</a>
+    <a href="students/list?page=${i}">${i}</a>
   </c:forEach>
   <c:if test="${currentPage != totalPages}">
-    <a href="students?page=${currentPage + 1}">next</a>
+    <a href="students/list?page=${currentPage + 1}">next</a>
   </c:if>
 </div>
 
 
 <a href="students/create">add student</a>
 
-<script src="js/index.js"></script>
+<script src="static/js/index.js"></script>
 <script type="text/javascript">
   var deleteBtn = document.querySelectorAll("a.delete");
 

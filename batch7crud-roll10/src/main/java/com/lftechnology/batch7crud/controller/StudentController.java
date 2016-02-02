@@ -8,9 +8,11 @@ import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.factory.StudentFactory;
 import com.lftechnology.batch7crud.service.StudentService;
 import com.lftechnology.batch7crud.util.TypeCaster;
+import com.lftechnology.batch7crud.utils.requestmapper.RequestMapping;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -30,7 +32,7 @@ import static java.lang.Math.ceil;
  * Created on 1/14/16
  */
 @WebServlet("/students/*")
-public class StudentController extends CustomHttpServlet {
+public class StudentController extends HttpServlet {
   private static StudentService studentService = new StudentService();
   private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
   private static final String STUDENT_LIST = "studentList";
@@ -38,59 +40,15 @@ public class StudentController extends CustomHttpServlet {
   private static final String STUDENT = "student";
 
   @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-    String action = paramsTest(req);
-    if(action == null){
-      throw new ServletException(PageConstant.PAGE_NOT_FOUND);
-    }
-
-    switch (action){
-    case PageConstant.LIST:
-      list(req, resp);
-      break;
-
-    case PageConstant.CREATE:
-      create(req, resp);
-      break;
-
-    case PageConstant.EDIT:
-      edit(req, resp);
-      break;
-
-    default:
-      throw new ServletException(PageConstant.PAGE_NOT_FOUND);
-    }
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
   }
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-    String action = paramsTest(req);
-    if(action == null){
-      throw new ServletException(PageConstant.PAGE_NOT_FOUND);
-    }
-
-    switch (action){
-
-    case PageConstant.CREATE:
-      createProcess(req, resp);
-      break;
-
-    case PageConstant.EDIT:
-      editProcess(req, resp);
-      break;
-
-    case PageConstant.DELETE:
-      deleteProcess(req, resp);
-      break;
-
-    default:
-      throw new ServletException(PageConstant.PAGE_NOT_FOUND);
-    }
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
   }
 
-  private void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+  @RequestMapping(value = "list", method = "GET")
+  private void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
     try {
       Integer page = 1;
       String pageText = req.getParameter("page");
@@ -109,16 +67,17 @@ public class StudentController extends CustomHttpServlet {
       req.getServletContext().getRequestDispatcher(PageConstant.STUDENT_LIST_VIEW).forward(req, resp);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
       throw new ServletException(PageConstant.INTERNAL_SERVER_ERROR);
     }
   }
 
+  @RequestMapping(value = "create", method = "GET")
   private void create(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     req.getServletContext().getRequestDispatcher(PageConstant.STUDENT_CREATE_VIEW).forward(req, resp);
   }
 
-  private void createProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+  @RequestMapping(value = "create", method = "POST")
+  private void createProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
     try {
       Map<String, String> errors = new HashMap<>();
       Map<String, String> paramMap = buildParamMap(req);
@@ -144,6 +103,7 @@ public class StudentController extends CustomHttpServlet {
     }
   }
 
+  @RequestMapping(value = "{id}/edit", method = "GET")
   private void edit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     try {
 
@@ -165,7 +125,8 @@ public class StudentController extends CustomHttpServlet {
     }
   }
 
-  private void deleteProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+  @RequestMapping(value = "{id}/delete", method = "POST")
+  private void deleteProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
     try {
       Integer id = TypeCaster.toInt(req.getPathInfo().split("/")[1]);
       studentService.delete(id);
@@ -176,7 +137,8 @@ public class StudentController extends CustomHttpServlet {
     }
   }
 
-  private void editProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+  @RequestMapping(value = "{id}/edit", method = "POST")
+  private void editProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
     Map<String, String> errors = new HashMap<>();
     Map<String, String> paramMap = buildParamMap(req);
     Integer id = TypeCaster.toInt(req.getPathInfo().split("/")[1]);

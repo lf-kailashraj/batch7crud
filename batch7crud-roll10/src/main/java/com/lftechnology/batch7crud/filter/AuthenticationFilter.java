@@ -26,11 +26,15 @@ public class AuthenticationFilter implements Filter{
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
     HttpServletRequest req = (HttpServletRequest) request;
+    HttpServletResponse resp = (HttpServletResponse) response;
     HttpSession session = req.getSession();
     User user = (User) session.getAttribute(USER);
+    String uri = ((HttpServletRequest) request).getRequestURI();
 
-    if (user == null && !loginActionUri.equals(req.getRequestURI())){
-      HttpServletResponse resp = (HttpServletResponse) response;
+    if(uri.startsWith("/static")){
+      chain.doFilter(req, resp);
+    }else if (user == null && !loginActionUri.equals(req.getRequestURI())){
+      resp = (HttpServletResponse) response;
       resp.sendRedirect(PageConstant.LOGIN_URL);
       return;
     }

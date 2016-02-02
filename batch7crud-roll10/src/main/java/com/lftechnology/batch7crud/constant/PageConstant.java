@@ -17,7 +17,7 @@ public class PageConstant {
   public static final String ERROR_PAGE = File.separator + WEB_INF + File.separator + VIEWS + File.separator + "pageNotFound.jsp";
   public static final String TOTAL_PAGES = "totalPages";
   public static final String CURRENT_PAGE = "currentPage";
-  public static final String STUDENT_LIST_URL = "/students";
+  public static final String STUDENT_LIST_URL = "/students/list";
   public static final String LOGIN_URL = "/auth/login";
   public static final String CREATE = "create";
   public static final String EDIT = "edit";

@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet({ "/" })
+@WebServlet({ "/home" })
 public class IndexController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    resp.sendRedirect(PageConstant.LOGIN_URL);
+    resp.sendRedirect(PageConstant.LOGIN_URL); // NOSONAR
   }
 }
