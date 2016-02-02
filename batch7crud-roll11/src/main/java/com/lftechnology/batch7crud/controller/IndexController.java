@@ -1,4 +1,4 @@
-package com.lftechnology.batch7crud;
+package com.lftechnology.batch7crud.controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -1,5 +1,9 @@
 package com.lftechnology.batch7crud.model;
 
+import com.lftechnology.batch7crud.constant.EmployeeConstants;
+
+import java.util.Map;
+
 /**
  * Created by achyut on 1/26/16.
  */
@@ -11,6 +15,16 @@ public class Employee {
   private String dateOfBirth;
   private int salary;
   private String position;
+
+  public Employee(){}
+
+  public Employee(Map<String, String> input){
+    this.name = input.get(EmployeeConstants.NAME);
+    this.address = input.get(EmployeeConstants.ADDRESS);
+    this.department = input.get(EmployeeConstants.DEPARTMENT);
+    this.position = input.get(EmployeeConstants.POSITION);
+    this.salary = Integer.parseInt(input.get(EmployeeConstants.SALARY));
+  }
 
   public int getEmpId() {
     return empId;

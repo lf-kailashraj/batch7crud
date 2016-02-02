@@ -10,6 +10,9 @@ public class CommonConstants {
   public static final String ADD = "add";
   public static final String EDIT = "edit";
   public static final String DELETE = "delete";
+  public static final String EMP_ID = "empId";
+  public static final String ERRORS = "errors";
+
 
   private CommonConstants() {
   }

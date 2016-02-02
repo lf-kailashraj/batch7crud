@@ -7,11 +7,13 @@ import java.io.File;
  */
 public class UrlConstants {
   public static final String WEB_INF = File.separator + "WEB-INF";
-  public static final String INDEX_PAGE = "/WEB-INF/views/index.jsp";
-  public static final String LIST_EMPLOYEE = "/WEB-INF/views/employeeList.jsp";
-  public static final String ERROR_PAGE = "/WEB-INF/views/error404.jsp";
-  public static final String ADD_EMPLOYEE = "/WEB-INF/views/addEmployee.jsp";
-  public static final String EDIT_EMPLOYEE = "/WEB-INF/views/editEmployee.jsp";
+  public static final String INDEX_PAGE = "/WEB-INF/views/employees/index.jsp";
+  public static final String LIST_EMPLOYEE = "/WEB-INF/views/employees/employeeList.jsp";
+  public static final String ADD_EMPLOYEE = "/WEB-INF/views/employees/addEmployee.jsp";
+  public static final String EDIT_EMPLOYEE = "/WEB-INF/views/employees/editEmployee.jsp";
+  public static final String LOGIN_PAGE = "/WEB-INF/views/loginPage.jsp";
+  public static final String ADD_USER = "/WEB-INF/views/users/addUser.jsp";
+
 
 
   private UrlConstants() {
