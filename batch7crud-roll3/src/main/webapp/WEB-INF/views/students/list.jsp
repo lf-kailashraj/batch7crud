@@ -28,8 +28,9 @@
 				<td>${student.getName()}</td>
 				<td>${student.getRoll()}</td>
 				<td class="link"><a href="students/${student.getId()}"
-					class="show" title = "Show"></a> <%-- <td><a href="students/${student.getId()}/edit">edit</a></td> --%>
-					<a href="students/${student.getId()}/delete" class="deleteItem" title = "delete"></a></td>
+					class="show" title="Show"></a> <%-- <td><a href="students/${student.getId()}/edit">edit</a></td> --%>
+					<a href="students/${student.getId()}/delete" class="deleteItem"
+					title="delete"></a></td>
 			</tr>
 		</c:forEach>
 	</table>
@@ -37,87 +38,9 @@
 
 	<jsp:include page="/WEB-INF/views/footer.jsp" />
 </body>
+<script src="js/delete.js"></script>
+<script src="js/pagination.js"></script>
 <script>
-	var deleteBtn = document.getElementsByClassName('deleteItem');
-	for (var i = 0; i < deleteBtn.length; i++) {
-		deleteBtn[i].onclick = function(e) {
-			e.preventDefault();
-			var href = this.getAttribute("href");
-			var confirmation = confirm("Do you want to delete?");
-
-			if (confirmation == true) {
-				var form = document.createElement("form");
-				form.action = href;
-				form.method = "post";
-				document.body.appendChild(form);
-				form.submit();
-			}
-
-		}
-
-	}
-	var paginationWrp = document.getElementsByClassName('pagination-wrp')[0];
-
-	var curPage = "${page}";
-	console.log(curPage);
-	window.onload = myFunc("${numberOfPages}", "${page}");
-
-	function myFunc(totalPage, page) {
-		if (page > 1) {
-			createElement(page - 1, '<');
-		}
-		if (totalPage <= 6) {
-			for (var i = 1; i <= 6; i++)
-				createElement(i);
-		} else if (page <= 3) {
-			for (var i = 1; i <= 3; i++)
-				createElement(i);
-			createSpan();
-			createElement(totalPage - 1);
-			createElement(totalPage);
-		} else if (page >= totalPage - 2) {
-			createElement(1);
-			createElement(2);
-			createSpan();
-			for (var i = totalPage - 2; i <= totalPage; i++)
-				createElement(i);
-		} else {
-			createElement(1);
-			createElement(2);
-			createSpan();
-			createElement(page);
-			createElement(parseInt(page) + 1);
-			if (page != totalPage - 3)
-				createSpan();
-			createElement(totalPage - 1);
-			createElement(totalPage);
-		}
-		if (totalPage > page)
-			createElement(parseInt(page) + 1, '>');
-
-	}
-	function createElement(page, character) {
-		var newEl = document.createElement('a');
-		var span = document.createElement('span');
-		span.classList.add('pagination');
-		newEl.classList.add('page');
-		console.log(character);
-		if (character)
-			span.innerHTML = character;
-		else
-			span.innerHTML = page;
-		newEl.setAttribute('href', 'students?page=' + page);
-		if (curPage == page)
-			span.classList.add('pagination-selected');
-		newEl.appendChild(span);
-		paginationWrp.appendChild(newEl);
-	}
-	function createSpan() {
-		var newSpan = document.createElement('span');
-		newSpan.classList.add('pagination-space');
-		newSpan.innerHTML = "..";
-		paginationWrp.appendChild(newSpan);
-
-	}
+	window.onload = paginate("${numberOfPages}", "${page}");
 </script>
 </html>
