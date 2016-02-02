@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<!DOCTYPE html>
 <html>
 <head>
     <base href="${pageContext.request.contextPath}/">
@@ -10,6 +11,9 @@
 <body>
 
     <a href="employees/create">Add Employee</a>
+
+    <h2>List of Employees</h2>
+
 	<table>
 		<thead>
 			<tr>
@@ -18,6 +22,8 @@
 				<th>full name</th>
 				<th>department</th>
 				<th>address</th>
+                <th>age</th>
+                <th>options</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -28,6 +34,7 @@
                     <td><c:out value="${employee.fullName}" /></td>
                     <td><c:out value="${employee.department}" /></td>
                     <td><c:out value="${employee.address}" /></td>
+                    <td><c:out value="${employee.age}" /></td>
                     <td><a href="employees/${employee.id}/delete" class="delete"> Delete</a></td>
                     <td><a href="employees/${employee.id}/edit" class="edit"> Edit</a></td>
                 </tr>

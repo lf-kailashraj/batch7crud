@@ -14,7 +14,7 @@
 </head>
 <body>
 Sign In Form
-<form action="users/create" method="POST">
+<form action="users/signin" method="POST">
   <div>
     <label>Username:</label>
     <input name="username" type="text"/>

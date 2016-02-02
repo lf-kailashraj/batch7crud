@@ -3,6 +3,8 @@ package com.lftechnology.batch7crud.service;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.dao.StudentDao;
 import com.lftechnology.batch7crud.exception.DataException;
+import com.lftechnology.batch7crud.exception.ValidationException;
+import com.lftechnology.batch7crud.validator.StudentValidator;
 
 import java.util.List;
 
@@ -20,7 +22,9 @@ public class StudentService {
     return studentDao.fetch(offset, limit);
   }
 
-  public void insert(Student student) throws DataException {
+  public void insert(Student student) throws DataException, ValidationException { // NOSONAR
+    StudentValidator validator = new StudentValidator();
+    validator.validate(student);
     studentDao.insert(student);
   }
 
@@ -28,7 +32,9 @@ public class StudentService {
     studentDao.delete(studentId);
   }
 
-  public void update(Student student) throws DataException {
+  public void update(Student student) throws DataException, ValidationException { // NOSONAR
+    StudentValidator validator = new StudentValidator();
+    validator.validate(student);
     studentDao.update(student);
   }
 

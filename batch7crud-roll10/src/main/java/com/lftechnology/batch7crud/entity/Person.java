@@ -1,5 +1,7 @@
 package com.lftechnology.batch7crud.entity;
 
+import com.lftechnology.batch7crud.utils.annotation.Required;
+
 import java.util.Date;
 
 /**
@@ -10,8 +12,8 @@ import java.util.Date;
  */
 public abstract class Person {
   private Integer id;
-  private String name;
-  private String address;
+  @Required private String name;
+  @Required private String address;
   private Date dob;
 
   public Integer getId() {
