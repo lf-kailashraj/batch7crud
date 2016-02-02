@@ -13,7 +13,7 @@ public class UrlConstants {
 
   public static final String URL_INDEX_PAGE = VIEW + "index.jsp";
 
-  public static final String URL_EMPLOYEE_LISTING_PAGE = EMPLOYEE_VIEW + "employees.jsp";
+  public static final String URL_EMPLOYEE_LISTING_PAGE = EMPLOYEE_VIEW + "list.jsp";
   public static final String URL_EMPLOYEE_CREATE_PAGE = EMPLOYEE_VIEW + "create.jsp";
   public static final String URL_EMPLOYEE_PROFILE_PAGE = EMPLOYEE_VIEW + "profile.jsp";
   public static final String URL_EMPLOYEE_EDIT_PAGE = EMPLOYEE_VIEW + "edit.jsp";

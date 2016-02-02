@@ -3,6 +3,7 @@ package com.lftechnology.batch7crud.validator;
 import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.model.Employee;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,15 +23,15 @@ public class EmployeeValidator implements Validator<Employee> {
     String station = employee.getStation();
 
     if (isNullOrEmpty(firstName) || !isAlphabet(firstName)) {
-      errors.put(PARAM_FIRST_NAME, "Check first name");
+      errors.put("firstName", "Check First Name");
     }
 
     if (isNullOrEmpty(lastName) || !isAlphabet(lastName)) {
-      errors.put(PARAM_LAST_NAME, "Check Last Name");
+      errors.put("lastName", "Check Last Name");
     }
 
     if (isNullOrEmpty(station)) {
-      errors.put(PARAM_STATION, "Check Station");
+      errors.put("station", "Check Station");
     }
 
     if (!errors.isEmpty()) {
