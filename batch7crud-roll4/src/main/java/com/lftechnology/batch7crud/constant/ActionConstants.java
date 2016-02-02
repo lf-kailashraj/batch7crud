@@ -14,7 +14,6 @@ public final class ActionConstants {
   public static final String ACTION_PAGE_NOT_FOUND = "pageNotFound";
   public static final String ACTION_EMPLOYEES = "/employees";
 
-
   private ActionConstants() {
 
   }

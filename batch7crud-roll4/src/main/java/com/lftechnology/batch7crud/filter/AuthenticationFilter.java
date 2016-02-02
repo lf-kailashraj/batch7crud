@@ -26,8 +26,8 @@ public class AuthenticationFilter implements Filter {
     HttpSession session = request.getSession();
     String username = (String) session.getAttribute("username");
 
-    if (username == null && !(request.getContextPath() + loginUri).equals(request.getRequestURI())
-            && !request.getRequestURI().contains("/resources")) {
+    if (username == null && !(request.getContextPath() + loginUri).equals(request.getRequestURI()) && !request.getRequestURI()
+            .contains("/resources")) {
       response.sendRedirect(request.getContextPath() + "/auth/login");
     } else {
       filterChain.doFilter(request, response);

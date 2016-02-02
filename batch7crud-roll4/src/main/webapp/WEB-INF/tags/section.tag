@@ -1,6 +1,6 @@
-<%@tag description="Section template" pageEncoding="UTF-8"%>
+<%@tag description="Section template" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@attribute name="sectionTitle" required="true"%>
+<%@attribute name="sectionTitle" required="true" %>
 <%@attribute name="sectionBody" fragment="true" %>
 <%@attribute name="sectionFooter" fragment="true" %>
 
@@ -8,7 +8,7 @@
     <jsp:attribute name="section">
         <div class="section">
             <div class="section-header">
-                ${sectionTitle}
+                    ${sectionTitle}
             </div>
 
             <jsp:invoke fragment="sectionBody"/>

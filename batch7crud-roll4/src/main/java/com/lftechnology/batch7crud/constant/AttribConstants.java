@@ -10,7 +10,6 @@ public class AttribConstants {
   public static final String ATTRIB_CURRENT_PAGE = "currentPage";
   public static final String ATTRIB_NO_OF_PAGES = "noOfPages";
 
-
   public static final String ATTRIB_MESSAGE = "message";
   public static final String ATTRIB_ERRORS = "errors";
 

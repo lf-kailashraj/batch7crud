@@ -8,7 +8,7 @@ function PostForm() {
 
     var that = this;
 
-    this.init = function() {
+    this.init = function () {
         for (var i = 0; i < deleteBtn.length; i++) {
             deleteBtn[i].onclick = function (e) {
                 e.preventDefault();
@@ -27,13 +27,12 @@ function PostForm() {
         }
     }
 
-    this.submitForm = function(href) {
+    this.submitForm = function (href) {
         var submitHref = href;
         var form = document.createElement('form');
         form.action = submitHref;
         form.method = 'post';
         document.body.appendChild(form);
-
         form.submit();
     }
 }

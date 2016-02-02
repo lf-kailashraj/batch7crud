@@ -15,18 +15,18 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/login.css">
 </head>
 <body>
-    <div class="wrapper">
-        <div class="title">EMS</div>
-        <div class="login-box clrfix">
-            <div class="login-box-info">
-                Sign in to start your session
-            </div>
-            <form action="auth/login" method="post">
-                <input type="text" name="username" placeholder="Username">
-                <input type="password" name="password" placeholder="Password">
-                <input type="submit" name="submit" value="Log in">
-            </form>
+<div class="wrapper">
+    <div class="title">EMS</div>
+    <div class="login-box clrfix">
+        <div class="login-box-info">
+            Sign in to start your session
         </div>
+        <form action="auth/login" method="post">
+            <input type="text" name="username" placeholder="Username">
+            <input type="password" name="password" placeholder="Password">
+            <input type="submit" name="submit" value="Log in">
+        </form>
     </div>
+</div>
 </body>
 </html>

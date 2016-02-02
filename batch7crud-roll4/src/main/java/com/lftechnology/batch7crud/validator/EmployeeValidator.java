@@ -3,11 +3,8 @@ package com.lftechnology.batch7crud.validator;
 import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.model.Employee;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.lftechnology.batch7crud.constant.ParamConstants.*;
 
 /**
  * Created by pratishshr on 1/25/16.

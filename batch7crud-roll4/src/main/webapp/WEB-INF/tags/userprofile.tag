@@ -1,8 +1,8 @@
-<%@tag description="User profile template" pageEncoding="UTF-8"%>
+<%@tag description="User profile template" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@attribute name="firstName"%>
-<%@attribute name="lastName"%>
-<%@attribute name="station"%>
+<%@attribute name="firstName" %>
+<%@attribute name="lastName" %>
+<%@attribute name="station" %>
 
 
 <t:section sectionTitle="Employee Profile">

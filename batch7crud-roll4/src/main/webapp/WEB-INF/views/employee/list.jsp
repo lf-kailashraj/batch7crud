@@ -48,7 +48,7 @@
                 <ul>
                     <c:if test="${currentPage != 1}">
                         <li><a href="employees?page=${currentPage - 1}">Previous</a></li>
-                     </c:if>
+                    </c:if>
 
                     <c:forEach begin="1" end="${noOfPages}" var="i">
                         <c:if test="${i == currentPage}">
@@ -61,7 +61,7 @@
 
                     <c:if test="${currentPage != noOfPages}">
                         <li><a href="employees?page=${currentPage + 1}">Next</a></li>
-                     </c:if>
+                    </c:if>
                 </ul>
             </div>
         </jsp:attribute>
