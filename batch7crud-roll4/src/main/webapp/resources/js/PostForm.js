@@ -15,7 +15,7 @@ function PostForm() {
                 var href = this.href;
                 var confirmation = confirm('do you want to delete?');
 
-                if (confirmation == true) {
+                if (confirmation) {
                     that.submitForm(href);
                 }
             }
