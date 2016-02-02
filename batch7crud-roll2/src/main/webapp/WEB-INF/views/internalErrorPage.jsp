@@ -9,8 +9,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <base href="${pageContext.request.contextPath}/">
     <title>Error Page</title>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css"/>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/>
+    <base href="${pageContext.request.contextPath}/">
 </head>
 <body>
 <h1>Internal Server Error!!</h1>

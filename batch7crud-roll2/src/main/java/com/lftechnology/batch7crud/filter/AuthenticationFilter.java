@@ -23,13 +23,16 @@ public class AuthenticationFilter implements Filter {
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
           throws IOException, ServletException {
+    //filterChain.doFilter(servletRequest, servletResponse);
     HttpServletRequest req = (HttpServletRequest) servletRequest;
     HttpServletResponse res = (HttpServletResponse) servletResponse;
     HttpSession session = req.getSession();
     String userSession = (String) session.getAttribute(AttributeConstants.USER);
     String loginPath = req.getContextPath() + UrlConstants.LOGIN_ROUTE;
 
-    if (userSession == null && !loginPath.equals(req.getRequestURI())) {
+    if (req.getRequestURI().contains("/css")) {
+      filterChain.doFilter(servletRequest, servletResponse);
+    } else if (userSession == null && !loginPath.equals(req.getRequestURI())) {
       res.sendRedirect(loginPath);
     } else
       filterChain.doFilter(servletRequest, servletResponse);

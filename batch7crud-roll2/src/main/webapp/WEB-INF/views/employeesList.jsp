@@ -11,68 +11,89 @@
 <head>
     <base href="${pageContext.request.contextPath}/">
     <title>Employee List Page</title>
+    <link type="text/css" rel="stylesheet" href="css/reset.css"/>
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
-
-<h1>Employee List</h1>
-
-<form action="authenticate/logout" method="post">
-    <input type="submit" value="Logout">
-</form>
-<table border="1px solid black">
-    <tbody>
-    <a>
-        <td>Id</td>
-        <td>Name</td>
-        <td>Address</td>
-        <td>Email</td>
-        <td>Contact</td>
-        <td colspan="3">Operations</td>
-        </tr>
-        <c:if test="${currentPage == 1}">
-            <c:set var="count" value="1"/>
-        </c:if>
-        <c:if test="${currentPage > 1}">
-            <c:set var="count" value="${(currentPage -1)*10 +1}"/>
-        </c:if>
-        <c:forEach items="${employeeList}" var="employee">
-        <tr>
-            <td>${count}</td>
-            <td>${employee.getName()}</td>
-            <td>${employee.getAddress()}</td>
-            <td>${employee.getEmail()}</td>
-            <td>${employee.getContact()}</td>
-            <td><a href="employees/${employee.getId()}">View</a></td>
-            <td><a href="employees/${employee.getId()}/edit">Edit</a></td>
-            <td><a href="employees/${employee.getId()}/delete" class="delete">Delete</a></td>
-        </tr>
-            <c:set var="count" value="${count+1}"/>
-        </c:forEach>
-    </tbody>
-</table>
-<table>
-    <tbody>
-    <tr>
-        <c:if test="${currentPage != 1}">
-            <td><a href="employees?page=${currentPage - 1}">Previous</a></td>
-        </c:if>
-        <c:forEach begin="1" end="${noOfPages}" var="i">
-            <c:choose>
-                <c:when test="${currentPage eq i}">
-                    <td>${i}</td>
-                </c:when>
-                <c:otherwise>
-                    <td><a href="employees?page=${i}">${i}</a></td>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-        <c:if test="${currentPage lt noOfPages}">
-            <td><a href="employees?page=${currentPage + 1}">Next</a></td>
-        </c:if>
-    </tr>
-    </tbody>
-</table>
-<a href="employees/create">Add Employee</a>
+<div class="mainWrapper clearfix">
+    <div class="headerWrapper clearfix">
+        <div class="logo">Employee Management System</div>
+        <div class="loggedinUser">Welcome,Romit Amgai</div>
+    </div>
+    <div class="bodyWrapper clearfix">
+        <div class="col2-left clearfix">
+            <div class="left">
+                <ul>
+                    <li><a href="employees">Employee List</a></li>
+                    <li>
+                        <form id="logout" action="authenticate/logout" method="post">
+                            <input type="hidden" name="name" value="value"/>
+                            <a onclick="document.getElementById('logout').submit();">Logout</a>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <div class="right">
+                <div class="bodyTitle">Employee List</div>
+                <div class="addNewEmployee"><a href="employees/create">Add New Employee</a></div>
+                <div class="employeeListTable">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>Id</td>
+                            <td>Name</td>
+                            <td>Address</td>
+                            <td>Email</td>
+                            <td>Contact</td>
+                            <td colspan="3">Operations</td>
+                        </tr>
+                        <c:if test="${currentPage == 1}">
+                            <c:set var="count" value="1"/>
+                        </c:if>
+                        <c:if test="${currentPage > 1}">
+                            <c:set var="count" value="${(currentPage -1)*10 +1}"/>
+                        </c:if>
+                        <c:forEach items="${employeeList}" var="employee">
+                            <tr>
+                                <td>${count}</td>
+                                <td>${employee.getName()}</td>
+                                <td>${employee.getAddress()}</td>
+                                <td>${employee.getEmail()}</td>
+                                <td>${employee.getContact()}</td>
+                                <td><a href="employees/${employee.getId()}">View</a></td>
+                                <td><a href="employees/${employee.getId()}/edit">Edit</a></td>
+                                <td><a href="employees/${employee.getId()}/delete" class="delete">Delete</a></td>
+                            </tr>
+                            <c:set var="count" value="${count+1}"/>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <ul>
+                        <c:if test="${currentPage != 1}">
+                            <li><a href="employees?page=${currentPage - 1}">Previous</a></li>
+                        </c:if>
+                        <c:forEach begin="1" end="${noOfPages}" var="i">
+                            <c:choose>
+                                <c:when test="${currentPage eq i}">
+                                    <li>${i}</li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li><a href="employees?page=${i}">${i}</a></li>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                        <c:if test="${currentPage lt noOfPages}">
+                            <li><a href="employees?page=${currentPage + 1}">Next</a></li>
+                        </c:if>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footerWrapper clearfix">Copyright 2016, Leapfrog Technology, Inc</div>
+</div>
 <script>
     var deleteElement = document.querySelectorAll('a.delete');
     for (var i = 0; i < deleteElement.length; i++) {

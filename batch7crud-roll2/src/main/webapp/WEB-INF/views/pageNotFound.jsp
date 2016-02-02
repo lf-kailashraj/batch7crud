@@ -8,8 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <base href="${pageContext.request.contextPath}/">
     <title>Page Not Found</title>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css"/>
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/>
+    <base href="${pageContext.request.contextPath}/">
 </head>
 <body>
 <h1>Page Not Found</h1>

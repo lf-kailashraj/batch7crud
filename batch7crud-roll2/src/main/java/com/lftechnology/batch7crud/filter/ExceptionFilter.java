@@ -2,7 +2,6 @@ package com.lftechnology.batch7crud.filter;
 
 import com.lftechnology.batch7crud.constants.AppConstants;
 import com.lftechnology.batch7crud.constants.AttributeConstants;
-import com.lftechnology.batch7crud.constants.UrlConstants;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;

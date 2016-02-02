@@ -14,9 +14,34 @@
 <head>
     <base href="${pageContext.request.contextPath}/">
     <title>Information Management</title>
+    <link type="text/css" rel="stylesheet" href="css/reset.css"/>
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
-<h1>Information Management System</h1>
-<a href="employees">Employee Detail</a>
+<div class="mainWrapper clearfix">
+    <div class="headerWrapper clearfix">
+        <div class="logo">Employee Management System</div>
+        <div class="loggedinUser">Welcome,Romit Amgai</div>
+    </div>
+    <div class="bodyWrapper clearfix">
+        <div class="col2-left clearfix">
+            <div class="left">
+                <ul>
+                    <li><a href="employees">Employee List</a></li>
+                    <li>
+                        <form id="logout" action="authenticate/logout" method="post">
+                            <input type="hidden" name="name" value="value"/>
+                            <a onclick="document.getElementById('logout').submit();">Logout</a>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <div class="right">
+                <h1 class="textGreen">Welcome to Employee Management System</h1>
+            </div>
+        </div>
+    </div>
+    <div class="footerWrapper clearfix">Copyright 2016, Leapfrog Technology, Inc</div>
+</div>
 </body>
 </html>

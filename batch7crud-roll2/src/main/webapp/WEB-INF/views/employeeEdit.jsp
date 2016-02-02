@@ -10,33 +10,57 @@
 <head>
     <base href="${pageContext.request.contextPath}/">
     <title>Edit Page</title>
+    <link type="text/css" rel="stylesheet" href="css/reset.css"/>
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
-<h1>Edit Employee information</h1>
-
-<form name="jspForm" method="POST" action="employees/${employee.getId()}/edit">
-    <table>
-        <tbody>
-        <tr>
-            <td>Name:</td>
-            <td><input type="text" name="name" value="${employee.getName()}">${validationError.name}</td>
-        </tr>
-        <tr>
-            <td>Address:</td>
-            <td><input type="text" name="address" value="${employee.getAddress()}">${validationError.address}</td>
-        </tr>
-        <tr>
-            <td>Email:</td>
-            <td><input type="text" name="email" value="${employee.getEmail()}">${validationError.email}</td>
-        </tr>
-        <tr>
-            <td>Contact Number:</td>
-            <td><input type="text" name="contact" value="${employee.getContact()}">${validationError.contact}</td>
-        </tr>
-        </tbody>
-    </table>
-    <input type="reset" value="Reset">
-    <input type="submit" value="Edit">
-</form>
+<div class="mainWrapper clearfix">
+    <div class="headerWrapper clearfix">
+        <div class="logo">Employee Management System</div>
+        <div class="loggedinUser">Welcome,Romit Amgai</div>
+    </div>
+    <div class="bodyWrapper clearfix">
+        <div class="col2-left clearfix">
+            <div class="left">
+                <ul>
+                    <li><a href="employees">Employee List</a></li>
+                    <li>
+                        <form id="logout" action="authenticate/logout" method="post">
+                            <input type="hidden" name="name" value="value"/>
+                            <a onclick="document.getElementById('logout').submit();">Logout</a>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <div class="right">
+                <div class="bodyTitle">Edit Details of the Employee</div>
+                <div class="employeeForm clearfix">
+                    <form name="jspForm" method="POST" action="employees/${employee.id}/edit">
+                        <ul>
+                            <li><span class="nameFields">Name:</span>
+                                <span class="inputFields"><input type="text" name="name" value="${employee.name}"></span> <span
+                                        class="errorMessage">${validationError.name}</span>
+                            </li>
+                            <li><span class="nameFields">Address:</span>
+                                <span class="inputFields"><input type="text" name="address" value="${employee.address}"></span><span
+                                        class="errorMessage">${validationError.address}
+                                </span></li>
+                            <li><span class="nameFields">Email:</span>
+                                <span class="inputFields"><input type="text" name="email" value="${employee.email}"></span><span
+                                        class="errorMessage">${validationError.email}</span>
+                            </li>
+                            <li><span class="nameFields"> Contact Number:</span>
+                                <span class="inputFields"><input type="text" name="contact" value="${employee.contact}"></span><span
+                                        class="errorMessage">${validationError.contact}</span>
+                            </li>
+                        </ul>
+                        <input type="submit" value="Edit">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footerWrapper clearfix">Copyright 2016, Leapfrog Technology, Inc</div>
+</div>
 </body>
 </html>

@@ -10,30 +10,42 @@
 <head>
     <base href="${pageContext.request.contextPath}/">
     <title>View Employee</title>
+    <link type="text/css" rel="stylesheet" href="css/reset.css"/>
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
-<table>
-    <tbody>
-    <tr>
-        <td>Name:</td>
-        <td>${employee.getName()}</td>
-    </tr>
-    <tr>
-        <td>Address:</td>
-        <td>${employee.getAddress()}</td>
-    </tr>
-    <tr>
-        <td>Email:</td>
-        <td>${employee.getEmail()}</td>
-    </tr>
-    <tr>
-        <td>Contact Number:</td>
-        <td>${employee.getContact()}</td>
-    </tr>
-    <tr>
-        <td><a href="employees">Go Back</a></td>
-    </tr>
-    </tbody>
-</table>
+<div class="mainWrapper clearfix">
+    <div class="headerWrapper clearfix">
+        <div class="logo">Employee Management System</div>
+        <div class="loggedinUser">Welcome,Romit Amgai</div>
+    </div>
+    <div class="bodyWrapper clearfix">
+        <div class="col2-left clearfix">
+            <div class="left">
+                <ul>
+                    <li><a href="employees">Employee List</a></li>
+                    <li>
+                        <form id="logout" action="authenticate/logout" method="post">
+                            <input type="hidden" name="name" value="value"/>
+                            <a onclick="document.getElementById('logout').submit();">Logout</a>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <div class="right">
+                <div class="bodyTitle">Employee Details</div>
+                <div class="viewEmployee">
+                    <ul>
+                        <li>Name:<span>${employee.getName()}</span></li>
+                        <li>Address:<span>${employee.getAddress()}</span></li>
+                        <li>Email:<span>${employee.getEmail()}</span></li>
+                        <li>Contact Number:<span>${employee.getContact()}</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footerWrapper clearfix">Copyright 2016, Leapfrog Technology, Inc</div>
+</div>
 </body>
 </html>
