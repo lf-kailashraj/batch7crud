@@ -16,7 +16,7 @@
 		</div>
 		<div class="user">
 			<img alt="" src="images/">
-			${admin.getUserName()}
+			${name}
 			<a href="employeeAuthentication/logout">Log Out</a>
 		</div>
 	</div>

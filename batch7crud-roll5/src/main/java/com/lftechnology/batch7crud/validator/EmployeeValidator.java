@@ -54,14 +54,14 @@ public class EmployeeValidator implements Validator<Employee> {
         }
         return true;
     }
-    
+
     public static boolean isInteger(String value) {
         String inputValue = "[0-9]*";
 
         if (value.matches(inputValue)) {
-          return true;
+            return true;
         }
         return false;
-      }
+    }
 
 }

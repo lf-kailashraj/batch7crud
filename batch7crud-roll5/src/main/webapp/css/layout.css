@@ -27,7 +27,7 @@
 	width: 25%;
 	background-color: #393939;
 	float: left;
-	height: 500px;
+	min-height: 500px;
 }
 
 .content {

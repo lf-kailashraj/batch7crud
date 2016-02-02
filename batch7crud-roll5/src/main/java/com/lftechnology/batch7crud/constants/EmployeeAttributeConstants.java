@@ -7,10 +7,9 @@ public class EmployeeAttributeConstants {
     public static final String ADDRESS = "address";
     public static final String DEPARTMENT = "department";
     public static final String ID = "employeeId";
-    
-    private EmployeeAttributeConstants(){
-        
-        
+
+    private EmployeeAttributeConstants() {
+
     }
-   
+
 }

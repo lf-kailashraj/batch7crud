@@ -29,36 +29,32 @@ public class EmployeeAuthenticationController extends CustomHttpServlet {
     private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
     private static final String USERNAME = "name";
     private static final String PASSWORD = "password";
+    private static final String HOME = "/home";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getPathInfo();
-        try {
-            if (path != null && UrlValidator.isAuthenticationURL(request)) {
-                String[] pathParts = parameterValues(request);
-                if (pathParts.length == 3 && NormalConstants.LOGOUT.equals(pathParts[2])) {
-                    logout(request, response);
-                }
+        if (path != null && UrlValidator.isAuthenticationURL(request)) { // NOSONAR
+            String[] pathParts = parameterValues(request);
+            if (pathParts.length == 3 && NormalConstants.LOGOUT.equals(pathParts[2])) {
+                logout(request, response); // NOSONAR
             }
-        } catch (ServletException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ServletException(NormalConstants.PAGE_NOT_FOUND);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getPathInfo();
-        try {
-            if (path != null && UrlValidator.isAuthenticationURL(request)) {
-                String[] pathParts = parameterValues(request);
-                if (pathParts.length == 3 && NormalConstants.LOGIN.equals(pathParts[2])) {
+        if (path != null && UrlValidator.isAuthenticationURL(request)) { // NOSONAR
+            String[] pathParts = parameterValues(request);
+            if (pathParts.length == 3 && NormalConstants.LOGIN.equals(pathParts[2])) {
+                try {
                     login(request, response);
+                } catch (NoSuchAlgorithmException | EncryptionException e) {
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                    throw new ServletException(NormalConstants.INTERNAL_SERVER_ERROR); // NOSONAR
                 }
             }
-        } catch (NoSuchAlgorithmException | EncryptionException | ServletException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ServletException(NormalConstants.PAGE_NOT_FOUND);
         }
     }
 
@@ -72,7 +68,7 @@ public class EmployeeAuthenticationController extends CustomHttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute(USERNAME, name);
                 request.setAttribute("admin", admin);
-                request.getRequestDispatcher(UrlConstants.HOME_PAGE).forward(request, response);
+                response.sendRedirect(request.getContextPath() + HOME);
             } else {
                 request.getRequestDispatcher(UrlConstants.LOGIN_PAGE).forward(request, response);
             }

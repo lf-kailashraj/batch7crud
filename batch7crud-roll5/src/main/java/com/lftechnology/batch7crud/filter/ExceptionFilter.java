@@ -24,12 +24,11 @@ public class ExceptionFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
         try {
             chain.doFilter(request, response);
         } catch (ServletException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            System.out.println(e.getMessage());
+            request.setAttribute(NormalConstants.MESSAGE, e.getMessage());
             if (NormalConstants.PAGE_NOT_FOUND.equals(e.getMessage())) {
                 request.setAttribute(NormalConstants.MESSAGE, NormalConstants.PAGE_NOT_FOUND);
                 ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);

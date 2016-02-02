@@ -15,26 +15,31 @@
 		<div class="content">
 			<div class="form">
 				<div class="title">Sign Up Form</div>
-				<form action="employees/createProcess" method="post">
+				<form action="employees/create" method="post">
 					<ul>
 						<li class="input">
-							<label>First Name:</label><input type="text" name="firstName" value=${param.firstName } >${message.firstName}
+							<label>First Name:</label><input type="text" name="firstName" value=${param.firstName } >
+							<span class="error">${message.firstName}</span>
 						</li>
 						
 						<li class="input">
-							<label>Last Name:</label><input type="text" name="lastName" value=${param.lastName } >${message.lastName}
+							<label>Last Name:</label><input type="text" name="lastName" value=${param.lastName } >
+							<span class="error">${message.lastName}</span>
 						</li>
 						
 						<li class="input">
-							<label>Password:</label><input type="password" name="password" value=${param.password } >${message.pass}
+							<label>Password:</label><input type="password" name="password" value=${param.password } >
+							<span class="error">${message.pass}</span>
 						</li>
 						
 						<li class="input">
-							<label>Department:</label><input type="text" name="department" value=${param.department } >${message.department}
+							<label>Department:</label><input type="text" name="department" value=${param.department } >
+							<span class="error">${message.department}</span>
 						</li>
 						
 						<li class="input">
-							<label>Address:</label><input type="text" name="address" value=${param.address } >${message.address}
+							<label>Address:</label><input type="text" name="address" value=${param.address } >
+							<span class="error">${message.address}</span>
 						</li>
 						
 						<li class="input">
@@ -45,8 +50,6 @@
 			</div>
 		</div>
 	</div>
-	
-	
 	
 	<jsp:include page="footer.jsp"></jsp:include>
 </body>

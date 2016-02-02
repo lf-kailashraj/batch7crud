@@ -9,19 +9,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lftechnology.batch7crud.constants.NormalConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
+import com.lftechnology.batch7crud.validator.UrlValidator;
 
-@WebServlet("/home")
+@WebServlet("/home/*")
 public class HomeController extends CustomHttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final Logger LOGGER = Logger.getLogger(HomeController.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            request.getRequestDispatcher(UrlConstants.HOME_PAGE).forward(request, response);
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        if (UrlValidator.isAuthenticationURL(request)) { // NOSONAR
+            request.getRequestDispatcher(UrlConstants.HOME_PAGE).forward(request, response); // NOSONAR
+        } else {
+            throw new ServletException(NormalConstants.PAGE_NOT_FOUND); // NOSONAR
         }
     }
 }

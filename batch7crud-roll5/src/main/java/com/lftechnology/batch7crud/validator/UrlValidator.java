@@ -14,7 +14,7 @@ public class UrlValidator {
 
     }
 
-    public static boolean isCrudUrl(HttpServletRequest request) throws ServletException {
+    public static boolean isCrudURL(HttpServletRequest request) throws ServletException {
         String[] pathParts = urlPath(request);
 
         switch (pathParts.length) {
@@ -42,14 +42,14 @@ public class UrlValidator {
 
     public static boolean isAuthenticationURL(HttpServletRequest request) throws ServletException {
         String[] pathParts = urlPath(request);
-
-        if (pathParts.length == 3 && NormalConstants.LOGIN.equals(pathParts[2]) || NormalConstants.LOGOUT.equals(pathParts[2])) {
+        if (pathParts.length == 3 && (NormalConstants.LOGIN.equals(pathParts[2]) || NormalConstants.LOGOUT.equals(pathParts[2]))) {
             isValid = true;
-        } else {
+        } else if (pathParts.length == 2 && ("home".equals(pathParts[1])))
+            isValid = true;
+        else {
             throw new ServletException(NormalConstants.PAGE_NOT_FOUND);
         }
         return isValid;
-
     }
 
     private static String[] urlPath(HttpServletRequest request) {

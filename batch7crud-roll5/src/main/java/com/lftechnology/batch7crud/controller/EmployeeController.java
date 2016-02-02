@@ -8,6 +8,7 @@ import com.lftechnology.batch7crud.exception.ValidationExceptions;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.services.EmployeeServiceImpl;
 import com.lftechnology.batch7crud.util.EmployeeFactory;
+import com.lftechnology.batch7crud.validator.UrlValidator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,11 +31,15 @@ public class EmployeeController extends CustomHttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            actionByURLForGet(request, response);
-        } catch (DataException | ServletException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ServletException(NormalConstants.INTERNAL_SERVER_ERROR);
+        if (UrlValidator.isCrudURL(request)) {
+            try {
+                actionByURLForGet(request, response);
+            } catch (DataException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                throw new ServletException(NormalConstants.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            throw new ServletException(NormalConstants.PAGE_NOT_FOUND); // NOSONAR
         }
     }
 
@@ -55,7 +60,7 @@ public class EmployeeController extends CustomHttpServlet {
             break;
 
         default:
-            
+
         }
     }
 
@@ -97,10 +102,14 @@ public class EmployeeController extends CustomHttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            actionByURLForPost(request, response);
-        } catch (DataException | ServletException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        if (UrlValidator.isCrudURL(request)) {
+            try {
+                actionByURLForPost(request, response);
+            } catch (DataException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                throw new ServletException(NormalConstants.INTERNAL_SERVER_ERROR);
+            }
+        } else {
             throw new ServletException(NormalConstants.INTERNAL_SERVER_ERROR);
         }
     }
@@ -122,7 +131,7 @@ public class EmployeeController extends CustomHttpServlet {
             break;
 
         default:
-            
+
         }
 
     }
@@ -156,7 +165,8 @@ public class EmployeeController extends CustomHttpServlet {
         }
     }
 
-    private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
+    private void createProcess(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, DataException {
         try {
             employeeService.create(employeeFactory.createObjects(setDataAttribute(request)));
             response.sendRedirect(UrlConstants.EMPLOYEE_LIST_URL);
