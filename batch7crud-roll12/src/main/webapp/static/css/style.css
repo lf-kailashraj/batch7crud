@@ -1,0 +1,33 @@
+.login{
+    margin: 0px auto;
+    width:100%;
+}
+.loginField{
+    width:300px;
+    background-color: beige;
+}
+.error{
+    color: red;
+}
+.header{
+    background-color: aqua;
+}
+.userField{
+    float: left;
+}
+.logoutField{
+    float: right;
+}
+.mainBody{
+    clear: both;
+}
+.sidebar{
+    float: left;
+}
+.main, .listField, .entryField, .updateField, .detailField{
+    float: right;
+}
+.footer{
+    clear: both;
+    background-color: aqua;
+}

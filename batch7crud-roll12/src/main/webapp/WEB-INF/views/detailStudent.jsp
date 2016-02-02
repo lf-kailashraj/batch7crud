@@ -1,19 +1,7 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: sagarmatha
-  Date: 1/28/16
-  Time: 12:23 AM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-  <title>SMS | ${student.firstName} | Details</title>
-  <base href="${pageContext.request.contextPath}/"/>
-</head>
-<body>
-  <h2>Details</h2>
+<%@ include file="header.jsp" %>
+<%@ include file="sidebar.jsp" %>
+<div class="detailField">
+<h2>Details</h2>
 
   <div>
     <label>Name: </label>
@@ -44,5 +32,6 @@
     };
   }
 </script>
-</body>
-</html>
+</div>
+</div>
+<%@ include file="footer.jsp" %>

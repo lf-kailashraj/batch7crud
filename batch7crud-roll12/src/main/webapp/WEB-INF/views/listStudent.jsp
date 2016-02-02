@@ -1,16 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
-<html>
-<head>
-    <base href="${pageContext.request.contextPath}/">
-    <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-    <title>Show All Students</title>
-</head>
-<body>
-<h2><a href="students/create" class="create">Add new student</a></h2>
+<%@ include file="header.jsp" %>
+<%@ include file="sidebar.jsp" %>
+<div class="listField">
 <%--For displaying Previous link except for the 1st page --%>
 <c:if test="${page != 1}">
     <td><a href="students?page=${page - 1}">Previous</a></td>
@@ -106,5 +96,6 @@ The when condition does not display a link for the current page--%>
         };
     }
 </script>
-</body>
-</html>
+</div>
+</div>
+<%@ include file="footer.jsp" %>

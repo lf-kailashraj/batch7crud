@@ -28,7 +28,10 @@ public class AuthenticationFilter implements Filter {
         HttpSession session = req.getSession();
         String userSession = (String) session.getAttribute(ParameterConstants.USER);
         String loginPath = req.getContextPath() + "/LoginController";
-        if (userSession == null && !loginPath.equals(req.getRequestURI())) {
+        String uri = req.getRequestURI();
+        if(uri.startsWith("/static")){
+            chain.doFilter(request, response);
+        }else if (userSession == null && !loginPath.equals(req.getRequestURI())) {
             res.sendRedirect(loginPath);
         } else
             chain.doFilter(request, response);

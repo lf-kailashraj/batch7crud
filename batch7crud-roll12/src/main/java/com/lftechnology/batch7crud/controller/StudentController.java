@@ -26,7 +26,7 @@ import java.io.File;
 public class StudentController extends CommonHTTPRequestHandler {
     private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
     private static StudentService studentService = new StudentService();
-    static Map<String, String> errorMessege = new HashMap<String, String>();
+    static Map<String, String> errorMessage = new HashMap<String, String>();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException { //NOSONAR
@@ -55,7 +55,7 @@ public class StudentController extends CommonHTTPRequestHandler {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String urlPath = req.getRequestURI().substring(req.getContextPath().length());
-        req.setAttribute("errorMessege", errorMessege);
+        req.setAttribute("errorMessage", errorMessage);
         String[] parameters = urlPath.split(File.separator);
         try {
             if (parameters.length == 3 && UrlConstants.CREATE.equals(parameters[2])) {
@@ -136,7 +136,7 @@ public class StudentController extends CommonHTTPRequestHandler {
     }
 
     private void createMethod(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        formValidator validate = new formValidator(errorMessege);
+        formValidator validate = new formValidator(errorMessage);
         Boolean statusCheck;
         Map<String,String> data=new HashMap<String, String>();
         data.put("firstName",req.getParameter(ParameterConstants.FIRST_NAME));
@@ -158,7 +158,7 @@ public class StudentController extends CommonHTTPRequestHandler {
     }
 
     private void updateMethod(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        formValidator validate = new formValidator(errorMessege);
+        formValidator validate = new formValidator(errorMessage);
         Boolean statusCheck;
         Map<String,String> data=new HashMap<String, String>();
         data.put("firstName",req.getParameter(ParameterConstants.FIRST_NAME));

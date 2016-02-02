@@ -48,7 +48,7 @@ public class LoginController extends HttpServlet{
             //setting session to expiry in 30 mins
             session.setMaxInactiveInterval(30 * 60);
             try {
-                response.sendRedirect("/");
+                response.sendRedirect("/home");
             }
              catch (IOException e) {
                 LOGGER.log(Level.SEVERE, e.getMessage(), e);

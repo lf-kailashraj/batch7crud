@@ -10,16 +10,23 @@
 <html>
 <head>
   <base href="${pageContext.request.contextPath}/"/>
-  <title></title>
+  <link href="static/css/style.css" rel="stylesheet">
+  <title>SMS</title>
 </head>
 <body>
+<div class="login">
+<div class="loginField">
 <span class="error">${loginError.error}</span>
 <form action="${pageContext.request.contextPath}/LoginController" method="POST">
-  Username: <input type="text" name="user">
-  <br>
-  Password: <input type="password" name="pwd">
-  <br>
+  Username: <br/>
+  <input type="text" name="user">
+  <br/>
+  Password: <br/>
+  <input type="password" name="pwd">
+  <br/>
   <input type="submit" value="Login">
 </form>
+</div>
+</div>
 </body>
 </html>
