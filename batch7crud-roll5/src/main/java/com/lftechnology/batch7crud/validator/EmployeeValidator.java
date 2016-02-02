@@ -4,14 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import javax.validation.ValidationException;
-
 import com.lftechnology.batch7crud.exception.ValidationExceptions;
 import com.lftechnology.batch7crud.model.Employee;
 
 public class EmployeeValidator implements Validator<Employee> {
     @Override
-    public boolean isValid(Employee employee) throws ValidationException, ValidationExceptions {
+    public boolean isValid(Employee employee) throws ValidationExceptions {
         Map<String, String> error = new HashMap<String, String>();
         String firstName = employee.getFirstName().trim();
         String lastName = employee.getLastName().trim();
