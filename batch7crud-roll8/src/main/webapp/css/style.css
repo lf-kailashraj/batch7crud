@@ -1,0 +1,28 @@
+/* Sign In Page*/
+
+.signin-form {
+  width: 40%;
+  margin: 50px auto;
+  background-color: #F39C12;
+}
+
+.signin-form-content {
+  padding: 70px;
+}
+
+.signin-form-content p {
+  padding: 5px;
+  text-align: center;
+}
+
+.signin-form-content p input {
+  width: 97%;
+  border: none;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.signin-form-content p input.signin-submit {
+  width: 100%;
+  font-size: 20px;
+}

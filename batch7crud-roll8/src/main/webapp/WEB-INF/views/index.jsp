@@ -15,7 +15,7 @@
   <div>
     <a href="users/signin">Sign In</a>
   </div>
-  <div>Footer</div>
+  <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 </div>
 </body>
 

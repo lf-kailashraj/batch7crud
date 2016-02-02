@@ -18,12 +18,21 @@
 <div class="main-wrapper">
   <jsp:include page="/WEB-INF/views/layout/header.jsp" />
 
-  <div class="container-wrapper">
-    <div class="container-container">
-      <div class="container">
-        <div>
-          <p><a href="/employees">Manage Employees</a></p>
-          <p><a href="#">Manage your Deets</a></p>
+  <div class="content-wrapper">
+    <div class="content-container">
+      <div class="content">
+        <div class="user-boxes clearfix">
+          <div class="user-box-left clearfix">
+            <div class="user-box-l">
+              <a href="/employees">Manage Employees</a>
+            </div>
+            <div class="user-box-r">
+              <a href="#">Manage your details</a>
+            </div>
+          </div>
+          <div class="user-box-right">
+            <a href="#">Add New Admin</a>
+          </div>
         </div>
       </div>
     </div>

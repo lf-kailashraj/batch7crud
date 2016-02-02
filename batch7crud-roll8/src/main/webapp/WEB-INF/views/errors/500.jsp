@@ -18,9 +18,9 @@
 <div class="main-wrapper">
   <jsp:include page="/WEB-INF/views/layout/header.jsp" />
 
-  <div class="container-wrapper">
-    <div class="container-container">
-      <div class="container">
+  <div class="content-wrapper">
+    <div class="content-container">
+      <div class="content">
         OOPS Something went wrong!
       </div>
     </div>

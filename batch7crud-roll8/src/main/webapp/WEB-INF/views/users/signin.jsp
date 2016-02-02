@@ -17,22 +17,23 @@
 <div class="main-wrapper">
   <jsp:include page="/WEB-INF/views/layout/header.jsp" />
 
-  <div class="container-wrapper">
-    <div class="container-container">
-      <div class="container">
+  <div class="content-wrapper">
+    <div class="content-container">
+      <div class="content">
         <div class="signin-form">
-          Sign In
-          <form action="users/signin" method="POST">
-            <div>
-              <input name="username" type="text" placeholder="username"/>
-            </div>
-            <div>
-              <input name="password" type="password" placeholder="password"/>
-            </div>
-            <div>
-              <input type="submit"/>
-            </div>
-          </form>
+          <div class="signin-form-content">
+            <form action="users/signin" method="POST">
+              <p>
+                <input name="username" type="text" placeholder="Username"/>
+              </p>
+              <p>
+                <input name="password" type="password" placeholder="Password"/>
+              </p>
+              <p>
+                <input class="signin-submit" type="submit" value="Log In"/>
+              </p>
+            </form>
+          </div>
         </div>
       </div>
     </div>

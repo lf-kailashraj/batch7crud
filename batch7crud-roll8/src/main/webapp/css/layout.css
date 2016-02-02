@@ -9,7 +9,7 @@
 /* Header */
 
 .header-wrapper {
-  background-color: #605CA8;
+  background-color: #018448;
   width: 100%;
 }
 
@@ -58,6 +58,21 @@
   color: #fff;
 }
 
+/* Content */
+
+.content-wrapper {
+  width: 100%;
+}
+
+.content-container {
+  padding: 50px 20px;
+}
+
+.content {
+  width: 1170px;
+  margin: 0 auto;
+}
+
 /* Footer */
 
 .footer-wrapper {
@@ -82,4 +97,5 @@
 .copyright p span {
   color: #68BD62;
   font-weight: bold;
+  background-clip: #F39C12;
 }
