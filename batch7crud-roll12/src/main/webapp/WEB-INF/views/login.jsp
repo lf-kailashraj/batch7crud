@@ -13,6 +13,7 @@
   <title></title>
 </head>
 <body>
+<span class="error">${loginError.error}</span>
 <form action="${pageContext.request.contextPath}/LoginController" method="POST">
   Username: <input type="text" name="user">
   <br>

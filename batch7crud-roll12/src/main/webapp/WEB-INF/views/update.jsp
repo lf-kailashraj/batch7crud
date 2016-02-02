@@ -12,15 +12,20 @@
   <base href="${pageContext.request.contextPath}/"/>
 </head>
 <body>
+skfhnd
 <form method="POST" action="students/${student.studentID}/update">
   First Name :
-  <input type="text" value="${student.firstName}" name="firstName"/><br/>
+  <input type="text" value="${student.firstName}" name="firstName"/>
+  <span class="error">${errorMessege.fname}</span><br />
   Last Name :
-  <input type="text" value="${student.lastName}" name="lastName"/><br/>
+  <input type="text" value="${student.lastName}" name="lastName"/>
+  <span class="error">${errorMessege.lname}</span><br />
   Age :
-  <input type="text" value="${student.age}" name="age"/><br/>
+  <input type="text" value="${student.age}" name="age"/>
+  <span class="error">${errorMessege.age}</span><br />
   Address :
-  <input type="text" value="${student.address}" name="address"/><br/>
+  <input type="text" value="${student.address}" name="address"/>
+  <span class="error">${errorMessege.address}</span><br />
   <input type="submit"/>
 </form>
 </body>
