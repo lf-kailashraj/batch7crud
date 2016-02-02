@@ -30,11 +30,15 @@ public class ApplicationFilter implements Filter {
     HttpSession session = req.getSession();
     HttpServletResponse res = (HttpServletResponse) response;
     String loginPath = req.getContextPath() + UrlConstants.USER_SIGN_IN_ROUTE;
+    String indexPath = req.getContextPath() + UrlConstants.INDEX_ROUTE;
 
     if ((req.getRequestURI().contains("/css")) || (req.getRequestURI().contains("/js")) || (req.getRequestURI().contains("/images"))) {
       chain.doFilter(request, response);
     }
     else if (session.getAttribute(AttributeConstants.USER) == null && !loginPath.equals(req.getRequestURI())) {
+      res.sendRedirect(req.getContextPath() + UrlConstants.USER_SIGN_IN_ROUTE);
+    }
+    else if (session.getAttribute(AttributeConstants.USER) != null && indexPath.equals(req.getRequestURI())) {
       res.sendRedirect(req.getContextPath() + UrlConstants.USER_SIGN_IN_ROUTE);
     }
     else {

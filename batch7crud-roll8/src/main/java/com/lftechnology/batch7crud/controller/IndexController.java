@@ -12,6 +12,6 @@ import java.io.IOException;
 @WebServlet({ "/index" })
 public class IndexController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.INDEX_PAGE).forward(request, response);
+      request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.INDEX_PAGE).forward(request, response);
     }
 }

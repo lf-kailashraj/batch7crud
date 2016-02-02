@@ -24,14 +24,29 @@
         <div class="user-boxes clearfix">
           <div class="user-box-left clearfix">
             <div class="user-box-l">
-              <a href="/employees">Manage Employees</a>
+              <div class="user-box-content blue">
+                <a class="clearfix" href="/employees">
+                  <h2>Manage Employees</h2>
+                  <img src="/images/add-employees.png">
+                </a>
+              </div>
             </div>
             <div class="user-box-r">
-              <a href="#">Manage your details</a>
+              <div class="user-box-content yellow">
+                <a class="clearfix" href="#">
+                  <h2>Manage your details</h2>
+                  <img src="/images/edit-user-details.png">
+                </a>
+              </div>
             </div>
           </div>
           <div class="user-box-right">
-            <a href="#">Add New Admin</a>
+            <div class="user-box-content red">
+              <a class="clearfix" href="#">
+                <h2>Add New Admin</h2>
+                <img src="/images/add-user.png">
+              </a>
+            </div>
           </div>
         </div>
       </div>

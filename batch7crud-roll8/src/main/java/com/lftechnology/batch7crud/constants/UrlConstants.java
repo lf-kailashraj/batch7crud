@@ -28,6 +28,7 @@ public class UrlConstants {
   public static final String USER_SIGN_IN = VIEWS + USER_ROUTE + FILE_SEPARATOR + "signin.jsp";
 
   public static final String INDEX_PAGE = VIEWS + INDEX;
+  public static final String INDEX_ROUTE = PATH_SEPARATOR;
 
   private UrlConstants() {
 

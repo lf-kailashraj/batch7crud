@@ -26,3 +26,159 @@
   width: 100%;
   font-size: 20px;
 }
+
+/* User Index Page */
+
+.user-boxes {
+  margin: 100px 0;
+}
+
+.user-boxes img {
+  height: 50px;
+}
+
+.user-boxes a {
+  text-decoration: none;
+}
+
+.user-box-left {
+  float: left;
+  width: 66%;
+}
+
+.user-box-l {
+  float: left;
+  width: 49%;
+}
+
+.user-box-r {
+  float: right;
+  width: 49%;
+}
+
+.user-box-right {
+  float: right;
+  width: 33%;
+}
+
+.user-box-content {
+  padding: 50px 20px;
+  border-radius: 10px;
+}
+
+.user-box-content a h2 {
+  float: left;
+  color: #fff;
+  font-size: 30px;
+  font-weight: bold;
+  padding-top: 12px;
+}
+
+.user-box-content a img {
+  float: right;
+}
+
+.blue {
+  background-color: #00C0EF;
+}
+
+.yellow {
+  background-color: #F39C12;
+}
+
+.red {
+  background-color: #DD4B39;
+}
+
+/* Employee Index Page */
+
+.employee-index-menu a {
+  text-decoration: none;
+  color: #fff;
+  float: right;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.employee-index-menu a h2 {
+  float: left;
+  font-weight: bold;
+  padding-top: 3px;
+  padding-right: 10px;
+}
+
+.employee-index-menu a img {
+  width: 25px;
+  float: right;
+}
+
+.employee-index-list {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.employee-index-list h2 {
+  font-size: 26px;
+  font-weight: bold;
+  line-height: 50px;
+}
+
+.employee-index-table table tr {
+  line-height: 28px;
+}
+
+.employee-index-table table tr td {
+  padding: 0 10px;
+}
+
+.employee-index-table table tr td a {
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+}
+
+.employee-index-table table thead tr th {
+  text-align: left;
+  font-weight: bold;
+  padding: 0 10px;
+}
+
+.th-name {
+  width: 180px;
+}
+
+.th-address {
+  width: 180px;
+}
+
+.th-designation {
+  width: 180px;
+}
+
+.th-phone {
+  width: 150px;
+}
+
+.employee-index-table table tbody tr:nth-child(odd) {
+  background: #fff;
+}
+
+.pages {
+  padding: 20px 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+.pages span {
+  border-left: solid 1px #000;
+  padding: 0 5px;
+}
+
+.pages span:first-child {
+  border: none;
+}
+
+.pages span a {
+  text-decoration: none;
+  color: #000;
+}

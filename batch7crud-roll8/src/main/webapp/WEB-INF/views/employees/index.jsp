@@ -21,23 +21,24 @@
   <div class="content-wrapper">
     <div class="content-container">
       <div class="content">
-        <div>
-          <div>
-            <a href="/employees/create">New Employee</a>
+        <div class="employees-index">
+          <div class="employee-index-menu clearfix">
+            <a class="clearfix blue" href="/employees/create">
+              <h2>New Employee</h2>
+              <img src="/images/add-user.png">
+            </a>
           </div>
-          <div>
-            List of Employees
-            <div>
-              <table border="1px">
+          <div class="employee-index-list">
+            <h2>Employee Details</h2>
+            <div class="employee-index-table">
+              <table>
                 <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Address</th>
-                  <th>Designation</th>
-                  <th>Phone</th>
-                  <th>View</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
+                  <th class="th-name">Name</th>
+                  <th class="th-address">Address</th>
+                  <th class="th-designation">Designation</th>
+                  <th class="th-phone">Phone</th>
+                  <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -55,31 +56,31 @@
                 </tbody>
               </table>
             </div>
-            <div>
+            <div class="pages">
               <c:if test = "${pageNo > 1}">
-                <a href="employees?page=${pageNo - 1}">Previous</a>
+                <span><a href="employees?page=${pageNo - 1}">Previous</a></span>
               </c:if>
               <c:forEach begin="1" end="${lastPageNo}" var="i">
                 <c:choose>
                   <c:when test="${pageNo eq i}">
-                    <td>${i}</td>
+                   <span>${i}</span>
                   </c:when>
                   <c:otherwise>
-                    <td><a href="employees?page=${i}">${i}</a></td>
+                    <span><a href="employees?page=${i}">${i}</a></span>
                   </c:otherwise>
                 </c:choose>
               </c:forEach>
 
               <c:if test = "${pageNo < lastPageNo}">
-                <a href="employees?page=${pageNo + 1}">Next</a>
+                <span><a href="employees?page=${pageNo + 1}">Next</a></span>
               </c:if>
-
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
   <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 </div>
 <script>

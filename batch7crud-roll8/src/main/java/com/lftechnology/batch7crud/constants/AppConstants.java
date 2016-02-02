@@ -18,7 +18,7 @@ public class AppConstants {
   public static final String LOG_OUT = "logout";
   public static final String LOG_OUT_SUCCESS_MESSAGE = "Successfully logged out.";
 
-  public static final int PAGE_LIMIT = 4;
+  public static final int PAGE_LIMIT = 10;
 
   private AppConstants() {
 
