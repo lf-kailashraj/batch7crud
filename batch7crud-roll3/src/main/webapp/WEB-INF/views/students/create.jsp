@@ -21,7 +21,7 @@
 					<label>Name</label> <input type="text" name="name"
 						value="${param.name}"><span class="message">${message.name}</span>
 				</div>
-				<div class="create-btn">
+				<div class="create-btn"> 
 					<input type="submit" value="Create" />
 				</div>
 		</form>
