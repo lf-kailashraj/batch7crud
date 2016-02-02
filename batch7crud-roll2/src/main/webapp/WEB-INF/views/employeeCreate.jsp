@@ -5,39 +5,38 @@
   Time: 4:41 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <base href="${pageContext.request.contextPath}/">
-    <title>Create Page</title>
-</head>
-<body>
-<h1>Employee information form!</h1>
-
-<p>Enter employee information</p>
-
-<form name="jspForm" method="POST" action="employees/create">
-    <table>
-        <tbody>
-        <td>Name:</td>
-        <td><input type="text" name="name" value="${employee.getName()}">${validationError.name}</td>
-        </tr>
-        <tr>
-            <td>Address:</td>
-            <td><input type="text" name="address" value="${employee.getAddress()}">${validationError.address}</td>
-        </tr>
-        <tr>
-            <td>Email:</td>
-            <td><input type="text" name="email" ${employee.getEmail()}>${validationError.email}</td>
-        </tr>
-        <tr>
-            <td>Contact Number:</td>
-            <td><input type="number" name="contact" ${employee.getContact()}>${validationError.contact}</td>
-        </tr>
-        </tbody>
-    </table>
-    <input type="reset" value="Reset">
-    <input type="submit" value="Submit">
-</form>
-</body>
-</html>
+<jsp:include page="header.jsp">
+    <jsp:param name="title" value="Add Employee"/>
+</jsp:include>
+<div class="body-wrapper clearfix">
+    <div class="col2-left clearfix">
+        <jsp:include page="sidepane.jsp"/>
+        <div class="right">
+            <div class="body-title">Add Details of New Employee</div>
+            <div class="employee-form clearfix">
+                <form name="jspForm" method="POST" action="employees/create">
+                    <ul>
+                        <li><span class="name-field">Name:</span>
+                            <span class="input-field"><input type="text" name="name" value="${employee.name}"></span> <span
+                                    class="error-message">${validationError.name}</span>
+                        </li>
+                        <li><span class="name-field">Address:</span>
+                            <span class="input-field"><input type="text" name="address" value="${employee.address}"></span><span
+                                    class="error-message">${validationError.address}
+                            </span></li>
+                        <li><span class="name-field">Email:</span>
+                            <span class="input-field"><input type="text" name="email" value="${employee.email}"></span><span
+                                    class="error-message">${validationError.email}</span>
+                        </li>
+                        <li><span class="name-field"> Contact Number:</span>
+                            <span class="input-field"><input type="text" name="contact" value="${employee.contact}"></span><span
+                                    class="error-message">${validationError.contact}</span>
+                        </li>
+                    </ul>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<jsp:include page="footer.jsp"/>

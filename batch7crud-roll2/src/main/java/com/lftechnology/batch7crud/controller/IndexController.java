@@ -13,7 +13,7 @@ import java.io.IOException;
  * Created by Romit Amgai <romitamgai@lftechnology.com> on 1/19/16.
  */
 
-@WebServlet({ "/" })
+@WebServlet({ "/home" })
 public class IndexController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

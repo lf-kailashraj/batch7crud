@@ -5,9 +5,9 @@ import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationException;
+import com.lftechnology.batch7crud.factory.EmployeeFactory;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
-import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 @WebServlet(name = "EmployeeController", urlPatterns = { "/employees/*" })
 public class EmployeeController extends CommonHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
-  private static EmployeeService employeeService;
+  private EmployeeService employeeService;  //NOSONAR
 
   public EmployeeController() {
     employeeService = new EmployeeService();
@@ -34,45 +34,40 @@ public class EmployeeController extends CommonHttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String[] pathParts = getPathParameters(request);
-
-    if (pathParts.length == 3 && AppConstants.CREATE.equals(pathParts[2])) {
+    String page = getPageFromPath(request);
+    switch (page) {
+    case AppConstants.CREATE:
       createProcess(request, response);
-    } else if (pathParts.length == 4 && AppConstants.EDIT.equals(pathParts[3])) {
+      break;
+    case AppConstants.EDIT:
       editProcess(request, response);
-    } else if (pathParts.length == 4 && AppConstants.DELETE.equals(pathParts[3])) {
+      break;
+    case AppConstants.DELETE:
       deleteProcess(request, response);
-    } else {
-      displayPageNotFound(request, response);
+      break;
+    default:
+      throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
     }
   }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String[] pathParts = getPathParameters(request);
-
-    if (pathParts.length == 2 && AppConstants.EMPLOYEE.equals(pathParts[1])) {
+    String page = getPageFromPath(request);
+    switch (page) {
+    case AppConstants.EMPLOYEE:
       list(request, response);
-    } else if (pathParts.length == 3 && AppConstants.CREATE.equals(pathParts[2])) {
-      create(request, response);
-    } else if (pathParts.length == 4 && AppConstants.EDIT.equals(pathParts[3])) {
+      break;
+    case AppConstants.EDIT:
       edit(request, response);
-    } else if (pathParts.length == 3) {
+      break;
+    case AppConstants.CREATE:
+      create(request, response);
+      break;
+    case AppConstants.VIEW:
       view(request, response);
-    } else {
-      displayPageNotFound(request, response);
-    }
-  }
-
-  private int getPageNo(HttpServletRequest request) {
-    try {
-      if (request.getParameter(AttributeConstants.PAGE) != null) {
-        return Integer.parseInt(request.getParameter(AttributeConstants.PAGE));
-      } else {
-        return 1;
-      }
-    } catch (NumberFormatException e) {
-      return 1;
+      break;
+    default:
+      throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
     }
   }
 
@@ -93,8 +88,7 @@ public class EmployeeController extends CommonHttpServlet {
       int totalNoOfRecords = employeeService.getTotalNoOfRecords();
       int validNoOfPages = (int) Math.ceil(totalNoOfRecords * 1.0 / 10);
       if (page != 1 && page > validNoOfPages) {
-        displayPageNotFound(request, response);
-        return;
+        throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
       }
       request.setAttribute(AttributeConstants.EMPLOYEE_LIST, empList);
       request.setAttribute(AttributeConstants.NO_OF_PAGES, validNoOfPages);
@@ -102,7 +96,7 @@ public class EmployeeController extends CommonHttpServlet {
       request.getRequestDispatcher(UrlConstants.EMPLOYEE_LIST_PAGE).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      displayErrorPage(request, response, e.getMessage());
+      throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR_MESSAGE);
     }
   }
 
@@ -114,14 +108,14 @@ public class EmployeeController extends CommonHttpServlet {
     Employee employee = null;
     try {
       Map<String, String> inputs = mapParameters(request);
-      EmployeeValidator employeeValidator = new EmployeeValidator();
-      employee = employeeValidator.createObject(inputs);
+      EmployeeFactory employeeFactory = new EmployeeFactory();
+      employee = employeeFactory.createObject(inputs);
 
       employeeService.insert(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      displayErrorPage(request, response, e.getMessage());
+      throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR_MESSAGE);
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
@@ -135,17 +129,16 @@ public class EmployeeController extends CommonHttpServlet {
       int id = parameterValueAsInt(request, 2);
       Employee employee = employeeService.fetchById(id);
       if (employee == null) {
-        displayPageNotFound(request, response);
-        return;
+        throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
       }
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
       request.getRequestDispatcher(UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      displayErrorPage(request, response, e.getMessage());
+      throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR_MESSAGE);
     } catch (NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      displayPageNotFound(request, response);
+      throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
     }
   }
 
@@ -154,17 +147,16 @@ public class EmployeeController extends CommonHttpServlet {
       int id = parameterValueAsInt(request, 2);
       Employee employee = employeeService.fetchById(id);
       if (employee == null) {
-        displayPageNotFound(request, response);
-        return;
+        throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
       }
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
       request.getRequestDispatcher(UrlConstants.EMPLOYEE_EDIT_PAGE).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      displayErrorPage(request, response, e.getMessage());
+      throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR_MESSAGE);
     } catch (NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      displayPageNotFound(request, response);
+      throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
     }
   }
 
@@ -173,18 +165,17 @@ public class EmployeeController extends CommonHttpServlet {
     Employee employee = null;
     try {
       Map<String, String> inputs = mapParameters(request);
-      EmployeeValidator employeeValidator = new EmployeeValidator();
-      employee = employeeValidator.createObject(inputs);
-
+      EmployeeFactory employeeFactory = new EmployeeFactory();
+      employee = employeeFactory.createObject(inputs);
       employee.setId(id);
       employeeService.update(employee);
       response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      displayErrorPage(request, response, e.getMessage());
+      throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR_MESSAGE);
     } catch (NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      displayPageNotFound(request, response);
+      throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
@@ -199,7 +190,7 @@ public class EmployeeController extends CommonHttpServlet {
       employeeService.delete(id);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      displayErrorPage(request, response, e.getMessage());
+      throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR_MESSAGE);
     }
     response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE);
   }
