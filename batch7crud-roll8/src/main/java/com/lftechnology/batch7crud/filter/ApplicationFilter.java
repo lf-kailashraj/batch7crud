@@ -31,10 +31,10 @@ public class ApplicationFilter implements Filter {
     HttpServletResponse res = (HttpServletResponse) response;
     String loginPath = req.getContextPath() + UrlConstants.USER_SIGN_IN_ROUTE;
 
-    if (req.getRequestURI().matches(".*[css|jpg|png|gif|js].*")) {
+    if ((req.getRequestURI().contains("/css")) || (req.getRequestURI().contains("/js")) || (req.getRequestURI().contains("/images"))) {
       chain.doFilter(request, response);
     }
-    else if (session.getAttribute(AttributeConstants.USER) == null && !loginPath.equals(req.getRequestURI())){
+    else if (session.getAttribute(AttributeConstants.USER) == null && !loginPath.equals(req.getRequestURI())) {
       res.sendRedirect(req.getContextPath() + UrlConstants.USER_SIGN_IN_ROUTE);
     }
     else {

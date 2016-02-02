@@ -17,7 +17,7 @@
       <c:if test = "${sessionScope.user != null}">
         <div class="user-info">
           <div class="user-name">
-            <h2>Grishma Shrestha</h2>
+            <h2>${sessionScope.userName}</h2>
           </div>
           <div class="user-menu">
             <ul>

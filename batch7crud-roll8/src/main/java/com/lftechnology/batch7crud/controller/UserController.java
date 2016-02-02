@@ -107,7 +107,7 @@ public class UserController extends HttpServlet {
     if (authenticatedUser != null) {
       HttpSession session = request.getSession();
       session.setAttribute(AttributeConstants.USER, authenticatedUser.getId());
-      session.setAttribute(AttributeConstants.NAME, authenticatedUser.getName());
+      session.setAttribute(AttributeConstants.USER_NAME, authenticatedUser.getName());
       response.sendRedirect(request.getContextPath() + UrlConstants.USER_ROUTE);
     }
     else {

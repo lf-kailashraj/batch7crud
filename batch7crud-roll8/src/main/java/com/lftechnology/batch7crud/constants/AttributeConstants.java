@@ -20,6 +20,7 @@ public class AttributeConstants {
   public static final String USERNAME = "username";
   public static final String PASSWORD = "password";
   public static final String ERRORS = "errors";
+  public static final String USER_NAME = "userName";
 
   private AttributeConstants() {
 
