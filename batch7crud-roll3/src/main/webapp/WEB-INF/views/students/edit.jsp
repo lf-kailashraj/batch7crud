@@ -9,10 +9,25 @@
 <title>Edit</title>
 </head>
 <body>
-	<form action="students/${student.getId()}/edit" method="post">
-		Roll:<input type="number" name="roll" value="${student.getRoll()}">${message.roll}<br />
-		Name:<input type="text" name="name" value="${student.getName()}">${message.name}<br />
-		<input type="submit" value="submit" />
-	</form>
+	<jsp:include page="/WEB-INF/views/header.jsp" />
+	<div class="form-wrp">
+		<form action="students/${student.getId()}/edit" method="post">
+			<h1>Edit Student</h1>
+
+			<div class="form">
+				<div class="roll">
+					<label>Roll</label> <input type="number" name="roll"
+						value="${student.getRoll()}"><span class="message">${message.roll}</span>
+				</div>
+				<div class="name">
+					<label>Name</label> <input type="text" name="name"
+						value="${student.getName()}"><span class="message">${message.name}</span>
+				</div>
+				<div class="create-btn">
+					<input type="submit" value="Submit" />
+				</div>
+		</form>
+	</div>
+	<jsp:include page="/WEB-INF/views/footer.jsp" />
 </body>
 </html>

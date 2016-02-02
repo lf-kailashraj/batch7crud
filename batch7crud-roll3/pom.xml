@@ -26,4 +26,8 @@
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
   <packaging>war</packaging>
+
+  <build>
+    <finalName>batch7crud-roll3</finalName>
+  </build>
 </project>
