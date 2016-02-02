@@ -1,0 +1,424 @@
+h1 {
+	color: #4D4E4F;
+}
+
+.header-wrp {
+	margin: 0px auto;
+	background: black;
+	color: #DAD7D7;
+}
+
+li {
+	list-style: none;
+	float: left;
+	position: relative;
+}
+
+a {
+	text-decoration: none;
+}
+
+img {
+	display: block;
+}
+
+.header {
+	
+}
+
+.site-name {
+	padding: 10px 40px 0 40px;
+}
+
+.site-name img {
+	float: left;
+	padding-bottom: 10px;
+}
+
+.college {
+	padding-top: 10px;
+	float: left;
+}
+
+.college-name {
+	float: left;
+	padding-left: 80px;
+	font-size: 20px;
+}
+
+.location {
+	clear: both;
+	padding-left: 80px;
+}
+
+.account {
+	float: right;
+	padding-top: 17px;
+}
+
+.account-info {
+	float: left;
+	line-height: 30px;
+	font-size: 12px;
+}
+
+.settings {
+	float: right;
+	padding-left: 20px;
+	padding-top: 5px;
+}
+
+.settings-img img {
+	position: relative;
+}
+
+.settings-img ul {
+	position: absolute;
+	top: 55px;
+	font-size: 10px;
+	display: none;
+	background: #3b2f2f;
+}
+
+.settings-img ul li {
+	padding: 5px 5px;
+}
+
+.settings-img ul li a {
+	display: block;
+	color: #DAD7D7;
+}
+
+.settings-img:hover ul {
+	display: block;
+}
+
+.navigation {
+	clear: both;
+	background: #3b2f2f;
+	padding-left: 150px;
+}
+
+.navigation ul {
+	color: #DAD7D7;
+}
+
+.navigation ul li {
+	padding-right: 10px;
+	position: relative;
+}
+
+.navigation ul li a {
+	display: block;
+	color: #DAD7D7;
+	font-size: 12px;
+	padding: 6px 25px 7px 25px;
+}
+
+.navigation ul li:hover a {
+	background-color: #1d1b1b;
+}
+
+.entity {
+	background: url('../images/drop-down.png') right center no-repeat;
+}
+
+.navigation ul li ul.dropdown {
+	display: none;
+	position: absolute;
+	font-size: 12px;
+}
+
+.navigation ul li:hover ul.dropdown {
+	display: block; /* Display the dropdown */
+}
+
+.navigation ul li ul.dropdown li {
+	width: 91.33%;
+	background: #574f4f;
+	padding: 0 0 0 0;
+	color: white;
+}
+
+.navigation ul li ul li a {
+	background: red;
+	padding: 5px 5px;
+}
+
+.navigation ul li:hover ul li a:hover {
+	background: #574f4f;
+}
+
+.navigation ul li ul.dropdown li:hover {
+	background: #1d1b1b;
+}
+
+.footer {
+	padding: 20px 40px;
+	background: black;
+	color: #DAD7D7;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.copyright {
+	float: left;
+}
+
+.school-info {
+	float: right;
+}
+
+.table-header {
+	background: #CCE6D7;
+}
+
+table {
+	width: 80%;
+	border: 1px solid #D6D6CE;
+	margin: 0 auto;
+	background: #F2F2E9;
+	margin-top: 0px;
+}
+
+tr {
+	height: 50px;
+}
+
+td {
+	line-height: 50px;
+	text-align: center;
+	border-bottom: 1px solid #D6D6CE;
+}
+
+.link {
+	width: 20%;
+}
+
+.list-title {
+	width: 80%;
+	margin: 0 auto;
+	margin-top: 60px;
+}
+
+.list-title h1 {
+	float: left;
+}
+
+.list-title a {
+	margin-top: 12px;
+	color: black;
+	float: right;
+	background: url('../images/create.png') no-repeat;
+	padding-left: 20px;
+	background-size: 25% 100%;
+	float: right;
+}
+
+.pagination-wrp {
+	padding: 20px 10px;
+	text-align: center;
+}
+
+.pagination {
+	padding: 8px 15px;
+	background: #F2F2E9;
+	border: 1px solid #D6D6CE;
+}
+
+.pagination-selected {
+	background: #ffffff;
+	border: 1px solid #D6D6CE;
+}
+
+.pagination-space {
+	padding: 8px 15px;
+}
+
+.show {
+	padding: 2px 20px;
+	background: url('../images/show.png') no-repeat;
+	background-size: 100% 100%;
+}
+
+.deleteItem {
+	padding: 3px 15px;
+	background: url('../images/delete.png') no-repeat;
+	background-size: 100% 100%;
+}
+
+.form-wrp {
+	width: 30%;
+	margin: 0 auto;
+	padding-top: 50px;
+}
+
+.form div {
+	line-height: 30px;
+}
+
+.login-field {
+	padding: 0px 0 15px 0;
+	clear: both;
+}
+
+.login-form {
+	margin: 0 auto;
+	padding-left: 20px;
+	text-align: left;
+}
+
+label {
+	width: 80px;
+	color: #4D4E4F;
+	display: inline-block;
+}
+
+.submit-btn {
+	padding-top: 20px;
+	text-align: center;
+}
+
+.login-wrp {
+	margin: 0 auto;
+	padding-top: 100px;
+}
+
+.login-wrp form {
+	background: #F2F2E9;
+	border: 1px solid #D6D6CE;
+	width: 25%;
+	margin: 0 auto;
+	padding-bottom: 20px;
+}
+
+.show-record {
+	background: #F2F2E9;
+	border: 1px solid #D6D6CE;
+}
+
+.login-form input {
+	color: #4D4E4F;
+	width: 95%;
+	font-size: 15px;
+	padding: 8px 0;
+}
+
+input[type=submit] {
+	width: auto;
+	margin-top: 20px;
+	background-color: #18C718;
+	padding: 8px 8px;
+	font-size: 15px;
+	color: white;
+	border: none;
+}
+
+.login-wrp h1, .record-wrp h1 {
+	padding: 20px 0 20px 0;
+	color: #4D4E4F;
+	text-align: center;
+}
+
+.message {
+	clear: both;
+	color: red;
+}
+
+.form-title {
+	text-align: center;
+}
+
+.record-wrp {
+	width: 20%;
+	margin: 0 auto;
+	padding-top: 50px;
+}
+
+.record-info {
+	color: #4D4E4F;
+}
+
+.record-row {
+	clear: both;
+}
+
+table.show-table, table.show-table td {
+	border: none;
+}
+
+table.show-table td {
+	width: 50%;
+}
+
+td.field-name {
+	text-align: left;
+}
+
+td.record-field {
+	text-align: right;
+}
+
+table.show-table {
+	width: 70%;
+}
+
+.show-action {
+	width: 70%;
+	margin: 0 auto;
+	padding: 50px 0;
+}
+
+.action-edit {
+	float: left;
+}
+
+.action-edit a {
+	padding: 10px 20px;
+	background: white;
+	border: 1px solid #D6D6CE;
+}
+
+.action-list {
+	float: right;
+}
+
+.action-list a {
+	padding: 10px 20px;
+	background: white;
+	border: 1px solid #D6D6CE;
+}
+
+.action-edit a:hover, .action-list a:hover {
+	background: #D6D6CE;
+}
+
+.form-wrp {
+	width: 100%;
+}
+
+.form-wrp h1 {
+	padding-left: 30px;
+}
+
+.form {
+	padding-top: 50px;
+	padding-left: 280px;
+}
+
+.form div {
+	line-height: 50px;
+}
+
+.roll input, .name input {
+	border: 1px solid #D6D6CE;
+	line-height: 25px;
+	width: 200px;
+}
+
+.create-btn {
+	width: 50%;
+	text-align: center;
+}

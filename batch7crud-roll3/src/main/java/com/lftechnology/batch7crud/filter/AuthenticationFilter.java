@@ -31,6 +31,10 @@ public class AuthenticationFilter implements javax.servlet.Filter {
 
     String user = (String) session.getAttribute("user");
 
+    if (req.getRequestURI().endsWith(".css") || req.getRequestURI().endsWith(".png")) {
+      chain.doFilter(request, response);
+      return;
+    }
     if (user == null && !loginActionURI.equals(req.getRequestURI())) {
       RequestDispatcher rd = req.getRequestDispatcher(CommonConstant.LOGIN_PAGE);
       rd.forward(req, resp);
