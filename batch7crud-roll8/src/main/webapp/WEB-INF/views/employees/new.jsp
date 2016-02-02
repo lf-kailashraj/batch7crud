@@ -20,30 +20,30 @@
   <div class="content-wrapper">
     <div class="content-container">
       <div class="content">
-        <div>
-          Create New Employee
-          <div>
+        <div class="employee-create">
+          <h2>Create New Employee</h2>
+          <div class="employee-create-form">
             <form action="employees/create" method="POST">
-              <div>
+              <p>
                 <label>Name:</label>
                 <input name="name" type="text" value="${employee.name}"/>
                 ${errors.name}
-              </div>
-              <div>
+              </p>
+              <p>
                 <label>Address:</label>
                 <input name="address" type="text" value="${employee.address}"/>
                 ${errors.address}
-              </div>
-              <div>
+              </p>
+              <p>
                 <label>Designation:</label>
                 <input name="designation" type="text" value="${employee.designation}"/>
                 ${errors.designation}
-              </div>
-              <div>
+              </p>
+              <p>
                 <label>Phone:</label>
                 <input name="phone" type="text" value="${employee.phone}"/>
                 ${errors.phone}
-              </div>
+              </p>
               <div>
                 <input type="submit"/>
               </div>

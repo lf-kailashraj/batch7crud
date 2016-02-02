@@ -182,3 +182,11 @@
   text-decoration: none;
   color: #000;
 }
+
+/* Create Employee Page */
+
+.employee-create {
+  width: 40%;
+  margin: 50px auto;
+  background-color: #F39C12;
+}
