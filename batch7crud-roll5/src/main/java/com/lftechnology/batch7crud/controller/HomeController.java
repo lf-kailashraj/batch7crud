@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.lftechnology.batch7crud.constants.UrlConstants;
 
-@WebServlet("/")
+@WebServlet("/home")
 public class HomeController extends CustomHttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(HomeController.class.getName());
@@ -22,8 +22,6 @@ public class HomeController extends CustomHttpServlet {
             request.getRequestDispatcher(UrlConstants.HOME_PAGE).forward(request, response);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            show500(request, response, e);
         }
-
     }
 }

@@ -3,6 +3,7 @@ package com.lftechnology.batch7crud.constants;
 public class NormalConstants {
     public static final String MESSAGE = "message";
     public static final String PAGE_NOT_FOUND = "Page Not Found";
+    public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
     public static final String PAGE = "page";
     public static final String CREATE = "create";
     public static final String EDIT = "edit";

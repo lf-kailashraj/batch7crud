@@ -2,8 +2,6 @@ package com.lftechnology.batch7crud.services;
 
 import java.util.List;
 
-import javax.validation.ValidationException;
-
 import com.lftechnology.batch7crud.dao.EmployeeDAOImpl;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationExceptions;

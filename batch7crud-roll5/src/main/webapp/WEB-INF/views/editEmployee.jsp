@@ -9,20 +9,47 @@
 <title>Edit Employee</title>
 </head>
 <body>
-
-	<h1>Edit Employee Form</h1>	
-	<form action="employees/${employee.getId()}/edit" method="post">
-		First Name:<input type="text" name="firstName"
-			value="${employee.getFirstName()}"/> ${message.firstName}<br>
-		Last Name:<input type="text" name="lastName"
-			value="${employee.getLastName()}"/> ${message.lastName}<br>
-		Password:<input type="password" name="password"
-			value="${employee.getPassword()}"/> ${message.pass}<br>
-		Department:<input type="text" name="department"
-			value="${employee.getDepartment()}"/> ${message.department}<br>
-		Address:<input type="text" name="address"
-			value="${employee.getAddress()}"/> ${message.address}<br> 
-			<input type="submit" name="create" value="Submit">
-	</form>
+	<jsp:include page="header.jsp"></jsp:include>
+	<div class="container clearfix">
+		<jsp:include page="sideMenu.jsp"></jsp:include>
+		<div class="content">
+			<div class="form">
+				<div class="title">Employee Edit Form</div>
+				<form action="employees/${employee.getId()}/edit" method="post">	
+					<ul>
+						<li class="input">
+							<label>First Name:</label> <input type="text" name="firstName" value="${employee.getFirstName()}"/>
+							<span class="error">${message.firstName}</span> 
+						</li>
+						
+						<li class="input">
+							<label>Last Name:</label> <input type="text" name="lastName" value="${employee.getLastName()}"/> 
+							<span class="error">${message.lastName}</span>
+						</li>
+						
+						<li class="input">
+							<label>Password:</label> <input type="password" name="password" value="${employee.getPassword()}"/> 
+							<span class="error">${message.pass}</span> 
+						</li>
+						
+						<li class="input">
+							<label>Department:</label> <input type="text" name="department" value="${employee.getDepartment()}"/> 
+							<span class="error">${message.department}</span> 
+						</li>
+						
+						<li class="input">
+							<label>Address:</label> <input type="text" name="address" value="${employee.getAddress()}"/> 
+							<span class="error">${message.address}</span> 
+						</li>
+						
+						<li class="input">
+							<label> </label><input type="submit" name="create" value="Submit">
+						</li>
+					</ul>					
+				</form>
+			</div>
+		</div>
+	</div>
+	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>

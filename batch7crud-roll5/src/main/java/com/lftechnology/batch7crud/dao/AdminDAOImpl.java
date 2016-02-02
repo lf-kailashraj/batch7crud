@@ -38,5 +38,4 @@ public class AdminDAOImpl {
         admin.setPassword(rs.getString("password"));
         return admin;
     }
-
 }

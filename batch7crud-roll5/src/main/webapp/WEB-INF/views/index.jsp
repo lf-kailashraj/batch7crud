@@ -9,10 +9,12 @@
 <base href="${pageContext.request.contextPath}/">
 </head>
 <body>
+	<jsp:include page="header.jsp"></jsp:include>
+	<div class="container clearfix">
+		<jsp:include page="sideMenu.jsp"></jsp:include>
+		<div class="content">this is a dashboard for Admin</div>
+	</div>
 
-	<h1>Employee Management System</h1>
-	<a href="employees">Employees</a>
-	<a href="employeeAuthentication/logout">Log Out</a>
-
+	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>

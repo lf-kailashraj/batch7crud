@@ -1,56 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	version="2.5">
-	<resource-ref>
-		<description>none</description>
-		<res-ref-name>jdbc/EmployeeManagement</res-ref-name>
-		<res-type>javax.sql.DataSource</res-type>
-		<res-auth>Container</res-auth>
-	</resource-ref>
-	<servlet>
-		<description></description>
-		<display-name>EmployeeController</display-name>
-		<servlet-name>EmployeeController</servlet-name>
-		<servlet-class>com.lftechnology.batch7crud.controller.EmployeeController</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>EmployeeController</servlet-name>
-		<url-pattern>/EmployeeController</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<description></description>
-		<display-name>CustomHttpServlet</display-name>
-		<servlet-name>CustomHttpServlet</servlet-name>
-		<servlet-class>com.lftechnology.batch7crud.controller.CustomHttpServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>CustomHttpServlet</servlet-name>
-		<url-pattern>/CustomHttpServlet</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>EmployeeAuthenticationController</servlet-name>
-		<servlet-class>com.lftechnology.batch7crud.controller.EmployeeAuthenticationController</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>EmployeeAuthenticationController</servlet-name>
-		<url-pattern>/EmployeeAuthentication</url-pattern>
-	</servlet-mapping>
-
-	<filter>
-		<filter-name>EmployeeCheckFilter</filter-name>
-		<filter-class>com.lftechnology.batch7crud.filter.EmployeeCheckFilter</filter-class>
-		<init-param>
-			<param-name>loginActionURI</param-name>
-			<param-value>/employeeAuthentication/login</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>EmployeeCheckFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
-
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <resource-ref>
+    <description>none</description>
+    <res-ref-name>jdbc/EmployeeManagement</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+  
+  <servlet>
+    <description></description>
+    <display-name>EmployeeController</display-name>
+    <servlet-name>EmployeeController</servlet-name>
+    <servlet-class>com.lftechnology.batch7crud.controller.EmployeeController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EmployeeController</servlet-name>
+    <url-pattern>/EmployeeController</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>CustomHttpServlet</display-name>
+    <servlet-name>CustomHttpServlet</servlet-name>
+    <servlet-class>com.lftechnology.batch7crud.controller.CustomHttpServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CustomHttpServlet</servlet-name>
+    <url-pattern>/CustomHttpServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>EmployeeAuthenticationController</servlet-name>
+    <servlet-class>com.lftechnology.batch7crud.controller.EmployeeAuthenticationController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EmployeeAuthenticationController</servlet-name>
+    <url-pattern>/EmployeeAuthentication</url-pattern>
+  </servlet-mapping>
+  
+  <filter>
+    <filter-name>EmployeeCheckFilter</filter-name>
+    <filter-class>com.lftechnology.batch7crud.filter.EmployeeCheckFilter</filter-class>
+    <init-param>
+      <param-name>loginActionURI</param-name>
+      <param-value>/employeeAuthentication/login</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>EmployeeCheckFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+    <display-name>ExceptionFilter</display-name>
+    <filter-name>ExceptionFilter</filter-name>
+    <filter-class>com.lftechnology.batch7crud.filter.ExceptionFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>ExceptionFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <error-page>
+  <error-code>404</error-code>
+  <location>/WEB-INF/views/error.jsp</location>
+  </error-page>
+  
+  <error-page>
+  <error-code>500</error-code>
+  <location>/WEB-INF/views/error.jsp</location>
+  </error-page>
+  
 </web-app>

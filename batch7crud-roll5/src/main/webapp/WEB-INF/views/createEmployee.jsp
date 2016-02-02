@@ -8,16 +8,46 @@
 <title>Create Employee</title>
 </head>
 <body>
-
-	<h1>Sign Up Form</h1>
-	<form action="employees/createProcess" method="post">
-		First Name:<input type="text" name="firstName" value=${param.firstName } >${message.firstName}<br>
-		Last Name:<input type="text" name="lastName" value=${param.lastName } >${message.lastName}<br>
-		Password:<input type="password" name="password" value=${param.password } >${message.pass}<br>
-		Department:<input type="text" name="department" value=${param.department } >${message.department}<br>
-		Address:<input type="text" name="address" value=${param.address } >${message.address}<br>
-		<input type="submit" name="create" value="Create" >
-	</form>
-
+	<jsp:include page="header.jsp"></jsp:include>
+	
+	<div class="container clearfix">
+		<jsp:include page="sideMenu.jsp"></jsp:include>
+		<div class="content">
+			<div class="form">
+				<div class="title">Sign Up Form</div>
+				<form action="employees/createProcess" method="post">
+					<ul>
+						<li class="input">
+							<label>First Name:</label><input type="text" name="firstName" value=${param.firstName } >${message.firstName}
+						</li>
+						
+						<li class="input">
+							<label>Last Name:</label><input type="text" name="lastName" value=${param.lastName } >${message.lastName}
+						</li>
+						
+						<li class="input">
+							<label>Password:</label><input type="password" name="password" value=${param.password } >${message.pass}
+						</li>
+						
+						<li class="input">
+							<label>Department:</label><input type="text" name="department" value=${param.department } >${message.department}
+						</li>
+						
+						<li class="input">
+							<label>Address:</label><input type="text" name="address" value=${param.address } >${message.address}
+						</li>
+						
+						<li class="input">
+							<label></label><input type="submit" name="create" value="Create" >
+						</li>
+					</ul>					
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>

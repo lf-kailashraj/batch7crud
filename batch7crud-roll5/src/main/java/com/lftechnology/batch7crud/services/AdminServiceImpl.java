@@ -6,8 +6,10 @@ import com.lftechnology.batch7crud.model.Admin;
 
 public class AdminServiceImpl {
     AdminDAOImpl adminDAOImpl = new AdminDAOImpl();
+    
 
     public Admin login(String name, String password) throws DataException {
         return adminDAOImpl.login(name, password);
     }
+    
 }

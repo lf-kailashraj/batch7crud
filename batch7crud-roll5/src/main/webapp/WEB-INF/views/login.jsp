@@ -8,7 +8,7 @@
 <title>Login</title>
 </head>
 <body>
-	<form action="employeeAuthentication/login" method="post">
+	<form class = "header" action="employeeAuthentication/login" method="post">
 		User Name<input type="text" name="name" /><br> 
 		Password <input type="password" name="password" /><br> 
 		<input type="submit" name="login" value="login" />

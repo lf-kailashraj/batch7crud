@@ -1,0 +1,91 @@
+/* header */
+
+/* body */
+body {
+	color: #ffffef;
+}
+
+a {
+	text-decoration: none;
+	color: #ffffef;
+	padding: 2px;
+}
+
+.menu li {
+	display: block;
+	padding: 10px;
+	border: 1px solid #2c2b2b;
+}
+
+.menu li:hover {
+	background-color: #1A1818;
+	padding: 10px 0;
+}
+
+.table h1 {
+	text-align: center;
+	padding: 10px;
+}
+
+table, th, td {
+	border: 1px solid black;
+	padding: 10px;
+}
+
+.table a {
+	color: black;
+}
+
+.table a:hover {
+	color: red;
+}
+
+th {
+	background-color: #393939;
+	color: #ffffff;
+}
+
+tr:nth-child(even) {
+	background-color: #838988;
+}
+
+.page-no a {
+	color: black;
+}
+
+.page-no a:hover {
+	color: red;
+}
+
+.form {
+	
+}
+
+form {
+	padding-left: 300px;
+}
+
+label {
+	font-size: 14px;
+	width: 150px;
+	display: inline-block;
+}
+
+.form .title {
+	text-align: center;
+	background: #C8C5CB;
+	padding: 20px;
+}
+
+.input {
+	padding: 15px 0;
+	clear: both;
+}
+
+.error{
+	color:red;
+}
+/* footer */
+.footer-wrapper p {
+	text-align: center;
+}
