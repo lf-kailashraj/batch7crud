@@ -66,33 +66,32 @@ public class RequestMapper {
 
 
   private Class filterController(List<Class> controllers, String servletPath){
-    List<String> servletPathParts = new ArrayList<>();
-    String[] pathPartsAsArray = servletPath.split("/");
-    for(String part : pathPartsAsArray){
-      if(part != null && !part.isEmpty() && !part.startsWith("*")){
-        servletPathParts.add(part);
-      }
-    }
+    List<String> servletPathTokens = getPathAsTokenList(servletPath);
 
     for(Class controller : controllers){
       if(controller.isAnnotationPresent(WebServlet.class)){
         WebServlet webServlet = (WebServlet) controller.getAnnotation(WebServlet.class);
 
-        List<String> pathValueParts = new ArrayList<>();
-        String[] valuePartsAsArray = webServlet.value()[0].split("/");
+        List<String> webServletValueTokens = getPathAsTokenList(webServlet.value()[0]);
 
-        for(String part : valuePartsAsArray){
-          if(part != null && !part.isEmpty() && !part.startsWith("*")){
-            pathValueParts.add(part);
-          }
-        }
-
-        if(isSame(servletPathParts, pathValueParts)){
+        if(isSame(servletPathTokens, webServletValueTokens)){
           return controller;
         }
       }
     }
     return null;
+  }
+
+  private List<String> getPathAsTokenList(String path){
+    String[] pathTokensAsArray = path.split("/");
+    List<String> pathTokensAsList = new ArrayList<>();
+    for(String token : pathTokensAsArray){
+      if(token != null && !token.isEmpty() && !token.startsWith("*")){
+        pathTokensAsList.add(token);
+      }
+    }
+
+    return pathTokensAsList;
   }
 
   private Boolean isSame(List<String> param1, List<String> param2){
@@ -150,7 +149,8 @@ public class RequestMapper {
 
 
     if(index < pathParts1.size() - 1){
-      return  filterRequestedMethod(pathInfo, ++index, candidateMethods);
+      Integer nextIndex = index+1;
+      return  filterRequestedMethod(pathInfo, nextIndex, candidateMethods);
     }else{
       if(candidateMethods.size() == 1){
         return candidateMethods.get(0);
