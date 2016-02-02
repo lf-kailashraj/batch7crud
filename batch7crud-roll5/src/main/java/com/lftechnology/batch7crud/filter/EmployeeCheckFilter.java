@@ -19,7 +19,7 @@ public class EmployeeCheckFilter implements Filter {
     private String loginActionUri;
 
     @Override
-    public  void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) throws ServletException {
         loginActionUri = filterConfig.getInitParameter("loginActionURI");
 
     }
@@ -31,7 +31,9 @@ public class EmployeeCheckFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
         String employeeName = (String) session.getAttribute("name");
-        if (employeeName == null && !request.getRequestURI().equals(request.getContextPath() + loginActionUri)) {
+        if (request.getRequestURI().endsWith(".css") || request.getRequestURI().endsWith(".png")) {
+            chain.doFilter(request, response);
+        } else if (employeeName == null && !request.getRequestURI().equals(request.getContextPath() + loginActionUri)) {
             request.getRequestDispatcher(UrlConstants.LOGIN_PAGE).forward(request, response);
         } else
             chain.doFilter(request, response);

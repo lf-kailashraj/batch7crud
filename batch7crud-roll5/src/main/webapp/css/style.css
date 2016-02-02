@@ -57,8 +57,21 @@ tr:nth-child(even) {
 	color: red;
 }
 
-.form {
-	
+.login-form {
+	width: 50%;
+	margin-left: 340px;
+	margin-top: 200px;
+	background-color: #ecf0f5;
+	color: black;
+}
+
+.login-form form{
+	padding-left: 100px;
+}
+
+.login-form .title{
+	background-color: #393939;
+	color: #ffffff;
 }
 
 form {
@@ -71,7 +84,7 @@ label {
 	display: inline-block;
 }
 
-.form .title {
+.title {
 	text-align: center;
 	background: #C8C5CB;
 	padding: 20px;
@@ -80,6 +93,10 @@ label {
 .input {
 	padding: 15px 0;
 	clear: both;
+}
+
+.input.login-submit{
+	padding-left: 210px;
 }
 
 .error{

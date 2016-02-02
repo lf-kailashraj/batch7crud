@@ -5,13 +5,32 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <base href="${pageContext.request.contextPath}/">
+<link href="css/reset.css" rel="stylesheet" type="text/css">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<link href="css/layout.css" rel="stylesheet" type="text/css">
 <title>Login</title>
 </head>
 <body>
-	<form class = "header" action="employeeAuthentication/login" method="post">
-		User Name<input type="text" name="name" /><br> 
-		Password <input type="password" name="password" /><br> 
-		<input type="submit" name="login" value="login" />
-	</form>
+	<div class="container clearfix">
+		<div class="login-form">
+			<div class="title">Login</div>
+			<form class="header" action="employeeAuthentication/login"
+				method="post">
+				<ul>
+					<li class="input"><label>User Name:</label>
+						<input type="text" name="name" />
+					</li>
+
+					<li class="input"><label>Password:</label>
+						<input type="password" name="password" />
+					</li>
+
+					<li class="input login-submit">
+						<input type="submit" name="login" value="login" />
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
 </body>
 </html>
