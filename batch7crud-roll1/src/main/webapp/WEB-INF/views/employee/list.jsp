@@ -45,7 +45,14 @@
                      <li><a href="employees?page=${currentPage-1}">prev</a></li>
                  </c:if>
                  <c:forEach begin="1" end="${totalPage}" var="page">
-                     <li><a href="employees?page=${page}">${page}</a></li>
+                     <c:choose>
+                         <c:when test="${page == currentPage}">
+                            <li class="active"><a href="employees?page=${page}">${page}</a></li>
+                         </c:when>
+                         <c:otherwise>
+                             <li><a href="employees?page=${page}">${page}</a></li>
+                         </c:otherwise>
+                     </c:choose>
                  </c:forEach>
                  <c:if test="${currentPage < totalPage}">
                      <li><a href="employees?page=${currentPage + 1}">next</a></li>

@@ -5,19 +5,19 @@
 
     <jsp:attribute name="body">
         <div class="wrapper">
-             <div class="header">
-            <div class="header-content">
-                <div class="company-name">
-                    <h2>Leapfrog Employee Management System</h2>
-                </div>
+            <div class="header">
+                <div class="header-content">
+                    <div class="company-name">
+                        <h2>Leapfrog Employee Management System</h2>
+                    </div>
 
-                <div class="header-menu">
-                    <ul>
-                        <li><a href="authentication/logout" id="logout">Logout</a></li>
-                    </ul>
+                    <div class="header-menu">
+                        <ul>
+                            <li><a href="authentication/logout" id="logout">Logout</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
             <div class="main-body">
                 <div class="sidebar">
@@ -39,7 +39,7 @@
 
             <div class="footer">
                 <div class="footer-content">
-                    <p>2016 leapfrog technology | Designed by Kiran Pariyar</p>
+                    <p>2016 Designed by leapfrog technology</p>
                 </div>
             </div>
         </div>
