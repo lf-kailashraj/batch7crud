@@ -31,7 +31,7 @@ public class ExceptionFilter implements Filter {
       chain.doFilter(request, response);
     } catch (ServletException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
+      request.setAttribute(AttributeConstants.MESSAGE, e.getMessage());
 
       if (AppConstants.PAGE_NOT_FOUND_MESSAGE.equals(e.getMessage())) {
         ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);

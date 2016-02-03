@@ -80,7 +80,7 @@ public class EmployeeController extends CommonHttpServlet {
         deleteProcess(request, response);
         break;
       default:
-        request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
+        request.setAttribute(AttributeConstants.MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
         response.sendError(HttpServletResponse.SC_NOT_FOUND);
       }
     }
@@ -110,13 +110,13 @@ public class EmployeeController extends CommonHttpServlet {
         dispatcher.forward(request, response);
       }
       else {
-        request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
+        request.setAttribute(AttributeConstants.MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
         throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
       }
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
+      request.setAttribute(AttributeConstants.MESSAGE, e.getMessage());
       throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR);
     }
   }
@@ -138,9 +138,9 @@ public class EmployeeController extends CommonHttpServlet {
       employee = employeeFactory.createObject(inputs);
       validator.validate(employee);
       employeeService.create(employee);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.EMPLOYEE_CREATED);
+      request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_CREATED);
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
-      request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
+      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE + UrlConstants.PATH_SEPARATOR + employee.getId());
     }
     catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -160,9 +160,9 @@ public class EmployeeController extends CommonHttpServlet {
       employee.setId(id);
       validator.validate(employee);
       employeeService.edit(employee);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.EMPLOYEE_UPDATED);
+      request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_UPDATED);
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
-      request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
+      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE + UrlConstants.PATH_SEPARATOR + employee.getId());
     }
     catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -221,7 +221,7 @@ public class EmployeeController extends CommonHttpServlet {
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
+      request.setAttribute(AttributeConstants.MESSAGE, e.getMessage());
       throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR);
     }
   }
