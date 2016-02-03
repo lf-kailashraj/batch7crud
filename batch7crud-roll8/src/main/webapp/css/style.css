@@ -132,13 +132,13 @@
   padding: 0 10px;
 }
 
-.employee-index-tbl tr td a {
+.employee-tbl-link {
   text-decoration: none;
   color: #000;
   font-weight: bold;
 }
 
-.employee-index-tbl thead tr th {
+.th-name, .th-address, .th-designation, .th-phone {
   text-align: left;
   font-weight: bold;
   padding: 0 10px;
