@@ -93,22 +93,32 @@
 
 /* Employee Index Page */
 
-.employee-index-menu a {
-  text-decoration: none;
-  color: #fff;
+.employee-menu {
   float: right;
-  padding: 10px;
-  border-radius: 5px;
+}
+
+.employee-menu-li {
+  float: left;
+  display: inline-block;
 }
 
 .new-emp-link {
+  text-decoration: none;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-left: 5px;
+  display: inline-block;
+}
+
+.new-emp-link-h2 {
   float: left;
   font-weight: bold;
   padding-top: 3px;
   padding-right: 10px;
 }
 
-.employee-index-menu a img {
+.new-emp-link img {
   width: 25px;
   float: right;
 }

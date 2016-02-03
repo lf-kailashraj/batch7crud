@@ -13,6 +13,7 @@
   <base href="${pageContext.request.contextPath}/">
   <title>Employees</title>
   <jsp:include page="/WEB-INF/views/layout/cssAndJsIncludes.jsp" />
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 </head>
 <body>
 <div class="main-wrapper">
@@ -23,10 +24,23 @@
       <div class="content">
         <div class="employees-index">
           <div class="employee-index-menu clearfix">
-            <a class="clearfix blue" href="/employees/create">
-              <h2 class="new-emp-link">New Employee</h2>
-              <img src="/images/add-user.png">
-            </a>
+            <div class="employee-menu">
+              <ul class="clearfix">
+                <li class="employee-menu-li">
+                  <a class="new-emp-link clearfix blue" href="/employees/create">
+                    <h2 class="new-emp-link-h2">New Employee</h2>
+                    <img src="/images/add-user.png">
+                  </a>
+                </li>
+                <li class="employee-menu-li">
+                  <a class="new-emp-link clearfix yellow" id="create-user" href="/employees/create2">
+                    <h2 class="new-emp-link-h2">New Employee Using Ajax</h2>
+                    <img src="/images/add-user.png">
+                  </a>
+                </li>
+              </ul>
+            </div>
+
           </div>
           <div class="employee-index-list">
             <h2>Employee Details</h2>
