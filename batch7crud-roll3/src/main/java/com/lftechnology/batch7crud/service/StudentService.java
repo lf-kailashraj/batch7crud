@@ -13,8 +13,8 @@ public class StudentService {
 
   public void insert(Student student) throws DataException, ValidationException { // NOSONAR
     StudentValidator studentValidator = new StudentValidator();
-    if (studentValidator.isValid(student))
-      studentDAO.insert(student);
+    studentValidator.validateObject(student);
+    studentDAO.insert(student);
   }
 
   public List<Student> fetch(int page, int pageSize) throws DataException {
@@ -31,8 +31,8 @@ public class StudentService {
 
   public void edit(Student student) throws DataException, ValidationException { // NOSONAR
     StudentValidator studentValidator = new StudentValidator();
-    if (studentValidator.isValid(student))
-      studentDAO.edit(student);
+    studentValidator.validateObject(student);
+    studentDAO.edit(student);
   }
 
   public void delete(int id) throws DataException {

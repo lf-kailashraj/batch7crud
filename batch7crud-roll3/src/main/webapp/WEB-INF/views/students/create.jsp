@@ -8,11 +8,24 @@
 <title>Create</title>
 </head>
 <body>
-	<br />
-	<form action="students/create" method="post">
-		Roll:<input type="number" name="roll" value="${param.roll}">${message.roll}	<br />
-		Name:<input type="text" name="name" value="${param.name}">${message.name}<br /> 
-		<input type="submit" value="submit" />
-	</form>
+	<jsp:include page="/WEB-INF/views/header.jsp" />
+	<div class="form-wrp">
+		<form action="students/create" method="post">
+			<h1>Create Student</h1>
+			<div class="form">
+				<div class="roll">
+					<label>Roll</label> <input type="number" name="roll"
+						value="${param.roll}"><span class="message">${message.roll}</span>
+				</div>
+				<div class="name">
+					<label>Name</label> <input type="text" name="name"
+						value="${param.name}"><span class="message">${message.name}</span>
+				</div>
+				<div class="create-btn"> 
+					<input type="submit" value="Create" />
+				</div>
+		</form>
+	</div>
+	<jsp:include page="/WEB-INF/views/footer.jsp" />
 </body>
 </html>

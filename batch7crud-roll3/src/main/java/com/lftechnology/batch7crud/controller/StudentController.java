@@ -3,10 +3,14 @@ package com.lftechnology.batch7crud.controller;
 import static com.lftechnology.batch7crud.constant.CommonConstant.CREATE;
 import static com.lftechnology.batch7crud.constant.CommonConstant.DELETE;
 import static com.lftechnology.batch7crud.constant.CommonConstant.EDIT;
+import static com.lftechnology.batch7crud.constant.CommonConstant.INTERNAL_SERVER_ERROR;
+import static com.lftechnology.batch7crud.constant.CommonConstant.LIST;
 import static com.lftechnology.batch7crud.constant.CommonConstant.MESSAGE;
 import static com.lftechnology.batch7crud.constant.CommonConstant.NUMBER_OF_PAGES;
+import static com.lftechnology.batch7crud.constant.CommonConstant.PAGE_NOT_FOUND;
 import static com.lftechnology.batch7crud.constant.CommonConstant.PAGE_NUMBER;
 import static com.lftechnology.batch7crud.constant.CommonConstant.RECORDS_PER_PAGE;
+import static com.lftechnology.batch7crud.constant.CommonConstant.SHOW;
 import static com.lftechnology.batch7crud.constant.StudentConstant.CREATE_PAGE;
 import static com.lftechnology.batch7crud.constant.StudentConstant.EDIT_PAGE;
 import static com.lftechnology.batch7crud.constant.StudentConstant.LIST_PAGE;
@@ -32,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationException;
+import com.lftechnology.batch7crud.factory.StudentFactory;
 import com.lftechnology.batch7crud.service.StudentService;
 import com.lftechnology.batch7crud.validator.StudentValidator;
 
@@ -45,59 +50,75 @@ import com.lftechnology.batch7crud.validator.StudentValidator;
  */
 @WebServlet("/students/*")
 public class StudentController extends CustomHttpServlet {
-  private static StudentService studentService = new StudentService();
+  private StudentService studentService = new StudentService();
+  private StudentValidator studentValidator = new StudentValidator();
+  private StudentFactory studentFactory = new StudentFactory();
+
   private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    validateCrudURL(request);
     try {
-      checkRequestForGet(request, response);
-    } catch (DataException | IOException | ServletException e) {
+      processRequestForGet(request, response);
+    } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-      show500(request, response, e);
+      throw new ServletException(INTERNAL_SERVER_ERROR);
     }
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    validateCrudURL(request);
     try {
-      checkRequestForPost(request, response);
-    } catch (DataException | IOException | ServletException e) {
+      processRequestForPost(request, response);
+    } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-      show500(request, response, e);
+      throw new ServletException(INTERNAL_SERVER_ERROR);
     }
   }
 
-  private void checkRequestForGet(HttpServletRequest request, HttpServletResponse response)
+  private void processRequestForGet(HttpServletRequest request, HttpServletResponse response)
       throws DataException, ServletException, IOException {
-    String[] parameters = parameterValues(request);
-    if (parameters.length == 2) {
+    String action = getAction(request);
+
+    switch (action) {
+    case LIST:
       list(request, response);
-    } else if (parameters.length == 3 && (CREATE).equals(parameters[2])) {
-      create(request, response);
-    } else if (parameters.length == 4 && (EDIT).equals(parameters[3])) {
-      edit(request, response);
-    } else if (parameters.length == 3) {
+      break;
+    case SHOW:
       show(request, response);
-    } else {
-      show404(request, response);
+      break;
+    case CREATE:
+      create(request, response);
+      break;
+    case EDIT:
+      edit(request, response);
+      break;
+    default:
+      break;
     }
   }
 
-  private void checkRequestForPost(HttpServletRequest request, HttpServletResponse response)
+  private void processRequestForPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException, DataException {
-    String[] parameters = parameterValues(request);
-
-    if (parameters.length == 3 && (CREATE).equals(parameters[2])) {
+    String action = getAction(request);
+    switch (action) {
+    case CREATE:
       createProcess(request, response);
-    } else if (parameters.length == 4 && (EDIT).equals(parameters[3])) {
-      editProcess(request, response);
-    } else if (parameters.length == 4 && (DELETE).equals(parameters[3])) {
+      break;
+
+    case DELETE:
       deleteProcess(request, response);
-    } else {
-      show404(request, response);
+      break;
+
+    case EDIT:
+      editProcess(request, response);
+      break;
+
+    default:
     }
   }
 
@@ -108,7 +129,7 @@ public class StudentController extends CustomHttpServlet {
     try {
       page = getPageNumber(request);
     } catch (NumberFormatException e) {
-      show404(request, response);
+      throw new ServletException(PAGE_NOT_FOUND);
     }
 
     List<Student> studentList = studentService.fetch(page, RECORDS_PER_PAGE);
@@ -117,8 +138,7 @@ public class StudentController extends CustomHttpServlet {
     int numberOfPages = (int) Math.ceil(count / (float) RECORDS_PER_PAGE);
 
     if (page != 1 && page > numberOfPages) {
-      show404(request, response);
-      return;
+      throw new ServletException(PAGE_NOT_FOUND);
     }
 
     request.setAttribute(STUDENT_LIST, studentList);
@@ -134,13 +154,12 @@ public class StudentController extends CustomHttpServlet {
       Student student = studentService.fetchStudentById(id);
 
       if (student == null) {
-        show404(request, response);
-        return;
+        throw new ServletException(PAGE_NOT_FOUND);
       }
       request.setAttribute(STUDENT, student);
       request.getRequestDispatcher(SHOW_PAGE).forward(request, response);
     } catch (NumberFormatException e) {
-      show404(request, response);
+      throw new ServletException(PAGE_NOT_FOUND);
     }
   }
 
@@ -153,9 +172,8 @@ public class StudentController extends CustomHttpServlet {
     try {
       Map<String, String> inputs = constructHashMapFromRequest(request);
 
-      StudentValidator studentValidator = new StudentValidator();
-      Student student = studentValidator.createObject(inputs);
-
+      studentValidator.validateInputs(inputs);
+      Student student = studentFactory.createObject(inputs);
       studentService.insert(student);
 
       response.sendRedirect(request.getContextPath() + STUDENT_LIST_CONTROLLER);
@@ -185,13 +203,12 @@ public class StudentController extends CustomHttpServlet {
       Student student = studentService.fetchStudentById(id);
 
       if (student == null) {
-        show404(request, response);
-        return;
+        throw new ServletException(PAGE_NOT_FOUND);
       }
       request.setAttribute(STUDENT, student);
       request.getRequestDispatcher(EDIT_PAGE).forward(request, response);
     } catch (NumberFormatException e) {
-      show404(request, response);
+      throw new ServletException(PAGE_NOT_FOUND);
     }
   }
 
@@ -203,9 +220,11 @@ public class StudentController extends CustomHttpServlet {
 
       Map<String, String> inputs = constructHashMapFromRequest(request);
 
-      StudentValidator studentValidator = new StudentValidator();
-      student = studentValidator.createObject(inputs);
+      studentValidator.validateInputs(inputs);
+
+      student = studentFactory.createObject(inputs);
       student.setId(id);
+
       studentService.edit(student);
 
       response.sendRedirect(request.getContextPath() + STUDENT_LIST_CONTROLLER);

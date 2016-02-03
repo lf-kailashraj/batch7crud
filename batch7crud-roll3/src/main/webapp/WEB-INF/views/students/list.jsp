@@ -10,108 +10,37 @@
 <title>List</title>
 </head>
 <body>
+	<jsp:include page="/WEB-INF/views/header.jsp" />
+	<div class="list-title">
+		<h1>Students</h1>
+		<a href="students/create">Create</a>
+	</div>
 	<table border="1">
 		<tr>
-			<td>Id</td>
-			<td>Roll</td>
-			<td>Name</td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td class="table-header">Id</td>
+			<td class="table-header">Name</td>
+			<td class="table-header">Roll</td>
+			<td class="table-header">Actions</td>
 		</tr>
 		<c:forEach items="${studentList}" var="student">
 			<tr>
 				<td>${student.getId()}</td>
-				<td>${student.getRoll()}</td>
 				<td>${student.getName()}</td>
-				<td><a href="students/${student.getId()}">show</a></td>
-				<td><a href="students/${student.getId()}/edit">edit</a></td>
-				<td><a href="students/${student.getId()}/delete"
-					class="deleteItem">delete</a></td>
+				<td>${student.getRoll()}</td>
+				<td class="link"><a href="students/${student.getId()}"
+					class="show" title="Show"></a> <%-- <td><a href="students/${student.getId()}/edit">edit</a></td> --%>
+					<a href="students/${student.getId()}/delete" class="deleteItem"
+					title="delete"></a></td>
 			</tr>
 		</c:forEach>
 	</table>
-	<a href="students/create">Create</a>
+	<div class="pagination-wrp"></div>
 
-	<c:if test="${page > 1}">
-		<a href="students?page=${page - 1}">Previous</a>
-	</c:if>
-
-	<c:if test="${numberOfPages <= 6}">
-		<c:forEach var="i" begin="1" end="${numberOfPages}">
-			<c:if test="${page != i}">
-				<a href="students?page=${i}">${i}</a>
-			</c:if>
-			<c:if test="${page == i}">
-				${i}
-			</c:if>
-		</c:forEach>
-	</c:if>
-	<c:if
-		test="${numberOfPages > 6 && (page == 1 || page == 2 || page == 3)}">
-		<c:forEach var="i" begin="1" end="3">
-			<c:if test="${page != i}">
-				<a href="students?page=${i}">${i}</a>
-			</c:if>
-			<c:if test="${page == i}">
-				${i}
-			</c:if>
-		</c:forEach>
-		..
-		<a href="students?page=${numberOfPages-1}">${numberOfPages-1}</a>
-		<a href="students?page=${numberOfPages}">${numberOfPages}</a>
-	</c:if>
-	<c:if
-		test="${numberOfPages > 6 && (page == numberOfPages-2 || page == numberOfPages-1 || page == numberOfPages)}">
-		<a href="students?page=1">1</a>
-		<a href="students?page=2">2</a>
-		..
-		<c:forEach var="i" begin="${numberOfPages-2}" end="${numberOfPages}">
-			<c:if test="${page != i}">
-				<a href="students?page=${i}">${i}</a>
-			</c:if>
-			<c:if test="${page == i}">
-				${i}
-			</c:if>
-		</c:forEach>
-
-	</c:if>
-	<c:if
-		test="${numberOfPages > 6 && page != numberOfPages-2 && page != numberOfPages-1 && page != numberOfPages && page != 3 && page != 2 && page != 1}">
-		<a href="students?page=1">1</a>
-		<a href="students?page=2">2</a>
-		..
-		${page}
-		<a href="students?page=${page + 1}">${page + 1}</a>
-		<c:if test="${page != (numberOfPages - 3)}">
-		..
-		</c:if>
-		<a href="students?page=${numberOfPages-1}">${numberOfPages-1}</a>
-		<a href="students?page=${numberOfPages}">${numberOfPages}</a>
-	</c:if>
-
-	<c:if test="${numberOfPages > page}">
-		<a href="students?page=${page + 1}">Next</a>
-	</c:if>
+	<jsp:include page="/WEB-INF/views/footer.jsp" />
 </body>
+<script src="js/delete.js"></script>
+<script src="js/pagination.js"></script>
 <script>
-	var deleteBtn = document.getElementsByClassName('deleteItem');
-	for (var i = 0; i < deleteBtn.length; i++) {
-		deleteBtn[i].onclick = function(e) {
-			e.preventDefault();
-			var href = this.getAttribute("href");
-			var confirmation = confirm("Do you want to delete?");
-
-			if (confirmation == true) {
-				var form = document.createElement("form");
-				form.action = href;
-				form.method = "post";
-				document.body.appendChild(form);
-				form.submit();
-			}
-
-		}
-
-	}
+	window.onload = paginate("${numberOfPages}", "${page}");
 </script>
 </html>

@@ -1,16 +1,18 @@
 package com.lftechnology.batch7crud.controller;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static com.lftechnology.batch7crud.constant.CommonConstant.CREATE;
+import static com.lftechnology.batch7crud.constant.CommonConstant.DELETE;
+import static com.lftechnology.batch7crud.constant.CommonConstant.EDIT;
+import static com.lftechnology.batch7crud.constant.CommonConstant.LIST;
+import static com.lftechnology.batch7crud.constant.CommonConstant.PAGE_NOT_FOUND;
+import static com.lftechnology.batch7crud.constant.CommonConstant.PAGE_NUMBER;
+import static com.lftechnology.batch7crud.constant.CommonConstant.SHOW;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import static com.lftechnology.batch7crud.constant.CommonConstant.*;
+import com.lftechnology.batch7crud.utils.ValidatorUtil;
 
 /**
  * This is an abstract class which is extended by servlets. It contains commonly
@@ -20,30 +22,6 @@ import static com.lftechnology.batch7crud.constant.CommonConstant.*;
  *
  */
 public abstract class CustomHttpServlet extends HttpServlet {
-  private static final Logger LOGGER = Logger.getLogger(CustomHttpServlet.class.getName());
-
-  public void show404(HttpServletRequest request, HttpServletResponse response) {
-    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-    request.setAttribute(MESSAGE, PAGE_NOT_FOUND);
-
-    try {
-      request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-    } catch (ServletException | IOException e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
-    }
-  }
-
-  public void show500(HttpServletRequest request, HttpServletResponse response, Throwable e) {
-    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-    request.setAttribute(MESSAGE, e.getMessage());
-    RequestDispatcher view = request.getRequestDispatcher(ERROR_PAGE);
-    try {
-      view.forward(request, response);
-    } catch (ServletException | IOException e1) {
-      LOGGER.log(Level.SEVERE, e1.getMessage(), e1);
-    }
-  }
-
   public String[] parameterValues(HttpServletRequest request) {
     String urlPath = request.getRequestURI().substring(request.getContextPath().length());
     return urlPath.split("/");
@@ -59,6 +37,55 @@ public abstract class CustomHttpServlet extends HttpServlet {
       return Integer.parseInt(request.getParameter(PAGE_NUMBER));
     } else {
       return 1;
+    }
+  }
+
+  protected String getAction(HttpServletRequest request) {
+    String[] parameters = parameterValues(request);
+    String action;
+    if (parameters.length == 2)
+      action = LIST;
+    else if (parameters.length == 3 && ValidatorUtil.isInteger(parameters[2]))
+      action = SHOW;
+    else
+      action = parameters[parameters.length - 1];
+    return action;
+  }
+
+  protected void validateCrudURL(HttpServletRequest request) throws ServletException { // NOSONAR
+    boolean isValid = false;
+    String[] parameters = parameterValues(request);
+
+    switch (parameters.length) {
+    case 2:
+      isValid = true;
+      break;
+    case 3:
+      if (ValidatorUtil.isInteger(parameters[2]) || CREATE.equals(parameters[2]))
+        isValid = true;
+      break;
+    case 4:
+      if (DELETE.equals(parameters[3]) || EDIT.equals(parameters[3]))
+        isValid = true;
+      break;
+    default:
+      break;
+    }
+
+    if (!isValid) {
+      throw new ServletException(PAGE_NOT_FOUND);
+    }
+  }
+
+  protected void validateAuthURL(HttpServletRequest request) throws ServletException {
+    String[] parameters = parameterValues(request);
+    boolean isValid = false;
+
+    if (parameters.length == 3 && ("login".equals(parameters[2]) || "logout".equals(parameters[2]))) {
+      isValid = true;
+    }
+    if (!isValid) {
+      throw new ServletException(PAGE_NOT_FOUND);
     }
   }
 }
