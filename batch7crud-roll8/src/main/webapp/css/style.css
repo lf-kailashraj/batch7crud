@@ -216,7 +216,7 @@
   font-size: 14px;
   padding: 4px;
   width: 98%;
-  border-width: 0;
+  box-sizing: border-box;
 }
 
 .employee-create-form-submit {
