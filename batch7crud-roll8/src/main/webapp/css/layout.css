@@ -26,7 +26,11 @@
   float: left;
 }
 
-.header-title h1 {
+.ems-name {
+  text-decoration: none;
+}
+
+.ems-name h1 {
   font-size: 30px;
   font-weight: bold;
   color: #fff;

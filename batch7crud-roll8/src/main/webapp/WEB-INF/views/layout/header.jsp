@@ -12,7 +12,7 @@
   <div class="header-container">
     <div class="header clearfix">
       <div class="header-title">
-        <h1>Employee Management System</h1>
+        <a class="ems-name" href="/"><h1>Employee Management System</h1></a>
       </div>
       <c:if test = "${sessionScope.user != null}">
         <div class="user-info">
