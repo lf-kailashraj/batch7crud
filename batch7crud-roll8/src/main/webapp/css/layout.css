@@ -42,18 +42,18 @@
   color: #fff;
 }
 
-.user-menu ul li {
+.user-menu-li {
   float: left;
   padding-left: 10px;
 }
 
-.user-menu ul li:first-child {
+.user-menu-li:first-child {
   border-right: solid 1px #fff;
   padding-left: 0;
   padding-right: 10px;
 }
 
-.user-info ul li a {
+.user-menu-links {
   text-decoration: none;
   color: #fff;
 }

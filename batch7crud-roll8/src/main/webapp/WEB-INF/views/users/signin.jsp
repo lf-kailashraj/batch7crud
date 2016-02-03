@@ -24,10 +24,10 @@
           <div class="signin-form-content">
             <form action="users/signin" method="POST">
               <p>
-                <input name="username" type="text" placeholder="Username"/>
+                <input class="signin-inputs" name="username" type="text" placeholder="Username"/>
               </p>
               <p>
-                <input name="password" type="password" placeholder="Password"/>
+                <input class="signin-inputs" name="password" type="password" placeholder="Password"/>
               </p>
               <p>
                 <input class="signin-submit" type="submit" value="Log In"/>

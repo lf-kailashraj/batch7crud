@@ -31,7 +31,7 @@
           <div class="employee-index-list">
             <h2>Employee Details</h2>
             <div class="employee-index-table">
-              <table>
+              <table class="employee-index-tbl">
                 <thead>
                 <tr>
                   <th class="th-name">Name</th>

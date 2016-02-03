@@ -15,14 +15,14 @@
   text-align: center;
 }
 
-.signin-form-content p input {
+.signin-inputs {
   width: 97%;
   border: none;
   padding: 5px;
   font-size: 14px;
 }
 
-.signin-form-content p input.signin-submit {
+.signin-submit {
   width: 100%;
   font-size: 20px;
 }
@@ -123,21 +123,21 @@
   line-height: 50px;
 }
 
-.employee-index-table table tr {
+.employee-index-tbl tr {
   line-height: 28px;
 }
 
-.employee-index-table table tr td {
+.employee-index-tbl tr td {
   padding: 0 10px;
 }
 
-.employee-index-table table tr td a {
+.employee-index-tbl tr td a {
   text-decoration: none;
   color: #000;
   font-weight: bold;
 }
 
-.employee-index-table table thead tr th {
+.employee-index-tbl thead tr th {
   text-align: left;
   font-weight: bold;
   padding: 0 10px;
@@ -159,7 +159,7 @@
   width: 150px;
 }
 
-.employee-index-table table tbody tr:nth-child(odd) {
+.employee-index-tbl tbody tr:nth-child(odd) {
   background: #fff;
 }
 

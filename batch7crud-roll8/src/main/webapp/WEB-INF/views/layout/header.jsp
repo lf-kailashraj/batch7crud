@@ -21,8 +21,8 @@
           </div>
           <div class="user-menu">
             <ul>
-              <li><a href="#">Settings</a></li>
-              <li><a class="logout" href="/users/logout">Log Out</a></li>
+              <li class="user-menu-li"><a class="user-menu-links" href="#">Settings</a></li>
+              <li class="user-menu-li"><a class="user-menu-links logout" href="/users/logout">Log Out</a></li>
             </ul>
           </div>
         </div>
