@@ -28,15 +28,6 @@ public class AuthenticationController extends HttpServlet {
   private static final String USERNAME = "username";
   private static final String PASSWORD = "password"; // NOSONAR
 
-  @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
-
-  }
-
-  @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
-
-  }
 
   @RequestMapping(value = "login", method = "GET")
   public void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR

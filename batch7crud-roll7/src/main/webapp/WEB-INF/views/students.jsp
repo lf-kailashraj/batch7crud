@@ -28,15 +28,15 @@
     <td></td>
     <td></td>
   </tr>
-  <c:forEach items="${students}" var="student">
+  <c:forEach items="${students}" var="book">
     <tr>
-      <td><c:out value="${student.id}"/></td>
-      <td><c:out value="${student.name}"/></td>
-      <td><c:out value="${student.address}"/></td>
-      <td><c:out value="${student.roll}"/></td>
-      <td><a href="students/${student.id}">View</a></td>
-      <td><a href="students/${student.id}/edit">Edit</a></td>
-      <td><a href="students/${student.id}/delete" class="delete">Delete</a></td>
+      <td><c:out value="${book.id}"/></td>
+      <td><c:out value="${book.name}"/></td>
+      <td><c:out value="${book.address}"/></td>
+      <td><c:out value="${book.roll}"/></td>
+      <td><a href="students/${book.id}">View</a></td>
+      <td><a href="students/${book.id}/edit">Edit</a></td>
+      <td><a href="students/${book.id}/delete" class="delete">Delete</a></td>
     </tr>
   </c:forEach>
 </table>

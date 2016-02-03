@@ -2,6 +2,7 @@ package com.lftechnology.batch7crud.utils.requestmapper;
 
 import com.lftechnology.batch7crud.constant.PageConstant;
 import com.lftechnology.batch7crud.controller.AuthenticationController;
+import com.lftechnology.batch7crud.controller.BookController;
 import com.lftechnology.batch7crud.controller.StudentController;
 
 import javax.servlet.ServletException;
@@ -32,9 +33,11 @@ public class RequestMapper {
 
     Class studentController = StudentController.class;
     Class authenticationController = AuthenticationController.class;
+    Class bookController = BookController.class;
     List<Class> controllers = new ArrayList<>();
     controllers.add(studentController);
     controllers.add(authenticationController);
+    controllers.add(bookController);
 
 
 
@@ -67,6 +70,7 @@ public class RequestMapper {
 
   private Class filterController(List<Class> controllers, String servletPath){
     List<String> servletPathTokens = getPathAsTokenList(servletPath);
+
 
     for(Class controller : controllers){
       if(controller.isAnnotationPresent(WebServlet.class)){

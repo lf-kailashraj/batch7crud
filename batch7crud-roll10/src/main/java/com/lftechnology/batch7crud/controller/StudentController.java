@@ -39,13 +39,6 @@ public class StudentController extends HttpServlet {
   private static final String ERRORS = "errors";
   private static final String STUDENT = "student";
 
-  @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
-  }
-
-  @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
-  }
 
   @RequestMapping(value = "list", method = "GET")
   private void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR

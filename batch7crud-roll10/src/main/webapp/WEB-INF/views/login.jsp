@@ -10,12 +10,11 @@
 <head>
     <base href="${pageContext.request.contextPath}/">
     <title>Login</title>
-    <link type="text/css" rel="stylesheet" href="static/css/index.css">
+    <link type="text/css" rel="stylesheet" href="static/css/login.css">
 </head>
 <body>
-    <div>
-        <p>login${pageContext.request.contextPath}</p>
-        <div>
+    <div class="container">
+        <div class="form-wrapper">
             <form action="/auth/login" method="post">
                 <label>username</label> <input type="text" name="username"><br>
                 <label>password</label> <input type="password" name="password"><br>

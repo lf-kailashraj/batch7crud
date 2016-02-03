@@ -22,16 +22,16 @@
     <th>DEPARTMENT</th>
     <th>BATCH</th>
   </tr>
-  <c:forEach items="${studentList}" var="student">
+  <c:forEach items="${studentList}" var="book">
     <tr>
-      <td>${student.name}</td>
-      <td>${student.roll}</td>
-      <td>${student.address}</td>
-      <td>${student.department}</td>
-      <td>${student.batch}</td>
+      <td>${book.name}</td>
+      <td>${book.roll}</td>
+      <td>${book.address}</td>
+      <td>${book.department}</td>
+      <td>${book.batch}</td>
 
-      <td><a href="students/${student.id}/edit">edit</a></td>
-      <td><a class="delete" href="students/${student.id}/delete">delete</a></td>
+      <td><a href="students/${book.id}/edit">edit</a></td>
+      <td><a class="delete" href="students/${book.id}/delete">delete</a></td>
     </tr>
   </c:forEach>
 </table>
