@@ -24,7 +24,7 @@
         <div class="employees-index">
           <div class="employee-index-menu clearfix">
             <a class="clearfix blue" href="/employees/create">
-              <h2>New Employee</h2>
+              <h2 class="new-emp-link">New Employee</h2>
               <img src="/images/add-user.png">
             </a>
           </div>
