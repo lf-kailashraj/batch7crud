@@ -16,6 +16,7 @@
 }
 
 .signin-inputs {
+  box-sizing: border-box;
   width: 97%;
   border: none;
   padding: 5px;
@@ -192,6 +193,7 @@
   padding: 30px 20px;
   border-top: solid 3px #3C8DBC;
   border-radius: 4px;
+  box-sizing: border-box;
 }
 
 .employee-create h2 {
@@ -209,10 +211,12 @@
   font-size: 14px;
   font-weight: bold;
 }
+
 .employee-create-form-inputs input {
   font-size: 14px;
   padding: 4px;
   width: 98%;
+  border-width: 0;
 }
 
 .employee-create-form-submit {
