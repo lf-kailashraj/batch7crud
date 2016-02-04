@@ -60,7 +60,7 @@ public class UserController extends CustomHttpServlet {
           create(request, response);
 
         } else if (CommonConstant.EMPTY_STRING.equals(pathArgs[0]) && CommonConstant.EDIT.equals(pathArgs[2])) {
-          int userID = TypeCaster.toInt(pathArgs[1]);
+          int userID = Integer.parseInt(pathArgs[1]);
           edit(request, response, userID);
 
         }

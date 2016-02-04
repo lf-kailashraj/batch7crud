@@ -49,7 +49,8 @@ public class LoginController extends HttpServlet {
         session.setAttribute("user", user.getUserName());
         response.sendRedirect(ApplicationConstant.INDEX);
       }else{
-        response.sendRedirect(ApplicationConstant.LOGIN);
+        request.setAttribute("error", "Username or password mismatch");
+        request.getRequestDispatcher(URLConstants.LOGIN_PAGE).forward(request, response);
       }
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);

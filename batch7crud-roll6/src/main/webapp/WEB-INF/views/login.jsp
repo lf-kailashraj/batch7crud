@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -16,7 +18,8 @@
 				<div class = "title-container">
 					IMS Login
 				</div>
-				<div class = "login-form-container">
+				<div class = "login-form-container clrfix">
+					<div class= "error"><c:out value="${error}"></c:out></div>
 					<form action="login" method="post">
 					<div class = "username-container">
 						<input type="text" name ="username" placeholder = "Username" >

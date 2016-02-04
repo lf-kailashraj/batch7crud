@@ -23,7 +23,20 @@ public class UserValidator implements Validator<User> {
 
   @Override
   public void validate(User user) throws ValidationException {
-    nonEmptyValidate(user, errors);
+    String onlyCharRegex = "[a-zA-Z]*";
+    if (!user.getFirstName().matches(onlyCharRegex)) {
+      errors.put(UserConstants.FIRST_NAME, "First name cannot contain numeric value or special character");
+    }
+    if (!user.getSurName().matches(onlyCharRegex)) {
+      errors.put(UserConstants.SUR_NAME, "Surname name cannot contain numeric value or special character");
+    }
+
+    if (user.getAge() > 80) {
+      errors.put(UserConstants.AGE, "Age cannot be greater than 80");
+    }
+    if (!errors.isEmpty()) {
+      throw new ValidationException(errors);
+    }
 
   }
 
@@ -45,25 +58,6 @@ public class UserValidator implements Validator<User> {
     if (!StringUtil.isEmptyOrNull(userAttributes.get(UserConstants.AGE)) && !NumberUtils.isNumeric(userAttributes.get(UserConstants.AGE))) {
 
       errors.put(UserConstants.AGE, "Age should be a number");
-    }
-    if (!errors.isEmpty()) {
-      throw new ValidationException(errors);
-    }
-
-  }
-
-  private void nonEmptyValidate(User user, Map<String, String> errors) throws ValidationException {
-
-    String onlyCharRegex = "[a-zA-Z]*";
-    if (!user.getFirstName().matches(onlyCharRegex)) {
-      errors.put(UserConstants.FIRST_NAME, "First name cannot contain numeric value or special character");
-    }
-    if (!user.getSurName().matches(onlyCharRegex)) {
-      errors.put(UserConstants.SUR_NAME, "Surname name cannot contain numeric value or special character");
-    }
-
-    if (user.getAge() > 80) {
-      errors.put(UserConstants.AGE, "Age cannot be greater than 80");
     }
     if (!errors.isEmpty()) {
       throw new ValidationException(errors);

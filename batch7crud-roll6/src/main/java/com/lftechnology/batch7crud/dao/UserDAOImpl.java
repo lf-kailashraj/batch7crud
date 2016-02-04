@@ -114,7 +114,7 @@ public class UserDAOImpl implements UserDAO {
         user.setSurName(results.getString(UserConstants.SUR_NAME));
         user.setUserName(results.getString(UserConstants.USERNAME));
         user.setPassword(results.getString(UserConstants.PASSWORD));
-        user.setAge(Integer.parseInt(results.getString(UserConstants.AGE)));
+        user.setAge(results.getInt(UserConstants.AGE));
 
       }
 
