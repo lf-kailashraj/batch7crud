@@ -9,8 +9,7 @@ import java.io.IOException;
 
 import static com.lftechnology.batch7crud.constant.UrlConstants.URL_INDEX_PAGE;
 
-@WebServlet({ "/" })
-
+@WebServlet({ "/index" })
 public class IndexController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

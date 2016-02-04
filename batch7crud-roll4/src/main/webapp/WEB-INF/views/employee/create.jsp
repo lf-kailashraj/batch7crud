@@ -2,28 +2,64 @@
   Created by IntelliJ IDEA.
   User: Pratish Shrestha <pratishshrestha@lftechnology.com>
   Date: 1/14/16
-  Time: 10:19 AM
+  Time: 1:18 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <base href="${pageContext.request.contextPath}/">
-    <title>Add User</title>
-</head>
-<body>
-<h1>Add User</h1>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-    <form action="employees/create" method="post">
-        First Name: <input type="text" name="firstName" value="${employee.firstName}"> ${errors.firstName}
-        <br/>
-        Last Name: <input type="text" name="lastName" value="${employee.lastName}"}> ${errors.lastName}
-        <br/>
-        Station: <input type="text" name="station" value="${employee.station}"> ${errors.station}
-        <br/>
-        <input type="submit" name="submit" value="submit">
-    </form>
+<t:section sectionTitle="Create Employee">
+    <jsp:attribute name="sectionBody">
+        <%--<div class="form">--%>
+            <%--<form action="employees/create" method="post">--%>
+                <%--<div class="form-element">--%>
+                    <%--<label>First Name</label>--%>
+                    <%--<input type="text" name="firstName" value="${employee.firstName}">--%>
+                    <%--<span class="error">${errors.firstName}</span>--%>
+                <%--</div>--%>
+                <%--<div class="form-element">--%>
+                    <%--<label>Last Name</label>--%>
+                    <%--<input type="text" name="lastName" value="${employee.lastName}">--%>
+                    <%--<span class="error">${errors.lastName}</span>--%>
+                <%--</div>--%>
+                <%--<div class="form-element">--%>
+                    <%--<label>Station</label>--%>
+                    <%--<input type="text" name="station" value="${employee.station}">--%>
+                    <%--<span class="error">${errors.station}</span>--%>
+                <%--</div>--%>
+                <%--<div class="form-element button">--%>
+                    <%--<input type="submit" name="submit" value="Add">--%>
+                <%--</div>--%>
+            <%--</form>--%>
+        <%--</div>--%>
+
+        <div class="form">
+            <h2>With AJAX</h2>
+            <form action="employees/create" method="post" id="ajaxForm">
+                <div class="form-element">
+                    <label>First Name</label>
+                    <input type="text" id="first-name" name="firstName" value="${employee.firstName}">
+                    <span class="error">${errors.firstName}</span>
+                </div>
+                <div class="form-element">
+                    <label>Last Name</label>
+                    <input type="text" id="last-name" name="lastName" value="${employee.lastName}">
+                    <span class="error">${errors.lastName}</span>
+                </div>
+                <div class="form-element">
+                    <label>Station</label>
+                    <input type="text" id="station" name="station" value="${employee.station}">
+                    <span class="error">${errors.station}</span>
+                </div>
+                <div class="form-element button">
+                    <input id="submitBtn" type="submit" name="submit" value="Add">
+                </div>
+            </form>
+        </div>
+    </jsp:attribute>
+</t:section>
 
 
-</body>
-</html>
+

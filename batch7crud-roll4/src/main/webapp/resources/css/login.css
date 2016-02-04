@@ -1,0 +1,72 @@
+body {
+    background: #d2d6de;
+}
+
+.wrapper {
+    max-width: 64em;
+    margin: 0 auto;
+    text-align: center;
+    padding: 100px 0;
+}
+
+.title {
+    margin: 0 auto;
+    text-align: center;
+    width: 35.15625%;
+    font-size: 30px;
+    color: #333;
+    font-weight: bold;
+    padding: 30px 0;
+}
+
+.login-box {
+    margin: 0 auto;
+    background: #ffffff;
+    width: 35.15625%;
+    border: 1px solid #dcdfe6;
+    padding: 20px 0;
+
+}
+
+.login-box-info {
+    text-align: center;
+    font-size: 12px;
+    padding: 10px;
+    color: #d2d6da;
+}
+
+.login-box input[type=text] {
+    width: 87.32638888888889%;
+    height: 40px;
+    margin: 5px 0;
+    padding-left: 1.5625%;
+    border: 1px solid #dcdfe6;
+    background: url("../images/username-icon.png") right center no-repeat;
+}
+
+.login-box input[type=password] {
+    width: 87.32638888888889%;
+    height: 40px;
+    margin: 5px 0;
+    padding-left: 1.5625%;
+    border: 1px solid #dcdfe6;
+    background: url("../images/password-icon.png") right center no-repeat;
+}
+
+.login-box input[type=submit] {
+    width: 27.5%;
+    background: #3c8dbc;
+    border: 1px solid #367fa9;
+    color: #fff;
+    font-size: 15px;
+    float: right;
+    height: 40px;
+    margin: 5px 4.972375690607735% 5px 0;
+}
+
+.login-box input:placeholder-shown {
+    font-size: 15px;
+    padding-left: 1.5625%;
+
+}
+ 
