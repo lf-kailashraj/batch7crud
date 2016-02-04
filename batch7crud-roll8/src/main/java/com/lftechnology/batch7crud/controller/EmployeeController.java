@@ -1,5 +1,6 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.google.gson.Gson;
 import com.lftechnology.batch7crud.constants.AppConstants;
 import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
@@ -9,13 +10,16 @@ import com.lftechnology.batch7crud.factory.EmployeeFactory;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.services.EmployeeService;
 import com.lftechnology.batch7crud.validator.EmployeeValidator;
+import org.json.JSONObject;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +51,9 @@ public class EmployeeController extends CommonHttpServlet {
         case AppConstants.CREATE:
           create(request, response);
           break;
+        case AppConstants.CREATE2:
+          create2(request, response);
+          break;
         case AppConstants.EDIT:
           edit(request, response);
           break;
@@ -73,6 +80,9 @@ public class EmployeeController extends CommonHttpServlet {
       case AppConstants.CREATE:
         createProcess(request, response);
         break;
+      case AppConstants.CREATE2:
+        createProcess2(request, response);
+        break;
       case AppConstants.EDIT:
         editProcess(request, response);
         break;
@@ -80,7 +90,7 @@ public class EmployeeController extends CommonHttpServlet {
         deleteProcess(request, response);
         break;
       default:
-        request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
+        request.setAttribute(AttributeConstants.MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
         response.sendError(HttpServletResponse.SC_NOT_FOUND);
       }
     }
@@ -100,6 +110,16 @@ public class EmployeeController extends CommonHttpServlet {
     }
   }
 
+  private void create2(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    try {
+      request.getServletContext().getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_CREATE_PAGE2).forward(request,
+        response);
+    } catch (Exception e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      throw new ServletException(e.getMessage());
+    }
+  }
+
   private void edit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     try {
       int id = parameterValueAsInt(request, 2);
@@ -110,13 +130,13 @@ public class EmployeeController extends CommonHttpServlet {
         dispatcher.forward(request, response);
       }
       else {
-        request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
+        request.setAttribute(AttributeConstants.MESSAGE, AppConstants.PAGE_NOT_FOUND_MESSAGE);
         throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
       }
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
+      request.setAttribute(AttributeConstants.MESSAGE, e.getMessage());
       throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR);
     }
   }
@@ -130,6 +150,23 @@ public class EmployeeController extends CommonHttpServlet {
     return inputs;
   }
 
+  private Map<String, String> setEmployeeAttributesFromJSON (HttpServletRequest request) throws IOException {
+    Map<String, String> inputs = new HashMap<>();
+
+    BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+    String json = "";
+    if(br != null){
+      json = br.readLine();
+    }
+    JSONObject jsonObject = new JSONObject(json);
+
+    inputs.put(AttributeConstants.NAME, (String) jsonObject.get(AttributeConstants.NAME));
+    inputs.put(AttributeConstants.ADDRESS, (String) jsonObject.get(AttributeConstants.ADDRESS));
+    inputs.put(AttributeConstants.DESIGNATION, (String) jsonObject.get(AttributeConstants.DESIGNATION));
+    inputs.put(AttributeConstants.PHONE, (String) jsonObject.get(AttributeConstants.PHONE));
+    return inputs;
+  }
+
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
     Employee employee = null;
     try {
@@ -138,15 +175,43 @@ public class EmployeeController extends CommonHttpServlet {
       employee = employeeFactory.createObject(inputs);
       validator.validate(employee);
       employeeService.create(employee);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.EMPLOYEE_CREATED);
+      request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_CREATED);
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
-      request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
+      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE + UrlConstants.PATH_SEPARATOR + employee.getId());
     }
     catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(AttributeConstants.ERRORS, e.getErrors());
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
       request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request, response);
+    }
+  }
+
+  private void createProcess2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
+    Employee employee = null;
+    try {
+      Map<String, String> inputs = setEmployeeAttributesFromJSON(request);
+      EmployeeFactory employeeFactory = new EmployeeFactory();
+      employee = employeeFactory.createObject(inputs);
+      validator.validate(employee);
+      employeeService.create(employee);
+      request.setAttribute(AttributeConstants.EMPLOYEE, employee);
+
+      JSONObject obj = new JSONObject();
+      obj.put("success", employee.getName() + " was successfully added to database.");
+
+      String jsonStr = String.valueOf(obj);
+      response.setContentType("application/json");
+      response.setCharacterEncoding("UTF-8");
+      response.getWriter().write(jsonStr);
+    }
+    catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      String json = new Gson().toJson(e.getErrors());
+
+      response.setContentType("application/json");
+      response.setCharacterEncoding("UTF-8");
+      response.getWriter().write(json);
     }
   }
 
@@ -160,9 +225,9 @@ public class EmployeeController extends CommonHttpServlet {
       employee.setId(id);
       validator.validate(employee);
       employeeService.edit(employee);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, AppConstants.EMPLOYEE_UPDATED);
+      request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_UPDATED);
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
-      request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_VIEW_PAGE).forward(request, response);
+      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE + UrlConstants.PATH_SEPARATOR + employee.getId());
     }
     catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -221,7 +286,7 @@ public class EmployeeController extends CommonHttpServlet {
     }
     catch (Exception e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERROR_MESSAGE, e.getMessage());
+      request.setAttribute(AttributeConstants.MESSAGE, e.getMessage());
       throw new ServletException(AppConstants.INTERNAL_SERVER_ERROR);
     }
   }
@@ -248,6 +313,9 @@ public class EmployeeController extends CommonHttpServlet {
     else if (parts.length == 3 && AppConstants.CREATE.equals(parts[2])) {
       action = AppConstants.CREATE;
     }
+    else if (parts.length == 3 && AppConstants.CREATE2.equals(parts[2])) {
+      action = AppConstants.CREATE2;
+    }
     else if (parts.length == 3) {
       action = AppConstants.VIEW;
     }
@@ -265,6 +333,9 @@ public class EmployeeController extends CommonHttpServlet {
     String action;
     if (parts.length == 3 && AppConstants.CREATE.equals(parts[2])) {
       action = AppConstants.CREATE;
+    }
+    else if (parts.length == 3 && AppConstants.CREATE2.equals(parts[2])) {
+      action = AppConstants.CREATE2;
     }
     else if (parts.length == 4 && AppConstants.EDIT.equals(parts[3])) {
       action = AppConstants.EDIT;

@@ -1,0 +1,274 @@
+/* Sign In Page*/
+
+.signin-form {
+  width: 40%;
+  margin: 50px auto;
+  background-color: #F39C12;
+}
+
+.signin-form-content {
+  padding: 70px;
+}
+
+.signin-form-content p {
+  padding: 5px;
+  text-align: center;
+}
+
+.signin-inputs {
+  box-sizing: border-box;
+  width: 97%;
+  border: none;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.signin-submit {
+  width: 100%;
+  font-size: 20px;
+}
+
+/* User Index Page */
+
+.user-boxes {
+  margin: 100px 0;
+}
+
+.user-boxes img {
+  height: 50px;
+}
+
+.user-boxes a {
+  text-decoration: none;
+}
+
+.user-box-left {
+  float: left;
+  width: 66%;
+}
+
+.user-box-l {
+  float: left;
+  width: 49%;
+}
+
+.user-box-r {
+  float: right;
+  width: 49%;
+}
+
+.user-box-right {
+  float: right;
+  width: 33%;
+}
+
+.user-box-content {
+  padding: 50px 20px;
+  border-radius: 10px;
+}
+
+.user-box-content a h2 {
+  float: left;
+  color: #fff;
+  font-size: 30px;
+  font-weight: bold;
+  padding-top: 12px;
+}
+
+.user-box-content a img {
+  float: right;
+}
+
+.blue {
+  background-color: #00C0EF;
+}
+
+.yellow {
+  background-color: #F39C12;
+}
+
+.red {
+  background-color: #DD4B39;
+}
+
+/* Employee Index Page */
+
+.employee-menu {
+  float: right;
+}
+
+.employee-menu-li {
+  float: left;
+  display: inline-block;
+}
+
+.new-emp-link {
+  text-decoration: none;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-left: 5px;
+  display: inline-block;
+}
+
+.new-emp-link-h2 {
+  float: left;
+  font-weight: bold;
+  padding-top: 3px;
+  padding-right: 10px;
+}
+
+.new-emp-link img {
+  width: 25px;
+  float: right;
+}
+
+.employee-index-list {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.employee-index-list h2 {
+  font-size: 26px;
+  font-weight: bold;
+  line-height: 50px;
+}
+
+.employee-index-tbl tr {
+  line-height: 28px;
+}
+
+.employee-index-tbl tr td {
+  padding: 0 10px;
+}
+
+.employee-tbl-link {
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+}
+
+.th-name, .th-address, .th-designation, .th-phone {
+  text-align: left;
+  font-weight: bold;
+  padding: 0 10px;
+}
+
+.th-name {
+  width: 180px;
+}
+
+.th-address {
+  width: 180px;
+}
+
+.th-designation {
+  width: 180px;
+}
+
+.th-phone {
+  width: 150px;
+}
+
+.employee-index-tbl tbody tr:nth-child(odd) {
+  background: #fff;
+}
+
+.pages {
+  padding: 20px 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+.pages span {
+  border-left: solid 1px #000;
+  padding: 0 5px;
+}
+
+.pages span:first-child {
+  border: none;
+}
+
+.pages span a {
+  text-decoration: none;
+  color: #000;
+}
+
+/* Create Employee Page */
+
+.employee-create {
+  width: 40%;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 30px 20px;
+  border-top: solid 3px #3C8DBC;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.employee-create h2 {
+  font-size: 26px;
+  font-weight: bold;
+  line-height: 50px;
+  text-align: center;
+}
+
+.employee-create-form-inputs p {
+  padding: 5px 0;
+}
+
+.employee-create-form-inputs p label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.employee-create-form-inputs input {
+  font-size: 14px;
+  padding: 4px;
+  width: 98%;
+  box-sizing: border-box;
+}
+
+.employee-create-form-submit {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.btn-submit {
+  color: #fff;
+  background-color: #337ab7;
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 4px;
+  border: none;
+}
+
+.form-error {
+  font-size: 12px;
+  color: red;
+}
+
+/* Employee View Page */
+
+.emp-home-link {
+  padding-top: 0;
+  float: left;
+  font-weight: bold;
+}
+
+.employee-view {
+  text-align: center;
+}
+
+.employee-view-deets {
+  padding: 5px 0;
+}
+
+.employee-view-deets p label {
+  font-size: 14px;
+  font-weight: bold;
+}

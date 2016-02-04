@@ -11,30 +11,42 @@
 <head>
   <base href="${pageContext.request.contextPath}/">
   <title>Sign Up</title>
+  <jsp:include page="/WEB-INF/views/layout/cssAndJsIncludes.jsp" />
 </head>
 <body>
-Sign Up Form
-<form action="users/create" method="POST">
-  <div>
-    <label>Name:</label>
-    <input name="name" type="text"/>
-  </div>
-  <div>
-    <label>Email:</label>
-    <input name="email" type="text"/>
-  </div>
-  <div>
-    <label>Username:</label>
-    <input name="username" type="text"/>
-  </div>
-  <div>
-    <label>Password:</label>
-    <input name="password" type="password"/>
-  </div>
-  <div>
-    <input type="submit"/>
-  </div>
+<div class="main-wrapper">
+  <jsp:include page="/WEB-INF/views/layout/header.jsp" />
 
-</form>
+  <div class="content-wrapper">
+    <div class="content-container">
+      <div class="content">
+        Sign Up Form
+        <form action="users/create" method="POST">
+          <div>
+            <label>Name:</label>
+            <input name="name" type="text"/>
+          </div>
+          <div>
+            <label>Email:</label>
+            <input name="email" type="text"/>
+          </div>
+          <div>
+            <label>Username:</label>
+            <input name="username" type="text"/>
+          </div>
+          <div>
+            <label>Password:</label>
+            <input name="password" type="password"/>
+          </div>
+          <div>
+            <input type="submit"/>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+  <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+</div>
 </body>
 </html>

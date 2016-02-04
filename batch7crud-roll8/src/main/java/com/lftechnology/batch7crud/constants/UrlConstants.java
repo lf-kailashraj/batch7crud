@@ -15,6 +15,7 @@ public class UrlConstants {
   public static final String EMPLOYEE_ROUTE = FILE_SEPARATOR + "employees";
   public static final String EMPLOYEE_LIST_PAGE = VIEWS + EMPLOYEE_ROUTE + FILE_SEPARATOR + INDEX;
   public static final String EMPLOYEE_CREATE_PAGE = VIEWS + EMPLOYEE_ROUTE + FILE_SEPARATOR + "new.jsp";
+  public static final String EMPLOYEE_CREATE_PAGE2 = VIEWS + EMPLOYEE_ROUTE + FILE_SEPARATOR + "new2.jsp";
   public static final String EMPLOYEE_VIEW_PAGE = VIEWS + EMPLOYEE_ROUTE + FILE_SEPARATOR + "view.jsp";
   public static final String EMPLOYEE_EDIT_PAGE = VIEWS + EMPLOYEE_ROUTE + FILE_SEPARATOR + "edit.jsp";
 
@@ -28,6 +29,7 @@ public class UrlConstants {
   public static final String USER_SIGN_IN = VIEWS + USER_ROUTE + FILE_SEPARATOR + "signin.jsp";
 
   public static final String INDEX_PAGE = VIEWS + INDEX;
+  public static final String INDEX_ROUTE = PATH_SEPARATOR;
 
   private UrlConstants() {
 

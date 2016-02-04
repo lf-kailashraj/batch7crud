@@ -81,7 +81,6 @@ public class UserController extends HttpServlet {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new ServletException(AppConstants.PAGE_NOT_FOUND_MESSAGE);
     }
-
   }
 
   private void fetch(HttpServletRequest request, HttpServletResponse response) throws
@@ -108,6 +107,7 @@ public class UserController extends HttpServlet {
     if (authenticatedUser != null) {
       HttpSession session = request.getSession();
       session.setAttribute(AttributeConstants.USER, authenticatedUser.getId());
+      session.setAttribute(AttributeConstants.USER_NAME, authenticatedUser.getName());
       response.sendRedirect(request.getContextPath() + UrlConstants.USER_ROUTE);
     }
     else {

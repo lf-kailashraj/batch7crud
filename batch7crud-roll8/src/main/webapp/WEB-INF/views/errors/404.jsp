@@ -10,9 +10,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <base href="${pageContext.request.contextPath}/">
   <title>404</title>
+  <jsp:include page="/WEB-INF/views/layout/cssAndJsIncludes.jsp" />
 </head>
 <body>
-  404 OOPS! The page was not found!
+<div class="main-wrapper">
+  <jsp:include page="/WEB-INF/views/layout/header.jsp" />
+
+  <div class="content-wrapper">
+    <div class="content-container">
+      <div class="content">
+        404 OOPS! The page was not found!
+      </div>
+    </div>
+  </div>
+    <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+</div>
 </body>
 </html>

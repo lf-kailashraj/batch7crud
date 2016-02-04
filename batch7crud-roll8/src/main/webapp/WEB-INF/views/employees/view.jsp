@@ -11,33 +11,47 @@
 <head>
   <base href="${pageContext.request.contextPath}/">
   <title>Employee Details</title>
+  <jsp:include page="/WEB-INF/views/layout/cssAndJsIncludes.jsp" />
 </head>
 <body>
-  <div>
-    ${message}
-    <table>
-      <tbody>
-        <tr>
-          <td>Name:</td>
-          <td>${employee.getName()}</td>
-        </tr>
-        <tr>
-          <td>Address:</td>
-          <td>${employee.getAddress()}</td>
-        </tr>
-        <tr>
-          <td>Email:</td>
-          <td>${employee.getDesignation()}</td>
-        </tr>
-        <tr>
-          <td>Contact Number:</td>
-          <td>${employee.getPhone()}</td>
-        </tr>
-        <tr>
-          <td><a href="employees">Employees Home</a></td>
-        </tr>
-      </tbody>
-    </table>
+<div class="main-wrapper">
+  <jsp:include page="/WEB-INF/views/layout/header.jsp" />
+
+  <div class="content-wrapper">
+    <div class="content-container">
+      <div class="content">
+        <div class="employee-index-menu clearfix">
+          <a class="clearfix blue" href="employees">
+            <h2 class="emp-home-link">Employees Home</h2>
+          </a>
+        </div>
+        <div class="employee-view employee-create">
+          <h2>Employee Details</h2>
+          ${message}
+          <div class="employee-create-form">
+            <div class="employee-view-deets">
+              <p><label>Name</label></p>
+              <p>${employee.getName()}</p>
+            </div>
+            <div class="employee-view-deets">
+              <p><label>Address</label></p>
+              <p>${employee.getAddress()}</p>
+            </div>
+            <div class="employee-view-deets">
+              <p><label>Designation</label></p>
+              <p>${employee.getDesignation()}</p>
+            </div>
+            <div class="employee-view-deets">
+              <p><label>Phone</label></p>
+              <p>${employee.getPhone()}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+</div>
 </body>
 </html>

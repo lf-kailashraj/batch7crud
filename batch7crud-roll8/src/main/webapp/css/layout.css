@@ -1,0 +1,104 @@
+.main-wrapper {
+  margin: 0 auto;
+  width: 100%;
+  background-color: #ECF0F5;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 16px;
+}
+
+/* Header */
+
+.header-wrapper {
+  background-color: #018448;
+  width: 100%;
+}
+
+.header-container {
+  padding: 10px 20px;
+}
+
+.header {
+  margin: 0 auto;
+  max-width: 1170px;
+}
+
+.header-title {
+  float: left;
+}
+
+.ems-name {
+  text-decoration: none;
+}
+
+.ems-name h1 {
+  font-size: 30px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.user-info {
+  float: right;
+}
+
+.user-info h2 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.user-menu-li {
+  float: left;
+  padding-left: 10px;
+}
+
+.user-menu-li:first-child {
+  border-right: solid 1px #fff;
+  padding-left: 0;
+  padding-right: 10px;
+}
+
+.user-menu-links {
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Content */
+
+.content-wrapper {
+  width: 100%;
+}
+
+.content-container {
+  padding: 50px 20px;
+}
+
+.content {
+  max-width: 1170px;
+  margin: 0 auto;
+}
+
+/* Footer */
+
+.footer-wrapper {
+  width: 100%;
+  background-color: #fff;
+}
+
+.footer-container {
+  padding: 10px 20px;
+}
+
+.footer {
+  max-width: 1170px;
+  margin: 0 auto;
+}
+
+.copyright p {
+  font-size: 14px;
+  color: #444;
+}
+
+.copyright p span {
+  color: #68BD62;
+  font-weight: bold;
+}

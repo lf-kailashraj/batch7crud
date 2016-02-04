@@ -14,12 +14,13 @@ public class AttributeConstants {
   public static final String PAGE_NO = "pageNo";
   public static final String EMPLOYEE = "employee";
   public static final String EMPLOYEE_COUNT = "employeeCount";
-  public static final String ERROR_MESSAGE = "message";
+  public static final String MESSAGE = "message";
   public static final String USER = "user";
   public static final String EMAIL = "email";
   public static final String USERNAME = "username";
   public static final String PASSWORD = "password";
   public static final String ERRORS = "errors";
+  public static final String USER_NAME = "userName";
 
   private AttributeConstants() {
 

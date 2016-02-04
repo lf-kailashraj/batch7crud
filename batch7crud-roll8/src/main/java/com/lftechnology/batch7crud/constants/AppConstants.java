@@ -5,6 +5,7 @@ package com.lftechnology.batch7crud.constants;
  */
 public class AppConstants {
   public static final String CREATE = "create";
+  public static final String CREATE2 = "create2";
   public static final String EDIT = "edit";
   public static final String DELETE = "delete";
   public static final String VIEW = "view";
@@ -18,7 +19,7 @@ public class AppConstants {
   public static final String LOG_OUT = "logout";
   public static final String LOG_OUT_SUCCESS_MESSAGE = "Successfully logged out.";
 
-  public static final int PAGE_LIMIT = 4;
+  public static final int PAGE_LIMIT = 10;
 
   private AppConstants() {
 
