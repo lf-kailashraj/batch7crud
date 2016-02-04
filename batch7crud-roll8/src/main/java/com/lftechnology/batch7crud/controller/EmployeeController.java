@@ -1,5 +1,6 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.google.gson.Gson;
 import com.lftechnology.batch7crud.constants.AppConstants;
 import com.lftechnology.batch7crud.constants.AttributeConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
@@ -194,17 +195,23 @@ public class EmployeeController extends CommonHttpServlet {
       employee = employeeFactory.createObject(inputs);
       validator.validate(employee);
       employeeService.create(employee);
-      request.setAttribute(AttributeConstants.MESSAGE, AppConstants.EMPLOYEE_CREATED);
       request.setAttribute(AttributeConstants.EMPLOYEE, employee);
-      response.sendRedirect(request.getContextPath() + UrlConstants.EMPLOYEE_ROUTE + UrlConstants.PATH_SEPARATOR + employee.getId());
-      //    response.getWriter().write("lala");
 
+      JSONObject obj = new JSONObject();
+      obj.put("success", employee.getName() + " was successfully added to database.");
+
+      String jsonStr = String.valueOf(obj);
+      response.setContentType("application/json");
+      response.setCharacterEncoding("UTF-8");
+      response.getWriter().write(jsonStr);
     }
     catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(AttributeConstants.ERRORS, e.getErrors());
-      request.setAttribute(AttributeConstants.EMPLOYEE, employee);
-      request.getRequestDispatcher(request.getContextPath() + UrlConstants.EMPLOYEE_CREATE_PAGE).forward(request, response);
+      String json = new Gson().toJson(e.getErrors());
+
+      response.setContentType("application/json");
+      response.setCharacterEncoding("UTF-8");
+      response.getWriter().write(json);
     }
   }
 

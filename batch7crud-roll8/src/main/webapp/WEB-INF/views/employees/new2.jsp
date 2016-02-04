@@ -91,17 +91,25 @@
     $.ajax({
       url: 'employees/create2',
       type: 'post',
-      dataType: 'json',
       data: jsonData,
       success: function(data) {
-        $("#test").text(data);
+        if (data.success) {
+          alert(data.success);
+          window.location.replace("employees");
+        }
+        else {
+          $('.form-error').empty();
+          $('.form-error:eq(0)').html(data.name);
+          $('.form-error:eq(1)').html(data.address);
+          $('.form-error:eq(2)').html(data.designation);
+          $('.form-error:eq(3)').html(data.phone);
+        }
       },
       error: function(data) {
-        $("#test").text(data);
+        $("#test").text("Something went wrong :(");
       }
     });
   }
-
 </script>
 </body>
 </html>
