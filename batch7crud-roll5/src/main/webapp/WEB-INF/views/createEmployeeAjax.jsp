@@ -19,27 +19,27 @@
 				<form method="post">
 					<ul>
 						<li class="input">
-							<label>First Name:</label><input type="text" name="firstName" value=${param.firstName }>
+							<label>First Name:</label><input type="text" name="firstName" id = "firstName" value=${param.firstName }>
 							<span class="error">${message.firstName}</span>
 						</li>
 						
 						<li class="input">
-							<label>Last Name:</label><input type="text" name="lastName" value=${param.lastName } >
+							<label>Last Name:</label><input type="text" name="lastName" id = "lastName" value=${param.lastName } >
 							<span class="error">${message.lastName}</span>
 						</li>
 						
 						<li class="input">
-							<label>Password:</label><input type="password" name="password" value=${param.password } >
+							<label>Password:</label><input type="password" name="password" id = "password" value=${param.password } >
 							<span class="error">${message.pass}</span>
 						</li>
 						
 						<li class="input">
-							<label>Department:</label><input type="text" name="department" value=${param.department } >
+							<label>Department:</label><input type="text" name="department" id = "department" value=${param.department } >
 							<span class="error">${message.department}</span>
 						</li>
 						
 						<li class="input">
-							<label>Address:</label><input type="text" name="address" value=${param.address } >
+							<label>Address:</label><input type="text" name="address" id = "address" value=${param.address } >
 							<span class="error">${message.address}</span>
 						</li>
 						
@@ -57,12 +57,11 @@
 	<script>
 	$('#create').click(function(e) {
 		e.preventDefault();
-		var firstName = $('#firstName').val();
-		var lastName = $('#lastName').val();
-		var password = $('#password').val();
+		var firstName = $('#firstName').val()
+		var lastName = $('#lastName').val()
+		var password = $('#password').val()
 		var department = $('#department').val();
-		var address = $('#address');
-		
+		var address = $('#address').val();
 		var jsonDataObject = new Object();
 		jsonDataObject.firstName = firstName;
 		jsonDataObject.lastName  = lastName;
@@ -72,16 +71,19 @@
 		var jsonData = JSON.stringify(jsonDataObject);
 		
 		 $.ajax({
-			url : 'employees/createProcessAjax',
+			url : 'employees/createUsingAjax',
 			type : 'POST',
 			dataType: 'json',
-            data: jsonData,
-			success: function () {
-   				 alert("success");
+			data: jsonData,
+			
+			success:function(message){
+				debugger;
+				alert(message.success);
 			},
-			error: function () {
-			    alert("error");
+		 error:function(){
+				alert("errot");
 			}
+			
 		});
 	});
 	</script>

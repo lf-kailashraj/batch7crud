@@ -10,10 +10,14 @@ import com.lftechnology.batch7crud.services.EmployeeServiceImpl;
 import com.lftechnology.batch7crud.util.EmployeeFactory;
 import com.lftechnology.batch7crud.validator.UrlValidator;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +25,8 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONObject;
 
 @WebServlet("/employees/*")
 public class EmployeeController extends CustomHttpServlet {
@@ -138,8 +144,30 @@ public class EmployeeController extends CustomHttpServlet {
             deleteProcess(request, response);
             break;
 
+        case NormalConstants.CREATE_USING_AJAX:
+            createUsingAjaxProcess(request, response);
+            break;
+
         default:
 
+        }
+    }
+
+    private void createUsingAjaxProcess(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, DataException, ServletException {
+        try {
+            employeeService.create(employeeFactory.createObjects(setDataAttributeAjax(request)));
+            request.setAttribute(NormalConstants.MESSAGE, "employee created");
+            JSONObject obj = new JSONObject();
+            obj.put("success", "employee added sucessfully");
+            String jsonStr = String.valueOf(obj);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(jsonStr);
+        } catch (ValidationExceptions e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            request.setAttribute(NormalConstants.MESSAGE, e.getErrorMessage());
+            request.getRequestDispatcher(UrlConstants.EMPLOYEE_CREATE_URL).forward(request, response);
         }
     }
 
@@ -153,7 +181,6 @@ public class EmployeeController extends CustomHttpServlet {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ServletException(NormalConstants.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     private void editProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
@@ -192,5 +219,22 @@ public class EmployeeController extends CustomHttpServlet {
         input.put(EmployeeAttributeConstants.DEPARTMENT, request.getParameter(EmployeeAttributeConstants.DEPARTMENT));
         input.put(EmployeeAttributeConstants.ADDRESS, request.getParameter(EmployeeAttributeConstants.ADDRESS));
         return input;
+    }
+
+    private Map<String, String> setDataAttributeAjax(HttpServletRequest request) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+        String json = "";
+
+        if (reader != null) {
+            json = reader.readLine();
+        }
+        JSONObject jsonObject = new JSONObject(json);
+        Map<String, String> inputs = new HashMap<>();
+        inputs.put(EmployeeAttributeConstants.FIRST_NAME, jsonObject.getString(EmployeeAttributeConstants.FIRST_NAME));
+        inputs.put(EmployeeAttributeConstants.LAST_NAME, jsonObject.getString(EmployeeAttributeConstants.LAST_NAME));
+        inputs.put(EmployeeAttributeConstants.PASSWORD, jsonObject.getString(EmployeeAttributeConstants.PASSWORD));
+        inputs.put(EmployeeAttributeConstants.DEPARTMENT, jsonObject.getString(EmployeeAttributeConstants.DEPARTMENT));
+        inputs.put(EmployeeAttributeConstants.ADDRESS, jsonObject.getString(EmployeeAttributeConstants.ADDRESS));
+        return inputs;
     }
 }

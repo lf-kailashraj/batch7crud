@@ -21,6 +21,7 @@ public class NormalConstants {
     public static final String LOGIN = "login";
     public static final String LOGOUT = "logout";
     public static final String CREATE_USING_AJAX = "createUsingAjax";
+    public static final String CREATE_USING_AJAX_PROCESS = "createUsingAjaxProcess";
     
     private NormalConstants() {
 
