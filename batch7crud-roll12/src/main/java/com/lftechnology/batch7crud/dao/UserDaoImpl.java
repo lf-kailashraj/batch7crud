@@ -18,7 +18,6 @@ public class UserDaoImpl implements UserDao {
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class.getName());
     private static final String VIEW = "SELECT * FROM admin";
 
-    @Override
     public User getUser() {
         User user = null;
         try {

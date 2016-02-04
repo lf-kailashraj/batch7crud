@@ -12,11 +12,11 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jstl/sql" %>
 <html>
 <head>
-  <base href="${pageContext.request.contextPath}/"/>
-  <%--<link href="<c:url value="../../../resources/css/style.css" />" rel="stylesheet" style="">--%>
+  <base href="${pageContext.request.contextPath}/home"/>
+  <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>--%>
+  <link href="static/css/reset.css" rel="stylesheet">
   <link href="static/css/style.css" rel="stylesheet">
-
-    <title>SMS</title>
+  <title>SMS</title>
 </head>
 <body>
 <%
@@ -24,15 +24,17 @@
   String user = (String) session.getAttribute("user");
 %>
 <div class="header">
-  <div class="userField">
-    <h3>Hi <%=user %>
-  </div>
-  <div class="logoutField">
-    <form action="LogoutController" method="post">
-      <input type="submit" value="Logout" />
-    </form>
+  <div class="nav group">
+    <div class="user-field">
+      <h3>Welcome <%=user %>
+    </div>
+    <div class="logout-field">
+      <form action="${pageContext.request.contextPath}/logout" method="post">
+        <input type="submit" value="Logout" />
+      </form>
+    </div>
   </div>
 </div>
-<div class="mainBody">
+<div class="main-body">
 
 

@@ -3,10 +3,10 @@ import java.util.Map;
 /**
  * Created by sagarmatha on 1/29/16.
  */
-public class formValidator { // NOSONAR
+public class FormValidator { // NOSONAR
     private Map em;
 
-    public formValidator(Map<String, String> errorMessege) {
+    public FormValidator(Map<String, String> errorMessege) {
         em=errorMessege;
     }
 

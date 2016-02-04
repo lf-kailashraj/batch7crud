@@ -9,22 +9,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  <base href="${pageContext.request.contextPath}/"/>
-  <link href="static/css/style.css" rel="stylesheet">
+  <link href="static/css/reset.css" rel="stylesheet" />
+  <link href="static/css/adminCss.css" rel="stylesheet" />
   <title>SMS</title>
 </head>
 <body>
 <div class="login">
-<div class="loginField">
+<div class="login-field">
+  <div class="error-field"
 <span class="error">${loginError.error}</span>
-<form action="${pageContext.request.contextPath}/LoginController" method="POST">
-  Username: <br/>
-  <input type="text" name="user">
-  <br/>
-  Password: <br/>
-  <input type="password" name="pwd">
-  <br/>
+<form action="/login" method="POST">
+  <span class="label">Username: </span><br/>
+  <input type="text" name="user"><br/>
+  <span class="label">Password: </span><br/>
+  <input type="password" name="pwd"><br/>
+  <div class="button-field">
   <input type="submit" value="Login">
+  </div>
 </form>
 </div>
 </div>

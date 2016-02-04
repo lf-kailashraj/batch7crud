@@ -3,7 +3,7 @@ package com.lftechnology.batch7crud.controller;
 import com.lftechnology.batch7crud.constants.*;
 import com.lftechnology.batch7crud.model.Student;
 import com.lftechnology.batch7crud.service.StudentService;
-import com.lftechnology.batch7crud.validator.formValidator;
+import com.lftechnology.batch7crud.validator.FormValidator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -57,6 +57,7 @@ public class StudentController extends CommonHTTPRequestHandler {
         String urlPath = req.getRequestURI().substring(req.getContextPath().length());
         req.setAttribute("errorMessage", errorMessage);
         String[] parameters = urlPath.split(File.separator);
+
         try {
             if (parameters.length == 3 && UrlConstants.CREATE.equals(parameters[2])) {
                 createMethod(req, res);
@@ -136,15 +137,15 @@ public class StudentController extends CommonHTTPRequestHandler {
     }
 
     private void createMethod(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        formValidator validate = new formValidator(errorMessage);
+        FormValidator validate = new FormValidator(errorMessage);
         Boolean statusCheck;
-        Map<String,String> data=new HashMap<String, String>();
-        data.put("firstName",req.getParameter(ParameterConstants.FIRST_NAME));
-        data.put("lastName",req.getParameter(ParameterConstants.LAST_NAME));
-        data.put("age",req.getParameter(ParameterConstants.AGE));
-        data.put("address",req.getParameter(ParameterConstants.ADDRESS));
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("firstName", req.getParameter(ParameterConstants.FIRST_NAME));
+        data.put("lastName", req.getParameter(ParameterConstants.LAST_NAME));
+        data.put("age", req.getParameter(ParameterConstants.AGE));
+        data.put("address", req.getParameter(ParameterConstants.ADDRESS));
         statusCheck = validate.validateInput(data);
-        if(statusCheck){
+        if (statusCheck) {
             Student student = new Student();
             student.setFirstName(req.getParameter(ParameterConstants.FIRST_NAME));
             student.setLastName(req.getParameter(ParameterConstants.LAST_NAME));
@@ -152,13 +153,13 @@ public class StudentController extends CommonHTTPRequestHandler {
             student.setAddress(req.getParameter(ParameterConstants.ADDRESS));
             studentService.insert(student);
             res.sendRedirect(req.getContextPath());
-        }else {
+        } else {
             req.getServletContext().getRequestDispatcher(PageConstants.NEW_STUDENT).forward(req, res);
         }
     }
 
     private void updateMethod(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        formValidator validate = new formValidator(errorMessage);
+        FormValidator validate = new FormValidator(errorMessage);
         Boolean statusCheck;
         Map<String,String> data=new HashMap<String, String>();
         data.put("firstName",req.getParameter(ParameterConstants.FIRST_NAME));

@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 /**
  * Created by sagarmatha on 2/1/16.
  */
-@WebServlet("/LoginController")
+@WebServlet("/login")
 public class LoginController extends HttpServlet{
     static Map<String, String> loginError = new HashMap<String, String>();
     private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());

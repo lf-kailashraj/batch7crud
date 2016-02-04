@@ -1,6 +1,6 @@
 <%@ include file="header.jsp" %>
 <%@ include file="sidebar.jsp" %>
-<div class="listField">
+<div class="list-field">
 <%--For displaying Previous link except for the 1st page --%>
 <c:if test="${page != 1}">
     <td><a href="students?page=${page - 1}">Previous</a></td>
@@ -9,7 +9,7 @@
 <c:if test="${page lt totalPages}">
     <td><a href="students?page=${page + 1}">Next</a></td>
 </c:if>
-<table border=1>
+<table>
     <thead>
     <tr>
         <th>Student Id</th>
@@ -17,7 +17,7 @@
         <th>Last Name</th>
         <th>Age</th>
         <th>Address</th>
-        <th colspan=2>Action</th>
+        <th colspan=3>Action</th>
     </tr>
     </thead>
     <tbody>

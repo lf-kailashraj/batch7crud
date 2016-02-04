@@ -42,7 +42,8 @@ public class StudentDaoImpl implements StudentDao {
         }
         return student;
     }
-    public void deleteStudent(int studentID){
+
+    public void deleteStudent(int studentID) {
         try {
             Connection connection = DBConnection.getDBConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
@@ -54,7 +55,8 @@ public class StudentDaoImpl implements StudentDao {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
-    public Student updateStudent(Student student){
+
+    public Student updateStudent(Student student) {
         try {
             Connection connection = DBConnection.getDBConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
@@ -66,12 +68,13 @@ public class StudentDaoImpl implements StudentDao {
             preparedStatement.executeUpdate();
             preparedStatement.close();
             connection.close();
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         return student;
     }
-    public List<Student> getAllStudents(int page, int limit){
+
+    public List<Student> getAllStudents(int page, int limit) {
         List<Student> studentsList = new ArrayList<Student>();
         try {
             Connection connection = DBConnection.getDBConnection(); // NOSONAR
@@ -80,25 +83,25 @@ public class StudentDaoImpl implements StudentDao {
             preparedStatement.setInt(1, limit);
             preparedStatement.setInt(2, startOffset);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while( resultSet.next() ) {
+            while (resultSet.next()) {
                 Student student = new Student();
-                student.setStudentID( resultSet.getInt( "id" ) );
-                student.setFirstName( resultSet.getString( "fName" ) );
-                student.setLastName( resultSet.getString( "lName" ) );
-                student.setAge( resultSet.getInt( "age" ) );
-                student.setAddress( resultSet.getString( "address" ) );
+                student.setStudentID(resultSet.getInt("id"));
+                student.setFirstName(resultSet.getString("fName"));
+                student.setLastName(resultSet.getString("lName"));
+                student.setAge(resultSet.getInt("age"));
+                student.setAddress(resultSet.getString("address"));
                 studentsList.add(student);
             }
             resultSet.close();
             preparedStatement.close();
             connection.close();
-            } catch (SQLException e) {
+        } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         return studentsList;
     }
 
-    public Student getStudentByID(int studentID){
+    public Student getStudentByID(int studentID) {
         Student student = null;
         try {
             Connection connection = DBConnection.getDBConnection();
@@ -106,7 +109,7 @@ public class StudentDaoImpl implements StudentDao {
             preparedStatement.setInt(1, studentID);
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
-                student=new Student();
+                student = new Student();
                 student.setStudentID(rs.getInt(1));
                 student.setFirstName(rs.getString(2));
                 student.setLastName(rs.getString(3));
@@ -120,14 +123,16 @@ public class StudentDaoImpl implements StudentDao {
         }
         return student;
     }
-    public int countStudents(){
+
+    public int countStudents() {
         int totalStudents = 0;
         try {
             Connection connection = DBConnection.getDBConnection(); // NOSONAR
-            PreparedStatement preparedStatement =  connection.prepareStatement(COUNT_STUDENTS); // NOSONAR
+            PreparedStatement preparedStatement = connection.prepareStatement(COUNT_STUDENTS); // NOSONAR
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next())
+            while (resultSet.next()) {
                 totalStudents = resultSet.getInt(1);
+            }
             preparedStatement.close();
             connection.close();
         } catch (SQLException e) {
@@ -135,28 +140,21 @@ public class StudentDaoImpl implements StudentDao {
         }
         return totalStudents;
     }
-    public boolean findStudent(int studentID){
-        int statusCheck=0;
+
+    public boolean findStudent(int studentID) {
+        boolean statusCheck = false;
         try {
             Connection connection = DBConnection.getDBConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(VIEW_BY_ID);
             preparedStatement.setInt(1, studentID);
             ResultSet rs = preparedStatement.executeQuery();
-            if(rs.next()){
-                statusCheck=1;
-            }else{
-                statusCheck=2;
+            if (rs.next()) {
+                statusCheck = true;
             }
-            preparedStatement.close();
-            connection.close();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
-        if(statusCheck == 1){ // NOSONAR
-            return true;
-        }else{
-            return false;
-        }
+        return statusCheck;
     }
 }
 
