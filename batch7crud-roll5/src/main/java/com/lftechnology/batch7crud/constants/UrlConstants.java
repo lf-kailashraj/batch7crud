@@ -13,6 +13,7 @@ public class UrlConstants {
     public static final String ERROR_PAGE = SEPERATOR + WEB_INF + SEPERATOR + VIEWS + SEPERATOR + "error.jsp";
     public static final String HOME_PAGE = SEPERATOR + WEB_INF + SEPERATOR + VIEWS + SEPERATOR + "index.jsp";
     public static final String LOGIN_PAGE = SEPERATOR + WEB_INF + SEPERATOR + VIEWS + SEPERATOR + "login.jsp";
+    public static final String ADD_EMPLOYEE_AJAX = SEPERATOR + WEB_INF + SEPERATOR + VIEWS + SEPERATOR + "createEmployeeAjax.jsp";
 
     private UrlConstants() {
 

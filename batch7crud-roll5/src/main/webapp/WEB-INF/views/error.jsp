@@ -7,6 +7,7 @@
 <title>Error</title>
 </head>
 <body>
-<h1>${message}</h1>
+<h1>Something went wrong</h1>
+<h4>${message}</h4>
 </body>
 </html>

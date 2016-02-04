@@ -40,6 +40,8 @@ public abstract class CustomHttpServlet extends HttpServlet {
             action = NormalConstants.EDIT;
         } else if (pathParts.length == 4 && NormalConstants.DELETE_PROCESS.equals(pathParts[3])) {
             action = NormalConstants.DELETE_PROCESS;
+        }else if (pathParts.length == 3 && NormalConstants.CREATE_USING_AJAX.equals(pathParts[2])) {
+            action = NormalConstants.CREATE_USING_AJAX;
         }
         return action;
     }

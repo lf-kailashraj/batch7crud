@@ -59,9 +59,17 @@ public class EmployeeController extends CustomHttpServlet {
             create(request, response);
             break;
 
+        case NormalConstants.CREATE_USING_AJAX:
+            createUsingAjax(request, response);
+            break;
+
         default:
 
         }
+    }
+
+    private void createUsingAjax(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher(UrlConstants.ADD_EMPLOYEE_AJAX).forward(request, response);
     }
 
     private void edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -9,14 +9,14 @@
 <link href="css/layout.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<div class="header-wrapper">
+	<div class="header-wrapper clearfix">
 		<div class="logo">
-			<img alt="" src="images/">
+			<img alt="" src="images/ems.png">
 			<h1>Employee Management System</h1>
 		</div>
 		<div class="user">
-			<img alt="" src="images/">
-			${name}
+			<img alt="" src="images/admin.png">
+			<h1>${name}</h1>
 			<a href="employeeAuthentication/logout">Log Out</a>
 		</div>
 	</div>

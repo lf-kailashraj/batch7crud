@@ -1,25 +1,56 @@
-/* header */
-
-/* body */
-body {
-	color: #ffffef;
-}
-
 a {
 	text-decoration: none;
 	color: #ffffef;
 	padding: 2px;
 }
 
+/* header */
+.header-wrapper img {
+	float: left;
+	padding-left: 30px;
+}
+
+.header-wrapper h1 {
+	float: left;
+	padding-left: 30px;
+	line-height: 30px;
+}
+
+.header-wrapper a {
+	line-height: 30px;
+	padding-left: 30px;
+}
+
+.user h1 {
+	float: left;
+	padding-left: 30px;
+	line-height: 30px;
+}
+/* body */
+body {
+	color: #ffffef;
+}
+
 .menu li {
 	display: block;
 	padding: 10px;
 	border: 1px solid #2c2b2b;
+	padding-left: 30px;
 }
 
 .menu li:hover {
 	background-color: #1A1818;
 	padding: 10px 0;
+	padding-left: 30px;
+}
+
+.menu a {
+	line-height: 30px;
+	padding-left: 30px;
+}
+
+table{
+	width: 100%;	
 }
 
 .table h1 {
@@ -65,11 +96,11 @@ tr:nth-child(even) {
 	color: black;
 }
 
-.login-form form{
+.login-form form {
 	padding-left: 100px;
 }
 
-.login-form .title{
+.login-form .title {
 	background-color: #393939;
 	color: #ffffff;
 }
@@ -95,12 +126,12 @@ label {
 	clear: both;
 }
 
-.input.login-submit{
+.input.login-submit {
 	padding-left: 210px;
 }
 
-.error{
-	color:red;
+.error {
+	color: red;
 }
 /* footer */
 .footer-wrapper p {

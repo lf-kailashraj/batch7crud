@@ -20,6 +20,7 @@ public class NormalConstants {
     public static final String SQL_ERROR_MESSAGE = "Sql error"; 
     public static final String LOGIN = "login";
     public static final String LOGOUT = "logout";
+    public static final String CREATE_USING_AJAX = "createUsingAjax";
     
     private NormalConstants() {
 
