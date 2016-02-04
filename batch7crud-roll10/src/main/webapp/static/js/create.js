@@ -52,7 +52,6 @@ function submitForm() {
                     $("#batch-error").text(errors.batch);
                     $("#roll-error").text(errors.roll);
 
-                    console.log(errors.name);
 
                 }
             },

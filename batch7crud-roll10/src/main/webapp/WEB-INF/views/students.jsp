@@ -1,75 +1,59 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: binod <binodshrestha@lftechnology.com>
-  Date: 1/14/16
-  Time: 1:09 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-  <base href="${pageContext.request.contextPath}/">
-  <title>Students</title>
-</head>
-<body>
-<div><a href="/auth/logout">logout</a></div>
-<table>
-  <tr>
-    <th>NAME</th>
-    <th>ROLL</th>
-    <th>ADDRESS</th>
-    <th>DEPARTMENT</th>
-    <th>BATCH</th>
-  </tr>
-  <c:forEach items="${studentList}" var="book">
-    <tr>
-      <td>${book.name}</td>
-      <td>${book.roll}</td>
-      <td>${book.address}</td>
-      <td>${book.department}</td>
-      <td>${book.batch}</td>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<t:mainLayout>
 
-      <td><a href="students/${book.id}/edit">edit</a></td>
-      <td><a class="delete" href="students/${book.id}/delete">delete</a></td>
-    </tr>
-  </c:forEach>
-</table>
+    <jsp:attribute name="mainContent">
 
-<div>
-  <c:if test="${currentPage != 1}">
-    <a href="students/list?page=${currentPage-1}">prev</a>
-  </c:if>
-  <c:forEach begin="1" end="${totalPages}" var="i">
-    <a href="students/list?page=${i}">${i}</a>
-  </c:forEach>
-  <c:if test="${currentPage != totalPages}">
-    <a href="students/list?page=${currentPage + 1}">next</a>
-  </c:if>
-</div>
+         <h2>student List</h2>
+         <div class="student-table">
+            <table class="table">
+              <tr>
+                <th>NAME</th>
+                <th>ROLL</th>
+                <th>ADDRESS</th>
+                <th>DEPARTMENT</th>
+                <th>BATCH</th>
+              </tr>
+              <c:forEach items="${studentList}" var="book">
+                <tr>
+                  <td>${book.name}</td>
+                  <td>${book.roll}</td>
+                  <td>${book.address}</td>
+                  <td>${book.department}</td>
+                  <td>${book.batch}</td>
+
+                  <td><a href="students/${book.id}/edit">edit</a></td>
+                  <td><a class="delete" href="students/${book.id}/delete">delete</a></td>
+                </tr>
+              </c:forEach>
+            </table>
+          </div>
+
+         <div class="pagination">
+           <ul>
+          <c:if test="${currentPage != 1}">
+            <li><a href="students/list?page=${currentPage-1}">prev</a></li>
+          </c:if>
+          <c:forEach begin="1" end="${totalPages}" var="i">
+            <c:choose>
+              <c:when test="${currentPage == i}">
+                <li class="active"><a href="students/list?page=${i}">${i}</a></li>
+              </c:when>
+              <c:otherwise>
+                <li><a href="students/list?page=${i}">${i}</a></li>
+              </c:otherwise>
+            </c:choose>
+          </c:forEach>
+          <c:if test="${currentPage != totalPages}">
+            <li><a href="students/list?page=${currentPage + 1}">next</a></li>
+          </c:if>
+           </ul>
+        </div>
+
+     </jsp:attribute>
+</t:mainLayout>
 
 
-<a href="students/create">add student</a>
-<a href="students/createTest">add student test</a>
 
-<script src="static/js/index.js"></script>
-<script type="text/javascript">
-  var deleteBtn = document.querySelectorAll("a.delete");
 
-  for (var i = 0; i < deleteBtn.length; i++) {
-    deleteBtn[i].onclick = function (e) {
-      e.preventDefault();
-      var href = this.getAttribute("href");
-      var confirmation = confirm("Do you want to delete?");
-
-      if (confirmation == true) {
-        var form = document.createElement("form");
-        form.action = href;
-        form.method = "post";
-        form.submit();
-      }
-    }
-  }
-</script>
-</body>
-</html>
