@@ -4,6 +4,7 @@ import com.lftechnology.batch7crud.constant.PageConstant;
 import com.lftechnology.batch7crud.controller.AuthenticationController;
 import com.lftechnology.batch7crud.controller.BookController;
 import com.lftechnology.batch7crud.controller.StudentController;
+import com.lftechnology.batch7crud.controller.TestController;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,10 +35,12 @@ public class RequestMapper {
     Class studentController = StudentController.class;
     Class authenticationController = AuthenticationController.class;
     Class bookController = BookController.class;
+    Class testController = TestController.class;
     List<Class> controllers = new ArrayList<>();
     controllers.add(studentController);
     controllers.add(authenticationController);
     controllers.add(bookController);
+    controllers.add(testController);
 
 
 

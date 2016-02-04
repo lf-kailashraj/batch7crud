@@ -50,6 +50,7 @@
 
 
 <a href="students/create">add student</a>
+<a href="students/createTest">add student test</a>
 
 <script src="static/js/index.js"></script>
 <script type="text/javascript">

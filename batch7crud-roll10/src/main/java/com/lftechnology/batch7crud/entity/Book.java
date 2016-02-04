@@ -13,7 +13,7 @@ public class Book {
   @Required private String name;
   @Required private String author;
   @Required private String publisher;
-  private String edition;
+  @Required private String edition;
   private String isbn;      //International Standard Book Number
 
   public Integer getId() {

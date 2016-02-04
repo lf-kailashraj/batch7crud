@@ -9,13 +9,19 @@ import com.lftechnology.batch7crud.factory.StudentFactory;
 import com.lftechnology.batch7crud.service.StudentService;
 import com.lftechnology.batch7crud.util.TypeCaster;
 import com.lftechnology.batch7crud.utils.requestmapper.RequestMapping;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -162,6 +168,66 @@ public class StudentController extends HttpServlet {
       edit(req, resp);
     }
   }
+
+
+  @RequestMapping(value = "createTest", method = "GET")
+  private void createTest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    req.getServletContext().getRequestDispatcher(PageConstant.STUDENT_CREATE_VIEW1).forward(req, resp);
+  }
+
+  @RequestMapping(value = "createTest", method = "POST")
+  private void createTestProcess(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
+
+    String json = "";
+    if(br != null){
+      json = br.readLine();
+    }
+
+
+    try {
+      JSONObject jsonObject = (JSONObject) new JSONParser().parse(json);
+      Map<String, String> errors = new HashMap<>();
+      Student student = StudentFactory.createStudent(jsonObject, errors);
+
+      if (errors.isEmpty()) {
+        studentService.insert(student);
+        resp.setContentType("application/json");
+
+        PrintWriter out = resp.getWriter();
+        out.print(jsonObject);
+        out.flush();
+      } else {
+
+        JSONObject jsonObject1 = new JSONObject();
+        jsonObject1.put("errors", errors);
+        resp.setContentType("application/json");
+        PrintWriter out = resp.getWriter();
+
+        out.print(jsonObject1);
+        out.flush();
+      }
+
+    } catch (DataException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      throw new ServletException(PageConstant.INTERNAL_SERVER_ERROR);
+
+    } catch (ValidationException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+      JSONObject jo = new JSONObject();
+      jo.put("errors", e.getErrors());
+      resp.setContentType("application/json");
+      PrintWriter out = resp.getWriter();
+
+      out.print(jo);
+      out.flush();
+
+    } catch (ParseException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+    }
+  }
+
 
   private Map<String, String> buildParamMap(HttpServletRequest req) {
     String name = req.getParameter(EntityConstant.NAME);

@@ -17,7 +17,6 @@ import java.util.logging.Logger;
  */
 public class BookCodeDao {
   private static final Logger LOGGER = Logger.getLogger(BookCodeDao.class.getName());
-  private static final String UPDATE_BOOK_CODE= "UPDATE book_code SET availability=? WHERE id=?";
   private static final String GET_BOOK_COUNT_BY_ID = "select count(*) as total from book_code where book_id=?";
   private static final String GET_AVAIL_BOOK_COUNT_BY_ID = "select count(*) as total from book_code where book_id=? and book_code.availability=TRUE ";
   private static final String INSERT_INTO_BOOK_CODE = "INSERT INTO book_code(book_code, book_id, availability) VALUES (?, ?, ?)";
@@ -44,19 +43,6 @@ public class BookCodeDao {
       ps.setBoolean(3, bookCode.getIsAvailable());
       ps.executeUpdate();
 
-
-    } catch (SQLException e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      throw new DataException(e.getMessage());
-    }
-  }
-
-  public void update(BookCode bookCode) throws DataException {
-    try (Connection conn = DbUtils.getConnection();
-            PreparedStatement ps = conn.prepareStatement(UPDATE_BOOK_CODE)
-    ) {
-      ps.setBoolean(1, bookCode.getIsAvailable());
-      ps.executeUpdate();
 
     } catch (SQLException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
