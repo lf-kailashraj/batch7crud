@@ -5,6 +5,7 @@ package com.lftechnology.batch7crud.constants;
  */
 public class AppConstants {
   public static final String CREATE = "create";
+  public static final String CREATE2 = "create2";
   public static final String EDIT = "edit";
   public static final String DELETE = "delete";
   public static final String VIEW = "view";
