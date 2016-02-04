@@ -1,17 +1,22 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.entity.Employee;
 import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.factory.ServiceFactory;
 import com.lftechnology.batch7crud.service.EmployeeService;
 import com.lftechnology.batch7crud.factory.EmployeeFactory;
+import org.json.simple.JSONObject;
 
 import static com.lftechnology.batch7crud.constant.EntityConstant.*;
 import static com.lftechnology.batch7crud.constant.URLConstant.*;
 import static com.lftechnology.batch7crud.constant.AttributeConstant.*;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet({ "/employees/*" })
 public class EmployeeController extends CustomHttpServlet {
-
+  private ObjectMapper objectMapper = new ObjectMapper();   //NOSONAR
   private EmployeeService employeeService = ServiceFactory.createEmployeeService();    //NOSONAR
   private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
   private static final int RECORD_TO_FETCH = 5;
@@ -104,16 +109,26 @@ public class EmployeeController extends CustomHttpServlet {
   }
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    Map<String, String> formValues = createMapOfFormParameters(request);
+    Map<String, String> formValues = createMapOfJsonData(request);
+    System.out.println("form values ;" + formValues);
     try {
       Employee employee = EmployeeFactory.createEmployee(formValues);
       employeeService.create(employee);
-      response.sendRedirect(request.getContextPath() + EMPLOYEE_LIST);
+      System.out.println("employee created");
+      response.setContentType("application/json");
+      JSONObject jsonObject = new JSONObject();
+      jsonObject.put("success", "success");
+      PrintWriter out = response.getWriter();
+      out.print(jsonObject);
+      out.flush();
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(ERRORS, e.getErrors());
-      request.getRequestDispatcher(CREATE_PAGE).forward(request, response);
+      JSONObject jsonObject = new JSONObject();
+      jsonObject.put(ERRORS, e.getErrors());
+      response.setContentType("application/json");
+      PrintWriter out = response.getWriter();
+      out.print(jsonObject);
+      out.flush();
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       showServerError(request, response, e);
@@ -180,5 +195,16 @@ public class EmployeeController extends CustomHttpServlet {
     formValues.put(ADDRESS, request.getParameter(ADDRESS));
     formValues.put(AGE, request.getParameter(AGE));
     return formValues;
+  }
+
+  private Map<String, String> createMapOfJsonData(HttpServletRequest request) throws IOException {
+
+    BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+    String json = "";
+    json = br.readLine();
+
+    System.out.println("json string " + json);
+
+    return objectMapper.readValue(json, Map.class);
   }
 }
