@@ -1,17 +1,22 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.google.gson.Gson;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.factory.EmployeeFactory;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
+import org.json.JSONObject;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -123,6 +128,7 @@ public class EmployeeController extends CustomHttpServlet {
   }
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
     Map<String, String> inputs = mapParameters(request);
 
     Employee employee = null;
@@ -130,18 +136,18 @@ public class EmployeeController extends CustomHttpServlet {
     try {
       employee = employeeFactory.createObject(inputs);
       employeeService.save(employee);
-      response.sendRedirect(request.getContextPath() + ACTION_EMPLOYEES);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       request.setAttribute(ATTRIB_MESSAGE, e.getMessage());
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(ATTRIB_ERRORS, e.getErrors());
-      request.setAttribute(ATTRIB_EMPLOYEE, employee);
 
-      RequestDispatcher view = request.getRequestDispatcher(URL_EMPLOYEE_CREATE_PAGE);
-      view.forward(request, response);
+      String json = new Gson().toJson(e.getErrors());
+
+      response.setContentType("application/json");
+      response.setCharacterEncoding("UTF-8");
+      response.getWriter().write(json);
     }
 
   }
@@ -186,17 +192,16 @@ public class EmployeeController extends CustomHttpServlet {
       employee.setId(employeeId);
 
       employeeService.update(employee);
-      response.sendRedirect(request.getContextPath() + ACTION_EMPLOYEES);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new ServletException(MESSAGE_INTERNAL_SERVER_ERROR);
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(ATTRIB_ERRORS, e.getErrors());
-      request.setAttribute(ATTRIB_EMPLOYEE, employee);
+      String json = new Gson().toJson(e.getErrors());
 
-      RequestDispatcher view = request.getRequestDispatcher(URL_EMPLOYEE_EDIT_PAGE);
-      view.forward(request, response);
+      response.setContentType("application/json");
+      response.setCharacterEncoding("UTF-8");
+      response.getWriter().write(json);
     }
   }
 
@@ -211,13 +216,21 @@ public class EmployeeController extends CustomHttpServlet {
     }
   }
 
-  private Map<String, String> mapParameters(HttpServletRequest request) {
+  private Map<String, String> mapParameters(HttpServletRequest request) throws IOException {
     Map<String, String> inputs = new HashMap<String, String>();
 
-    inputs.put(PARAM_FIRST_NAME, request.getParameter(PARAM_FIRST_NAME));
-    inputs.put(PARAM_LAST_NAME, request.getParameter(PARAM_LAST_NAME));
-    inputs.put(PARAM_STATION, request.getParameter(PARAM_STATION));
+    BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+    String json = "";
 
+    if (reader != null) {
+      json = reader.readLine();
+    }
+
+    JSONObject jsonObject = new JSONObject(json);
+
+    inputs.put(PARAM_FIRST_NAME, (String) jsonObject.get("firstName"));
+    inputs.put(PARAM_LAST_NAME, (String) jsonObject.get("lastName"));
+    inputs.put(PARAM_STATION, (String) jsonObject.get("station"));
     return inputs;
   }
 

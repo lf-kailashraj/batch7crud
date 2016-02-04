@@ -13,26 +13,26 @@
 <t:section sectionTitle="Edit Employee">
     <jsp:attribute name="sectionBody">
         <div class="form">
-            <form action="employees/${employee.getId()}/edit" method="post">
+            <h2>With AJAX</h2>
+
+            <form action="employees/${employee.id}/edit" method="post" id="ajaxForm">
                 <div class="form-element">
                     <label>First Name</label>
-                    <input type="text" name="firstName" value="${employee.firstName}">
-            <span class="error">
-                    ${errors.firstName}
-            </span>
+                    <input type="text" id="first-name" name="firstName" value="${employee.firstName}">
+                    <span class="error">${errors.firstName}</span>
                 </div>
                 <div class="form-element">
                     <label>Last Name</label>
-                    <input type="text" name="lastName" value="${employee.lastName}" }>
+                    <input type="text" id="last-name" name="lastName" value="${employee.lastName}">
                     <span class="error">${errors.lastName}</span>
                 </div>
                 <div class="form-element">
                     <label>Station</label>
-                    <input type="text" name="station" value="${employee.station}">
+                    <input type="text" id="station" name="station" value="${employee.station}">
                     <span class="error">${errors.station}</span>
                 </div>
                 <div class="form-element button">
-                    <input type="submit" name="submit" value="Save">
+                    <input id="submitBtn" type="submit" name="submit" value="Save">
                 </div>
             </form>
         </div>

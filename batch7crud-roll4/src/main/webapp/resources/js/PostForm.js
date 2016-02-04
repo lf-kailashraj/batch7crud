@@ -39,3 +39,4 @@ function PostForm() {
 
 var postForm = new PostForm();
 postForm.init();
+

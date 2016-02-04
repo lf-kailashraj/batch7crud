@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="resources/css/reset.css">
     <link rel="stylesheet" type="text/css" href="resources/css/layout.css">
     <link rel="stylesheet" type="text/css" href="resources/css/style.css">
+
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 </head>
 <body>
 
@@ -47,5 +49,6 @@
 </div>
 
 <script src="resources/js/PostForm.js"></script>
+<script src="resources/js/ajaxPost.js"></script>
 </body>
 </html>
