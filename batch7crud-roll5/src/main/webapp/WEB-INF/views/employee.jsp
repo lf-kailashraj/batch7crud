@@ -9,81 +9,67 @@
 <title>Employees</title>
 </head>
 <body>
-	<a href="employees/create">Add Employee</a>
-	<h1>List Of Employees</h1>
-	<table border="2px">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>First Name</th>
-				<th>Last Name</th>
-				<th>Department</th>
-				<th>Address</th>
-				<th>Edit</th>
-				<th>Delete</th>
+	<jsp:include page="header.jsp"></jsp:include>
+	<div class="container clearfix">
+		<jsp:include page="sideMenu.jsp"></jsp:include>
+		<div class="content">
+			<div class="table">
+				<h1>List Of Employees</h1>
+				<table>
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Department</th>
+							<th>Address</th>
+							<th>Edit</th>
+							<th>Delete</th>
 
-			</tr>
-		</thead>
+						</tr>
+					</thead>
 
-		<tbody>
-			<c:forEach items="${employeeList}" var="employee">
-				<tr>
-					<td>${employee.getId()}</td>
-					<td>${employee.getFirstName()}</td>
-					<td>${employee.getLastName()}</td>
-					<td>${employee.getDepartment()}</td>
-					<td>${employee.getAddress()}</td>
-					<td><a href="employees/${employee.getId()}/edit">Edit</a></td>
-					<td><a href="employees/${employee.getId()}/deleteProcess"
-						class="deleteBtn">Delete</a></td>
-				</tr>
+					<tbody>
+						<c:forEach items="${employeeList}" var="employee">
+							<tr>
+								<td>${employee.getId()}</td>
+								<td>${employee.getFirstName()}</td>
+								<td>${employee.getLastName()}</td>
+								<td>${employee.getDepartment()}</td>
+								<td>${employee.getAddress()}</td>
+								<td><a href="employees/${employee.getId()}/edit">Edit</a></td>
+								<td><a href="employees/${employee.getId()}/deleteProcess"
+									class="deleteBtn">Delete</a></td>
+							</tr>
 
-			</c:forEach>
+						</c:forEach>
 
-		</tbody>
+					</tbody>
 
-	</table>
+				</table>
+			</div>
+			
+			<div class="page-no">
+				<c:if test="${pageNo > 1}">
+					<a href="employees?page=${pageNo-1}">Previous</a>
+				</c:if>
 
-	<c:if test="${pageNo > 1}">
-		<a href="employees?page=${pageNo-1}">Previous</a>
-	</c:if>
+				<c:set var="counter" value="0" />
+				<c:forEach begin="0" end="${pageLink - 1}" step="1" varStatus="loop">
+					<c:set var="counter" value="${counter + 1}" />
+					<a href="employees?page=${counter}">${counter}</a>
+				</c:forEach>
 
-	<c:set var="counter" value="0" />
-	<c:forEach begin="0" end="${pageLink - 1}" step="1"
-		varStatus="loop">
-		<c:set var="counter" value="${counter + 1}" />
-		<a href="employees?page=${counter}">${counter}</a>
-	</c:forEach>
+				<c:if test="${pageNo*noRecordsInPage < noOfEmployees}">
+					<a href="employees?page=${pageNo+1}">Next</a>
+				</c:if>
+			</div>
+			
+		</div>
+	</div>
+	<jsp:include page="footer.jsp"></jsp:include>
 
-	<c:if test="${pageNo*noRecordsInPage < noOfEmployees}">
-		<a href="employees?page=${pageNo+1}">Next</a>
-	</c:if>
-
-	<script>
-		var delBtn = document.getElementsByClassName('deleteBtn');
-
-		for (var i = 0; i < delBtn.length; i++) {
-			delBtn[i].onclick = function(e) {
-				e.preventDefault();
-
-				var href = this.getAttribute('href');
-				var doConfirm = confirm('Are you sure to delete??');
-
-				if (doConfirm == true) {
-					var form = document.createElement('form');
-
-					form.action = href;
-					form.method = 'post';
-
-					document.body.appendChild(form);
-
-					form.submit();
-
-				}
-			}
-
-		}
-	</script>
+	<script type="text/javascript" src="js/deleteEmployee.js"></script>
 
 
 </body>

@@ -24,5 +24,4 @@ public interface EmployeeDAO {
     Employee setEmployeeAttribute(ResultSet rs)throws SQLException;
 
     PreparedStatement setQueryAttribute(PreparedStatement ps, Employee employee) throws SQLException ;
-
 }

@@ -26,15 +26,10 @@ public class DBConnection {
             DataSource ds = (DataSource) envContext.lookup(NormalConstants.DATABASE);
             return ds.getConnection();
 
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new DataException(e.getMessage());
-
-        } catch (NamingException e) {
+        } catch (SQLException | NamingException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new DataException(e.getMessage());
 
         }
-
     }
 }

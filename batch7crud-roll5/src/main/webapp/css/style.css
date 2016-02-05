@@ -1,0 +1,140 @@
+a {
+	text-decoration: none;
+	color: #ffffef;
+	padding: 2px;
+}
+
+/* header */
+.header-wrapper img {
+	float: left;
+	padding-left: 30px;
+}
+
+.header-wrapper h1 {
+	float: left;
+	padding-left: 30px;
+	line-height: 30px;
+}
+
+.header-wrapper a {
+	line-height: 30px;
+	padding-left: 30px;
+}
+
+.user h1 {
+	float: left;
+	padding-left: 30px;
+	line-height: 30px;
+}
+/* body */
+body {
+	color: #ffffef;
+}
+
+.menu li {
+	display: block;
+	padding: 10px;
+	border: 1px solid #2c2b2b;
+	padding-left: 30px;
+}
+
+.menu li:hover {
+	background-color: #1A1818;
+	padding: 10px 0;
+	padding-left: 30px;
+}
+
+.menu a {
+	line-height: 30px;
+	padding-left: 30px;
+}
+
+table{
+	width: 100%;	
+}
+
+.table h1 {
+	text-align: center;
+	padding: 10px;
+}
+
+table, th, td {
+	border: 1px solid black;
+	padding: 10px;
+}
+
+.table a {
+	color: black;
+}
+
+.table a:hover {
+	color: red;
+}
+
+th {
+	background-color: #393939;
+	color: #ffffff;
+}
+
+tr:nth-child(even) {
+	background-color: #838988;
+}
+
+.page-no a {
+	color: black;
+}
+
+.page-no a:hover {
+	color: red;
+}
+
+.login-form {
+	width: 50%;
+	margin-left: 340px;
+	margin-top: 200px;
+	background-color: #ecf0f5;
+	color: black;
+}
+
+.login-form form {
+	padding-left: 100px;
+}
+
+.login-form .title {
+	background-color: #393939;
+	color: #ffffff;
+}
+
+form {
+	padding-left: 300px;
+}
+
+label {
+	font-size: 14px;
+	width: 150px;
+	display: inline-block;
+}
+
+.title {
+	text-align: center;
+	background: #C8C5CB;
+	padding: 20px;
+}
+
+.input {
+	padding: 15px 0;
+	clear: both;
+}
+
+.input.login-submit {
+	padding-left: 210px;
+}
+
+.error {
+	color: red;
+	font-size: 13px;
+}
+/* footer */
+.footer-wrapper p {
+	text-align: center;
+}
