@@ -14,14 +14,17 @@ import java.util.logging.Logger;
  * Created by sagarmatha on 2/2/16.
  */
 public class UserDaoImpl implements UserDao {
-  private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class.getName());
+  private static final Logger logger = Logger.getLogger(UserDaoImpl.class.getName());
   private static final String VIEW = "SELECT * FROM admin";
+
+  Connection connection;
+  PreparedStatement preparedStatement;
 
   public User getUser() {
     User user = null;
     try {
-      Connection connection = DBConnection.getDBConnection();
-      PreparedStatement preparedStatement = connection.prepareStatement(VIEW);
+      connection = DBConnection.getDBConnection();
+      preparedStatement = connection.prepareStatement(VIEW);
       ResultSet rs = preparedStatement.executeQuery();
       if (rs.next()) {
         user = new User();
@@ -29,10 +32,16 @@ public class UserDaoImpl implements UserDao {
         user.setUserName(rs.getString(2));
         user.setPassWord(rs.getString(3));
       }
-      preparedStatement.close();
-      connection.close();
+
     } catch (SQLException e) {
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      logger.log(Level.SEVERE, e.getMessage(), e);
+    } finally {
+      try {
+        preparedStatement.close();
+        connection.close();
+      } catch (SQLException e) {
+        logger.log(Level.SEVERE, e.getMessage(), e);
+      }
     }
     return user;
   }
