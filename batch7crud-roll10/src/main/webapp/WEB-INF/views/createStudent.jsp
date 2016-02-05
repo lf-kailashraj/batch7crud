@@ -1,36 +1,44 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: binodnme
-  Date: 1/14/16
-  Time: 2:45 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-  <base href="${pageContext.request.contextPath}/">
-  <title>create student</title>
-</head>
-<body>
-<div>
-  <form action="students/create" method="post">
-    <label>name</label><input type="text" name="name" value="${param.name}"><span>${errors.name}</span><br>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<t:mainLayout>
 
-    <label>address</label><input type="text" name="address" value="${param.address}"><span>${errors.address}</span><br>
+    <jsp:attribute name="mainContent">
 
-    <label>dob</label><input type="date" name="dob" value="${param.dob}"><span>${errors.dob}</span><br>
+       <h2>Add New student</h2>
+        <div class="student-form">
+            <form action="students/create" method="post">
+                <div class="form-group">
+                    <label>name</label><input type="text" name="name" value="${param.name}" class="form-control"><span>${errors.name}</span><br>
+                </div>
+                <div class="form-group">
+                    <label>address</label>
+                    <input type="text" name="address" value="${param.address}" class="form-control">
+                    <span>${errors.address}</span><br>
+                </div>
 
-    <label>department</label><input type="text" name="department" value="${param.department}"><span>${errors.department}</span><br>
+                <div class="form-group">
+                    <label>dob</label><input type="date" name="dob" value="${param.dob}" class="form-control"><span>${errors.dob}</span><br>
+                </div>
 
-    <label>batch</label><input type="text" name="batch" value="${param.batch}"><span>${errors.batch}</span><br>
+                <div class="form-group">
+                    <label>department</label><input type="text" name="department" value="${param.department}"
+                                                    class="form-control">
+                    <span>${errors.department}</span><br>
+                </div>
+                <div class="form-group">
+                    <label>batch</label><input type="text" name="batch" value="${param.batch}"
+                                               class="form-control"><span>${errors.batch}</span><br>
+                </div>
+                <div class="form-group">
+                    <label>roll</label><input type="number" name="roll" value="${param.roll}"
+                                              class="form-control"><span>${errors.roll}</span><br>
+                </div>
+                <input type="submit" class="button button-primary" value="Add">
+            </form>
 
-    <label>roll</label><input type="number" name="roll" value="${param.roll}"><span>${errors.roll}</span><br>
+            <p>${errorMessage}</p>
 
-    <input type="submit">
-  </form>
-
-  <p>${errorMessage}</p>
-
-</div>
-</body>
-</html>
+        </div>
+    </jsp:attribute>
+</t:mainLayout>

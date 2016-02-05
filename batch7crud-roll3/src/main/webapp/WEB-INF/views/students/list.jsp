@@ -19,14 +19,14 @@
 			<td></td>
 			<td></td>
 		</tr>
-		<c:forEach items="${studentList}" var="student">
+		<c:forEach items="${studentList}" var="book">
 			<tr>
-				<td>${student.getId()}</td>
-				<td>${student.getRoll()}</td>
-				<td>${student.getName()}</td>
-				<td><a href="students/${student.getId()}">show</a></td>
-				<td><a href="students/${student.getId()}/edit">edit</a></td>
-				<td><a href="students/${student.getId()}/delete"
+				<td>${book.getId()}</td>
+				<td>${book.getRoll()}</td>
+				<td>${book.getName()}</td>
+				<td><a href="students/${book.getId()}">show</a></td>
+				<td><a href="students/${book.getId()}/edit">edit</a></td>
+				<td><a href="students/${book.getId()}/delete"
 					class="deleteItem">delete</a></td>
 			</tr>
 		</c:forEach>

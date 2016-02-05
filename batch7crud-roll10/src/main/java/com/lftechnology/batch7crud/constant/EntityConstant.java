@@ -13,6 +13,12 @@ public class EntityConstant {
   public static final String BATCH = "batch";
   public static final String ROLL = "roll";
 
+  public static final String AUTHOR = "author";
+  public static final String PUBLISHER = "publisher";
+  public static final String EDITION = "edition";
+  public static final String ISBN = "isbn";
+
+
   private EntityConstant() {
   }
 }

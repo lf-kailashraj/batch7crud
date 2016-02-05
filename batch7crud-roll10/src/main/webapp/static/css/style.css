@@ -1,0 +1,227 @@
+body{
+    background-color: #E2E2E2;
+    font-family: Arial;
+}
+
+a{
+    text-decoration: none;
+}
+
+.company-name h2{
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.header-menu{
+    float: right;
+    padding-top: 10px;
+}
+
+.header-menu ul{
+
+}
+
+.header-menu ul li{
+}
+
+.header-menu ul li a{
+    display: block;
+    padding: 10px;
+    color: #FFF;
+    background-color: #357ebd;
+    border-radius: 4px;
+}
+
+.navigation ul{
+
+}
+
+.navigation ul li{
+    border-bottom: 1px solid #444444;
+}
+
+.navigation ul li a{
+    display: block;
+    padding: 20px 15px;
+    color: #FFF;
+}
+
+.navigation ul li:hover{
+    background-color: #000000;
+}
+
+.main-content h2{
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #000;
+    font-weight: 800;
+    padding: 15px;
+    border-bottom: 2px solid #00CA79;
+}
+
+.student-form{
+    padding: 15px;
+}
+
+.student-table{
+    padding: 15px;
+}
+
+.table{
+    width: 100%;
+}
+
+.table, th, td{
+    border:1px solid #ddd;
+}
+
+.table th, td{
+    padding: 8px;
+}
+
+.table th{
+    font-weight: bold;
+    text-align: left;
+}
+
+.table > tbody > tr:hover > td{
+    background-color: #f5f5f5;
+}
+
+.form-group{
+    margin: 10px 0;
+}
+
+.form-group label{
+    display: inline-block;
+    max-width: 100%;
+    padding: 5px 0;
+    font-weight: bold;
+}
+
+.form-control{
+    display: block;
+    width: 25%;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+.button{
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: normal;
+    text-align: center;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.button-primary{
+    color: #fff;
+    background-color: #357ebd;
+}
+
+.button-danger{
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+
+.login-content{
+    width: 30%;
+    margin: 100px auto;
+    padding: 15px;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+    background-color: #F3F3F3;
+    box-shadow: 0 0 10px #888888;
+}
+
+.login-title{
+    width: 90%;
+}
+
+.login-title h2{
+    font-size: 25px;
+    font-weight: bold;
+    padding: 10px;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.login-form{
+    width: 90%;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+.login-form .form-control{
+    width: 60%;
+}
+
+.pagination{
+    padding:15px;
+}
+
+.pagination ul{
+    list-style-type: none;
+}
+
+.pagination ul li{
+    display: inline;
+    float: left;
+}
+
+.pagination ul li a{
+    display: block;
+    padding: 6px 12px;
+    color: #337ab7;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.pagination ul li a:hover{
+    background-color: #ddd;
+}
+
+.pagination .active a, .pagination .active a:hover{
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+
+.footer-content{
+    padding: 20px;
+}
+
+.footer-content p{
+    color: #fff;
+    font-size: 14px;
+}
+
+
+.error{
+    width: 40%;
+    margin: 100px auto;
+    padding: 15px;
+    text-align: center;
+}
+
+.error h2{
+    padding: 20px 0;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.error p{
+    padding: 5px 0;
+    font-size: 25px;
+}

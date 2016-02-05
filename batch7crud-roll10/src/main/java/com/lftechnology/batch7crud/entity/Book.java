@@ -1,5 +1,7 @@
 package com.lftechnology.batch7crud.entity;
 
+import com.lftechnology.batch7crud.utils.annotation.Required;
+
 /**
  * Book class holds the book information and getter & setter methods.
  *
@@ -8,10 +10,10 @@ package com.lftechnology.batch7crud.entity;
  */
 public class Book {
   private Integer id;
-  private String name;
-  private String author;
-  private String publisher;
-  private String edition;
+  @Required private String name;
+  @Required private String author;
+  @Required private String publisher;
+  @Required private String edition;
   private String isbn;      //International Standard Book Number
 
   public Integer getId() {

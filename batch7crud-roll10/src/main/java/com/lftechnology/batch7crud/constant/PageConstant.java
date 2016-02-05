@@ -7,20 +7,24 @@ import java.io.File;
  * Created on 1/21/16
  */
 public class PageConstant {
-  public static final String ERROR_MESSAGE = "errorMessage";
   public static final String WEB_INF = "WEB-INF";
   public static final String VIEWS = "views";
+  public static final String LOGIN_VIEW = File.separator + WEB_INF + File.separator + VIEWS + File.separator + "login.jsp";
   public static final String STUDENT_LIST_VIEW = File.separator + WEB_INF + File.separator + VIEWS + File.separator + "students.jsp";
   public static final String STUDENT_CREATE_VIEW = File.separator + WEB_INF + File.separator + VIEWS + File.separator + "createStudent.jsp";
+  public static final String STUDENT_CREATE_VIEW1 = File.separator + WEB_INF + File.separator + VIEWS + File.separator + "createStudent1.jsp";
   public static final String STUDENT_EDIT_VIEW = File.separator + WEB_INF + File.separator + VIEWS + File.separator + "editStudent.jsp";
-  public static final String ERROR_PAGE = File.separator + WEB_INF + File.separator + VIEWS + File.separator + "error.jsp";
+  public static final String BOOK_LIST_VIEW = File.separator + WEB_INF + File.separator + VIEWS + File.separator + "books.jsp";
+  public static final String ADD_BOOK_VIEW = File.separator + WEB_INF + File.separator + VIEWS + File.separator + "addBook.jsp";
   public static final String TOTAL_PAGES = "totalPages";
   public static final String CURRENT_PAGE = "currentPage";
-  public static final String STUDENT_LIST_URL = File.separator + "students";
-  public static final String CREATE = "create";
-  public static final String EDIT = "edit";
-  public static final String DELETE = "delete";
+  public static final String STUDENT_LIST_URL = "/students/list";
+  public static final String BOOK_LIST_URL = "/books/list";
+  public static final String LOGIN_URL = "/auth/login";
   public static final Integer TOTAL_DATA_TO_FETCH = 2;
+
+  public static final String INTERNAL_SERVER_ERROR = "500";
+  public static final String PAGE_NOT_FOUND = "404";
 
   private PageConstant() {
   }
