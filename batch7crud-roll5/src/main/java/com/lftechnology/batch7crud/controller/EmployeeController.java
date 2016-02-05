@@ -1,5 +1,6 @@
 package com.lftechnology.batch7crud.controller;
 
+import com.google.gson.Gson;
 import com.lftechnology.batch7crud.constants.EmployeeAttributeConstants;
 import com.lftechnology.batch7crud.constants.NormalConstants;
 import com.lftechnology.batch7crud.constants.UrlConstants;
@@ -166,8 +167,10 @@ public class EmployeeController extends CustomHttpServlet {
             response.getWriter().write(jsonStr);
         } catch (ValidationExceptions e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            request.setAttribute(NormalConstants.MESSAGE, e.getErrorMessage());
-            request.getRequestDispatcher(UrlConstants.EMPLOYEE_CREATE_URL).forward(request, response);
+            String json = new Gson().toJson(e.getErrorMessage());
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json);
         }
     }
 

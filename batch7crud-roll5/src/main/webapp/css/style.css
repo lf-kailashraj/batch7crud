@@ -132,6 +132,7 @@ label {
 
 .error {
 	color: red;
+	font-size: 13px;
 }
 /* footer */
 .footer-wrapper p {

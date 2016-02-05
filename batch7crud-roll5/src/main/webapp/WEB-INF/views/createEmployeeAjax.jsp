@@ -52,41 +52,9 @@
 		</div>
 	</div>
 	
-<jsp:include page="footer.jsp"></jsp:include>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-	<script>
-	$('#create').click(function(e) {
-		e.preventDefault();
-		var firstName = $('#firstName').val()
-		var lastName = $('#lastName').val()
-		var password = $('#password').val()
-		var department = $('#department').val();
-		var address = $('#address').val();
-		var jsonDataObject = new Object();
-		jsonDataObject.firstName = firstName;
-		jsonDataObject.lastName  = lastName;
-		jsonDataObject.password = password;
-		jsonDataObject.department = department;
-		jsonDataObject.address = address;
-		var jsonData = JSON.stringify(jsonDataObject);
-		
-		 $.ajax({
-			url : 'employees/createUsingAjax',
-			type : 'POST',
-			dataType: 'json',
-			data: jsonData,
-			
-			success:function(message){
-				debugger;
-				alert(message.success);
-			},
-		 error:function(){
-				alert("errot");
-			}
-			
-		});
-	});
-	</script>
+	<jsp:include page="footer.jsp"></jsp:include>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script type="text/javascript" src="js/formSubmit.js"></script>
 
 </body>
 </html>
