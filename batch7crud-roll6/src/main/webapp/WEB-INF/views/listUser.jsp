@@ -3,7 +3,8 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:genericPage>
-
+	<jsp:attribute name="username"><c:out value="${username}"></c:out></jsp:attribute>
+	<jsp:attribute name="pageTitle">Users</jsp:attribute>
     <jsp:attribute name="dataContainer">
 	  <div class="table-wrp"> 
 	  <table>
@@ -13,6 +14,7 @@
 					<th>First Name</th>
 					<th>Last Name</th>
 					<th>User Name</th>
+					<th>Age</th>
 					<th>Operations</th>
 				</tr>
 			</thead>
@@ -29,6 +31,7 @@
 						<td><c:out value="${user.firstName}"></c:out></td>
 						<td><c:out value="${user.surName}"></c:out></td>
 						<td><c:out value="${user.userName}"></c:out></td>
+						<td><c:out value="${user.age}"></c:out></td>
 						<td><a href="users/${user.id}/edit">edit</a> <a
 							href="users/${user.id}/delete" class="deleteUser">delete</a></td>
 					</tr>

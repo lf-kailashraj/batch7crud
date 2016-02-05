@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
-<%@attribute name="header" fragment="true" %>
 <%@attribute name="dataContainer" fragment="true" %>
-<%@attribute name="footer" fragment="true" %>
+<%@attribute name="username" fragment="true" %>
+<%@attribute name="pageTitle" fragment="true" %>
 
 
 <html>
@@ -12,6 +12,9 @@
  	<link rel="stylesheet" type="text/css" href="css/reset.css">
 	<link rel="stylesheet" type="text/css" href="css/layout.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+	
+	<script src="js/jsonMapper.js"></script>
+	<script src="js/jquery-2.2.0.js"></script>
 </head>
   <body>
 	  <div class="header-container clrfix">
@@ -22,7 +25,7 @@
 	      <ul>
 	        <li><img src="images/user-white.png"></li>
 	        <li>
-	          <a class="username-container" href="">user name</a>
+	          <a class="username-container" href=""><jsp:invoke fragment="username"/></a>
 	        </li>
 	        <li>
 	          <a class="logout" href="logout"><img src="images/logout.png"></a>
@@ -45,9 +48,12 @@
 	      </ul>
 	    </div>
 	    <div class="right-col">
+	    	<jsp:invoke fragment="pageTitle"/>
       		<jsp:invoke fragment="dataContainer"/>
     	</div>
   </div>
-<script src="js/common.js"></script>
+
+	<script src="js/common.js"></script>
+
   </body>
 </html>

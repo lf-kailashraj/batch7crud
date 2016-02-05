@@ -1,7 +1,10 @@
 package com.lftechnology.batch7crud.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -11,7 +14,10 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.http.HTTPException;
+
+import org.json.JSONObject;
 
 import com.lftechnology.batch7crud.constant.ApplicationConstant;
 import com.lftechnology.batch7crud.constant.CommonConstant;
@@ -43,6 +49,9 @@ public class UserController extends CustomHttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    HttpSession session = request.getSession();
+    String username = (String) session.getAttribute("user");
+    request.setAttribute("username", username);
     try {
       String[] pathArgs = pathArgs(request);
 
@@ -68,7 +77,7 @@ public class UserController extends CustomHttpServlet {
     } catch (ServletException | HTTPException | IOException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-    }catch(ArrayIndexOutOfBoundsException e){
+    } catch (ArrayIndexOutOfBoundsException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
@@ -76,7 +85,12 @@ public class UserController extends CustomHttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    HttpSession session = request.getSession();
+    String username = (String) session.getAttribute("user");
+    request.setAttribute("username", username);
+
     try {
+
       String urlString = request.getPathInfo();
       if (urlString == null) {
 
@@ -136,29 +150,39 @@ public class UserController extends CustomHttpServlet {
 
     Map<String, String> inputs = new HashMap<>();
 
-    UserValidator userValidator = new UserValidator();
+   UserValidator userValidator = new UserValidator();
     PasswordValidator passwordValidator = new PasswordValidator();
+    
+    BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+    String json = "";
+    if(br != null){
+        json = br.readLine();
+    }
+    
+    JSONObject mapper = new JSONObject(json);
 
-    inputs.put(UserConstants.FIRST_NAME, request.getParameter(UserConstants.FIRST_NAME));
-    inputs.put(UserConstants.SUR_NAME, request.getParameter(UserConstants.SUR_NAME));
-    inputs.put(UserConstants.USERNAME, request.getParameter(UserConstants.USERNAME));
-    inputs.put(UserConstants.AGE, request.getParameter(UserConstants.AGE));
+    inputs.put(UserConstants.FIRST_NAME,(String)mapper.get(UserConstants.FIRST_NAME));
+    inputs.put(UserConstants.SUR_NAME, (String)mapper.get(UserConstants.SUR_NAME));
+    inputs.put(UserConstants.USERNAME, (String)mapper.get(UserConstants.USERNAME));
+    inputs.put(UserConstants.AGE,(String)mapper.get(UserConstants.AGE));
 
     try {
       userValidator.emptyValidate(inputs);
-      passwordValidator.isEmpty(request.getParameter(UserConstants.PASSWORD));
-      inputs.put(UserConstants.PASSWORD,PasswordEncoder.encodePassword(request.getParameter(UserConstants.PASSWORD)));
-
+      passwordValidator.isEmpty((String)mapper.get(UserConstants.PASSWORD));
+      inputs.put(UserConstants.PASSWORD, PasswordEncoder.encodePassword((String)mapper.get(UserConstants.PASSWORD)));
       User user = UserFactory.createUserObect(inputs);
       userService.addUser(user);
-      response.sendRedirect(ApplicationConstant.USER_LIST);
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(CommonConstant.ERRORS, e.getErrors());
-      request.getRequestDispatcher(URLConstants.ADD_USER).forward(request, response);
+      response.setContentType("application/json");
+      String errors = JSONObject.valueToString(e.getErrors());
+      PrintWriter printWriter = response.getWriter();
+      printWriter.write(errors);
+      printWriter.flush();
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
+
 
   }
 
@@ -192,7 +216,7 @@ public class UserController extends CustomHttpServlet {
     userAttributes.put(UserConstants.SUR_NAME, request.getParameter(UserConstants.SUR_NAME));
     userAttributes.put(UserConstants.USERNAME, request.getParameter(UserConstants.USERNAME));
     userAttributes.put(UserConstants.AGE, request.getParameter(UserConstants.AGE));
-    
+
     userAttributes.put(UserConstants.UID, Integer.toString(id));
     try {
       userValidator.emptyValidate(userAttributes);
@@ -203,7 +227,7 @@ public class UserController extends CustomHttpServlet {
 
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      
+
       request.setAttribute(CommonConstant.ERRORS, e.getErrors());
       request.setAttribute("userAttributes", userAttributes);
       request.getRequestDispatcher(URLConstants.EDIT_USER).forward(request, response);

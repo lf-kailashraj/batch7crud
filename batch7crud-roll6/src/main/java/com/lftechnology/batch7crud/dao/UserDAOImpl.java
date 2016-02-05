@@ -32,7 +32,7 @@ public class UserDAOImpl implements UserDAO {
 
   @Override
   public void add(User user) throws DataException {
-    String query = "insert into user (firstname,surname,username,password) values (?,?,?,?)";
+    String query = "insert into user (firstname,surname,username,password,age) values (?,?,?,?,?)";
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);) {
 
@@ -40,6 +40,7 @@ public class UserDAOImpl implements UserDAO {
       preparedStatement.setString(2, user.getSurName());
       preparedStatement.setString(3, user.getUserName());
       preparedStatement.setString(4, user.getPassword());
+      preparedStatement.setInt(5, user.getAge());
 
       preparedStatement.executeUpdate();
 
@@ -83,6 +84,7 @@ public class UserDAOImpl implements UserDAO {
         user.setFirstName(results.getString(UserConstants.FIRST_NAME));
         user.setSurName(results.getString(UserConstants.SUR_NAME));
         user.setUserName(results.getString(UserConstants.USERNAME));
+        user.setAge(results.getInt(UserConstants.AGE));
         user.setPassword(results.getString(UserConstants.PASSWORD));
 
         userList.add(user);
