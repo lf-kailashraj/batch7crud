@@ -16,7 +16,10 @@ public class Employee {
   private int salary;
   private String position;
 
-  public Employee(){}
+
+  public Employee(){
+    //no argument constructor
+  }
 
   public Employee(Map<String, String> input){
     this.name = input.get(EmployeeConstants.NAME);
@@ -25,6 +28,8 @@ public class Employee {
     this.position = input.get(EmployeeConstants.POSITION);
     this.salary = Integer.parseInt(input.get(EmployeeConstants.SALARY));
   }
+
+
 
   public int getEmpId() {
     return empId;

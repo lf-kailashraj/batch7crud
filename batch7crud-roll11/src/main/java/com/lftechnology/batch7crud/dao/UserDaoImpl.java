@@ -4,6 +4,7 @@ import com.lftechnology.batch7crud.database.DbConnector;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.User;
 
+import javax.naming.NamingException;
 import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,7 +28,7 @@ public class UserDaoImpl implements UserDao{
       ps.setString(1, user.getUserName());
       ps.setString(2, user.getPassword());
       ps.execute();
-    }catch(SQLException e){
+    }catch(SQLException | NamingException e){
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
@@ -43,7 +44,7 @@ public class UserDaoImpl implements UserDao{
          return rs.getInt("totalUser") == 1 ? true : false;
       }
       return false;
-    }catch (SQLException e)
+    }catch (SQLException | NamingException e)
     {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());

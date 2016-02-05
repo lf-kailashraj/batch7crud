@@ -1,15 +1,11 @@
 package com.lftechnology.batch7crud.controller;
 
-import com.lftechnology.batch7crud.constant.CommonConstants;
-import com.lftechnology.batch7crud.constant.PathConstants;
-import com.lftechnology.batch7crud.constant.UrlConstants;
-import com.lftechnology.batch7crud.constant.UserConstants;
+import com.lftechnology.batch7crud.constant.*;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.model.User;
 import com.lftechnology.batch7crud.service.UserService;
 import com.lftechnology.batch7crud.util.PasswordEncoder;
-import com.lftechnology.batch7crud.util.StringUtil;
 import com.lftechnology.batch7crud.validator.UserValidator;
 
 import javax.servlet.ServletException;
@@ -17,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.http.HTTPException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -52,19 +49,19 @@ public class LoginController extends HttpServlet{
     try{
       userValidator.validateEmpty(inputs);
       User user = new User(inputs);
-      if(userService.checkUser(user))
-        System.out.println("User is logged in");
+      if(userService.checkUser(user)) {
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user.getUserName());
+        response.sendRedirect(CommonConstants.EMPLOYEE);
+      }
       else{
         request.setAttribute(CommonConstants.ERRORS, "Invalid credentials");
         request.getRequestDispatcher(UrlConstants.LOGIN_PAGE).forward(request, response);
       }
-    }catch (ValidationException e){
+    }catch (ValidationException | DataException | HTTPException e){
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(CommonConstants.ERRORS, e);
+      request.setAttribute(CommonConstants.ERRORS, "Invalid credentials");
       request.getRequestDispatcher(UrlConstants.LOGIN_PAGE).forward(request, response);
-    }catch (HTTPException | DataException e){
-      LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); //NOSONAR
     }
 
 

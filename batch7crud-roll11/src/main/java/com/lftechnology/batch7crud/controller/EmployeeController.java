@@ -10,14 +10,19 @@ import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.service.EmployeeService;
 import com.lftechnology.batch7crud.util.StringUtil;
 import com.lftechnology.batch7crud.validator.EmployeeValidator;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.http.HTTPException;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -29,10 +34,14 @@ import java.util.logging.Logger;
 @WebServlet(name = "EmployeeController", urlPatterns = {"/employee/*"})
 public class EmployeeController extends HttpServlet {
   private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
-  private EmployeeService employeeService = new EmployeeService(); //NOSONAR
+  private static EmployeeService employeeService = new EmployeeService();
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    HttpSession session = request.getSession();
+    String userName = (String) session.getAttribute("user");
+    request.setAttribute("userName", userName);
+
     String[] parsedUrl = StringUtil.parseUrl(request.getRequestURI());
     try {
       if (parsedUrl.length == 2) {
@@ -78,23 +87,23 @@ public class EmployeeController extends HttpServlet {
   }
 
   public void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException { //NOSONAR
-    Map<String, String> inputs = this.putInputToMap(request);
+    Map<String, String> inputs = this.putJsonToMap(request);
     EmployeeValidator validator = new EmployeeValidator();
     try {
       validator.validateEmpty(inputs);
       Employee employee = new Employee(inputs);
       employeeService.create(employee);
-      response.sendRedirect(PathConstants.EMPLOYEE);
-    }catch (ValidationException e){
+    } catch (ValidationException e){
       LOGGER.log(Level.SEVERE, "Validation error occurred", e);
-      request.setAttribute(CommonConstants.ERRORS, e.getErrors());
-      request.getRequestDispatcher(UrlConstants.ADD_EMPLOYEE).forward(request, response);
+      String errors = JSONObject.valueToString(e.getErrors());
+      PrintWriter printWriter = response.getWriter();
+      printWriter.write(errors);
+      printWriter.flush();
     }
   }
 
   public void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException, DataException { //NOSONAR
-    Employee employee = new Employee();
-    employee = employeeService.getEmployeeById(id);
+    Employee employee = employeeService.getEmployeeById(id);
     if(employee == null){
       response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
@@ -127,6 +136,23 @@ public class EmployeeController extends HttpServlet {
     temp.put(EmployeeConstants.DEPARTMENT, request.getParameter(EmployeeConstants.DEPARTMENT));
     temp.put(EmployeeConstants.POSITION, request.getParameter(EmployeeConstants.POSITION));
     temp.put(EmployeeConstants.SALARY, request.getParameter(EmployeeConstants.SALARY));
+    return temp;
+  }
+
+  private Map<String, String> putJsonToMap(HttpServletRequest request) {
+    Map<String, String> temp = new HashMap<>();
+    try {
+      BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+        String json = br.readLine();
+        JSONObject jsonObject = new JSONObject(json);
+        temp.put(EmployeeConstants.NAME, jsonObject.getString("name"));
+        temp.put(EmployeeConstants.ADDRESS, jsonObject.getString("address"));
+        temp.put(EmployeeConstants.DEPARTMENT, jsonObject.getString("department"));
+        temp.put(EmployeeConstants.POSITION, jsonObject.getString("position"));
+        temp.put(EmployeeConstants.SALARY, jsonObject.getString("salary"));
+     } catch (IOException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e );
+    }
     return temp;
   }
 }

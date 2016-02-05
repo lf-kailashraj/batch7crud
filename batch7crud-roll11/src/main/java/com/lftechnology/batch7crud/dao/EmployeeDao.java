@@ -5,6 +5,7 @@ import com.lftechnology.batch7crud.database.DbConnector;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.model.Employee;
 
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,7 +43,7 @@ public class EmployeeDao {
         employeeList.add(emp);
       }
       return employeeList;
-    } catch (SQLException e) {
+    } catch (SQLException | NamingException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
@@ -56,7 +57,7 @@ public class EmployeeDao {
       ps.setString(4, employee.getPosition());
       ps.setInt(5, employee.getSalary());
       ps.execute();
-    } catch (SQLException e) {
+    } catch (SQLException | NamingException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
@@ -77,7 +78,7 @@ public class EmployeeDao {
         employee.setSalary(rs.getInt(EmployeeConstants.SALARY));
       }
       return employee;
-    } catch (SQLException e) {
+    } catch (SQLException | NamingException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
@@ -92,7 +93,7 @@ public class EmployeeDao {
       ps.setInt(5, employee.getSalary());
       ps.setInt(6, employee.getEmpId());
       ps.executeUpdate();
-    } catch (SQLException e) {
+    } catch (SQLException | NamingException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }
@@ -102,7 +103,7 @@ public class EmployeeDao {
     try (Connection con = DbConnector.getConnection(); PreparedStatement ps = con.prepareStatement(DELETE_EMPLOYEE)) {
       ps.setInt(1, id);
       ps.executeUpdate();
-    } catch (SQLException e) {
+    } catch (SQLException | NamingException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new DataException(e.getMessage());
     }

@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.http.HTTPException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,6 +34,10 @@ public class UserController extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    HttpSession session = request.getSession();
+    String userName = (String) session.getAttribute("user");
+    request.setAttribute("userName", userName);
+
     String [] parsedUrl = StringUtil.parseUrl(request.getRequestURI());
     try{
       if(parsedUrl.length == 3 && parsedUrl[2].equals(CommonConstants.ADD)){

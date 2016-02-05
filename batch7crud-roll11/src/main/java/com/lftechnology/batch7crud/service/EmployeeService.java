@@ -6,18 +6,13 @@ import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.model.Employee;
 import com.lftechnology.batch7crud.validator.EmployeeValidator;
 
-import javax.xml.crypto.Data;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by achyut on 1/26/16.
  */
 public class EmployeeService {
 
-  private static final Logger LOGGER = Logger.getLogger(EmployeeService.class.getName());
   private EmployeeDao employeeDao = new EmployeeDao();
 
   EmployeeValidator validator = new EmployeeValidator();

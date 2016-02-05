@@ -31,6 +31,6 @@ public class UserValidator implements Validator<User> {
 
   @Override
   public void validateBusinessLogic(User user) throws ValidationException {
-
+    //not implemented
   }
 }
