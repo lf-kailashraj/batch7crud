@@ -36,35 +36,26 @@ $('#ajaxForm').submit(function (e) {
 
 
 function submitForm() {
-    var userName = $('#username').val();
-    var password = $('#password').val();
-    var fullName = $('#fullname').val();
-    var department = $("#department").val();
-    var address = $("#address").val();
-    var age = $("#age").val();
+    var employee = {
+        userName : $('#username').val(),
+        password : $('#password').val(),
+        fullName : $('#fullname').val(),
+        department : $("#department").val(),
+        address : $("#address").val(),
+        age : $("#age").val()
+    };
 
-    var jsonObject = new Object();
-    jsonObject.userName = userName;
-    jsonObject.password = password;
-    jsonObject.fullName = fullName;
-    jsonObject.department = department;
-    jsonObject.address = address;
-    jsonObject.age = age;
-
-    jsonData = JSON.stringify(jsonObject);
+    var employeeData = JSON.stringify(employee);
 
     $.ajax({
         url: "employees/create",
         type: "POST",
         dataType: "json",
-        data: jsonData,
+        data: employeeData,
         success: function (response) {
             if(response.errors == null) {
-                console.log("success");
                 location.href = "employees";
             } else{
-                console.log("errors");
-                var errors = response.errors;
                 $("#username-error").text("");
                 $("#password-error").text("");
                 $("#fullname-error").text("");
@@ -72,6 +63,7 @@ function submitForm() {
                 $("#address-error").text("");
                 $("#age-error").text("");
 
+                var errors = response.errors;
                 $("#username-error").text(errors.userName);
                 $("#password-error").text(errors.password);
                 $("#fullname-error").text(errors.fullName);
