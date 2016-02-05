@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * Created by Prajjwal Raj Kandel <prajjwalkandel@lftechnology.com> on 1/18/16.
  */
-public class StudentDataAccess {
+public class StudentDataAccess implements StudentDataAccessInterface {
   private static final Logger LOGGER = Logger.getLogger(StudentDataAccess.class.getName());
   private static final String INSERT = "insert into students (name,address,roll) values (?,?,?);";
   private static final String FETCH_ALL = "select * from students limit ? offset ?";
@@ -22,6 +22,7 @@ public class StudentDataAccess {
   private static final String UPDATE = "update students set name = ?, address = ?, roll = ? where id = ?";
   private static final String DELETE = "delete from students where id = ?";
 
+  @Override
   public void addNew(Student student) throws DataException {
     try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
       ps.setString(1, student.getName());
@@ -37,9 +38,10 @@ public class StudentDataAccess {
     }
   }
 
+  @Override
   public List<Student> fetch(int limit, int offset) throws DataException {
     try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(FETCH_ALL)) {
-      List<Student> studentList = new ArrayList<Student>();
+      List<Student> studentList = new ArrayList<>();
       ps.setInt(1, limit);
       ps.setInt(2, offset);
 
@@ -56,6 +58,7 @@ public class StudentDataAccess {
     }
   }
 
+  @Override
   public int fetchTotal() throws DataException {
     try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(COUNT)) {
       int totalSize = 0;
@@ -71,6 +74,7 @@ public class StudentDataAccess {
     }
   }
 
+  @Override
   public Student fetchById(int id) throws DataException {
     try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(FETCH_BY_ID)) {
       ps.setInt(1, id);
@@ -92,6 +96,7 @@ public class StudentDataAccess {
     }
   }
 
+  @Override
   public void update(Student student) throws DataException {
     try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(UPDATE)) {
       ps.setString(1, student.getName());
@@ -105,6 +110,7 @@ public class StudentDataAccess {
     }
   }
 
+  @Override
   public void delete(int id) throws DataException {
     try (Connection conn = DbUtilities.getConnection(); PreparedStatement ps = conn.prepareStatement(DELETE)) {
       ps.setInt(1, id);

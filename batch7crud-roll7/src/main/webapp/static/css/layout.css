@@ -1,0 +1,165 @@
+.header {
+    width: 100%;
+    background: #3e9cca;
+}
+
+.header-text {
+    margin: 0 auto;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    color: #fff;
+    text-align: center;
+    font-size: 32px;
+}
+
+.mainbody {
+    width: 100%;
+    background: #eee;
+    height: 500px;
+}
+
+.login-container {
+    width: 300px;
+    margin: 0 auto;
+    padding: 110px 10px;
+    background: #eee;
+    position: relative;
+}
+.login-container h2{
+    padding: 15px;
+}
+.login-container input[type="text"] {
+    width: 90%;
+    display: block;
+    height: 32px;
+    border: 1px solid #4D90FE;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 10px auto;
+}
+
+.login-container input[type="password"] {
+    width: 90%;
+    display: block;
+    height: 32px;
+    border: 1px solid #4D90FE;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 10px auto;
+}
+
+.login-container input[type="number"] {
+    width: 90%;
+    display: block;
+    height: 32px;
+    border: 1px solid #4D90FE;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 10px auto;
+}
+
+.error{
+    color: red;
+}
+
+.login-container input[type="submit"] {
+    width: 90%;
+    display: block;
+    background: #4D90FE;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 0 auto;
+    color: #fff;
+    font-size: 16px;
+    line-height: 32px;
+}
+
+.navigation {
+    width: 20%;
+    height: 500px;
+    float: left;
+    background: #ddd;
+
+}
+
+.navigation ul {
+    list-style: none;
+}
+
+.navigation ul li {
+    width: 95%;
+    display: block;
+    text-align: center;
+    padding: 5px 5px;
+    background: #bbb;
+}
+
+.navigation ul li a {
+    text-decoration: none;
+    padding: 5px 25px;
+}
+
+.navigation ul li:hover a {
+    background: #eee;
+}
+
+.content {
+    width: 79%;
+    height: 500px;
+    float: right;
+    background: #ddd;
+    text-align: center;
+}
+
+.content a{
+    text-decoration: none;
+    color: #150cc9;
+}
+
+table {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.list tr:nth-child(even) {background: #CCC;}
+tr:nth-child(odd) {background: #FFF;}
+
+.change-page{
+    text-decoration: none;
+    color: #150cc9;
+    font-size: 20px;
+}
+
+table a {
+    text-decoration: none;
+}
+
+table a:hover {
+    color: green;
+}
+
+.show {
+    padding: 100px 100px 40px 100px;
+}
+
+.show .row-odd {
+    background: #106110;
+    color: #fff;
+}
+
+.show .row-even {
+    background: #fff;
+}
+.footer{
+    height: 40px;
+}
+.copyright{
+    float: left;
+    padding: 10px 20px;
+}
+
+.contact{
+    float: right;
+    padding: 10px 20px;
+}
+
