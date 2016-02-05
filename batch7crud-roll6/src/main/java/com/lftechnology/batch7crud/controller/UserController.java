@@ -1,7 +1,10 @@
 package com.lftechnology.batch7crud.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -11,7 +14,10 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.http.HTTPException;
+
+import org.json.JSONObject;
 
 import com.lftechnology.batch7crud.constant.ApplicationConstant;
 import com.lftechnology.batch7crud.constant.CommonConstant;
@@ -21,8 +27,10 @@ import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.model.User;
 import com.lftechnology.batch7crud.service.UserService;
+import com.lftechnology.batch7crud.util.PasswordEncoder;
 import com.lftechnology.batch7crud.util.TypeCaster;
 import com.lftechnology.batch7crud.util.UserFactory;
+import com.lftechnology.batch7crud.validator.PasswordValidator;
 import com.lftechnology.batch7crud.validator.UserValidator;
 
 /**
@@ -41,6 +49,9 @@ public class UserController extends CustomHttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    HttpSession session = request.getSession();
+    String username = (String) session.getAttribute("user");
+    request.setAttribute("username", username);
     try {
       String[] pathArgs = pathArgs(request);
 
@@ -58,7 +69,7 @@ public class UserController extends CustomHttpServlet {
           create(request, response);
 
         } else if (CommonConstant.EMPTY_STRING.equals(pathArgs[0]) && CommonConstant.EDIT.equals(pathArgs[2])) {
-          int userID = TypeCaster.toInt(pathArgs[1]);
+          int userID = Integer.parseInt(pathArgs[1]);
           edit(request, response, userID);
 
         }
@@ -66,12 +77,20 @@ public class UserController extends CustomHttpServlet {
     } catch (ServletException | HTTPException | IOException | NumberFormatException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
+    } catch (ArrayIndexOutOfBoundsException e) {
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+      response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
   }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    HttpSession session = request.getSession();
+    String username = (String) session.getAttribute("user");
+    request.setAttribute("username", username);
+
     try {
+
       String urlString = request.getPathInfo();
       if (urlString == null) {
 
@@ -130,29 +149,40 @@ public class UserController extends CustomHttpServlet {
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     Map<String, String> inputs = new HashMap<>();
-    Map<String, String> errors = new HashMap<>();
 
-    UserValidator userValidator = new UserValidator();
+   UserValidator userValidator = new UserValidator();
+    PasswordValidator passwordValidator = new PasswordValidator();
+    
+    BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+    String json = "";
+    if(br != null){
+        json = br.readLine();
+    }
+    
+    JSONObject mapper = new JSONObject(json);
 
-    inputs.put(UserConstants.FIRST_NAME, request.getParameter(UserConstants.FIRST_NAME));
-    inputs.put(UserConstants.SUR_NAME, request.getParameter(UserConstants.SUR_NAME));
-    inputs.put(UserConstants.USERNAME, request.getParameter(UserConstants.USERNAME));
-    inputs.put(UserConstants.PASSWORD, request.getParameter(UserConstants.PASSWORD));
-    inputs.put(UserConstants.AGE, request.getParameter(UserConstants.AGE));
-
-    userValidator.emptyValidate(inputs, errors);
+    inputs.put(UserConstants.FIRST_NAME,(String)mapper.get(UserConstants.FIRST_NAME));
+    inputs.put(UserConstants.SUR_NAME, (String)mapper.get(UserConstants.SUR_NAME));
+    inputs.put(UserConstants.USERNAME, (String)mapper.get(UserConstants.USERNAME));
+    inputs.put(UserConstants.AGE,(String)mapper.get(UserConstants.AGE));
 
     try {
-      User user = UserFactory.createUserObect(inputs, errors);
-      userService.addUser(user, errors);
-      response.sendRedirect(ApplicationConstant.USER_LIST);
+      userValidator.emptyValidate(inputs);
+      passwordValidator.isEmpty((String)mapper.get(UserConstants.PASSWORD));
+      inputs.put(UserConstants.PASSWORD, PasswordEncoder.encodePassword((String)mapper.get(UserConstants.PASSWORD)));
+      User user = UserFactory.createUserObect(inputs);
+      userService.addUser(user);
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      request.setAttribute(CommonConstant.ERRORS, errors);
-      request.getRequestDispatcher(URLConstants.ADD_USER).forward(request, response);
+      response.setContentType("application/json");
+      String errors = JSONObject.valueToString(e.getErrors());
+      PrintWriter printWriter = response.getWriter();
+      printWriter.write(errors);
+      printWriter.flush();
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
+
 
   }
 
@@ -165,7 +195,7 @@ public class UserController extends CustomHttpServlet {
       userAttributes.put(UserConstants.FIRST_NAME, user.getFirstName());
       userAttributes.put(UserConstants.SUR_NAME, user.getSurName());
       userAttributes.put(UserConstants.USERNAME, user.getUserName());
-      userAttributes.put(UserConstants.PASSWORD, user.getPassword());
+      userAttributes.put(UserConstants.PASSWORD, PasswordEncoder.encodePassword(user.getPassword()));
       userAttributes.put(UserConstants.AGE, Integer.toString(user.getAge()));
 
       request.setAttribute("userAttributes", userAttributes);
@@ -179,7 +209,6 @@ public class UserController extends CustomHttpServlet {
   private void editProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException {
 
     Map<String, String> userAttributes = new HashMap<>();
-    Map<String, String> errors = new HashMap<>();
 
     UserValidator userValidator = new UserValidator();
 
@@ -188,20 +217,19 @@ public class UserController extends CustomHttpServlet {
     userAttributes.put(UserConstants.USERNAME, request.getParameter(UserConstants.USERNAME));
     userAttributes.put(UserConstants.AGE, request.getParameter(UserConstants.AGE));
 
-    userValidator.emptyValidate(userAttributes, errors);
     userAttributes.put(UserConstants.UID, Integer.toString(id));
     try {
-      User user = UserFactory.createUserObect(userAttributes, errors);
+      userValidator.emptyValidate(userAttributes);
+      User user = UserFactory.createUserObect(userAttributes);
       user.setId(id);
-      userService.update(user,errors);
+      userService.update(user);
       response.sendRedirect(ApplicationConstant.USER_LIST);
 
     } catch (ValidationException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      
-      request.setAttribute(CommonConstant.ERRORS, errors);
+
+      request.setAttribute(CommonConstant.ERRORS, e.getErrors());
       request.setAttribute("userAttributes", userAttributes);
-      System.out.println("here");
       request.getRequestDispatcher(URLConstants.EDIT_USER).forward(request, response);
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);

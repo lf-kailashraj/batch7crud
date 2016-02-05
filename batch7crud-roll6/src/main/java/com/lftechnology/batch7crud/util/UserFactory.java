@@ -1,20 +1,25 @@
 package com.lftechnology.batch7crud.util;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.lftechnology.batch7crud.constant.UserConstants;
-import com.lftechnology.batch7crud.exception.ValidationException;
+import com.lftechnology.batch7crud.controller.UserController;
 import com.lftechnology.batch7crud.model.User;
 
 public class UserFactory {
-  private UserFactory(){
-    
+
+  private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
+
+  private UserFactory() {
+
   }
-  public static User createUserObect(Map<String, String> input, Map<String, String> errors) throws ValidationException {
+
+  public static User createUserObect(Map<String, String> input) {
+    User user = new User();
 
     try {
-
-      User user = new User();
 
       String firstName = input.get(UserConstants.FIRST_NAME);
       String surName = input.get(UserConstants.SUR_NAME);
@@ -28,11 +33,10 @@ public class UserFactory {
       user.setPassword(password);
       user.setAge(age);
 
-      return user;
     } catch (NumberFormatException e) {
-      errors.put(UserConstants.AGE, "Age must be number");
-      throw new ValidationException(errors);
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
     }
+    return user;
 
   }
 }

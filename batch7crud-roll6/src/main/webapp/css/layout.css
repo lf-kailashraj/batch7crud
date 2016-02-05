@@ -1,0 +1,37 @@
+/* Header container */
+.header-container {
+	width: 100%;
+	margin: 0 auto;
+	height: 60px;
+	background: #3881A2;
+	position: fixed;
+}
+
+.logo-container {
+	width: 20.078125%;
+	color: white;
+	line-height: 60px;
+}
+
+/* body container */
+
+.user-info-container {
+	width: 20%;
+	float: right;
+	line-height: 50px;
+	padding-top: 10px;
+}
+
+.left-col {
+	width: 18.515625%;
+	min-height: 600px;
+	position: fixed;
+	margin-top: 60px;
+}
+
+.right-col {
+	width: 77.604976672%;
+	margin-left: 20.078125%;
+	float: left;
+	margin-top: 60px;	
+}

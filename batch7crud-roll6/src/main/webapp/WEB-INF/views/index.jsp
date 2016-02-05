@@ -1,18 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!DOCTYPE html>
-<html>
-<head>
-<title>Hello</title>
-</head>
-<base href="${pageContext.request.contextPath}/" />
-<body>
 
-	<h1>Welcome!!!!!</h1>
-	<a href="users">List User</a><br>
+<t:genericPage>
+	<jsp:attribute name="username"><c:out value="${username}"></c:out></jsp:attribute>
+	<jsp:attribute name="pageTitle"> Hello <c:out value="${username}"></c:out> </jsp:attribute>
+    <jsp:attribute name="dataContainer">
+    <a href="users">List User</a><br>
 	<a href="users/add">Add User</a>
-	<a href="login">Login</a>
-</body>
-</html>
+	<a href="logout">Logout</a>
+    </jsp:attribute>
+</t:genericPage>

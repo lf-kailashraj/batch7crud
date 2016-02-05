@@ -1,0 +1,88 @@
+.main-wrp {
+	width: 81.32em;
+	background: #173d48;
+	min-height: 509px;
+	padding-top: 150px;
+}
+
+.inner-wrp {
+	width: 35.25%;
+	margin: 0 auto;
+}
+
+.title-container {
+	width: 100%;
+	background: #e1e1e1;
+	text-align: center;
+	line-height: 48px;
+	border-radius: 5px 5px 0px 0px;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 35px;
+	color: #48802c;
+}
+
+.login-form-container {
+	width: 100%;
+	background: #f3f3f3;
+	padding-top: 50px;
+	border-radius: 0px 0px 5px 5px;
+}
+
+.submit-container {
+	width: 100%;
+	background: #e9e9e9;
+	border-bottom: 1px solid #f3f3f3;
+	height: 45px;
+	padding-top: 15px;
+	border-radius: 0px 0px 5px 5px;
+	clear: both;
+}
+
+.username-container {
+	width: 85.909090909%;
+	border-radius: 5px;
+	margin: 0 auto;
+}
+
+.username-container input {
+	background: url("../images/user.png") no-repeat #e0e0e0;
+	padding-left: 60px;
+}
+
+.password-container {
+	width: 85.909090909%;
+	margin: 0 auto;
+}
+
+.password-container input {
+	background: url("../images/password.png") no-repeat #e0e0e0;
+	padding-left: 60px;
+}
+
+.login-form-container input {
+	height: 50px;
+	margin-bottom: 20px;
+	border-radius: 5px;
+	border: none;
+	width: 84.771573604%;
+	font-size: 15px;
+	outline: none;
+}
+
+.login-form-container .submit {
+	display: block;
+	width: 23%;
+	float: right;
+	height: 35px;
+	border-radius: 5px;
+	margin-right: 15px;
+	margin-bottom: 0px;
+	padding-left: 0px;
+	background: #48802c;
+}
+
+.error {
+	color: red;
+	line-height: 20px;
+	text-align: center;
+}
