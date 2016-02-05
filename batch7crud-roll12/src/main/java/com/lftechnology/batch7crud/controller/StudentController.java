@@ -1,6 +1,8 @@
 package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.constants.*;
+import com.lftechnology.batch7crud.factory.StudentFactory;
+import com.lftechnology.batch7crud.factory.StudentFactoryImpl;
 import com.lftechnology.batch7crud.model.Student;
 import com.lftechnology.batch7crud.parser.UrlParser;
 import com.lftechnology.batch7crud.service.StudentServiceImpl;
@@ -156,11 +158,13 @@ public class StudentController extends CommonHTTPRequestHandler {
     data.put("address", req.getParameter(ParameterConstants.ADDRESS));
     statusCheck = validate.validateInput(data);
     if (statusCheck) {
-      Student student = new Student();
-      student.setFirstName(req.getParameter(ParameterConstants.FIRST_NAME));
-      student.setLastName(req.getParameter(ParameterConstants.LAST_NAME));
-      student.setAge(Integer.parseInt(req.getParameter(ParameterConstants.AGE)));
-      student.setAddress(req.getParameter(ParameterConstants.ADDRESS));
+      Student student;
+      StudentFactory factory = new StudentFactoryImpl();
+      String fname = req.getParameter(ParameterConstants.FIRST_NAME);
+      String lname = req.getParameter(ParameterConstants.LAST_NAME);
+      int age = Integer.parseInt(req.getParameter(ParameterConstants.AGE));
+      String address = req.getParameter(ParameterConstants.ADDRESS);
+      student = factory.createStudent(fname, lname, age, address);
       studentServiceImpl.insert(student);
       res.sendRedirect(req.getContextPath());
     } else {
@@ -179,14 +183,15 @@ public class StudentController extends CommonHTTPRequestHandler {
     statusCheck = validate.validateInput(data);
     if (statusCheck) {
       try {
+        Student student;
+        StudentFactory factory = new StudentFactoryImpl();
         String urlPath = req.getRequestURI().substring(req.getContextPath().length());
         int studentId = Integer.parseInt(urlPath.split(File.separator)[2]);
-        Student student = new Student();
-        student.setStudentID(studentId);
-        student.setFirstName(req.getParameter(ParameterConstants.FIRST_NAME));
-        student.setLastName(req.getParameter(ParameterConstants.LAST_NAME));
-        student.setAge(Integer.parseInt(req.getParameter(ParameterConstants.AGE)));
-        student.setAddress(req.getParameter(ParameterConstants.ADDRESS));
+        String fname = req.getParameter(ParameterConstants.FIRST_NAME);
+        String lname = req.getParameter(ParameterConstants.LAST_NAME);
+        int age = Integer.parseInt(req.getParameter(ParameterConstants.AGE));
+        String address = req.getParameter(ParameterConstants.ADDRESS);
+        student = factory.updateStudent(studentId, fname, lname, age, address);
         studentServiceImpl.update(student);
         res.sendRedirect(req.getContextPath() + File.separator + UrlConstants.STUDENTS);
       } catch (NumberFormatException e) {
