@@ -6,9 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+         pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jstl/sql" %>
 <html>
 <head>
@@ -19,7 +19,7 @@
   <title>SMS</title>
 </head>
 <body>
-<%
+  <%
   //allow access only if session exists
   String user = (String) session.getAttribute("user");
 %>
@@ -30,7 +30,7 @@
     </div>
     <div class="logout-field">
       <form action="${pageContext.request.contextPath}/logout" method="post">
-        <input type="submit" value="Logout" />
+        <input type="submit" value="Logout"/>
       </form>
     </div>
   </div>

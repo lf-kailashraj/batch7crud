@@ -10,7 +10,7 @@
 <html>
 <head>
   <base href="${pageContext.request.contextPath}/"/>
-    <title></title>
+  <title></title>
 </head>
 <body>
 <h2>Some error occured...</h2>

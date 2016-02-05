@@ -1,42 +1,26 @@
 package com.lftechnology.batch7crud.service;
 
-import com.lftechnology.batch7crud.dao.StudentDao;
-import com.lftechnology.batch7crud.dao.StudentDaoImpl;
 import com.lftechnology.batch7crud.model.Student;
 
 import java.util.List;
 
 /**
- * Created by sagarmatha on 1/27/16.
+ * Created by sagarmatha on 2/4/16.
  */
-public class StudentService {
-    private StudentDao dao=new StudentDaoImpl();
+public interface StudentService {
 
-    public Student insert(Student student) {
-        return dao.addStudent(student);
-    }
+  Student insert(Student student);
 
-    public List<Student> viewList(int page, int limit) {
-        return dao.getAllStudents(page, limit);
-    }
+  List<Student> viewList(int page, int limit);
 
-    public Student viewDetail(int studentID) {
-        return dao.getStudentByID(studentID);
-    }
+  Student viewDetail(int studentID);
 
-    public Student update(Student student) {
-        return dao.updateStudent(student);
-    }
+  Student update(Student student);
 
-    public void delete(int id) {
-        dao.deleteStudent(id);
-    }
+  void delete(int id);
 
-    public int countStudents(){
-        return dao.countStudents();
-    }
+  int countStudents();
 
-    public boolean findRecord(int studentID){
-        return dao.findStudent(studentID);
-    }
+  boolean findRecord(int studentID);
+
 }
