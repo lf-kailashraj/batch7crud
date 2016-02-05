@@ -53,11 +53,12 @@
 <div class="mainbody clr">
   <div class="navigation">
     <ul>
-      <li><a href="students/newEntry">New Entry</a></li>
+      <li><a href="students/create">New Entry</a></li>
       <li><a href="logOut">Log Out</a></li>
     </ul>
   </div>
   <div class = "content">
+    LIST OF STUDENTS
     <table class="list">
       <col width="50">
       <col width="300">

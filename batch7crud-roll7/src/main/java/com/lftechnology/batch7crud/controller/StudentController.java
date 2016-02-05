@@ -5,12 +5,15 @@ import com.lftechnology.batch7crud.exception.ValidatorException;
 import com.lftechnology.batch7crud.factory.StudentFactory;
 import com.lftechnology.batch7crud.model.Student;
 import com.lftechnology.batch7crud.service.StudentServices;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -20,7 +23,7 @@ import java.util.logging.Logger;
  * Created by Prajjwal Raj Kandel <prajjwalkandel@lftechnology.com> on 1/18/16.
  */
 @WebServlet(name = "StudentController", urlPatterns = { "/students/*" })
-public class StudentController extends CommonHttpServlet{
+public class StudentController extends CommonHttpServlet {
   private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
 
   private static StudentServices studentService = new StudentServices();
@@ -37,11 +40,10 @@ public class StudentController extends CommonHttpServlet{
       else if (urlPath.length == 4 && CommonConstants.DELETE.equals(urlPath[3]))
         deleteProcess(request, response, Integer.parseInt(urlPath[2]));
       else
-          throw new ServletException(CommonConstants.PAGE_NOT_FOUND);
-    }
-      catch (DataException | IOException e) {
+        throw new ServletException(CommonConstants.PAGE_NOT_FOUND);
+    } catch (DataException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      throw new ServletException(CommonConstants.INTERNAL_SERVER_ERROR);
+      throw new ServletException(CommonConstants.INTERNAL_SERVER_ERROR); // NOSONAR
     }
 
   }
@@ -49,15 +51,16 @@ public class StudentController extends CommonHttpServlet{
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
-      getProcess(request,response);
+      getProcess(request, response);
     } catch (DataException | IOException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
-      throw new ServletException(CommonConstants.INTERNAL_SERVER_ERROR);
-    } catch (NumberFormatException e){
-      throw new ServletException(CommonConstants.PAGE_NOT_FOUND);
+      throw new ServletException(CommonConstants.INTERNAL_SERVER_ERROR); // NOSONAR
+    } catch (NumberFormatException e) {
+      throw new ServletException(CommonConstants.PAGE_NOT_FOUND); // NOSONAR
     }
   }
-  private void getProcess(HttpServletRequest request,HttpServletResponse response) throws DataException,IOException,ServletException{
+
+  private void getProcess(HttpServletRequest request, HttpServletResponse response) throws DataException, IOException, ServletException {
     String[] urlPath = urlParts(request);
     if (urlPath.length == 2 && CommonConstants.LIST_URL.equals(urlPath[1]))
       list(request, response);
@@ -82,14 +85,14 @@ public class StudentController extends CommonHttpServlet{
     int totalStudents = studentService.fetchTotal();
     int numberOfPages = (int) Math.ceil(totalStudents / (float) pageSize);
 
-    if (page != 1 && page > numberOfPages ) {
+    if (page != 1 && page > numberOfPages) {
       page = 1;
     }
     request.setAttribute("students", studentService.fetch(pageSize, (page - 1) * pageSize));
     request.setAttribute("pageSize", pageSize);
     request.setAttribute("totalStudents", totalStudents);
     request.setAttribute("pageNum", page);
-    request.setAttribute("numberOfPages",numberOfPages);
+    request.setAttribute("numberOfPages", numberOfPages);
     request.getServletContext().getRequestDispatcher(CommonConstants.STUDENTS_LIST_VIEW).forward(request, response);
   }
 
@@ -99,23 +102,31 @@ public class StudentController extends CommonHttpServlet{
 
   private void createProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DataException {
 
-    Map<String,String> studentMap = createHashMapFromInputs(request);
+    BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+    String json = reader.readLine();
+    JSONObject jsonObject = new JSONObject(json);
+    Map<String, String> inputs = new HashMap<>();
+    inputs.put("name", jsonObject.getString("name"));
+    inputs.put("address", jsonObject.getString("address"));
+    inputs.put("roll", jsonObject.getString("roll"));
 
     try {
       StudentFactory studentFactory = new StudentFactory();
-      Student student = studentFactory.createObject(studentMap);
+      Student student = studentFactory.createObject(inputs);
       studentService.addNew(student);
-      response.sendRedirect(request.getContextPath() + "/" + CommonConstants.LIST_URL);
-    } catch (ValidatorException e) {
-      LOGGER.log(Level.SEVERE,e.getMessage(),e);
-      request.setAttribute("error",e.getErrors());
-      request.getServletContext().getRequestDispatcher(CommonConstants.NEW_ENTRY_VIEW).forward(request, response);
-    }
 
+    } catch (ValidatorException e) {
+      String jsonError = JSONObject.valueToString(e.getErrors());
+      response.setContentType("application/json");
+      response.setCharacterEncoding("UTF-8");
+      response.getWriter().write(jsonError);
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+    }
   }
 
   private void edit(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException, DataException {
-    if(studentService.fetchById(id) == null) {
+    if (studentService.fetchById(id) == null) {
       throw new ServletException(CommonConstants.PAGE_NOT_FOUND);
     }
     request.setAttribute("student", studentService.fetchById(id));
@@ -123,10 +134,11 @@ public class StudentController extends CommonHttpServlet{
 
   }
 
-  private void editProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException, DataException {
+  private void editProcess(HttpServletRequest request, HttpServletResponse response, int id)
+    throws ServletException, IOException, DataException {
 
-    Map<String,String> studentMap = createHashMapFromInputs(request);
-    studentMap.put("id",String.valueOf(id));
+    Map<String, String> studentMap = createHashMapFromInputs(request);
+    studentMap.put("id", String.valueOf(id));
     Student student = new Student();
 
     try {
@@ -146,7 +158,8 @@ public class StudentController extends CommonHttpServlet{
 
   }
 
-  private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id) throws ServletException, IOException, DataException {
+  private void deleteProcess(HttpServletRequest request, HttpServletResponse response, int id)
+    throws ServletException, IOException, DataException {
     studentService.delete(id);
     response.sendRedirect(request.getContextPath() + "/" + CommonConstants.LIST_URL);
 
@@ -168,14 +181,14 @@ public class StudentController extends CommonHttpServlet{
 
   }
 
-  private Map<String,String> createHashMapFromInputs(HttpServletRequest request){
+  private Map<String, String> createHashMapFromInputs(HttpServletRequest request) {
     String name = request.getParameter("name");
     String address = request.getParameter("address");
     String roll = request.getParameter("roll");
-    Map<String,String > studentMap = new HashMap<>();
-    studentMap.put("name",name);
-    studentMap.put("roll",roll);
-    studentMap.put("address",address);
+    Map<String, String> studentMap = new HashMap<>();
+    studentMap.put("name", name);
+    studentMap.put("roll", roll);
+    studentMap.put("address", address);
     return studentMap;
   }
 

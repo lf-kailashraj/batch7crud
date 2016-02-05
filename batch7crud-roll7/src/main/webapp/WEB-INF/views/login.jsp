@@ -23,6 +23,7 @@
 
 <div class="mainbody">
   <div class="login-container">
+    <h2>SIGN IN</h2>
     <form action="authenticate" method="post">
       <div>
         <input type="text" name="name" placeholder="Username">
@@ -31,7 +32,7 @@
       <div>
         <input type="password" name="password" placeholder="password">
       </div>
-
+      <span class="error">${error}</span>
       <div>
         <input type="submit" value = "Log In">
       </div>
@@ -45,7 +46,6 @@
   <div class="copyright">Copyright</div>
   <div class="contact">Contact</div>
 </div>
-${error}
 
 </body>
 </html>

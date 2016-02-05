@@ -11,6 +11,11 @@
   <link rel="stylesheet" type="text/css" href="static/css/layout.css" />
 
   <title>SMS</title>
+  <%
+    response.setHeader("Cache-Control","no-cache"); //Forces caches to obtain a new copy of the page from the origin server
+    response.setHeader("Cache-Control","no-store"); //Directs caches not to store the page under any circumstance
+    response.setDateHeader("Expires", 0); //Causes the proxy cache to see the page as "stale"
+    response.setHeader("Pragma","no-cache"); //HTTP 1.0 backward compatibilit--%>
 </head>
 <body>
 <%--<div>SMS</div>--%>
@@ -28,7 +33,7 @@
 <div class="mainbody clr">
   <div class="navigation">
     <ul>
-      <li><a href="students/newEntry">New Entry</a></li>
+      <li><a href="students/create">New Entry</a></li>
       <li><a href="students">View All</a></li>
       <li><a href="logOut">Log Out</a></li>
     </ul>
@@ -40,7 +45,7 @@
 </div>
 
 <div class="footer">
-  <div class="copyright">Copyright</div>
+  <div class="copyright ">Copyright</div>
   <div class="contact">Contact</div>
 </div>
 

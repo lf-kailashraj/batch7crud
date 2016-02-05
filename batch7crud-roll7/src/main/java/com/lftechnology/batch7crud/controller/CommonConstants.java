@@ -7,12 +7,12 @@ import java.io.File;
  */
 public class CommonConstants {
   public static final String LIST_URL = "students";
-  public static final String NEW_ENTRY = "newEntry";
+  public static final String NEW_ENTRY = "create";
   public static final String EDIT = "edit";
   public static final String DELETE = "delete";
   private static final String VIEW_BASE = File.separator + "WEB-INF" + File.separator + "views" + File.separator;
   public static final String STUDENTS_LIST_VIEW = VIEW_BASE + "students.jsp";
-  public static final String NEW_ENTRY_VIEW = VIEW_BASE + "newEntry.jsp";
+  public static final String NEW_ENTRY_VIEW = VIEW_BASE + "create.jsp";
   public static final String EDIT_ENTRY_VIEW = VIEW_BASE + "editEntry.jsp";
   public static final String SHOW_STUDENT_VIEW = VIEW_BASE + "show.jsp";
   public static final String ERROR_VIEW = VIEW_BASE + "error.jsp";

@@ -48,9 +48,9 @@
       <div class="login-container">
         NEW ENTRY FORM
         <form action="students/newEntry" method="post">
-          <input type="text" name="name" placeholder="Name" value="${param.name}"/><span>${error.name}</span>
-          <input type="text" name="address" placeholder="Address" value="${param.address}"/><span>${error.address}</span>
-          <input type="number" name="roll" placeholder="Roll" value = "${param.roll}"/><span>${error.roll}</span>
+          <input type="text" name="name" placeholder="Name" value="${param.name}"/><span class="error">${error.name}</span>
+          <input type="text" name="address" placeholder="Address" value="${param.address}"/><span class="error">${error.address}</span>
+          <input type="number" name="roll" placeholder="Roll" value = "${param.roll}"/><span class="error">${error.roll}</span>
           <input type="submit"/>
         </form>
       </div>

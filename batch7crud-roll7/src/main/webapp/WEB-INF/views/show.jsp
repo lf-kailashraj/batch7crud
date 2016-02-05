@@ -58,8 +58,11 @@
         <td height="40">${student.getRoll()}</td>
       </tr>
     </table>
-
+    <div>
+      <a href="students/${student.id}/edit">Edit</a>
+    </div>
   </div>
+
 
   <div class="footer">
     <div class="copyright">Copyright</div>
