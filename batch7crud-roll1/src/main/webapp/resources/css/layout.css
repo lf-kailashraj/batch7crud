@@ -1,0 +1,54 @@
+.wrapper{
+	width:100%; 
+}
+
+.header{
+	width: 100%;
+	min-height: 60px;
+	background-color: #00CA79;
+}
+
+.header-content{
+	padding: 0 20px;
+}
+
+.company-name{
+	width: 40%;
+	padding-top: 15px;
+	float: left;
+}
+
+.main-body{
+	width: 100%;
+	min-height: 600px;
+	background-color: #E2E2E2;
+}
+
+.sidebar{
+	width: 20%;
+	float: left;
+	min-height: 600px;
+	background-color: #333333;
+}
+
+.content-wrapper{
+	width: 80%;
+	float: right;
+	min-height: inherit;
+    background-color: #E2E2E2
+}
+
+.main-content{
+	width: 95%;
+	margin: 2.5%;
+	min-height: 500px;
+	background-color: #FFFFFF;
+}
+
+.footer{
+	width: 100%;
+	min-height: 60px;
+	background-color: #00CA79;
+	clear: both;
+}
+

@@ -2,8 +2,6 @@ package com.lftechnology.batch7crud.factory;
 
 import com.lftechnology.batch7crud.entity.Employee;
 import com.lftechnology.batch7crud.exception.ValidationException;
-import com.lftechnology.batch7crud.service.EmployeeService;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -21,9 +19,13 @@ import static com.lftechnology.batch7crud.constant.EntityConstant.AGE;
  */
 public class EmployeeFactory {
 
-  private static final Logger LOGGER = Logger.getLogger(EmployeeService.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(EmployeeFactory.class.getName());
 
-  public Employee createEmployee(Map<String, String> formValues) throws ValidationException {
+  private EmployeeFactory() {
+
+  }
+
+  public static Employee createEmployee(Map<String, String> formValues) throws ValidationException {
 
     Map<String, String> errors = new HashMap<>();
 
@@ -41,5 +43,4 @@ public class EmployeeFactory {
       throw new ValidationException(errors);
     }
   }
-
 }
