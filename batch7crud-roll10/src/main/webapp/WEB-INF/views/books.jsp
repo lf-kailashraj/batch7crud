@@ -31,9 +31,6 @@
                     <td>${book.edition}</td>
                     <td>${book.total}</td>
                     <td>${book.available}</td>
-
-                    <%--<td><a href="students/${book.id}/edit">edit</a></td>--%>
-                    <%--<td><a class="delete" href="students/${book.id}/delete">delete</a></td>--%>
                 </tr>
             </c:forEach>
         </table>

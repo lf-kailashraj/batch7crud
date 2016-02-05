@@ -8,7 +8,7 @@
             <div class="header">
                 <div class="header-content">
                     <div class="company-name">
-                        <h2>abcd</h2>
+                        <h2>SMS</h2>
                     </div>
 
                     <div class="header-menu">
@@ -23,7 +23,6 @@
                 <div class="sidebar">
                     <div class="navigation">
                         <ul>
-                            <li><a href="home">Dashboard</a></li>
                             <li><a href="students/list">List Students</a></li>
                             <li><a href="students/create">add student</a></li>
                             <li><a href="students/createTest">add student test</a></li>

@@ -17,7 +17,7 @@
 <div class="wrapper">
     <div class="login-content">
         <div class="login-title">
-            <h2>abcd</h2>
+            <h2>SMS</h2>
         </div>
 
         <div class="login-form">

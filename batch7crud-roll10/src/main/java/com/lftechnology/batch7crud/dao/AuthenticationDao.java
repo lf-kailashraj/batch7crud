@@ -24,7 +24,6 @@ public class AuthenticationDao {
   private static final String GET_USER = "select * from user_info where username=? and  password=? "; // NOSONAR
 
   public User isValid(String username, String password) throws DataException {
-
     String passwd;
     try {
       passwd = Md5Converter.getHashedText(password);

@@ -4,7 +4,6 @@ import com.lftechnology.batch7crud.constant.PageConstant;
 import com.lftechnology.batch7crud.controller.AuthenticationController;
 import com.lftechnology.batch7crud.controller.BookController;
 import com.lftechnology.batch7crud.controller.StudentController;
-import com.lftechnology.batch7crud.controller.TestController;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,17 +34,13 @@ public class RequestMapper {
     Class studentController = StudentController.class;
     Class authenticationController = AuthenticationController.class;
     Class bookController = BookController.class;
-    Class testController = TestController.class;
+
     List<Class> controllers = new ArrayList<>();
     controllers.add(studentController);
     controllers.add(authenticationController);
     controllers.add(bookController);
-    controllers.add(testController);
-
-
 
     Class controller = filterController(controllers, servletPath);
-
     if(controller == null){
       throw new ServletException(PageConstant.PAGE_NOT_FOUND);
     }
@@ -54,7 +49,6 @@ public class RequestMapper {
     List<Method> methodList = Arrays.asList(methods);
 
     Method method = filterMethod(methodList, pathInfo, requestType);
-
 
     if(method != null){
       Object obj;
@@ -73,7 +67,6 @@ public class RequestMapper {
 
   private Class filterController(List<Class> controllers, String servletPath){
     List<String> servletPathTokens = getPathAsTokenList(servletPath);
-
 
     for(Class controller : controllers){
       if(controller.isAnnotationPresent(WebServlet.class)){
@@ -111,7 +104,6 @@ public class RequestMapper {
     }
 
     return true;
-
   }
 
   private Method filterMethod(List<Method> methodList, String pathInfo, String requestType){
@@ -140,7 +132,6 @@ public class RequestMapper {
     for(Method method : methods){
       RequestMapping mapping = method.getAnnotation(RequestMapping.class);
       String value = mapping.value();
-
       String[] valueParts = value.split("/");
 
       /*
@@ -150,7 +141,6 @@ public class RequestMapper {
       * */
       if(index < valueParts.length && (isVariable(valueParts[index]) || valueParts[index].equalsIgnoreCase(pathParts1.get(index)))){
         candidateMethods.add(method);
-
       }
     }
 
@@ -165,7 +155,6 @@ public class RequestMapper {
         return null;
       }
     }
-
   }
 
   private List<Method> filterMethodByAnnotation(Class<? extends Annotation> annotationClass, List<Method> methods){
@@ -186,7 +175,6 @@ public class RequestMapper {
         results.add(method);
       }
     }
-
     return results;
   }
 
@@ -209,7 +197,6 @@ public class RequestMapper {
         results.add(method);
       }
     }
-
     return results;
   }
 

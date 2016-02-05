@@ -1,6 +1,7 @@
 package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.constant.PageConstant;
+import com.lftechnology.batch7crud.constant.RequestMethod;
 import com.lftechnology.batch7crud.entity.User;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.service.AuthenticationService;
@@ -17,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @Author binodnme
+ * @Author Binod Shrestha <binodshrestha@lftechnology.com>
  * Created on 1/27/16
  */
 @WebServlet("/auth/*")
@@ -29,12 +30,12 @@ public class AuthenticationController extends HttpServlet {
   private static final String PASSWORD = "password"; // NOSONAR
 
 
-  @RequestMapping(value = "login", method = "GET")
+  @RequestMapping(value = "login", method = RequestMethod.GET)
   public void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
     req.getServletContext().getRequestDispatcher(PageConstant.LOGIN_VIEW).forward(req, resp);
   }
 
-  @RequestMapping(value = "login", method = "POST")
+  @RequestMapping(value = "login", method = RequestMethod.POST)
   public void loginProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
 
     String username = req.getParameter(USERNAME);
@@ -57,7 +58,7 @@ public class AuthenticationController extends HttpServlet {
 
   }
 
-  @RequestMapping(value = "logout", method = "GET")
+  @RequestMapping(value = "logout", method = RequestMethod.GET)
   private void logout(HttpServletRequest req, HttpServletResponse resp) throws IOException { // NOSONAR
     HttpSession session = req.getSession();
     session.removeAttribute(USER);

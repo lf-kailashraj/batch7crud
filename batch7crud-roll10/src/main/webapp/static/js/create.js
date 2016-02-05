@@ -15,7 +15,7 @@ function submitForm() {
     var batch = $('#batch').val();
     var roll = $('#roll').val();
 
-    var jsonObject = new Object();
+    var jsonObject = new Object(); // NOSONAR
     jsonObject.name = name;
     jsonObject.address = address;
     jsonObject.dob = date;
@@ -56,7 +56,7 @@ function submitForm() {
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                console.log(xhr + " " + ajaxOptions + " " + thrownError);
+                console.log(xhr + " " + ajaxOptions + " " + thrownError); // NOSONAR
             }
         });
 }

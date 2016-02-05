@@ -14,6 +14,8 @@
                 <th>ADDRESS</th>
                 <th>DEPARTMENT</th>
                 <th>BATCH</th>
+                <th></th>
+                <th></th>
               </tr>
               <c:forEach items="${studentList}" var="book">
                 <tr>

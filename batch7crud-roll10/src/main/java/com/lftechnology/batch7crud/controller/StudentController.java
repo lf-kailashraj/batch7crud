@@ -2,6 +2,7 @@ package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.constant.EntityConstant;
 import com.lftechnology.batch7crud.constant.PageConstant;
+import com.lftechnology.batch7crud.constant.RequestMethod;
 import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
 import com.lftechnology.batch7crud.exception.ValidationException;
@@ -44,9 +45,10 @@ public class StudentController extends HttpServlet {
   private static final String STUDENT_LIST = "studentList";
   private static final String ERRORS = "errors";
   private static final String STUDENT = "student";
+  private static final String CONTENT_TYPE_JSON = "application/json";
 
 
-  @RequestMapping(value = "list", method = "GET")
+  @RequestMapping(value = "list", method = RequestMethod.GET)
   private void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
     try {
       Integer page = 1;
@@ -70,12 +72,12 @@ public class StudentController extends HttpServlet {
     }
   }
 
-  @RequestMapping(value = "create", method = "GET")
+  @RequestMapping(value = "create", method = RequestMethod.GET)
   private void create(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     req.getServletContext().getRequestDispatcher(PageConstant.STUDENT_CREATE_VIEW).forward(req, resp);
   }
 
-  @RequestMapping(value = "create", method = "POST")
+  @RequestMapping(value = "create", method = RequestMethod.POST)
   private void createProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
     try {
       Map<String, String> errors = new HashMap<>();
@@ -102,7 +104,7 @@ public class StudentController extends HttpServlet {
     }
   }
 
-  @RequestMapping(value = "{id}/edit", method = "GET")
+  @RequestMapping(value = "{id}/edit", method = RequestMethod.GET)
   private void edit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     try {
 
@@ -124,7 +126,7 @@ public class StudentController extends HttpServlet {
     }
   }
 
-  @RequestMapping(value = "{id}/delete", method = "POST")
+  @RequestMapping(value = "{id}/delete", method = RequestMethod.POST)
   private void deleteProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
     try {
       Integer id = TypeCaster.toInt(req.getPathInfo().split("/")[1]);
@@ -136,7 +138,7 @@ public class StudentController extends HttpServlet {
     }
   }
 
-  @RequestMapping(value = "{id}/edit", method = "POST")
+  @RequestMapping(value = "{id}/edit", method = RequestMethod.POST)
   private void editProcess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
     Map<String, String> errors = new HashMap<>();
     Map<String, String> paramMap = buildParamMap(req);
@@ -170,20 +172,16 @@ public class StudentController extends HttpServlet {
   }
 
 
-  @RequestMapping(value = "createTest", method = "GET")
-  private void createTest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+  @RequestMapping(value = "createTest", method = RequestMethod.GET)
+  private void createTest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
     req.getServletContext().getRequestDispatcher(PageConstant.STUDENT_CREATE_VIEW1).forward(req, resp);
   }
 
-  @RequestMapping(value = "createTest", method = "POST")
-  private void createTestProcess(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+  @RequestMapping(value = "createTest", method = RequestMethod.POST)
+  private void createTestProcess(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException { // NOSONAR
     BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
 
-    String json = "";
-    if(br != null){
-      json = br.readLine();
-    }
-
+    String json = br.readLine();
 
     try {
       JSONObject jsonObject = (JSONObject) new JSONParser().parse(json);
@@ -192,19 +190,19 @@ public class StudentController extends HttpServlet {
 
       if (errors.isEmpty()) {
         studentService.insert(student);
-        resp.setContentType("application/json");
+        resp.setContentType(CONTENT_TYPE_JSON);
 
         PrintWriter out = resp.getWriter();
         out.print(jsonObject);
         out.flush();
       } else {
 
-        JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("errors", errors);
-        resp.setContentType("application/json");
+        JSONObject errorMessage = new JSONObject();
+        errorMessage.put(ERRORS, errors);
+        resp.setContentType(CONTENT_TYPE_JSON);
         PrintWriter out = resp.getWriter();
 
-        out.print(jsonObject1);
+        out.print(errorMessage);
         out.flush();
       }
 
@@ -216,8 +214,8 @@ public class StudentController extends HttpServlet {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
       JSONObject jo = new JSONObject();
-      jo.put("errors", e.getErrors());
-      resp.setContentType("application/json");
+      jo.put(ERRORS, e.getErrors());
+      resp.setContentType(CONTENT_TYPE_JSON);
       PrintWriter out = resp.getWriter();
 
       out.print(jo);

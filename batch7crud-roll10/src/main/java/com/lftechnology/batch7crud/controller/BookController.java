@@ -2,12 +2,10 @@ package com.lftechnology.batch7crud.controller;
 
 import com.lftechnology.batch7crud.constant.EntityConstant;
 import com.lftechnology.batch7crud.constant.PageConstant;
+import com.lftechnology.batch7crud.constant.RequestMethod;
 import com.lftechnology.batch7crud.entity.Book;
-import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.DataException;
-import com.lftechnology.batch7crud.exception.ValidationException;
 import com.lftechnology.batch7crud.factory.BookFactory;
-import com.lftechnology.batch7crud.factory.StudentFactory;
 import com.lftechnology.batch7crud.service.BookCodeService;
 import com.lftechnology.batch7crud.service.BookService;
 import com.lftechnology.batch7crud.utils.requestmapper.RequestMapping;
@@ -26,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @Author binodnme
+ * @Author Binod Shrestha <binodshrestha@lftechnology.com>
  * Created on 2/3/16
  */
 @WebServlet("/books/*")
@@ -38,7 +36,7 @@ public class BookController extends HttpServlet {
   private static BookService bookService = new BookService();
 
 
-  @RequestMapping(value = "list", method = "GET")
+  @RequestMapping(value = "list", method = RequestMethod.GET)
   private void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
 
     List<Book> bookList;
@@ -66,12 +64,12 @@ public class BookController extends HttpServlet {
     req.getServletContext().getRequestDispatcher(PageConstant.BOOK_LIST_VIEW).forward(req, resp);
   }
 
-  @RequestMapping(value = "add", method = "GET")
+  @RequestMapping(value = "add", method = RequestMethod.GET)
   private void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // NOSONAR
     req.getServletContext().getRequestDispatcher(PageConstant.ADD_BOOK_VIEW).forward(req, resp);
   }
 
-  @RequestMapping(value = "add", method = "POST")
+  @RequestMapping(value = "add", method = RequestMethod.POST)
   private void addProcess(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException { // NOSONAR
     try {
       Map<String, String> errors = new HashMap<>();
@@ -80,7 +78,6 @@ public class BookController extends HttpServlet {
 
       if (errors.isEmpty()) {
         bookService.addBook(book, Integer.parseInt(paramMap.get(COPIES)));
-
         resp.sendRedirect(req.getContextPath() + PageConstant.BOOK_LIST_URL);
       } else {
         req.setAttribute(ERRORS, errors);
@@ -90,7 +87,6 @@ public class BookController extends HttpServlet {
     } catch (DataException e) {
       LOGGER.log(Level.SEVERE, e.getMessage(), e);
       throw new ServletException(PageConstant.INTERNAL_SERVER_ERROR);
-
     }
   }
 
@@ -117,7 +113,6 @@ public class BookController extends HttpServlet {
     map.put(EntityConstant.AUTHOR, book.getAuthor());
     map.put(EntityConstant.PUBLISHER, book.getPublisher());
     map.put(EntityConstant.EDITION, book.getEdition());
-
 
     return map;
   }

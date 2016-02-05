@@ -1,19 +1,14 @@
 package com.lftechnology.batch7crud.factory;
 
 import com.lftechnology.batch7crud.entity.Book;
-import com.lftechnology.batch7crud.entity.Student;
 import com.lftechnology.batch7crud.exception.ValidationException;
-import com.lftechnology.batch7crud.utils.DateUtils;
 import com.lftechnology.batch7crud.utils.annotation.FieldValidator;
 
-import java.text.ParseException;
-import java.util.Date;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.lftechnology.batch7crud.constant.EntityConstant.*;
-import static com.lftechnology.batch7crud.constant.EntityConstant.ROLL;
 
 /**
  * @Author binodnme
@@ -22,6 +17,10 @@ import static com.lftechnology.batch7crud.constant.EntityConstant.ROLL;
 public class BookFactory {
   private static final Logger LOGGER = Logger.getLogger(BookFactory.class.getName());
   private static final String COPIES = "copies";
+
+
+  private BookFactory(){
+  }
 
   public static Book createBook(Map<String, String> params, Map<String, String> errors){
 
@@ -45,7 +44,10 @@ public class BookFactory {
 
     String copies = params.get(COPIES);
     try {
-      Integer.parseInt(copies);
+      Integer totalCopies = Integer.parseInt(copies);
+      if(totalCopies <= 0){
+        errors.put(COPIES, "should be positive integer");
+      }
     }catch (NumberFormatException e){
       errors.put(COPIES, "should be positive integer");
     }
