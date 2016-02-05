@@ -1,20 +1,28 @@
 package com.lftechnology.batch7crud.controller;
 
-import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.lftechnology.batch7crud.util.TypeCaster;
-
-@WebServlet({ "/" })
+@WebServlet({"/index"})
 public class IndexController extends HttpServlet {
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer i = TypeCaster.toInt("123");
-        System.out.println("value of i: " + i);
-        req.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
-    };
+  private static final Logger LOGGER = Logger.getLogger(IndexController.class.getName());
+
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    try {
+      HttpSession session = req.getSession();
+      String userName = (String) session.getAttribute("user");
+      req.setAttribute("userName", userName);
+      req.getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
+    }catch (ServletException | IOException e){
+      LOGGER.log(Level.SEVERE, e.getMessage(), e);
+    }
+  }
 }
