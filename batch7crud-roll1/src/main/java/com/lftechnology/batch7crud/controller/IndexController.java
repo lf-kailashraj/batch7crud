@@ -12,7 +12,6 @@ import static com.lftechnology.batch7crud.constant.URLConstant.*;
 
 @WebServlet({ "/" })
 public class IndexController extends HttpServlet {
-
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     RequestDispatcher requestDispatcher = request.getServletContext().getRequestDispatcher(INDEX_PAGE);
